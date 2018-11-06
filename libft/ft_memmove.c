@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 16:03:56 by gguichar          #+#    #+#             */
-/*   Updated: 2018/08/22 22:29:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/06 09:22:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void		*ft_memcpy_bw(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-void		*ft_memmove(void *dest, const void *src, size_t n)
+void			*ft_memmove(void *dest, const void *src, size_t n)
 {
 	if (n > 0 && dest != src)
 	{
