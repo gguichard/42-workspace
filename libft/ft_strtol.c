@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/10 14:59:06 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/06 09:30:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/06 09:34:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,13 @@ static size_t	ft_skip_spaces(const char *nptr, int *neg)
 	return (i);
 }
 
-static long int	ft_fix_neg(int *result, int neg)
+static long int	ft_fix_neg(long int result, int neg)
 {
-	if (*result < 0)
-		*result = neg ? LONG_MIN : LONG_MAX;
+	if (result < 0)
+		return (neg ? LONG_MIN : LONG_MAX);
 	else if (neg)
-		*result *= -1;
+		return (result * -1);
+	return (result);
 }
 
 long int		ft_strtol(const char *nptr, char **endptr, int base)
@@ -86,7 +87,7 @@ long int		ft_strtol(const char *nptr, char **endptr, int base)
 				break ;
 			str++;
 		}
-		ft_fix_neg(&result, neg);
+		result = ft_fix_neg(result, neg);
 	}
 	if (endptr != NULL)
 		*endptr = (char *)(found ? str : nptr);
