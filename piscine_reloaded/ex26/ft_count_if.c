@@ -6,11 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 19:50:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/05 20:02:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/06 07:55:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_count_if(char **tab, int(*f)(char*))
+int	ft_count_if(char **tab, int (*f)(char*))
 {
 	int	i;
 	int	count;

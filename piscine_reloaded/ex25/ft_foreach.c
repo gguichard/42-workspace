@@ -6,11 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 19:48:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/05 19:55:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/06 07:54:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_foreach(int *tab, int length, void(*f)(int))
+void	ft_foreach(int *tab, int length, void (*f)(int))
 {
 	int	i;
 

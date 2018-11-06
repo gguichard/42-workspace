@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/05 18:30:51 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/05 18:48:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/06 07:55:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_putstr(char *str)
 	}
 }
 
-int	ft_strcmp(char *s1, char *s2)
+int		ft_strcmp(char *s1, char *s2)
 {
 	while (*s1 == *s2 && *s1 != '\0')
 	{
