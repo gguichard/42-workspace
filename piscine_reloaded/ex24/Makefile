@@ -6,12 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 19:34:19 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/05 19:47:12 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/06 08:55:29 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 	= libft.a
-SRC		= ft_putchar.c ft_putstr.c ft_strcmp.c ft_strlen.c ft_swap.c
+SRC		= srcs/ft_putchar.c srcs/ft_putstr.c srcs/ft_strcmp.c \
+		  srcs/ft_strlen.c srcs/ft_swap.c
 OBJ		= $(SRC:.c=.o)
 
 CC		= gcc
@@ -23,7 +24,7 @@ $(NAME): $(OBJ)
 	ar rcs $@ $^
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -I includes/ -o $@ -c $<
 
 clean:
 	/bin/rm -f $(OBJ)
