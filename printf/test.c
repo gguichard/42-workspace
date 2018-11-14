@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 10:21:13 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 16:35:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/14 23:07:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,5 @@
 
 void	main(int argc, char **argv)
 {
-	printf("%010s %hld\n", "test");
+	printf("%s %.3d\n", "test", 5);
 }

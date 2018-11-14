@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 16:38:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/14 23:03:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 typedef struct	s_pholder
 {
 	int			flags;
-	size_t		width_field;
+	int			width_field;
 	int			precision;
 	int			modifiers;
 	char		type;
@@ -42,6 +42,12 @@ void			print_placeholder(t_pholder *holder, va_list args);
 
 int				ft_printf(const char *format, ...);
 
-char			*pad_string(char *str, char padding, size_t total);
+char			*pad_string(char *str, t_pholder *holder);
+
+char			*convert_str(t_pholder *holder, va_list args);
+
+char			*convert_char(t_pholder *holder, va_list args);
+
+char			*convert_decimal(t_pholder *holder, va_list args);
 
 #endif

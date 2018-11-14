@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 16:10:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/14 22:44:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,15 @@ static int	parse_fieldwidth_precision(const char *format, t_pholder *holder)
 	offset = 0;
 	while (ft_isdigit(format[offset]))
 	{
+		if (holder->width_field < 0)
+			holder->width_field = 0;
 		holder->width_field *= 10;
 		holder->width_field += (format[offset] - '0');
 		offset++;
 	}
 	if (format[offset] == '.')
 	{
+		holder->precision = 0;
 		offset++;
 		while (ft_isdigit(format[offset]))
 		{
@@ -94,8 +97,8 @@ static int	parse_placeholder(const char *format, t_pholder *holder)
 	int	offset;
 
 	holder->flags = 0;
-	holder->width_field = 0;
-	holder->precision = 0;
+	holder->width_field = -1;
+	holder->precision = -1;
 	holder->modifiers = 0;
 	offset = 0;
 	offset += parse_flags(format, holder);
