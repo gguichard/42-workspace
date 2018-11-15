@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 23:03:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/15 16:22:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@ void			print_placeholder(t_pholder *holder, va_list args);
 
 int				ft_printf(const char *format, ...);
 
-char			*pad_string(char *str, t_pholder *holder);
+char			padding_byte(t_pholder *holder);
+
+char			*pad_string(char *str, char c, size_t width, int right);
+
+int				base_from_type(t_pholder *holder);
 
 char			*convert_str(t_pholder *holder, va_list args);
 

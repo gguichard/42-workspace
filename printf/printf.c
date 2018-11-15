@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:29:01 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 23:01:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/15 15:34:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ void		print_placeholder(t_pholder *holder, va_list args)
 		str = convert_str(holder, args);
 	else if (holder->type == 'c')
 		str = convert_char(holder, args);
-	else if (holder->type == 'd' || holder->type == 'i')
+	else if (holder->type == 'd' || holder->type == 'i' || holder->type == 'o'
+		|| holder->type == 'x' || holder->type == 'X')
 		str = convert_decimal(holder, args);
 	else
 	{
@@ -32,15 +33,13 @@ void		print_placeholder(t_pholder *holder, va_list args)
 	}
 	if (str == NULL)
 		exit(1);
-	if (holder->width_field > 0 && !(str = pad_string(str, holder)))
-		exit(1);
 	write(1, str, ft_strlen(str));
 	free(str);
 }
 
 int			ft_printf(const char *format, ...)
 {
-	va_list	args;
+	va_list		args;
 
 	va_start(args, format);
 	parse(format, args);

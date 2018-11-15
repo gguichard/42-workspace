@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/14 23:02:25 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/15 14:37:55 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,15 +21,17 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) -C libft/
-	ar rcs $@ $^
+	ar rcs $@ $^ libft/*.o
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I libft/ -o $@ -c $<
 
 clean:
+	$(MAKE) -C libft/ clean
 	/bin/rm -f $(OBJ)
 
 fclean: clean
+	$(MAKE) -C libft/ fclean
 	/bin/rm -f $(NAME)
 
 re: fclean all

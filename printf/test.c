@@ -5,15 +5,17 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/12 10:21:13 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 23:07:13 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/15 15:32:56 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/15 17:37:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h>
 #include <stdio.h>
 
-void	main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	printf("%s %.3d\n", "test", 5);
+	(void)argc;
+	(void)argv;
+	printf("%-#10.0o test\n", 0);
+	return (0);
 }

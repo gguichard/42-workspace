@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 16:25:25 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 22:54:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/15 16:37:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,45 @@
 #include "printf.h"
 #include "libft.h"
 
-static char	padding_byte(t_pholder *holder)
+char		padding_byte(t_pholder *holder)
 {
-	return ((holder->flags & ZERO_FLAG) ? '0' : ' ');
+	if (holder->flags & MINUS_FLAG)
+		return (' ');
+	return (holder->flags & ZERO_FLAG ? '0' : ' ');
 }
 
-char		*pad_string(char *str, t_pholder *holder)
+char		*pad_string(char *str, char c, size_t width, int right)
 {
-	size_t	len;
 	char	*ret;
+	size_t	len;
 
 	ret = str;
 	len = ft_strlen(str);
-	if ((size_t)holder->width_field > len)
+	if (width > len)
 	{
-		if (!(ret = (char *)malloc(holder->width_field + 1)))
+		if (!(ret = (char *)malloc(width + 1)))
 			return (NULL);
+		if (!right)
+		{
+			ft_memset(ret, c, width - len);
+			ft_memcpy(ret + (width - len), str, len + 1);
+		}
+		else
+		{
+			ft_memcpy(ret, str, len);
+			ft_memset(ret + len, ' ', width - len);
+			ret[width] = '\0';
+		}
 		free(str);
-		ft_memset(ret, padding_byte(holder), holder->width_field - len);
-		ft_memcpy(ret + (holder->width_field - len), str, len + 1);
 	}
 	return (ret);
+}
+
+int			base_from_type(t_pholder *holder)
+{
+	if (holder->type == 'o')
+		return (8);
+	if (holder->type == 'x' || holder->type == 'X')
+		return (16);
+	return (10);
 }

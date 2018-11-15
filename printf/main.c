@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/12 09:26:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 22:46:26 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/15 15:32:56 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/15 17:38:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@ int	main(int argc, char **argv)
 {
 	(void)argc;
 	(void)argv;
-	ft_printf("je suis un %s allo %c\n", "test", 'o');
+	ft_printf("%-#10.0o test\n", 0);
 	return (0);
 }
