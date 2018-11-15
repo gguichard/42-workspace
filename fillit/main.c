@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 15:15:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/13 20:11:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/15 08:15:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int			main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_putstr("usage: ./fillit filename");
+		ft_putendl("usage: ./fillit filename");
 		return (0);
 	}
 	info.count = 0;
