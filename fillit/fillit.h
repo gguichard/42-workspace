@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 08:58:02 by wta               #+#    #+#             */
-/*   Updated: 2018/11/13 22:47:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/15 11:01:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct	s_info
 	t_ushort	board[16];
 }				t_info;
 
-void			ft_exiterror();
+void			ft_exiterror(void);
 
 int				count_active_bits(unsigned char byte);
 

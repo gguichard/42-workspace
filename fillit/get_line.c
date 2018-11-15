@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 09:04:02 by wta               #+#    #+#             */
-/*   Updated: 2018/11/13 23:23:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/15 11:07:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ t_shape			**get_shapes(const char *file)
 	}
 	if (ret < 0 || index == 0 || buf[0] == '\n')
 		ft_exiterror();
+	close(fd);
 	shapes[index] = NULL;
 	return (shapes);
 }
