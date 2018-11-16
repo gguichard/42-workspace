@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
+/*   ft_ulltoa_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 03:10:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 09:32:45 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/16 15:02:42 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/16 16:17:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ static char	ft_base_char(int n)
 	return (n - 10 + 'A');
 }
 
-char		*ft_itoa_base(int n, int base)
+char		*ft_ulltoa_base(unsigned long long n, int base)
 {
-	unsigned int	value;
-	int				count;
-	char			*str;
+	unsigned long long	value;
+	int					count;
+	char				*str;
 
 	if (base < 2 || base > 36)
 		return (NULL);
-	value = (n < 0) ? -n : n;
-	count = (n == 0 || (n < 0 && base == 10));
+	value = n;
+	count = 0;
 	while (value != 0)
 	{
 		value /= base;
@@ -38,12 +38,12 @@ char		*ft_itoa_base(int n, int base)
 	if (!(str = (char *)malloc(sizeof(*str) * (count + 1))))
 		return (NULL);
 	str[count] = '\0';
-	value = (n < 0) ? -n : n;
-	while (--count > 0)
+	value = n;
+	while (count > 0)
 	{
+		count--;
 		str[count] = ft_base_char(value % base);
 		value /= base;
 	}
-	*str = (n < 0 && base == 10 ? '-' : ft_base_char(value));
 	return (str);
 }

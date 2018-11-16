@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
+/*   ft_lltoa_base.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 03:10:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 09:32:45 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/16 09:28:56 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/16 14:12:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static char	ft_base_char(int n)
 	return (n - 10 + 'A');
 }
 
-char		*ft_itoa_base(int n, int base)
+char		*ft_lltoa_base(long long n, int base)
 {
-	unsigned int	value;
-	int				count;
-	char			*str;
+	unsigned long long	value;
+	int					count;
+	char				*str;
 
 	if (base < 2 || base > 36)
 		return (NULL);

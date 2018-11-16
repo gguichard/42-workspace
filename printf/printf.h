@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/15 16:22:28 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/16 14:05:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@
 # define L_MODIFIER 0x4
 # define LL_MODIFIER 0x8
 
-typedef struct	s_pholder
+typedef	unsigned long	t_intptr;
+
+typedef struct			s_pholder
 {
 	int			flags;
 	int			width_field;
 	int			precision;
 	int			modifiers;
 	char		type;
-}				t_pholder;
+}						t_pholder;
 
 void			parse(const char *str, va_list args);
 
@@ -53,5 +55,9 @@ char			*convert_str(t_pholder *holder, va_list args);
 char			*convert_char(t_pholder *holder, va_list args);
 
 char			*convert_decimal(t_pholder *holder, va_list args);
+
+char			*convert_double(t_pholder *holder, va_list args);
+
+char			*convert_pointer(t_pholder *holder, va_list args);
 
 #endif

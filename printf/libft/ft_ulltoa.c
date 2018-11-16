@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_ulltoa.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/15 15:32:56 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 15:37:22 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/16 15:04:29 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/16 15:04:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "printf.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+char	*ft_ulltoa(unsigned long long n)
 {
-	(void)argc;
-	(void)argv;
-	char	*str = "ok";
-	short test = -129;
-	printf("%u test\n", test);
-	ft_printf("%u test\n", test);
-	return (0);
+	return (ft_ulltoa_base(n, 10));
 }

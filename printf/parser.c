@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/14 22:44:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/16 15:34:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,18 +76,19 @@ static int	parse_modifiers(const char *format, t_pholder *holder)
 	{
 		if (c == 'h')
 		{
-			holder->modifiers |= H_MODIFIER;
 			if (holder->modifiers & H_MODIFIER)
 				holder->modifiers |= HH_MODIFIER;
+			holder->modifiers |= H_MODIFIER;
 		}
 		else if (format[offset] == 'l')
 		{
-			holder->modifiers |= L_MODIFIER;
 			if (holder->modifiers & L_MODIFIER)
 				holder->modifiers |= LL_MODIFIER;
+			holder->modifiers |= L_MODIFIER;
 		}
 		else
 			break ;
+		offset++;
 	}
 	return (offset);
 }

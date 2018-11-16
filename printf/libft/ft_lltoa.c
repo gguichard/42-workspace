@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   ft_lltoa.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/15 15:32:56 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/15 17:37:56 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/16 14:13:02 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/16 15:04:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "libft.h"
 
-int	main(int argc, char **argv)
+char	*ft_lltoa(long long n)
 {
-	(void)argc;
-	(void)argv;
-	printf("%-#10.0o test\n", 0);
-	return (0);
+	return (ft_lltoa_base(n, 10));
 }
