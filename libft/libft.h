@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/09/04 20:27:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/16 15:09:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,14 @@ char			*ft_join(char **tab, const char *glue);
 char			*ft_itoa(int n);
 
 char			*ft_itoa_base(int n, int base);
+
+char			*ft_lltoa(long long n);
+
+char			*ft_lltoa_base(long long n, int base);
+
+char			*ft_ulltoa(unsigned long long n);
+
+char			*ft_ulltoa_base(unsigned long long n, int base);
 
 void			ft_putchar(char c);
 

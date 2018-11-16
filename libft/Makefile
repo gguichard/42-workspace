@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2018/09/04 20:37:20 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/16 15:10:22 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,12 +29,13 @@ SRC		=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c \
 			ft_strmap.c ft_strmapi.c ft_strequ.c ft_strnequ.c \
 			ft_strsub.c ft_strjoin.c ft_strjoin_free.c ft_strtrim.c \
 			ft_strstrim.c ft_strreplace.c ft_strreplace_free.c ft_strsplit.c \
-			ft_join.c ft_itoa.c ft_itoa_base.c ft_putchar.c \
-			ft_putchar_fd.c ft_putstr.c ft_putstr_fd.c ft_putendl.c \
-			ft_putendl_fd.c ft_putnbr.c ft_putnbr_fd.c ft_lstnew.c \
-			ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstpush.c \
-			ft_lstpop.c ft_lstpeek.c ft_lstsize.c ft_lstempty.c \
-			ft_lstiter.c ft_lstmap.c ft_min.c ft_max.c ft_abs.c
+			ft_join.c ft_itoa.c ft_itoa_base.c ft_lltoa.c ft_lltoa_base.c \
+			ft_ulltoa.c ft_ulltoa_base.c ft_putchar.c ft_putchar_fd.c \
+			ft_putstr.c ft_putstr_fd.c ft_putendl.c ft_putendl_fd.c \
+			ft_putnbr.c ft_putnbr_fd.c ft_lstnew.c ft_lstdelone.c \
+			ft_lstdel.c ft_lstadd.c ft_lstpush.c ft_lstpop.c ft_lstpeek.c \
+			ft_lstsize.c ft_lstempty.c ft_lstiter.c ft_lstmap.c \
+			ft_min.c ft_max.c ft_abs.c
 OBJ		=	$(SRC:.c=.o)
 
 all: $(NAME)
