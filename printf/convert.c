@@ -1,16 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   conversions.c                                      :+:      :+:    :+:   */
+/*   convert.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 22:57:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 16:12:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/17 00:03:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include "printf.h"
 #include "libft.h"
@@ -48,57 +47,37 @@ char	*convert_char(t_pholder *holder, va_list args)
 char	*convert_decimal(t_pholder *holder, va_list args)
 {
 	char	*str;
-	char	*tmp;
 
-	if (holder->type == 'd' || holder->type == 'i')
-	{
-		if (holder->modifiers & HH_MODIFIER)
-			str = ft_lltoa((char)va_arg(args, int));
-		else if (holder->modifiers & H_MODIFIER)
-			str = ft_lltoa((short)va_arg(args, int));
-		else if (holder->modifiers & LL_MODIFIER)
-			str = ft_lltoa(va_arg(args, long long));
-		else if (holder->modifiers & L_MODIFIER)
-			str = ft_lltoa(va_arg(args, long));
-		else
-			str = ft_lltoa(va_arg(args, int));
-	}
-	else
-	{
-		if (holder->modifiers & HH_MODIFIER)
-			str = ft_ulltoa((unsigned char)va_arg(args, unsigned int));
-		else if (holder->modifiers & H_MODIFIER)
-			str = ft_ulltoa((unsigned short)va_arg(args, unsigned int));
-		else if (holder->modifiers & LL_MODIFIER)
-			str = ft_ulltoa(va_arg(args, unsigned long long));
-		else if (holder->modifiers & L_MODIFIER)
-			str = ft_ulltoa(va_arg(args, unsigned long));
-		else
-			str = ft_ulltoa(va_arg(args, unsigned int));
-	}
-	if (str == NULL)
+	if (!(str = decimal_from_type(holder, args)))
 		return (NULL);
 	if (holder->type == 'x')
 		str = ft_strtolower(str);
 	if (holder->precision > 0)
 		str = pad_string(str, '0', holder->precision, 0);
+	if ((holder->type == 'd' || holder->type == 'i') && str[0] != '-')
+	{
+		if (holder->flags & PLUS_FLAG)
+			str = str_prepend("+", str);
+		else if (holder->flags & SPACE_FLAG)
+			str = str_prepend(" ", str);
+		if (str == NULL)
+			return (NULL);
+	}
 	if (str[0] != '0' && holder->flags & HASH_FLAG)
 	{
-		tmp = str;
-		if (holder->type == 'x')
-			str = ft_strjoin("0x", str);
-		if (holder->type == 'X')
-			str = ft_strjoin("0X", str);
 		if (holder->type == 'o')
-			str = ft_strjoin("0", str);
-		if (tmp != str)
-			free(tmp);
+			str = str_prepend("0", str);
+		else if (holder->type == 'x')
+			str = str_prepend("0x", str);
+		else if (holder->type == 'X')
+			str = str_prepend("0X", str);
+		if (str == NULL)
+			return (NULL);
 	}
 	if (holder->width_field > 0)
 		str = pad_string(str
 			, (holder->precision > 0 ? ' ' : padding_byte(holder))
-			, holder->width_field
-			, holder->flags & MINUS_FLAG);
+			, holder->width_field, holder->flags & MINUS_FLAG);
 	return (str);
 }
 
@@ -127,15 +106,12 @@ char	*convert_double(t_pholder *holder, va_list args)
 char	*convert_pointer(t_pholder *holder, va_list args)
 {
 	char	*str;
-	char	*tmp;
 
 	if (!(str = ft_lltoa_base(va_arg(args, t_intptr), 16)))
 		return (NULL);
 	str = ft_strtolower(str);
-	tmp = str;
-	if (!(str = ft_strjoin("0x", str)))
+	if (!(str = str_prepend("0x", str)))
 		return (NULL);
-	free(tmp);
 	if (holder->width_field > 0)
 		str = pad_string(str
 			, padding_byte(holder)

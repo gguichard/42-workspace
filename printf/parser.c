@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 15:34:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/17 10:19:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,87 +14,72 @@
 #include "printf.h"
 #include "libft.h"
 
-static int	parse_flags(const char *format, t_pholder *holder)
+static int	parse_flags(t_pholder *holder, const char *str)
 {
-	int		offset;
-	char	c;
-
-	offset = 0;
-	while ((c = format[offset]) != '\0')
-	{
-		if (c == '#')
-			holder->flags |= HASH_FLAG;
-		else if (c == '0')
-			holder->flags |= ZERO_FLAG;
-		else if (c == '-')
-			holder->flags |= MINUS_FLAG;
-		else if (c == ' ')
-			holder->flags |= SPACE_FLAG;
-		else if (c == '+')
-			holder->flags |= PLUS_FLAG;
-		else
-			break ;
-		offset++;
-	}
-	return (offset);
+	if (*str == '#')
+		holder->flags |= HASH_FLAG;
+	else if (*str == '0')
+		holder->flags |= ZERO_FLAG;
+	else if (*str == '-')
+		holder->flags |= MINUS_FLAG;
+	else if (*str == ' ')
+		holder->flags |= SPACE_FLAG;
+	else if (*str == '+')
+		holder->flags |= PLUS_FLAG;
+	else
+		return (0);
+	return (1);
 }
 
-static int	parse_fieldwidth_precision(const char *format, t_pholder *holder)
+static int	parse_fieldwidth_precision(t_pholder *holder, const char *str)
 {
 	int	offset;
 
 	offset = 0;
-	while (ft_isdigit(format[offset]))
+	while (ft_isdigit(str[offset]))
 	{
 		if (holder->width_field < 0)
 			holder->width_field = 0;
 		holder->width_field *= 10;
-		holder->width_field += (format[offset] - '0');
+		holder->width_field += (str[offset] - '0');
 		offset++;
 	}
-	if (format[offset] == '.')
+	if (str[offset] == '.')
 	{
 		holder->precision = 0;
 		offset++;
-		while (ft_isdigit(format[offset]))
+		while (ft_isdigit(str[offset]))
 		{
 			holder->precision *= 10;
-			holder->precision += (format[offset] - '0');
+			holder->precision += (str[offset] - '0');
 			offset++;
 		}
 	}
 	return (offset);
 }
 
-static int	parse_modifiers(const char *format, t_pholder *holder)
+static int	parse_modifiers(t_pholder *holder, const char *str)
 {
-	int		offset;
-	char	c;
-
-	offset = 0;
-	while ((c = format[offset]) != '\0')
+	if (*str == 'h')
 	{
-		if (c == 'h')
-		{
-			if (holder->modifiers & H_MODIFIER)
-				holder->modifiers |= HH_MODIFIER;
-			holder->modifiers |= H_MODIFIER;
-		}
-		else if (format[offset] == 'l')
-		{
-			if (holder->modifiers & L_MODIFIER)
-				holder->modifiers |= LL_MODIFIER;
-			holder->modifiers |= L_MODIFIER;
-		}
-		else
-			break ;
-		offset++;
+		if (holder->modifiers & H_MODIFIER)
+			holder->modifiers |= HH_MODIFIER;
+		holder->modifiers |= H_MODIFIER;
 	}
-	return (offset);
+	else if (*str == 'l')
+	{
+		if (holder->modifiers & L_MODIFIER)
+			holder->modifiers |= LL_MODIFIER;
+		holder->modifiers |= L_MODIFIER;
+	}
+	else
+		return (0);
+	return (1);
 }
 
 static int	parse_placeholder(const char *format, t_pholder *holder)
 {
+	int	old_offset;
 	int	offset;
 
 	holder->flags = 0;
@@ -102,28 +87,39 @@ static int	parse_placeholder(const char *format, t_pholder *holder)
 	holder->precision = -1;
 	holder->modifiers = 0;
 	offset = 0;
-	offset += parse_flags(format, holder);
-	offset += parse_fieldwidth_precision(&(format[offset]), holder);
-	offset += parse_modifiers(&(format[offset]), holder);
-	holder->type = format[offset];
+	while (format[offset] != '\0')
+	{
+		old_offset = offset;
+		offset += parse_flags(holder, &(format[offset]));
+		offset += parse_fieldwidth_precision(holder, &(format[offset]));
+		offset += parse_modifiers(holder, &(format[offset]));
+		if (offset == old_offset)
+		{
+			holder->type = format[offset];
+			break ;
+		}
+	}
 	return (offset + 1);
 }
 
-void		parse(const char *str, va_list args)
+int			parse(const char *str, va_list args)
 {
 	size_t		len;
 	const char	*parse;
 	t_pholder	holder;
+	int			ret;
 
 	len = ft_strlen(str);
+	ret = 0;
 	while ((parse = ft_memchr(str, '%', len)) != NULL)
 	{
 		if (parse > str)
-			write(1, str, (size_t)(parse - str));
+			ret += write(1, str, (size_t)(parse - str));
 		str = parse + 1;
 		str += parse_placeholder(str, &holder);
-		print_placeholder(&holder, args);
+		ret += print_placeholder(&holder, args);
 	}
 	if (parse == NULL)
-		write(1, str, ft_strlen(str));
+		ret += write(1, str, ft_strlen(str));
+	return (ret);
 }

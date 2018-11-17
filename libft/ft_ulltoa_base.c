@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 15:02:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 16:17:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/17 00:03:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char		*ft_ulltoa_base(unsigned long long n, int base)
 	if (base < 2 || base > 36)
 		return (NULL);
 	value = n;
-	count = 0;
+	count = n == 0;
 	while (value != 0)
 	{
 		value /= base;

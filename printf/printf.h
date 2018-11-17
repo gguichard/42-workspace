@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 14:05:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/16 20:06:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct			s_pholder
 	char		type;
 }						t_pholder;
 
-void			parse(const char *str, va_list args);
+int				parse(const char *str, va_list args);
 
-void			print_placeholder(t_pholder *holder, va_list args);
+int				print_placeholder(t_pholder *holder, va_list args);
 
 int				ft_printf(const char *format, ...);
 
@@ -49,6 +49,10 @@ char			padding_byte(t_pholder *holder);
 char			*pad_string(char *str, char c, size_t width, int right);
 
 int				base_from_type(t_pholder *holder);
+
+char			*decimal_from_type(t_pholder *holder, va_list args);
+
+char			*str_prepend(char *s1, char *s2);
 
 char			*convert_str(t_pholder *holder, va_list args);
 

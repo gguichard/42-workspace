@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 16:25:25 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/15 16:37:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/16 20:23:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,13 @@ int			base_from_type(t_pholder *holder)
 	if (holder->type == 'x' || holder->type == 'X')
 		return (16);
 	return (10);
+}
+
+char		*str_prepend(char *s1, char *s2)
+{
+	char	*res;
+
+	res = ft_strjoin(s1, s2);
+	free(s2);
+	return (res);
 }
