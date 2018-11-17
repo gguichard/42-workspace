@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_line.c                                         :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 09:04:02 by wta               #+#    #+#             */
-/*   Updated: 2018/11/15 11:07:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/17 13:40:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
-#include <fcntl.h>
 #include <stdlib.h>
 #include "fillit.h"
 
@@ -76,7 +75,7 @@ static t_ushort	shift_unused_bits(t_ushort data)
 	return (data);
 }
 
-static void		build_shape(const int fd, t_shape **shape, char buf[5])
+static int		build_shape(const int fd, t_shape **shape, char buf[5])
 {
 	unsigned char	mask;
 	t_ushort		data;
@@ -84,13 +83,13 @@ static void		build_shape(const int fd, t_shape **shape, char buf[5])
 	int				size_read;
 
 	if (!init_shape(shape))
-		ft_exiterror();
+		return (0);
 	data = 0;
 	row = 0;
 	while (row < 4 && (row == 0 || (size_read = read(fd, buf, 5)) > 0))
 	{
 		if (!check_line(buf))
-			ft_exiterror();
+			return (0);
 		mask = build_mask(*shape, buf);
 		if (mask > 0)
 			(*shape)->height++;
@@ -100,33 +99,30 @@ static void		build_shape(const int fd, t_shape **shape, char buf[5])
 	(*shape)->width = (*shape)->x_max - (*shape)->x_min + 1;
 	(*shape)->data = shift_unused_bits(data);
 	if ((size_read <= 0 && row != 4) || !is_shape_valid(*shape))
-		ft_exiterror();
+		return (0);
+	return (1);
 }
 
-t_shape			**get_shapes(const char *file)
+t_shape			**get_shapes(int fd)
 {
-	int		fd;
 	t_shape	**shapes;
 	int		index;
 	char	buf[5];
 	int		ret;
 
-	fd = open(file, O_RDONLY);
-	if (fd < 0 || !(shapes = (t_shape **)malloc(sizeof(*shapes) * 27)))
-		ft_exiterror();
+	if (!(shapes = (t_shape **)malloc(sizeof(*shapes) * 27)))
+		return (NULL);
 	index = 0;
 	while ((ret = read(fd, buf, 5)) > 0)
 	{
-		if (index == 26)
-			ft_exiterror();
-		build_shape(fd, &(shapes[index]), buf);
-		if (read(fd, buf, 1) < 0)
-			ft_exiterror();
+		if (index == 26
+			|| !build_shape(fd, &(shapes[index]), buf)
+			|| read(fd, buf, 1) < 0)
+			return (NULL);
 		index++;
 	}
 	if (ret < 0 || index == 0 || buf[0] == '\n')
-		ft_exiterror();
-	close(fd);
+		return (NULL);
 	shapes[index] = NULL;
 	return (shapes);
 }

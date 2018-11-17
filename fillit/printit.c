@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/13 17:17:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/13 23:37:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/17 13:36:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	print_shape(t_info *info, int x, int y)
 		}
 		index++;
 	}
-	ft_exiterror();
+	ft_putchar('?');
 }
 
 void		print_shapes(t_info *info)

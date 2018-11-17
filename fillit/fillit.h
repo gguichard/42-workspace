@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 08:58:02 by wta               #+#    #+#             */
-/*   Updated: 2018/11/15 11:01:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/17 13:28:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int				is_overlapping(t_info *info, t_shape *shape);
 
 int				is_shape_valid(t_shape *shape);
 
-t_shape			**get_shapes(const char *file);
+t_shape			**get_shapes(int fd);
 
 void			resolve(t_info *info);
 

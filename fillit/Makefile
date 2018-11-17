@@ -6,12 +6,12 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/13 16:35:23 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/13 22:46:53 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/17 13:15:47 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= fillit
-SRC		= main.c get_line.c resolver.c printit.c checks.c utils.c
+SRC		= main.c parser.c resolver.c printit.c checks.c utils.c
 OBJ		= $(SRC:.c=.o)
 
 CC		= gcc
