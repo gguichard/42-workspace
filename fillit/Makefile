@@ -6,12 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/13 16:35:23 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/17 13:15:47 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/17 14:16:15 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= fillit
-SRC		= main.c parser.c resolver.c printit.c checks.c utils.c
+SRC		= src/main.c src/parser.c src/resolver.c \
+		  src/printit.c src/checks.c src/utils.c
 OBJ		= $(SRC:.c=.o)
 
 CC		= gcc
@@ -21,10 +22,10 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) -C libft
-	$(CC) $(CFLAGS) -I libft/ -o $(NAME) $^ libft/libft.a
+	$(CC) $(CFLAGS) -o $(NAME) $^ libft/libft.a
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I libft/ -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	$(MAKE) -C libft clean
@@ -35,6 +36,5 @@ fclean: clean
 	/bin/rm -f $(NAME)
 
 re: fclean all
-	$(MAKE) -C libft re
 
 .PHONY: all clean fclean re

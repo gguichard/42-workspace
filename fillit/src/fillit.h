@@ -6,13 +6,13 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 08:58:02 by wta               #+#    #+#             */
-/*   Updated: 2018/11/17 13:28:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/17 14:15:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLIT_H
 # define FILLIT_H
-# include "libft/libft.h"
+# include "libft.h"
 
 typedef unsigned short	t_ushort;
 
