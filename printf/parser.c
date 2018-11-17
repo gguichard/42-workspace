@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/17 10:19:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/17 14:49:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,30 @@ static int	parse_fieldwidth_precision(t_pholder *holder, const char *str)
 
 static int	parse_modifiers(t_pholder *holder, const char *str)
 {
+	int	offset;
+
+	offset = 0;
 	if (*str == 'h')
 	{
-		if (holder->modifiers & H_MODIFIER)
+		if (str[++offset] != 'h')
+			holder->modifiers |= H_MODIFIER;
+		else
+		{
 			holder->modifiers |= HH_MODIFIER;
-		holder->modifiers |= H_MODIFIER;
+			offset++;
+		}
 	}
 	else if (*str == 'l')
 	{
-		if (holder->modifiers & L_MODIFIER)
+		if (str[++offset] != 'l')
+			holder->modifiers |= L_MODIFIER;
+		else
+		{
 			holder->modifiers |= LL_MODIFIER;
-		holder->modifiers |= L_MODIFIER;
+			offset++;
+		}
 	}
-	else
-		return (0);
-	return (1);
+	return (offset);
 }
 
 static int	parse_placeholder(const char *format, t_pholder *holder)
@@ -99,19 +108,17 @@ static int	parse_placeholder(const char *format, t_pholder *holder)
 			break ;
 		}
 	}
-	return (offset + 1);
+	return (offset + (holder->type != '\0'));
 }
 
 int			parse(const char *str, va_list args)
 {
-	size_t		len;
 	const char	*parse;
 	t_pholder	holder;
 	int			ret;
 
-	len = ft_strlen(str);
 	ret = 0;
-	while ((parse = ft_memchr(str, '%', len)) != NULL)
+	while ((parse = ft_strchr(str, '%')) != NULL)
 	{
 		if (parse > str)
 			ret += write(1, str, (size_t)(parse - str));
@@ -119,7 +126,7 @@ int			parse(const char *str, va_list args)
 		str += parse_placeholder(str, &holder);
 		ret += print_placeholder(&holder, args);
 	}
-	if (parse == NULL)
+	if (*str != '\0')
 		ret += write(1, str, ft_strlen(str));
 	return (ret);
 }
