@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/16 20:18:25 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 20:25:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 19:22:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "printf.h"
 
-static char	*signed_decimal(t_pholder *holder, va_list args)
+static char	*signed_decimal(t_token *token, va_list ap)
 {
 	if (holder->modifiers & HH_MODIFIER)
 		return (ft_lltoa((char)va_arg(args, int)));
@@ -26,7 +26,7 @@ static char	*signed_decimal(t_pholder *holder, va_list args)
 	return (ft_lltoa(va_arg(args, int)));
 }
 
-static char	*unsigned_decimal(t_pholder *holder, va_list args)
+static char	*unsigned_decimal(t_token *token, va_list ap)
 {
 	int	base;
 
@@ -48,7 +48,7 @@ static char	*unsigned_decimal(t_pholder *holder, va_list args)
 	return (ft_ulltoa_base(va_arg(args, unsigned int), base));
 }
 
-char		*decimal_from_type(t_pholder *holder, va_list args)
+char		*decimal_from_type(t_token *token, va_list ap)
 {
 	if (holder->type == 'd' || holder->type == 'i')
 		return (signed_decimal(holder, args));

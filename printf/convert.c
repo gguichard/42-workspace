@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 22:57:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 17:00:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 23:38:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,85 +19,140 @@ void	convert_str(t_token *token, va_list ap, t_buf *buf)
 	buf->str = va_arg(ap, char *);
 	if (!(buf->str = ft_strdup(!(buf->str) ? "(null)" : buf->str)))
 		exit(1);
-	buf->size = ft_strlen(src);
-	if (holder->precision >= 0 && buf->size > (size_t)holder->precision)
+	buf->size = ft_strlen(buf->str);
+	if (token->precision >= 0 && buf->size > (size_t)token->precision)
 	{
-		(buf->str)[holder->precision] = '\0';
-		buf->size = holder->precision;
+		(buf->str)[token->precision] = '\0';
+		buf->size = token->precision;
 	}
-	if (holder->width_field > 0)
-	{
-		buf->str = pad_string(buf->str, padding_byte(holder)
-			, holder->width_field, holder->flags & MINUS_FLAG);
-		buf->size = holder->width_field;
-	}
+	if (token->width_field > 0)
+		buf_pad(buf, padding_byte(token)
+			, token->width_field, token->flags & MINUS_FLAG);
 }
 
 void	convert_char(t_token *token, va_list ap, t_buf *buf)
 {
-	if (!(buf->str = ft_strndup(va_arg(ap, char), 1)))
+	if (!(buf->str = (char *)malloc(1)))
 		exit(1);
+	(buf->str)[0] = (char)va_arg(ap, int);
 	buf->size = 1;
-	if (holder->width_field > 0)
-	{
-		buf->str = pad_string(buf->str, padding_byte(holder)
-			, holder->width_field, holder->flags & MINUS_FLAG);
-		buf->size = holder->width_field;
-	}
+	if (token->width_field > 0)
+		buf_pad(buf, padding_byte(token)
+			, token->width_field, token->flags & MINUS_FLAG);
 }
 
-void	convert_decimal(t_token *token, va_list ap, t_buf *buf)
+int		read_int(t_token *token, va_list ap, t_buf *buf)
 {
-	if (!(buf->str = decimal_from_type(holder, ap)))
+	int					base;
+	unsigned long long	value;
+
+	base = 10;
+	if (token->type == 'o')
+		base = 8;
+	else if (token->type == 'x' || token->type == 'X')
+		base = 16;
+	value = 0;
+	if (token->type == 'o' || token->type == 'u'
+		|| token->type == 'x' || token->type == 'X')
+	{
+		if (token->modifiers & LL_MODIFIER)
+			value = va_arg(ap, unsigned long long);
+		else if (token->modifiers & L_MODIFIER)
+			value = va_arg(ap, unsigned long);
+		else if (token->modifiers & HH_MODIFIER)
+			value = (unsigned char)va_arg(ap, unsigned int);
+		else if (token->modifiers & H_MODIFIER)
+			value = (unsigned short)va_arg(ap, unsigned int);
+		else
+			value = va_arg(ap, unsigned int);
+	}
+	else
+	{
+		if (token->modifiers & LL_MODIFIER)
+			value = va_arg(ap, long long);
+		else if (token->modifiers & L_MODIFIER)
+			value = va_arg(ap, long);
+		else if (token->modifiers & HH_MODIFIER)
+			value = (char)va_arg(ap, int);
+		else if (token->modifiers & H_MODIFIER)
+			value = (short)va_arg(ap, int);
+		else
+			value = va_arg(ap, int);
+		if (value >> ((sizeof(long long) * 8) - 1))
+		{
+			value = ~value + 1;
+			buf->str = ft_lltoa((long long)value);
+			return (1);
+		}
+	}
+	buf->str = ft_ulltoa_base(value, base);
+	return (0);
+}
+
+void	convert_int(t_token *token, va_list ap, t_buf *buf)
+{
+	int	neg;
+	int	can_expand;
+
+	neg = read_int(token, ap, buf);
+	if (!(buf->str))
 		exit(1);
 	buf->size = ft_strlen(buf->str);
-	if (holder->type == 'x')
+	if (token->type == 'x')
 		buf->str = ft_strtolower(buf->str);
-	if (holder->precision > 0 && buf->size < holder->precision)
+	if (token->precision > 0 && buf->size < (size_t)token->precision)
 	{
-		buf->str = pad_string(buf->str, '0', holder->precision, 0);
-		buf->size = holder->precision;
-	}
-	if ((holder->type == 'd' || holder->type == 'i') && (buf->str)[0] != '-')
-	{
-		if (holder->flags & PLUS_FLAG)
-			buf->str = str_prepend("+", buf->str);
-		else if (holder->flags & SPACE_FLAG)
-			buf->str = str_prepend(" ", buf->str);
-		if (str == NULL)
+		buf_pad(buf, '0', token->precision, 0);
+		if (!(buf->str))
 			exit(1);
 	}
-	if (str[0] != '0' && holder->flags & HASH_FLAG)
+	can_expand = token->flags & ZERO_FLAG
+		&& token->precision < 0
+		&& !(token->flags & MINUS_FLAG);
+	if (token->width_field > 0 && can_expand)
 	{
-		if (holder->type == 'o')
-			str = str_prepend("0", str);
-		else if (holder->type == 'x')
-			str = str_prepend("0x", str);
-		else if (holder->type == 'X')
-			str = str_prepend("0X", str);
-		if (str == NULL)
-			return (NULL);
+		buf_pad(buf, '0', token->width_field - (neg
+				|| token->flags & PLUS_FLAG
+				|| token->flags & SPACE_FLAG), 0);
+		if (!(buf->str))
+			exit(1);
 	}
-	if (holder->width_field > 0)
-		str = pad_string(str
-			, (holder->precision > 0 ? ' ' : padding_byte(holder))
-			, holder->width_field, holder->flags & MINUS_FLAG);
-	return (str);
+	if ((token->type == 'd' || token->type == 'i'))
+	{
+		if (neg)
+			buf_prepend("-", buf);
+		else if (token->flags & PLUS_FLAG)
+			buf_prepend("+", buf);
+		else if (token->flags & SPACE_FLAG)
+			buf_prepend(" ", buf);
+		if (buf->str == NULL)
+			exit(1);
+	}
+	if ((buf->str)[0] != '0' && token->flags & HASH_FLAG)
+	{
+		if (token->type == 'o')
+			buf_prepend("0", buf);
+		else if (token->type == 'x')
+			buf_prepend("0x", buf);
+		else if (token->type == 'X')
+			buf_prepend("0X", buf);
+		if (!(buf->str))
+			exit(1);
+	}
+	if (token->width_field > 0 && !can_expand)
+		buf_pad(buf, ' ', token->width_field, token->flags & MINUS_FLAG);
 }
 
-char	*convert_pointer(t_pholder *holder, va_list ap)
+void	convert_pointer(t_token *token, va_list ap, t_buf *buf)
 {
-	char	*str;
-
-	if (!(str = ft_lltoa_base(va_arg(args, t_intptr), 16)))
-		return (NULL);
-	str = ft_strtolower(str);
-	if (!(str = str_prepend("0x", str)))
-		return (NULL);
-	if (holder->width_field > 0)
-		str = pad_string(str
-			, padding_byte(holder)
-			, holder->width_field
-			, holder->flags & MINUS_FLAG);
-	return (str);
+	if (!(buf->str = ft_lltoa_base(va_arg(ap, t_intptr), 16)))
+		exit(1);
+	buf->size = ft_strlen(buf->str);
+	buf->str = ft_strtolower(buf->str);
+	buf_prepend("0x", buf);
+	if (!(buf->str))
+		exit(1);
+	if (token->width_field > 0)
+		buf_pad(buf, padding_byte(token)
+			, token->width_field, token->flags & MINUS_FLAG);
 }

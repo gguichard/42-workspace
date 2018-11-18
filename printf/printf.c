@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:29:01 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 16:39:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 22:37:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,24 @@
 
 int	print_token(t_token *token, va_list ap)
 {
-	char	*str;
+	t_buf	buf;
 
+	buf.str = NULL;
+	buf.size = 0;
 	if (token->type == 's')
-		str = convert_str(token, ap);
+		convert_str(token, ap, &buf);
 	else if (token->type == 'c')
-		str = convert_char(token, ap);
+		convert_char(token, ap, &buf);
 	else if (token->type == 'p')
-		str = convert_pointer(token, ap);
+		convert_pointer(token, ap, &buf);
 	else if (token->type == 'd' || token->type == 'i' || token->type == 'u'
 		|| token->type == 'o' || token->type == 'x' || token->type == 'X')
-		str = convert_int(token, ap);
-	return (0);
+		convert_int(token, ap, &buf);
+	else if (token->type != '\0')
+		return (write(1, &token->type, 1));
+	else
+		return (0);
+	return (write(1, buf.str, buf.size));
 }
 
 int	ft_printf(const char *format, ...)

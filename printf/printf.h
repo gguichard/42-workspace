@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 16:52:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 21:57:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,33 +41,29 @@ typedef struct	s_token
 typedef struct	s_buf
 {
 	char		*str;
-	size_t		len;
+	size_t		size;
 }				t_buf;
 
 int				ft_printf(const char *format, ...);
 
 int				write_and_parse(const char *str, va_list ap);
 
-int				print_token(t_token *token, va_list args);
+int				print_token(t_token *token, va_list ap);
 
-char			padding_byte(t_pholder *holder);
+char			padding_byte(t_token *token);
 
-char			*pad_string(char *str, char c, size_t width, int right);
+int				base_from_type(t_token *token);
 
-int				base_from_type(t_pholder *holder);
+void			buf_pad(t_buf *buf, char pad, int width, int right_pad);
 
-char			*decimal_from_type(t_pholder *holder, va_list args);
+void			buf_prepend(char *s1, t_buf *buf);
 
-char			*str_prepend(char *s1, char *s2);
+void			convert_str(t_token *token, va_list ap, t_buf *buf);
 
-char			*convert_str(t_pholder *holder, va_list args);
+void			convert_char(t_token *token, va_list ap, t_buf *buf);
 
-char			*convert_char(t_pholder *holder, va_list args);
+void			convert_int(t_token *token, va_list ap, t_buf *buf);
 
-char			*convert_decimal(t_pholder *holder, va_list args);
-
-char			*convert_double(t_pholder *holder, va_list args);
-
-char			*convert_pointer(t_pholder *holder, va_list args);
+void			convert_pointer(t_token *token, va_list ap, t_buf *buf);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 16:25:25 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 20:23:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 22:02:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,54 @@
 #include "printf.h"
 #include "libft.h"
 
-char		padding_byte(t_pholder *holder)
+char	padding_byte(t_token *token)
 {
-	if (holder->flags & MINUS_FLAG)
+	if (token->flags & MINUS_FLAG)
 		return (' ');
-	return (holder->flags & ZERO_FLAG ? '0' : ' ');
+	if (token->flags & ZERO_FLAG)
+		return ('0');
+	return (' ');
 }
 
-char		*pad_string(char *str, char c, size_t width, int right)
+int		base_from_type(t_token *token)
 {
-	char	*ret;
-	size_t	len;
-
-	ret = str;
-	len = ft_strlen(str);
-	if (width > len)
-	{
-		if (!(ret = (char *)malloc(width + 1)))
-			return (NULL);
-		if (!right)
-		{
-			ft_memset(ret, c, width - len);
-			ft_memcpy(ret + (width - len), str, len + 1);
-		}
-		else
-		{
-			ft_memcpy(ret, str, len);
-			ft_memset(ret + len, ' ', width - len);
-			ret[width] = '\0';
-		}
-		free(str);
-	}
-	return (ret);
-}
-
-int			base_from_type(t_pholder *holder)
-{
-	if (holder->type == 'o')
+	if (token->type == 'o')
 		return (8);
-	if (holder->type == 'x' || holder->type == 'X')
+	if (token->type == 'x' || token->type == 'X')
 		return (16);
 	return (10);
 }
 
-char		*str_prepend(char *s1, char *s2)
+void	buf_pad(t_buf *buf, char pad, int width, int right_pad)
 {
-	char	*res;
+	char	*tmp;
 
-	res = ft_strjoin(s1, s2);
-	free(s2);
-	return (res);
+	if ((size_t)width <= buf->size)
+		return ;
+	tmp = buf->str;
+	if (!(buf->str = (char *)malloc(width + 1)))
+		return ;
+	if (!right_pad)
+	{
+		ft_memset(buf->str, pad, width - buf->size);
+		ft_memcpy(buf->str + (width - buf->size), tmp, buf->size + 1);
+	}
+	else
+	{
+		ft_memcpy(buf->str, tmp, buf->size);
+		ft_memset(buf->str + buf->size, ' ', width - buf->size);
+		(buf->str)[width] = '\0';
+	}
+	buf->size = width;
+	free(tmp);
+}
+
+void	buf_prepend(char *s1, t_buf *buf)
+{
+	char	*tmp;
+
+	tmp = buf->str;
+	buf->str = ft_strjoin(s1, buf->str);
+	buf->size += ft_strlen(s1);
+	free(tmp);
 }
