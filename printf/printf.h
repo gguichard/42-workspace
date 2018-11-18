@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 01:00:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 16:52:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,26 @@
 
 typedef	unsigned long	t_intptr;
 
-typedef struct			s_pholder
+typedef struct	s_token
 {
 	int			flags;
 	int			width_field;
 	int			precision;
 	int			modifiers;
 	char		type;
-}						t_pholder;
+}				t_token;
 
-int				parse(const char *str, va_list args);
-
-int				print_placeholder(t_pholder *holder, va_list args);
+typedef struct	s_buf
+{
+	char		*str;
+	size_t		len;
+}				t_buf;
 
 int				ft_printf(const char *format, ...);
+
+int				write_and_parse(const char *str, va_list ap);
+
+int				print_token(t_token *token, va_list args);
 
 char			padding_byte(t_pholder *holder);
 

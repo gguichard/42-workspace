@@ -6,12 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 15:32:56 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 01:06:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 16:48:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
-#include "printf.h"
+//#include "printf.h"
 
 int	main(int argc, char **argv)
 {
@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 	(void)argv;
 	char	*str = "ok";
 	short test = -150;
-	printf("%+d test\n", test);
-	ft_printf("%+d test\n", test);
+	printf("%10.2s test\n", "allole");
+	//ft_printf("%+d test\n", test);
 	return (0);
 }

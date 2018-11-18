@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 00:57:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 15:41:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,111 +14,113 @@
 #include "printf.h"
 #include "libft.h"
 
-static char	*parse_flags(char *str, t_pholder *holder)
+static int	parse_flag(char c, t_token *token)
 {
-	if (*str == '#')
-		holder->flags |= HASH_FLAG;
-	else if (*str == '0')
-		holder->flags |= ZERO_FLAG;
-	else if (*str == '-')
-		holder->flags |= MINUS_FLAG;
-	else if (*str == ' ')
-		holder->flags |= SPACE_FLAG;
-	else if (*str == '+')
-		holder->flags |= PLUS_FLAG;
+	if (c == '#')
+		token->flags |= HASH_FLAG;
+	else if (c == '0')
+		token->flags |= ZERO_FLAG;
+	else if (c == '-')
+		token->flags |= MINUS_FLAG;
+	else if (c == ' ')
+		token->flags |= SPACE_FLAG;
+	else if (c == '+')
+		token->flags |= PLUS_FLAG;
 	else
-		return (str);
-	return (str + 1);
+		return (0);
+	return (1);
 }
 
-static char	*parse_fieldwidth_precision(char *str, t_pholder *holder)
+static int	parse_modifier(const char *format, t_token *token)
 {
-	while (ft_isdigit(*str))
+	int	offset;
+
+	offset = 0;
+	if (format[offset] == 'h' && format[offset] == 'h')
+		token->modifiers |= HH_MODIFIER;
+	else if (format[offset] == 'l' && format[offset] == 'l')
+		token->modifiers |= LL_MODIFIER;
+	else if (format[offset] == 'h')
+		token->modifiers |= H_MODIFIER;
+	else if (format[offset] == 'l')
+		token->modifiers |= L_MODIFIER;
+	return (offset);
+}
+
+static int	parse_widthfield(const char *format, t_token *token)
+{
+	int	offset;
+
+	offset = 0;
+	while (format[offset] >= '0' && format[offset] <= '9')
 	{
-		if (holder->width_field < 0)
-			holder->width_field = 0;
-		holder->width_field *= 10;
-		holder->width_field += (*str - '0');
-		str++;
+		if (token->width_field < 0)
+			token->width_field = 0;
+		token->width_field *= 10;
+		token->width_field += (format[offset] - '0');
+		offset++;
 	}
-	if (*str == '.')
+	return (offset);
+}
+
+static int	parse_precision(const char *format, t_token *token)
+{
+	int	offset;
+
+	offset = 0;
+	if (format[offset] == '.')
 	{
-		holder->precision = 0;
-		str++;
-		while (ft_isdigit(*str))
+		offset++;
+		token->precision = 0;
+		while (format[offset] >= '0' && format[offset] <= '9')
 		{
-			holder->precision *= 10;
-			holder->precision += (*str - '0');
-			str++;
+			token->precision *= 10;
+			token->precision += (format[offset] - '0');
+			offset++;
 		}
 	}
-	return (str);
+	return (offset);
 }
 
-static char	*parse_modifiers(char *str, t_pholder *holder)
+static char	*parse_token(const char *format, t_token *token)
 {
-	if (*str == 'h')
+	int	offset;
+	int	res;
+
+	offset = 0;
+	while (format[offset] != '\0')
 	{
-		str++;
-		if (*str != 'h')
-			holder->modifiers |= H_MODIFIER;
-		else
-		{
-			holder->modifiers |= HH_MODIFIER;
-			str++;
-		}
+		if (!(res = parse_flag(*format, token))
+			&& !(res = parse_modifier(format, token))
+			&& !(res = parse_widthfield(format, token))
+			&& !(res = parse_precision(format, token)))
+			break ;
+		offset += res;
 	}
-	else if (*str == 'l')
-	{
-		str++;
-		if (*str != 'l')
-			holder->modifiers |= L_MODIFIER;
-		else
-		{
-			holder->modifiers |= LL_MODIFIER;
-			str++;
-		}
-	}
-	return (str);
+	token->type = format[offset];
+	return (&(format[offset]));
 }
 
-static char	*parse_placeholder(char *format, t_pholder *holder)
+int			write_and_parse(const char *format, va_list ap)
 {
-	char	*before;
+	char	*token;
+	t_token	placeholder;
+	int		total_write;
 
-	holder->flags = 0;
-	holder->width_field = -1;
-	holder->precision = -1;
-	holder->modifiers = 0;
-	holder->type = '\0';
-	while (*format != '\0' && holder->type == '\0')
+	total_write = 0;
+	while ((token = ft_strchr(format, '%')) != NULL)
 	{
-		before = format;
-		format = parse_flags(format, holder);
-		format = parse_fieldwidth_precision(format, holder);
-		format = parse_modifiers(format, holder);
-		if (before == format)
-			holder->type = *format;
+		placeholder.flags = 0;
+		placeholder.modifiers = 0;
+		placeholder.precision = -1;
+		placeholder.width_field = -1;
+		placeholder.type = 0;
+		format = parse_token(&placeholder);
+		if (placeholder.type == 0)
+			return (total_write);
+		total_write += print_token(&placeholder, ap);
 	}
-	return (format + (format != '\0'));
-}
-
-int			parse(const char *str, va_list args)
-{
-	char		*start;
-	t_pholder	holder;
-	int			ret;
-
-	ret = 0;
-	while ((start = ft_strchr(str, '%')) != NULL)
-	{
-		if (start > str)
-			ret += write(1, str, (size_t)(start - str));
-		str = parse_placeholder(start + 1, &holder);
-		if (holder.type != '\0')
-			ret += print_placeholder(&holder, args);
-	}
-	if (*str != '\0')
-		ret += write(1, str, ft_strlen(str));
-	return (ret);
+	if (*format != '\0')
+		total_write += write(1, format, ft_strlen(format));
+	return (total_write);
 }
