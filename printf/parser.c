@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/17 14:49:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 00:57:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "printf.h"
 #include "libft.h"
 
-static int	parse_flags(t_pholder *holder, const char *str)
+static char	*parse_flags(char *str, t_pholder *holder)
 {
 	if (*str == '#')
 		holder->flags |= HASH_FLAG;
@@ -27,104 +27,96 @@ static int	parse_flags(t_pholder *holder, const char *str)
 	else if (*str == '+')
 		holder->flags |= PLUS_FLAG;
 	else
-		return (0);
-	return (1);
+		return (str);
+	return (str + 1);
 }
 
-static int	parse_fieldwidth_precision(t_pholder *holder, const char *str)
+static char	*parse_fieldwidth_precision(char *str, t_pholder *holder)
 {
-	int	offset;
-
-	offset = 0;
-	while (ft_isdigit(str[offset]))
+	while (ft_isdigit(*str))
 	{
 		if (holder->width_field < 0)
 			holder->width_field = 0;
 		holder->width_field *= 10;
-		holder->width_field += (str[offset] - '0');
-		offset++;
+		holder->width_field += (*str - '0');
+		str++;
 	}
-	if (str[offset] == '.')
+	if (*str == '.')
 	{
 		holder->precision = 0;
-		offset++;
-		while (ft_isdigit(str[offset]))
+		str++;
+		while (ft_isdigit(*str))
 		{
 			holder->precision *= 10;
-			holder->precision += (str[offset] - '0');
-			offset++;
+			holder->precision += (*str - '0');
+			str++;
 		}
 	}
-	return (offset);
+	return (str);
 }
 
-static int	parse_modifiers(t_pholder *holder, const char *str)
+static char	*parse_modifiers(char *str, t_pholder *holder)
 {
-	int	offset;
-
-	offset = 0;
 	if (*str == 'h')
 	{
-		if (str[++offset] != 'h')
+		str++;
+		if (*str != 'h')
 			holder->modifiers |= H_MODIFIER;
 		else
 		{
 			holder->modifiers |= HH_MODIFIER;
-			offset++;
+			str++;
 		}
 	}
 	else if (*str == 'l')
 	{
-		if (str[++offset] != 'l')
+		str++;
+		if (*str != 'l')
 			holder->modifiers |= L_MODIFIER;
 		else
 		{
 			holder->modifiers |= LL_MODIFIER;
-			offset++;
+			str++;
 		}
 	}
-	return (offset);
+	return (str);
 }
 
-static int	parse_placeholder(const char *format, t_pholder *holder)
+static char	*parse_placeholder(char *format, t_pholder *holder)
 {
-	int	old_offset;
-	int	offset;
+	char	*before;
 
 	holder->flags = 0;
 	holder->width_field = -1;
 	holder->precision = -1;
 	holder->modifiers = 0;
-	offset = 0;
-	while (format[offset] != '\0')
+	holder->type = '\0';
+	while (*format != '\0' && holder->type == '\0')
 	{
-		old_offset = offset;
-		offset += parse_flags(holder, &(format[offset]));
-		offset += parse_fieldwidth_precision(holder, &(format[offset]));
-		offset += parse_modifiers(holder, &(format[offset]));
-		if (offset == old_offset)
-		{
-			holder->type = format[offset];
-			break ;
-		}
+		before = format;
+		format = parse_flags(format, holder);
+		format = parse_fieldwidth_precision(format, holder);
+		format = parse_modifiers(format, holder);
+		if (before == format)
+			holder->type = *format;
 	}
-	return (offset + (holder->type != '\0'));
+	return (format + (format != '\0'));
 }
 
 int			parse(const char *str, va_list args)
 {
-	const char	*parse;
+	char		*start;
 	t_pholder	holder;
 	int			ret;
 
 	ret = 0;
-	while ((parse = ft_strchr(str, '%')) != NULL)
+	while ((start = ft_strchr(str, '%')) != NULL)
 	{
-		if (parse > str)
-			ret += write(1, str, (size_t)(parse - str));
-		str = parse + 1;
-		str += parse_placeholder(str, &holder);
-		ret += print_placeholder(&holder, args);
+		if (start > str)
+			ret += write(1, str, (size_t)(start - str));
+		str = parse_placeholder(start + 1, &holder);
+		if (holder.type != '\0')
+			ret += print_placeholder(&holder, args);
 	}
 	if (*str != '\0')
 		ret += write(1, str, ft_strlen(str));

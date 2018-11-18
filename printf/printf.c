@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:29:01 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 20:06:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 01:06:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int			print_placeholder(t_pholder *holder, va_list args)
 	char	*str;
 	int		ret;
 
+	str = NULL;
 	if (holder->type == 's')
 		str = convert_str(holder, args);
 	else if (holder->type == 'c')
@@ -31,10 +32,10 @@ int			print_placeholder(t_pholder *holder, va_list args)
 		str = convert_double(holder, args);
 	else if (holder->type == 'p')
 		str = convert_pointer(holder, args);
-	else
+	else if (holder->type != '\0')
 		return (write(1, &(holder->type), 1));
 	if (str == NULL)
-		exit(1);
+		return (0);
 	ret = write(1, str, ft_strlen(str));
 	free(str);
 	return (ret);

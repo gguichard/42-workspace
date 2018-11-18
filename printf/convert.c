@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 22:57:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/17 00:03:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/18 01:08:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ char	*convert_str(t_pholder *holder, va_list args)
 		return (NULL);
 	if (holder->precision >= 0 && ft_strlen(str) > (size_t)holder->precision)
 		str[holder->precision] = '\0';
+	if (holder->width_field > 0)
+		str = pad_string(str
+			, padding_byte(holder)
+			, holder->width_field
+			, holder->flags & MINUS_FLAG);
 	return (str);
 }
 
