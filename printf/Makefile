@@ -6,12 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/18 19:30:38 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/19 17:39:17 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= libftprintf.a
-SRC		= printf.c parser.c convert.c utils.c
+SRC		= printf.c parser.c utils.c \
+		  convert_str.c convert_int.c convert_double.c convert_misc.c
 OBJ		= $(SRC:.c=.o)
 
 CC		= gcc

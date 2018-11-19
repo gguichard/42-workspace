@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 15:32:56 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 23:21:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/19 17:56:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 int	main(int argc, char **argv)
 {
-	long long	test = -109;
+	float	test = -118.625;
 
 	(void)argc;
 	(void)argv;
-	printf("%hu test %s\n", test, "lol");
-	ft_printf("%hu test %s\n", test, "lol");
+	printf("%f\n", test);
+	ft_printf("%f\n", test);
 	return (0);
 }

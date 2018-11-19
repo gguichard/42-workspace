@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 16:25:25 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 22:02:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/19 14:03:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,6 @@ char	padding_byte(t_token *token)
 	if (token->flags & ZERO_FLAG)
 		return ('0');
 	return (' ');
-}
-
-int		base_from_type(t_token *token)
-{
-	if (token->type == 'o')
-		return (8);
-	if (token->type == 'x' || token->type == 'X')
-		return (16);
-	return (10);
 }
 
 void	buf_pad(t_buf *buf, char pad, int width, int right_pad)
@@ -62,6 +53,6 @@ void	buf_prepend(char *s1, t_buf *buf)
 
 	tmp = buf->str;
 	buf->str = ft_strjoin(s1, buf->str);
-	buf->size += ft_strlen(s1);
+	buf->size = ft_strlen(buf->str);
 	free(tmp);
 }

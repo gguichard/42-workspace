@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/18 23:24:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/19 14:30:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int	parse_precision(const char *format, t_token *token)
 	return (offset);
 }
 
-static char	*parse_token(const char *format, t_token *token)
+char		*parse_token(const char *format, t_token *token)
 {
 	int	res;
 
@@ -106,31 +106,4 @@ static char	*parse_token(const char *format, t_token *token)
 	}
 	token->type = *format;
 	return (char *)(format);
-}
-
-int			write_and_parse(const char *format, va_list ap)
-{
-	char	*flag;
-	t_token	token;
-	int		total_write;
-
-	total_write = 0;
-	while ((flag = ft_strchr(format, '%')) != NULL)
-	{
-		if (flag > format)
-			total_write += write(1, format, (size_t)(flag - format));
-		token.flags = 0;
-		token.modifiers = 0;
-		token.precision = -1;
-		token.width_field = -1;
-		token.type = 0;
-		format = parse_token(flag + 1, &token);
-		if (token.type == 0)
-			return (total_write);
-		total_write += print_token(&token, ap);
-		format++;
-	}
-	if (*format != '\0')
-		total_write += write(1, format, ft_strlen(format));
-	return (total_write);
 }
