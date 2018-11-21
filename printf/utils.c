@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 16:25:25 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/19 14:03:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 23:45:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include "printf.h"
 #include "libft.h"
 
-char	padding_byte(t_token *token)
+char	pad_byte(t_token *tok)
 {
-	if (token->flags & MINUS_FLAG)
+	if (tok->flags & MINUS_FLAG)
 		return (' ');
-	if (token->flags & ZERO_FLAG)
+	if (tok->flags & ZERO_FLAG)
 		return ('0');
 	return (' ');
 }
@@ -27,21 +27,20 @@ void	buf_pad(t_buf *buf, char pad, int width, int right_pad)
 {
 	char	*tmp;
 
-	if ((size_t)width <= buf->size)
+	if (buf->size >= (size_t)width)
 		return ;
 	tmp = buf->str;
-	if (!(buf->str = (char *)malloc(width + 1)))
-		return ;
+	if (!(buf->str = (char *)malloc(width)))
+		exit(1);
 	if (!right_pad)
 	{
 		ft_memset(buf->str, pad, width - buf->size);
-		ft_memcpy(buf->str + (width - buf->size), tmp, buf->size + 1);
+		ft_memcpy(buf->str + (width - buf->size), tmp, buf->size);
 	}
 	else
 	{
 		ft_memcpy(buf->str, tmp, buf->size);
 		ft_memset(buf->str + buf->size, ' ', width - buf->size);
-		(buf->str)[width] = '\0';
 	}
 	buf->size = width;
 	free(tmp);

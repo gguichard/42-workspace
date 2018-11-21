@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:29:01 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 09:18:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 23:13:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ static void	expand_buf(t_buf *buf)
 	char	*tmp;
 
 	tmp = buf->str;
-	if (!(buf->str = (char *)malloc(sizeof(char) * (buf->size + 1024))))
+	if (!(buf->str = (char *)malloc(sizeof(char) * (buf->size + PRINTF_BUF))))
 		exit(1);
 	if (tmp != NULL)
 	{
 		ft_memcpy(buf->str, tmp, buf->size);
 		free(tmp);
 	}
-	buf->size += 1024;
+	buf->size += PRINTF_BUF;
 }
 
 static void	pf_wildcards(t_token *tok, va_list ap)
@@ -78,7 +78,7 @@ static void	pf_convert(t_token *tok, t_buf *buf, va_list ap)
 
 static int	fill_buf(t_buf *buf, const char *str, va_list ap)
 {
-	size_t	len;
+	int		len;
 	t_token	token;
 	t_buf	c_buf;
 
@@ -87,23 +87,24 @@ static int	fill_buf(t_buf *buf, const char *str, va_list ap)
 	{
 		if (*str != '%')
 		{
-			if (len >= buf->size)
+			if ((size_t)len >= buf->size)
 				expand_buf(buf);
 			(buf->str)[len++] = *str++;
 		}
 		else
 		{
 			str += tk_parse(&token, str + 1) + 1;
-			if (token.type != 0)
-			{
-				str++;
-				pf_convert(&token, &c_buf, ap);
-				if (len + c_buf.size > buf->size)
-					expand_buf(buf);
-				ft_memcpy(buf->str + len, c_buf.str, c_buf.size);
-				free(c_buf.str);
-				len += c_buf.size;
-			}
+			if (token.type == 0)
+				break ;
+			str++;
+			c_buf.str = NULL;
+			c_buf.size = 0;
+			pf_convert(&token, &c_buf, ap);
+			while (len + c_buf.size > buf->size)
+				expand_buf(buf);
+			ft_memcpy(buf->str + len, c_buf.str, c_buf.size);
+			free(c_buf.str);
+			len += c_buf.size;
 		}
 	}
 	return (len);
@@ -121,7 +122,9 @@ int			ft_printf(const char *format, ...)
 	expand_buf(&buf);
 	ret = fill_buf(&buf, format, ap);
 	va_end(ap);
-	ret = write(1, buf.str, ret);
-	free(buf.str);
+	if (ret != 0)
+		ret = write(1, buf.str, ret);
+	if (buf.str != NULL)
+		free(buf.str);
 	return (ret);
 }

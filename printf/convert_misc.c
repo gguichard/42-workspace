@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 13:56:31 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 15:58:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 19:05:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,22 @@
 #include "printf.h"
 #include "libft.h"
 
-void	convert_other(t_token *token, t_buf *buf)
+void	convert_other(t_token *tok, t_buf *buf)
 {
 	if (!(buf->str = (char *)malloc(1)))
 		exit(1);
-	(buf->str)[0] = token->type;
+	(buf->str)[0] = tok->type;
 	buf->size = 1;
-	if (token->width_field > 0)
-		buf_pad(buf, padding_byte(token)
-			, token->width_field, token->flags & MINUS_FLAG);
+	if (tok->width_field > 0 && buf->size < (size_t)tok->width_field)
+		buf_pad(buf, pad_byte(tok), tok->width_field, tok->flags & MINUS_FLAG);
 }
 
-void	convert_pointer(t_token *token, va_list ap, t_buf *buf)
+void	convert_pointer(t_token *tok, va_list ap, t_buf *buf)
 {
 	t_intptr	value;
 
 	value = va_arg(ap, t_intptr);
-	if (!value && token->precision == 0)
+	if (!value && tok->precision == 0)
 		buf->str = ft_strnew(0);
 	else
 		buf->str = ft_lltoa_base(value, 16);
@@ -38,16 +37,15 @@ void	convert_pointer(t_token *token, va_list ap, t_buf *buf)
 		exit(1);
 	buf->size = ft_strlen(buf->str);
 	buf->str = ft_strtolower(buf->str);
-	if (token->precision > 0 && (size_t)token->precision > buf->size)
-		buf_pad(buf, '0', token->precision, 0);
-	if (token->flags & ZERO_FLAG && !(token->flags & MINUS_FLAG)
-		&& token->width_field > 2)
-		buf_pad(buf, '0', token->width_field - 2, 0);
+	if (tok->precision > 0 && (size_t)tok->precision > buf->size)
+		buf_pad(buf, '0', tok->precision, 0);
+	if (tok->flags & ZERO_FLAG && !(tok->flags & MINUS_FLAG)
+		&& tok->width_field > 2)
+		buf_pad(buf, '0', tok->width_field - 2, 0);
 	buf_prepend("0x", buf);
 	if (!(buf->str))
 		exit(1);
-	if (token->width_field > 0
-		&& (!(token->flags & ZERO_FLAG) || token->flags & MINUS_FLAG))
-		buf_pad(buf, padding_byte(token)
-			, token->width_field, token->flags & MINUS_FLAG);
+	if (tok->width_field > 0 && buf->size < (size_t)tok->width_field
+		&& (!(tok->flags & ZERO_FLAG) || tok->flags & MINUS_FLAG))
+		buf_pad(buf, pad_byte(tok)	, tok->width_field, tok->flags & MINUS_FLAG);
 }
