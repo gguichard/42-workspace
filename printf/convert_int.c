@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 13:59:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/20 18:21:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 16:33:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 
 static unsigned long long	get_ullong(t_token *token, va_list ap)
 {
-	if (token->modifiers & LL_MODIFIER)
+	if (token->modifiers & Z_MODIFIER)
+		return (va_arg(ap, size_t));
+	else if (token->modifiers & LL_MODIFIER)
 		return (va_arg(ap, unsigned long long));
 	else if (token->modifiers & L_MODIFIER)
 		return (va_arg(ap, unsigned long));
@@ -30,7 +32,9 @@ static unsigned long long	get_ullong(t_token *token, va_list ap)
 
 static long long			get_llong(t_token *token, va_list ap)
 {
-	if (token->modifiers & LL_MODIFIER)
+	if (token->modifiers & Z_MODIFIER)
+		return (va_arg(ap, long));
+	else if (token->modifiers & LL_MODIFIER)
 		return (va_arg(ap, long long));
 	else if (token->modifiers & L_MODIFIER)
 		return (va_arg(ap, long));
@@ -120,12 +124,13 @@ void						convert_int(t_token *token, va_list ap, t_buf *buf)
 			buf_prepend("+", buf);
 		else if (token->flags & SPACE_FLAG)
 			buf_prepend(" ", buf);
-		if (buf->str == NULL)
+		if (!(buf->str))
 			exit(1);
 	}
 	if (token->flags & HASH_FLAG)
 	{
-		if (token->type == 'o' && ((buf->str)[0] != '0' || token->precision == 0))
+		if (token->type == 'o'
+			&& ((buf->str)[0] != '0' || token->precision == 0))
 			buf_prepend("0", buf);
 		else if ((token->type == 'x' || token->type == 'X') && !is_zero)
 			buf_prepend("0X", buf);

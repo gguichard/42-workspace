@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 13:56:31 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/20 16:09:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 15:58:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,14 @@ void	convert_pointer(t_token *token, va_list ap, t_buf *buf)
 	buf->str = ft_strtolower(buf->str);
 	if (token->precision > 0 && (size_t)token->precision > buf->size)
 		buf_pad(buf, '0', token->precision, 0);
+	if (token->flags & ZERO_FLAG && !(token->flags & MINUS_FLAG)
+		&& token->width_field > 2)
+		buf_pad(buf, '0', token->width_field - 2, 0);
 	buf_prepend("0x", buf);
 	if (!(buf->str))
 		exit(1);
-	if (token->width_field > 0)
+	if (token->width_field > 0
+		&& (!(token->flags & ZERO_FLAG) || token->flags & MINUS_FLAG))
 		buf_pad(buf, padding_byte(token)
 			, token->width_field, token->flags & MINUS_FLAG);
 }

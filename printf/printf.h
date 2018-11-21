@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 08:32:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 16:16:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define L_MODIFIER 0x4
 # define LL_MODIFIER 0x8
 # define LUP_MODIFIER 0x10
+# define Z_MODIFIER 0x20
 
 # define WIDTH_WILDCARD 0x1
 # define PRECISION_WILDCARD 0x2

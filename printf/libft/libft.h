@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/20 16:14:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 09:29:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,8 @@ char			*ft_ulltoa(unsigned long long n);
 char			*ft_ulltoa_base(unsigned long long n, int base);
 
 void			ft_putchar(char c);
+
+void			ft_putwchar(int c);
 
 void			ft_putchar_fd(char c, int fd);
 

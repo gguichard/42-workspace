@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 08:50:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 16:16:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,13 @@ static int	parse_flag(t_token *tk, const char **p_str)
 
 static int	parse_modifier(t_token *tk, const char **p_str)
 {
-	if ((*p_str)[0] == 'h')
+	if ((*p_str)[0] == 'z')
+	{
+		tk->modifiers |= Z_MODIFIER;
+		(*p_str)++;
+		return (1);
+	}
+	else if ((*p_str)[0] == 'h')
 	{
 		if ((*p_str)[1] != 'h')
 			tk->modifiers |= H_MODIFIER;

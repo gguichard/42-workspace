@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:29:01 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 08:50:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 09:18:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,6 @@ static void	pf_wildcards(t_token *tok, va_list ap)
 {
 	int	tmp;
 
-	if (tok->wildcards & PRECISION_WILDCARD)
-	{
-		tmp = va_arg(ap, int);
-		tok->precision = (tok->precision < 0) ? tmp : tok->precision;
-	}
 	if (tok->wildcards & WIDTH_WILDCARD)
 	{
 		tmp = va_arg(ap, int);
@@ -48,6 +43,11 @@ static void	pf_wildcards(t_token *tok, va_list ap)
 			tok->flags |= MINUS_FLAG;
 		}
 		tok->width_field = (tok->width_field < 0) ? tmp : tok->width_field;
+	}
+	if (tok->wildcards & PRECISION_WILDCARD)
+	{
+		tmp = va_arg(ap, int);
+		tok->precision = (tok->precision < 0) ? tmp : tok->precision;
 	}
 }
 
