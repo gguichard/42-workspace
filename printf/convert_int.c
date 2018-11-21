@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 13:59:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/19 17:57:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/20 18:21:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "printf.h"
 #include "libft.h"
 
-static unsigned long long	read_uint(t_token *token, va_list ap)
+static unsigned long long	get_ullong(t_token *token, va_list ap)
 {
 	if (token->modifiers & LL_MODIFIER)
 		return (va_arg(ap, unsigned long long));
@@ -28,7 +28,7 @@ static unsigned long long	read_uint(t_token *token, va_list ap)
 		return (va_arg(ap, unsigned int));
 }
 
-static long long			read_sint(t_token *token, va_list ap)
+static long long			get_llong(t_token *token, va_list ap)
 {
 	if (token->modifiers & LL_MODIFIER)
 		return (va_arg(ap, long long));
@@ -42,7 +42,7 @@ static long long			read_sint(t_token *token, va_list ap)
 		return (va_arg(ap, int));
 }
 
-static int					read_int(t_token *token, va_list ap, t_buf *buf)
+static int					fill_buf(t_token *token, va_list ap, t_buf *buf)
 {
 	int					base;
 	unsigned long long	value;
@@ -55,10 +55,10 @@ static int					read_int(t_token *token, va_list ap, t_buf *buf)
 	value = 0;
 	if (token->type == 'o' || token->type == 'u'
 		|| token->type == 'x' || token->type == 'X')
-		value = read_uint(token, ap);
+		value = get_ullong(token, ap);
 	else
 	{
-		value = read_sint(token, ap);
+		value = get_llong(token, ap);
 		if (value >> ((sizeof(long long) * 8) - 1))
 		{
 			value = ~value + 1;
@@ -78,7 +78,7 @@ void						convert_int(t_token *token, va_list ap, t_buf *buf)
 	int	can_expand;
 	int	offset;
 
-	neg = read_int(token, ap, buf);
+	neg = fill_buf(token, ap, buf);
 	if (!(buf->str))
 		exit(1);
 	buf->size = ft_strlen(buf->str);
@@ -125,7 +125,7 @@ void						convert_int(t_token *token, va_list ap, t_buf *buf)
 	}
 	if (token->flags & HASH_FLAG)
 	{
-		if (token->type == 'o' && (!is_zero || token->precision == 0))
+		if (token->type == 'o' && ((buf->str)[0] != '0' || token->precision == 0))
 			buf_prepend("0", buf);
 		else if ((token->type == 'x' || token->type == 'X') && !is_zero)
 			buf_prepend("0X", buf);

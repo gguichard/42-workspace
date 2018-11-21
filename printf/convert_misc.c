@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 13:56:31 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/19 15:08:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/20 16:09:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 #include "printf.h"
 #include "libft.h"
 
-void	convert_percent(t_token *token, va_list ap, t_buf *buf)
+void	convert_other(t_token *token, t_buf *buf)
 {
-	(void)ap;
 	if (!(buf->str = (char *)malloc(1)))
 		exit(1);
-	(buf->str)[0] = '%';
+	(buf->str)[0] = token->type;
 	buf->size = 1;
 	if (token->width_field > 0)
 		buf_pad(buf, padding_byte(token)

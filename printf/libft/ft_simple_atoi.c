@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_simple_atoi.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/15 15:32:56 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 08:26:55 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/20 16:12:48 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/20 16:14:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <limits.h>
-#include "printf.h"
-
-int	main(int argc, char **argv)
+int	ft_simple_atoi(const char **str)
 {
-	(void)argc;
-	(void)argv;
-	printf("%*3d\n", 5, 0);
-	ft_printf("%*3d\n", 5, 0);
-	return (0);
+	int	res;
+
+	res = 0;
+	while ((*str)[0] >= '0' && (*str)[0] <= '9')
+	{
+		res *= 10;
+		res += ((*str)[0] - '0');
+		(*str)++;
+	}
+	return (res);
 }

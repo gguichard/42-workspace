@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/19 16:36:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 08:32:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@
 # define LL_MODIFIER 0x8
 # define LUP_MODIFIER 0x10
 
+# define WIDTH_WILDCARD 0x1
+# define PRECISION_WILDCARD 0x2
+
 typedef	unsigned long	t_intptr;
 
 typedef struct	s_token
@@ -37,6 +40,7 @@ typedef struct	s_token
 	int			precision;
 	int			modifiers;
 	char		type;
+	int			wildcards;
 }				t_token;
 
 typedef struct	s_buf
@@ -45,9 +49,9 @@ typedef struct	s_buf
 	size_t		size;
 }				t_buf;
 
-int				ft_printf(const char *format, ...);
+int				tk_parse(t_token *tk, const char *str);
 
-char			*parse_token(const char *format, t_token *token);
+int				ft_printf(const char *format, ...);
 
 char			padding_byte(t_token *token);
 
@@ -65,6 +69,6 @@ void			convert_double(t_token *token, va_list ap, t_buf *buf);
 
 void			convert_pointer(t_token *token, va_list ap, t_buf *buf);
 
-void			convert_percent(t_token *token, va_list ap, t_buf *buf);
+void			convert_other(t_token *token, t_buf *buf);
 
 #endif

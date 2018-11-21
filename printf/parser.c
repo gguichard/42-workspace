@@ -6,104 +6,111 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/19 14:30:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/21 08:50:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "printf.h"
 #include "libft.h"
 
-static int	parse_flag(char c, t_token *token)
+static int	parse_flag(t_token *tk, const char **p_str)
 {
-	if (c == '#')
-		token->flags |= HASH_FLAG;
-	else if (c == '0')
-		token->flags |= ZERO_FLAG;
-	else if (c == '-')
-		token->flags |= MINUS_FLAG;
-	else if (c == ' ')
-		token->flags |= SPACE_FLAG;
-	else if (c == '+')
-		token->flags |= PLUS_FLAG;
+	if ((*p_str)[0] == '#')
+		tk->flags |= HASH_FLAG;
+	else if ((*p_str)[0] == '0')
+		tk->flags |= ZERO_FLAG;
+	else if ((*p_str)[0] == '-')
+		tk->flags |= MINUS_FLAG;
+	else if ((*p_str)[0] == ' ')
+		tk->flags |= SPACE_FLAG;
+	else if ((*p_str)[0] == '+')
+		tk->flags |= PLUS_FLAG;
 	else
 		return (0);
+	(*p_str)++;
 	return (1);
 }
 
-static int	parse_modifier(const char *format, t_token *token)
+static int	parse_modifier(t_token *tk, const char **p_str)
 {
-	int	offset;
-
-	offset = 0;
-	if (format[offset] == 'h' && format[offset + 1] == 'h')
+	if ((*p_str)[0] == 'h')
 	{
-		offset++;
-		token->modifiers |= HH_MODIFIER;
-	}
-	else if (format[offset] == 'l' && format[offset + 1] == 'l')
-	{
-		offset++;
-		token->modifiers |= LL_MODIFIER;
-	}
-	else if (format[offset] == 'h')
-		token->modifiers |= H_MODIFIER;
-	else if (format[offset] == 'l')
-		token->modifiers |= L_MODIFIER;
-	else
-		return (0);
-	offset++;
-	return (offset);
-}
-
-static int	parse_widthfield(const char *format, t_token *token)
-{
-	int	offset;
-
-	offset = 0;
-	while (format[offset] >= '0' && format[offset] <= '9')
-	{
-		if (token->width_field < 0)
-			token->width_field = 0;
-		token->width_field *= 10;
-		token->width_field += (format[offset] - '0');
-		offset++;
-	}
-	return (offset);
-}
-
-static int	parse_precision(const char *format, t_token *token)
-{
-	int	offset;
-
-	offset = 0;
-	if (format[offset] == '.')
-	{
-		offset++;
-		token->precision = 0;
-		while (format[offset] >= '0' && format[offset] <= '9')
+		if ((*p_str)[1] != 'h')
+			tk->modifiers |= H_MODIFIER;
+		else
 		{
-			token->precision *= 10;
-			token->precision += (format[offset] - '0');
-			offset++;
+			(*p_str)++;
+			tk->modifiers |= HH_MODIFIER;
 		}
+		(*p_str)++;
+		return (1);
 	}
-	return (offset);
+	else if ((*p_str)[0] == 'l')
+	{
+		if ((*p_str)[1] != 'l')
+			tk->modifiers |= L_MODIFIER;
+		else
+		{
+			(*p_str)++;
+			tk->modifiers |= LL_MODIFIER;
+		}
+		(*p_str)++;
+		return (1);
+	}
+	return (0);
 }
 
-char		*parse_token(const char *format, t_token *token)
+static int	parse_width_field(t_token *tk, const char **p_str)
 {
-	int	res;
-
-	while (*format != '\0')
+	if ((*p_str)[0] >= '0' && (*p_str)[0] <= '9')
 	{
-		if (!(res = parse_flag(*format, token))
-			&& !(res = parse_modifier(format, token))
-			&& !(res = parse_widthfield(format, token))
-			&& !(res = parse_precision(format, token)))
-			break ;
-		format += res;
+		tk->width_field = ft_simple_atoi(p_str);
+		return (1);
 	}
-	token->type = *format;
-	return (char *)(format);
+	else if ((*p_str)[0] == '*')
+	{
+		(*p_str)++;
+		tk->width_field = -1;
+		tk->wildcards |= WIDTH_WILDCARD;
+		return (1);
+	}
+	return (0);
+}
+
+static int	parse_precision(t_token *tk, const char **p_str)
+{
+	if ((*p_str)[0] == '.')
+	{
+		(*p_str)++;
+		if ((*p_str)[0] != '*')
+			tk->precision = ft_simple_atoi(p_str);
+		else
+		{
+			(*p_str)++;
+			tk->precision = -1;
+			tk->wildcards |= PRECISION_WILDCARD;
+		}
+		return (1);
+	}
+	return (0);
+}
+
+int			tk_parse(t_token *tk, const char *str)
+{
+	const char	*start;
+
+	start = str;
+	tk->width_field = -1;
+	tk->precision = -1;
+	tk->flags = 0;
+	tk->modifiers = 0;
+	tk->wildcards = 0;
+	tk->type = 0;
+	while (parse_flag(tk, &str)
+		|| parse_modifier(tk, &str)
+		|| parse_width_field(tk, &str)
+		|| parse_precision(tk, &str))
+		continue ;
+	tk->type = *str;
+	return (int)(str - start);
 }

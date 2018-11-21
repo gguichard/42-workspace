@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/16 15:09:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/20 16:14:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_atoi(const char *str);
 
 int				ft_atoi_base(const char *str, int base);
+
+int				ft_simple_atoi(const char **str);
 
 long int		ft_strtol(const char *nptr, char **endptr, int base);
 
