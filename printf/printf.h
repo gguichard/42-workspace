@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/22 14:54:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/22 15:29:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ typedef struct	s_intstuff
 }				t_intstuff;
 
 int				ft_printf(const char *format, ...);
+int				ft_dprintf(int fd, const char *format, ...);
+int				ft_sprintf(char *str, const char *format, ...);
+int				ft_asprintf(char **ret, const char *format, ...);
 
 int				tok_parse(t_token *tok, const char *str);
 void			pf_convert(t_token *tok, va_list ap);

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/22 15:06:32 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/22 15:37:54 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,14 +23,13 @@ LIBFT	= libft/libft.a
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT)
+$(NAME): $(OBJ)
+	$(MAKE) -C libft
+	mv $(LIBFT) $@
 	ar rcs $@ $^
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I libft/ -o $@ -c $<
-
-$(LIBFT):
-	$(MAKE) -C libft
 
 clean:
 	$(MAKE) -C libft/ clean
