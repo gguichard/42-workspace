@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 16:10:19 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 23:24:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/22 13:28:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,60 @@
 #include "printf.h"
 #include "libft.h"
 
-void	convert_double(t_token *tok, va_list ap, t_buf *buf)
+static long double	ft_tenpow(int pow)
+{
+	long double	res;
+
+	res = 1.0;
+	while (pow--)
+		res *= 10.0;
+	return (res);
+}
+
+static int			double_precision(t_token *tok)
+{
+	char	*tmp;
+
+	if (tok->precision < 0)
+		tok->precision = 6;
+	if (tok->precision != 0)
+	{
+		if (!(tmp = (char *)malloc(tok->buf.size + tok->precision + 1)))
+			return (0);
+		ft_memcpy(tmp, tok->buf.str, tok->buf.size);
+		free(tok->buf.str);
+		tmp[tok->buf.size] = '.';
+		tok->buf.str = tmp;
+		tok->buf.size += tok->precision + 1;
+	}
+	return (1);
+}
+
+void				convert_double(t_token *tok, va_list ap)
 {
 	long double	value;
-	char		*tmp;
-	double		pow;
 	int			i;
 
 	if (tok->modifiers & LUP_MODIFIER)
 		value = va_arg(ap, long double);
 	else
 		value = va_arg(ap, double);
-	if (!(buf->str = ft_lltoa((long long)value)))
+	if (!(tok->buf.str = ft_lltoa((long long)value)))
 		exit(1);
-	if (tok->precision < 0)
-		tok->precision = 6;
-	buf->size = ft_strlen(buf->str);
-	if (tok->precision != 0)
-	{
-		tmp = buf->str;
-		if (!(buf->str = (char *)malloc(buf->size + tok->precision + 1)))
-			exit(1);
-		ft_memcpy(buf->str, tmp, buf->size);
-		free(tmp);
-		(buf->str)[buf->size] = '.';
-		buf->size += tok->precision + 1;
-	}
+	tok->buf.size = ft_strlen(tok->buf.str);
+	if (!double_precision(tok))
+		exit(1);
 	value -= (long long)value;
 	if (value < 0)
 		value = -value;
-	pow = 1.0;
-	i = 0;
-	while (i < tok->precision)
+	value *= ft_tenpow(tok->precision + 1);
+	if ((unsigned long long)value % 10 >= 5)
+		value += 1;
+	i = tok->buf.size;
+	while (i > (tok->buf.size - tok->precision))
 	{
-		pow *= 10.0;
-		(buf->str)[buf->size - tok->precision + i]
-			= (((unsigned long long)(value * pow) % 10) + '0');
-		i++;
+		value /= 10.0;
+		(tok->buf.str)[i - 1] = (((unsigned long long)value % 10) + '0');
+		i--;
 	}
 }

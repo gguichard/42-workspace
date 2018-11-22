@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 23:35:37 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/22 00:00:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/22 10:51:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 
 int	utf8_valid(wint_t c)
 {
-	if (c < (1 << 8))
+	if (c < (1 << 7))
 		return (1);
-	else if (c < (1 << 12) && MB_CUR_MAX < 2)
+	else if (c < (1 << 11) && MB_CUR_MAX < 2)
 		return (0);
 	else if (c < (1 << 16) && MB_CUR_MAX < 3)
 		return (0);
-	else if (MB_CUR_MAX < 4)
+	else if (c < (1 << 21) && MB_CUR_MAX < 4)
+		return (0);
+	else if (c >= (1 << 21))
 		return (0);
 	return (1);
 }
@@ -31,9 +33,9 @@ int	convert_utf8(char *dst, wint_t c)
 	int	index;
 
 	index = 0;
-	if (c < (1 << 8))
+	if (c < (1 << 7))
 		dst[index++] = c;
-	else if (c < (1 << 12))
+	else if (c < (1 << 11))
 	{
 		dst[index++] = (c >> 6) | 0xC0;
 		dst[index++] = (c & 0x3F) | 0x80;
@@ -44,7 +46,7 @@ int	convert_utf8(char *dst, wint_t c)
 		dst[index++] = ((c >> 6) & 0x3F) | 0x80;
 		dst[index++] = (c & 0x3F) | 0x80;
 	}
-	else
+	else if (c < (1 << 21))
 	{
 		dst[index++] = (c >> 18) | 0xF0;
 		dst[index++] = ((c >> 12) & 0x3F) | 0x80;

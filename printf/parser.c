@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 09:05:16 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 19:31:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/22 12:09:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,7 @@ static int	parse_flag(t_token *tok, const char **p_str)
 
 static int	parse_modifier(t_token *tok, const char **p_str)
 {
-	if ((*p_str)[0] == 'z')
-		tok->modifiers |= Z_MODIFIER;
-	else if ((*p_str)[0] == 'h')
-	{
+	if ((*p_str)[0] == 'h')
 		if ((*p_str)[1] != 'h')
 			tok->modifiers |= H_MODIFIER;
 		else
@@ -44,9 +41,7 @@ static int	parse_modifier(t_token *tok, const char **p_str)
 			(*p_str)++;
 			tok->modifiers |= HH_MODIFIER;
 		}
-	}
 	else if ((*p_str)[0] == 'l')
-	{
 		if ((*p_str)[1] != 'l')
 			tok->modifiers |= L_MODIFIER;
 		else
@@ -54,7 +49,10 @@ static int	parse_modifier(t_token *tok, const char **p_str)
 			(*p_str)++;
 			tok->modifiers |= LL_MODIFIER;
 		}
-	}
+	else if ((*p_str)[0] == 'j')
+		tok->modifiers |= J_MODIFIER;
+	else if ((*p_str)[0] == 'z')
+		tok->modifiers |= Z_MODIFIER;
 	else
 		return (0);
 	(*p_str)++;
@@ -96,7 +94,7 @@ static int	parse_precision(t_token *tok, const char **p_str)
 	return (0);
 }
 
-int			tk_parse(t_token *tok, const char *str)
+int			tok_parse(t_token *tok, const char *str)
 {
 	const char	*start;
 

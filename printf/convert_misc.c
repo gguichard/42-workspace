@@ -6,46 +6,49 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/19 13:56:31 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/21 19:05:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/22 12:50:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <stdlib.h>
 #include "printf.h"
 #include "libft.h"
 
-void	convert_other(t_token *tok, t_buf *buf)
+void	convert_other(t_token *tok)
 {
-	if (!(buf->str = (char *)malloc(1)))
+	if (!(tok->buf.str = (char *)malloc(1)))
 		exit(1);
-	(buf->str)[0] = tok->type;
-	buf->size = 1;
-	if (tok->width_field > 0 && buf->size < (size_t)tok->width_field)
-		buf_pad(buf, pad_byte(tok), tok->width_field, tok->flags & MINUS_FLAG);
+	(tok->buf.str)[0] = tok->type;
+	tok->buf.size = 1;
+	if (tok->width_field > 0 && tok->buf.size < tok->width_field)
+		buf_pad(&(tok->buf), pad_byte(tok), tok->width_field
+			, tok->flags & MINUS_FLAG);
 }
 
-void	convert_pointer(t_token *tok, va_list ap, t_buf *buf)
+void	convert_pointer(t_token *tok, va_list ap)
 {
-	t_intptr	value;
+	intptr_t	value;
 
-	value = va_arg(ap, t_intptr);
+	value = va_arg(ap, intptr_t);
 	if (!value && tok->precision == 0)
-		buf->str = ft_strnew(0);
+		tok->buf.str = ft_strnew(0);
 	else
-		buf->str = ft_lltoa_base(value, 16);
-	if (!(buf->str))
+		tok->buf.str = ft_lltoa_base(value, 16);
+	if (!(tok->buf.str))
 		exit(1);
-	buf->size = ft_strlen(buf->str);
-	buf->str = ft_strtolower(buf->str);
-	if (tok->precision > 0 && (size_t)tok->precision > buf->size)
-		buf_pad(buf, '0', tok->precision, 0);
+	tok->buf.size = ft_strlen(tok->buf.str);
+	tok->buf.str = ft_strtolower(tok->buf.str);
+	if (tok->precision > 0 && tok->precision > tok->buf.size)
+		buf_pad(&(tok->buf), '0', tok->precision, 0);
 	if (tok->flags & ZERO_FLAG && !(tok->flags & MINUS_FLAG)
 		&& tok->width_field > 2)
-		buf_pad(buf, '0', tok->width_field - 2, 0);
-	buf_prepend("0x", buf);
-	if (!(buf->str))
+		buf_pad(&(tok->buf), '0', tok->width_field - 2, 0);
+	buf_prepend("0x", &(tok->buf));
+	if (!(tok->buf.str))
 		exit(1);
-	if (tok->width_field > 0 && buf->size < (size_t)tok->width_field
+	if (tok->width_field > 0 && tok->buf.size < tok->width_field
 		&& (!(tok->flags & ZERO_FLAG) || tok->flags & MINUS_FLAG))
-		buf_pad(buf, pad_byte(tok)	, tok->width_field, tok->flags & MINUS_FLAG);
+		buf_pad(&(tok->buf), pad_byte(tok), tok->width_field
+			, tok->flags & MINUS_FLAG);
 }
