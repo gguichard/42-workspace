@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utf8.c                                             :+:      :+:    :+:   */
+/*   utf8_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/21 23:35:37 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/22 10:51:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/22 14:53:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "printf.h"
 
-int	utf8_valid(wint_t c)
+int	utf8_bytes(wint_t c)
 {
 	if (c < (1 << 7))
 		return (1);
-	else if (c < (1 << 11) && MB_CUR_MAX < 2)
+	else if (c < (1 << 11))
+		return (2);
+	else if (c < (1 << 16))
+		return (3);
+	else if (c < (1 << 21))
+		return (4);
+	return (-1);
+}
+
+int	utf8_valid(wint_t c)
+{
+	if (c >= (1 << 21))
 		return (0);
-	else if (c < (1 << 16) && MB_CUR_MAX < 3)
-		return (0);
-	else if (c < (1 << 21) && MB_CUR_MAX < 4)
-		return (0);
-	else if (c >= (1 << 21))
-		return (0);
-	return (1);
+	return (utf8_bytes(c) <= MB_CUR_MAX);
 }
 
 int	convert_utf8(char *dst, wint_t c)

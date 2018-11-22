@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/22 13:51:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/22 14:54:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int				fill_buf(t_buf *buf, const char *str, va_list ap);
 char			pad_byte(t_token *tok);
 void			buf_pad(t_buf *buf, char pad, int width, int right_pad);
 void			buf_prepend(char *s1, t_buf *buf);
+int				utf8_bytes(wint_t c);
 int				utf8_valid(wint_t c);
 int				intval_to_buf(t_token *tok, va_list ap);
 
