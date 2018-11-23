@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 22:10:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/23 22:25:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,6 @@ t_flist			*flist_add(t_flist **lst, const char *f_name
 int				sort_by_name(t_flist *f1, t_flist *f2);
 
 void			show_columns(t_opt *opt, t_flist *lst);
+void			show_simple(t_opt *opt, t_flist *lst);
 
 #endif
