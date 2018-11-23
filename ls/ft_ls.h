@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 16:38:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/23 20:39:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct	s_flist
 typedef struct	s_out
 {
 	int			cols;
-	int			lines;
+	int			rows;
+	int			size;
 	int			f_count;
 	int			f_width;
 }				t_out;
