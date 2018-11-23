@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 22:13:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/23 22:15:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void		ls(t_opt *opt, char *path)
 	{
 		while (files != NULL)
 		{
-			if (files->is_dir)
+			if (files->is_dir && (files->name)[0] != '.')
 			{
 				ft_printf("\n%s:\n", files->path);
 				ls(opt, files->path);
