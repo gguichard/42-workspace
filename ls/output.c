@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 13:58:04 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 20:39:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/23 21:27:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		fill_out(t_opt *opt, t_out *out, t_flist *lst)
 	while (current != NULL)
 	{
 		(out->f_count)++;
-		out->f_width = ft_max(out->f_width, ft_strlen(current->data->d_name));
+		out->f_width = ft_max(out->f_width, ft_strlen(current->name));
 		current = current->next;
 	}
 	(out->f_width)++;
@@ -81,9 +81,9 @@ void			show_columns(t_opt *opt, t_flist *lst)
 		if ((current = columns[col_index]) != NULL)
 		{
 			if ((col_index + 1) == out.cols || columns[col_index + 1] == NULL)
-				ft_printf("%s\n", current->data->d_name);
+				ft_printf("%s\n", current->name);
 			else
-				ft_printf("%-*s", out.f_width, current->data->d_name);
+				ft_printf("%-*s", out.f_width, current->name);
 			columns[col_index] = current->next;
 		}
 		index++;

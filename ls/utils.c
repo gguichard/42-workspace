@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 10:25:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 10:48:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/23 22:01:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <errno.h>
 #include <stdlib.h>
 #include "libft.h"
 
@@ -22,8 +23,22 @@ long	opt_mask(char c)
 	return (0);
 }
 
+void	file_error(const char *file)
+{
+	ft_dprintf(2, "ft_ls: %s: %s\n", file, strerror(errno));
+	//exit(1);
+}
+
 void	malloc_error(void)
 {
 	ft_dprintf(2, "ft_ls: malloc error\n");
 	exit(1);
+}
+
+char	*get_path(const char *dir, const char *file)
+{
+	char	*str;
+
+	ft_asprintf(&str, "%s/%s", dir, file);
+	return (str);
 }

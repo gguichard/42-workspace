@@ -6,14 +6,15 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 11:56:27 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 16:39:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/23 22:11:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include "libft.h"
 #include "ft_ls.h"
 
-void	flist_add(t_flist **lst, struct dirent *data, struct stat *stat 
+t_flist	*flist_add(t_flist **lst, const char *f_name
 	, int (*cmp)(t_flist *f1, t_flist *f2))
 {
 	t_flist	*file;
@@ -22,8 +23,7 @@ void	flist_add(t_flist **lst, struct dirent *data, struct stat *stat
 
 	if (!(file = (t_flist *)malloc(sizeof(*file))))
 		malloc_error();
-	file->data = data;
-	file->stat = stat;
+	file->name = ft_strdup(f_name);
 	file->next = NULL;
 	previous = NULL;
 	current = *lst;
@@ -41,4 +41,5 @@ void	flist_add(t_flist **lst, struct dirent *data, struct stat *stat
 		*lst = file;
 	else
 		previous->next = file;
+	return (file);
 }
