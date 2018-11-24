@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 11:12:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 11:23:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static t_flist	*ls_path(t_opt *opt, char *path
 	t_flist			*lst;
 	struct dirent	*data;
 	char			*f_path;
-	t_flist			*file;
 
 	if (!(dir = opendir(path)))
 	{
@@ -35,7 +34,7 @@ static t_flist	*ls_path(t_opt *opt, char *path
 		if ((data->d_name)[0] == '.' && !(opt->options & HID_OPT))
 			continue ;
 		f_path = get_path(path, data->d_name);
-		file = flist_add(&lst, data->d_name, f_path, cmp);
+		flist_add(&lst, data->d_name, f_path, cmp);
 	}
 	closedir(dir);
 	return (lst);

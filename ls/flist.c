@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 11:56:27 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 11:13:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 11:40:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,15 @@ t_flist		*flist_add(t_flist **lst, char *name, char *path
 		, int (*cmp)(t_flist *f1, t_flist *f2))
 {
 	t_flist		*file;
-	struct stat	stat;
 
 	if (!(file = (t_flist *)malloc(sizeof(*file))))
 		return (NULL);
 	file->name = ft_strdup(name);
 	file->path = path;
-	if (lstat(path, &stat) < 0)
+	if (lstat(path, &(file->stat)) < 0)
 		return (NULL);
-	file->is_dir = stat.st_mode & S_IFDIR;
-	file->mlast = stat.st_mtimespec;
+	file->is_dir = file->stat.st_mode & S_IFDIR;
+	file->mlast = file->stat.st_mtimespec;
 	file->next = NULL;
 	insert_elem(lst, file, cmp);
 	return (file);

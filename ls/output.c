@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 13:58:04 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 11:09:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 12:10:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,32 @@ void			show_columns(t_opt *opt, t_flist *lst)
 	}
 }
 
+void			show_simple_extended(t_opt *opt, t_flist *lst)
+{
+	t_pad	pad;
+	mode_t	mode;
+
+	(void)opt;
+	while (lst != NULL)
+	{
+		mode = lst->stat.st_mode;
+		ft_printf("%c%c%c%c%c%c%c%c%c%c%c %d %s\n", f_type(mode)
+				, f_perm(mode >> 6, 4), f_perm(mode >> 6, 2), f_perm(mode >> 6, 1)
+				, f_perm(mode >> 3, 4), f_perm(mode >> 3, 2), f_perm(mode >> 3, 1)
+				, f_perm(mode, 4), f_perm(mode, 2), f_perm(mode, 1)
+				, ' '
+				, lst->stat.st_nlink
+				, lst->name);
+		lst = lst->next;
+	}
+}
+
 void			show_simple(t_opt *opt, t_flist *lst)
 {
 	if (opt->options & LST_OPT)
 	{
-		ft_printf("total %d\n", 72);
+		show_simple_extended(opt, lst);
+		return ;
 	}
 	while (lst != NULL)
 	{

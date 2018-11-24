@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 11:19:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 12:06:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct	s_flist
 	char			*name;
 	char			*path;
 	int				is_dir;
+	struct stat		stat;
 	struct timespec	mlast;
 	struct s_flist	*next;
 }				t_flist;
@@ -57,6 +58,9 @@ long			opt_mask(char c);
 void			file_error(const char *file);
 void			malloc_error(void);
 char			*get_path(const char *dir, const char *file);
+
+char			f_type(mode_t st_mode);
+char			f_perm(mode_t mode, int perm);
 
 void			parse_options(t_opt *opt, int argc, char **argv);
 
