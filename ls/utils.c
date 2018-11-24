@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 10:25:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 22:01:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 11:07:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ long	opt_mask(char c)
 void	file_error(const char *file)
 {
 	ft_dprintf(2, "ft_ls: %s: %s\n", file, strerror(errno));
-	//exit(1);
 }
 
 void	malloc_error(void)

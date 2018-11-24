@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:12:29 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 13:35:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 09:20:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,26 @@ static void	invalid_opt(char c)
 	exit(1);
 }
 
-static void	check_winsize(t_opt *opt)
+static void	get_winsize(t_opt *opt)
 {
 	if (ioctl(0, TIOCGWINSZ, &(opt->ws)) != -1)
-		opt->options |= COLUMN_OPT;
+		opt->options |= COL_OPT;
 }
 
 static void	parse_files(t_opt *opt, int argc, char **argv, int offset)
 {
-	int	files;
 	int	i;
 
-	files = argc - offset;
-	if (files <= 0)
-		opt->files = NULL;
+	opt->f_count = ft_max(1, argc - offset);
+	if (!(opt->files = malloc((opt->f_count + 1) * sizeof(char *))))
+		malloc_error();
+	(opt->files)[opt->f_count] = NULL;
+	if (argc - offset <= 0)
+		(opt->files)[0] = ".";
 	else
 	{
-		if (!(opt->files = (char **)malloc((files + 1) * sizeof(char *))))
-			malloc_error();
-		(opt->files)[files] = NULL;
 		i = 0;
-		while (i + offset < argc)
+		while (i < opt->f_count)
 		{
 			(opt->files)[i] = argv[i + offset];
 			i++;
@@ -69,6 +68,6 @@ void		parse_options(t_opt *opt, int argc, char **argv)
 		i++;
 	}
 	parse_files(opt, argc, argv, i);
-	if (!(opt->options & opt_mask('l')))
-		check_winsize(opt);
+	if (!(opt->options & LST_OPT))
+		get_winsize(opt);
 }

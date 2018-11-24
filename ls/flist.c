@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 11:56:27 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 22:11:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 11:13:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,45 @@
 #include "libft.h"
 #include "ft_ls.h"
 
-t_flist	*flist_add(t_flist **lst, const char *f_name
-	, int (*cmp)(t_flist *f1, t_flist *f2))
+static void	insert_elem(t_flist **lst, t_flist *elem
+		, int (*cmp)(t_flist *f1, t_flist *f2))
 {
-	t_flist	*file;
-	t_flist	*current;
 	t_flist	*previous;
+	t_flist	*current;
 
-	if (!(file = (t_flist *)malloc(sizeof(*file))))
-		malloc_error();
-	file->name = ft_strdup(f_name);
-	file->next = NULL;
 	previous = NULL;
 	current = *lst;
 	while (current != NULL)
 	{
-		if (cmp(file, current) <= 0)
+		if (cmp(elem, current) <= 0)
 		{
-			file->next = current;
+			elem->next = current;
 			break ;
 		}
 		previous = current;
 		current = current->next;
 	}
 	if (previous == NULL)
-		*lst = file;
+		*lst = elem;
 	else
-		previous->next = file;
+		previous->next = elem;
+}
+
+t_flist		*flist_add(t_flist **lst, char *name, char *path
+		, int (*cmp)(t_flist *f1, t_flist *f2))
+{
+	t_flist		*file;
+	struct stat	stat;
+
+	if (!(file = (t_flist *)malloc(sizeof(*file))))
+		return (NULL);
+	file->name = ft_strdup(name);
+	file->path = path;
+	if (lstat(path, &stat) < 0)
+		return (NULL);
+	file->is_dir = stat.st_mode & S_IFDIR;
+	file->mlast = stat.st_mtimespec;
+	file->next = NULL;
+	insert_elem(lst, file, cmp);
 	return (file);
 }

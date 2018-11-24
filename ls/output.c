@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 13:58:04 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/23 22:27:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 11:09:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,10 @@ void			show_columns(t_opt *opt, t_flist *lst)
 
 void			show_simple(t_opt *opt, t_flist *lst)
 {
-	(void)opt;
+	if (opt->options & LST_OPT)
+	{
+		ft_printf("total %d\n", 72);
+	}
 	while (lst != NULL)
 	{
 		ft_printf("%s\n", lst->name);
