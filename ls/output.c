@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 13:58:04 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 12:10:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 16:48:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,22 +90,53 @@ void			show_columns(t_opt *opt, t_flist *lst)
 	}
 }
 
+static void		fill_pad(t_pad *pad, t_flist *lst)
+{
+	pad->links = 0;
+	pad->user = 0;
+	pad->group = 0;
+	pad->size = 0;
+	while (lst != NULL)
+	{
+		pad->links = ft_max(ft_llsize(lst->stat->st_nlink), pad->links);
+		pad->user = ft_max(ft_strlen(lst->pw_name), pad->user);
+		pad->group = ft_max(ft_strlen(lst->gr_name), pad->group);
+		pad->size = ft_max(ft_llsize(lst->stat->st_size), pad->size);
+		lst = lst->next;
+	}
+}
+
 void			show_simple_extended(t_opt *opt, t_flist *lst)
 {
 	t_pad	pad;
 	mode_t	mode;
+	char	extra_buf[1024];
 
 	(void)opt;
+	fill_pad(&pad, lst);
 	while (lst != NULL)
 	{
-		mode = lst->stat.st_mode;
-		ft_printf("%c%c%c%c%c%c%c%c%c%c%c %d %s\n", f_type(mode)
+		mode = lst->stat->st_mode;
+		if (!(lst->link))
+			extra_buf[0] = '\0';
+		else
+		{
+			ft_memcpy(extra_buf, " -> ", 4);
+			ft_memcpy(extra_buf + 4, lst->link, ft_strlen(lst->link) + 1);
+		}
+		ft_printf("%c%c%c%c%c%c%c%c%c%c%c %-*d %-*s  %-*s  %-*d %s %s%s\n"
+				, f_type(mode)
 				, f_perm(mode >> 6, 4), f_perm(mode >> 6, 2), f_perm(mode >> 6, 1)
 				, f_perm(mode >> 3, 4), f_perm(mode >> 3, 2), f_perm(mode >> 3, 1)
 				, f_perm(mode, 4), f_perm(mode, 2), f_perm(mode, 1)
 				, ' '
-				, lst->stat.st_nlink
-				, lst->name);
+				, pad.links, lst->stat->st_nlink
+				, pad.user, lst->pw_name
+				, pad.group, lst->gr_name
+				, pad.size, lst->stat->st_size
+				, "24 nov 15:42"
+				, lst->name
+				, extra_buf);
 		lst = lst->next;
 	}
 }

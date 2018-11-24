@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 12:06:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 16:33:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,19 @@
 
 # include <time.h>
 # include <dirent.h>
+# include <pwd.h>
+# include <grp.h>
+# include <uuid/uuid.h>
 # include <sys/ioctl.h>
 # include <sys/stat.h>
+# include <sys/types.h>
 
-# define VALID_OPTIONS "alrtR"
+# define VALID_OPTIONS "alrtCR1"
 
 # define HID_OPT 0x1
 # define SRT_OPT ((long)1 << 19)
 # define LST_OPT ((long)1 << 11)
-# define COL_OPT ((long)1 << 63)
+# define COL_OPT ((long)1 << 28)
 # define REC_OPT ((long)1 << 43)
 # define REV_OPT ((long)1 << 17)
 
@@ -39,9 +43,10 @@ typedef struct	s_flist
 {
 	char			*name;
 	char			*path;
-	int				is_dir;
-	struct stat		stat;
-	struct timespec	mlast;
+	struct stat		*stat;
+	char			*link;
+	char			*pw_name;
+	char			*gr_name;
 	struct s_flist	*next;
 }				t_flist;
 
@@ -53,6 +58,14 @@ typedef struct	s_out
 	int			f_count;
 	int			f_width;
 }				t_out;
+
+typedef struct	s_pad
+{
+	int			links;
+	int			user;
+	int			group;
+	int			size;
+}				t_pad;
 
 long			opt_mask(char c);
 void			file_error(const char *file);

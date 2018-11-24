@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 10:25:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 11:07:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 14:25:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ long	opt_mask(char c)
 		return (1 << (c - 'a'));
 	else if (c >= 'A' && c <= 'Z')
 		return ((long)1 << (c - 'A') << 26);
+	else if (c >= '0' && c <= '9')
+		return ((long)1 << (c - '0') << 52);
 	return (0);
 }
 

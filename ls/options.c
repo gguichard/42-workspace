@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:12:29 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 09:20:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 14:46:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@ static void	invalid_opt(char c)
 	ft_dprintf(2, "ft_ls: illegal option -- %c\n", c);
 	ft_dprintf(2, "usage: ft_ls [-%s] [file ...]\n", VALID_OPTIONS);
 	exit(1);
-}
-
-static void	get_winsize(t_opt *opt)
-{
-	if (ioctl(0, TIOCGWINSZ, &(opt->ws)) != -1)
-		opt->options |= COL_OPT;
 }
 
 static void	parse_files(t_opt *opt, int argc, char **argv, int offset)
@@ -68,6 +62,6 @@ void		parse_options(t_opt *opt, int argc, char **argv)
 		i++;
 	}
 	parse_files(opt, argc, argv, i);
-	if (!(opt->options & LST_OPT))
-		get_winsize(opt);
+	if (opt->options & COL_OPT)
+		ioctl(0, TIOCGWINSZ, &(opt->ws));
 }

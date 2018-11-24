@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/24 11:34:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 12:06:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 16:11:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 
 char	f_type(mode_t st_mode)
 {
-	if (st_mode & S_IFIFO)
-		return ('p');
-	if (st_mode & S_IFCHR)
-		return ('c');
-	if (st_mode & S_IFDIR)
-		return ('d');
-	if (st_mode & S_IFBLK)
+	if (S_ISBLK(st_mode))
 		return ('b');
-	if (st_mode & S_IFREG)
-		return ('-');
-	if (st_mode & S_IFLNK)
+	if (S_ISCHR(st_mode))
+		return ('c');
+	if (S_ISDIR(st_mode))
+		return ('d');
+	if (S_ISLNK(st_mode))
 		return ('l');
-	if (st_mode & S_IFSOCK)
+	if (S_ISSOCK(st_mode))
 		return ('s');
-	return ('?');
+	if (S_ISFIFO(st_mode))
+		return ('p');
+	return ('-');
 }
 
 char	f_perm(mode_t mode, int perm)

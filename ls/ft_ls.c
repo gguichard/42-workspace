@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 11:23:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/24 16:38:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void		ls(t_opt *opt, char *path, void (*f)(t_opt *, t_flist *)
 	{
 		while (lst != NULL)
 		{
-			if (lst->is_dir && (lst->name)[0] != '.')
+			if (S_ISDIR(lst->stat->st_mode) && (lst->name)[0] != '.')
 			{
 				ft_printf("\n%s:\n", lst->path);
 				ls(opt, lst->path, f, cmp);
@@ -70,7 +70,8 @@ int				main(int argc, char **argv)
 	int		(*cmp)(t_flist *, t_flist *);
 
 	parse_options(&opt, argc, argv);
-	if (opt.options & COL_OPT && isatty(STDOUT_FILENO))
+	if (opt.options & COL_OPT
+		|| (isatty(STDOUT_FILENO) && !(opt.options & LST_OPT)))
 		f = &show_columns;
 	else
 		f = &show_simple;
