@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/25 21:36:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 22:55:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,12 @@ int				parse_options(t_opt *opt, int argc, char **argv);
 int				sort_asc_name(t_flist *f1, t_flist *f2);
 int				sort_desc_time(t_flist *f1, t_flist *f2);
 
+t_flist			*flist_create_elem(void);
 t_flist			*flist_free_elem(t_flist *elem);
 t_flist			*flist_clean(t_flist *lst);
-t_flist			*flist_dircopy(t_flist *file);
+int				flist_stat(t_flist *file);
+t_flist			*flist_diradd(t_flist **lst, const char *path
+		, int (*cmp)(t_flist *, t_flist *));
 t_flist			*flist_add(t_flist **lst, const char *name, const char *path);
 t_flist			*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *));
 void			flist_push_back(t_flist **lst, t_flist *elem);

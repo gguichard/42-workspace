@@ -6,14 +6,14 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/23 08:54:00 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/25 18:18:03 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/25 22:44:33 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= 	ft_ls
 
 SRC		= 	ft_ls.c options.c output.c sort_types.c \
-			flist.c flist_sort.c \
+			flist.c flist_sort.c flist_utils.c \
 			file_utils.c utils.c
 OBJ		= 	$(SRC:.c=.o)
 

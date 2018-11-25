@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/25 22:36:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 23:08:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include "libft.h"
@@ -39,11 +40,11 @@ static t_flist	*ls_path(t_opt *opt, t_flist *folder)
 		if (!(file = flist_add(&lst, data->d_name, folder->path)))
 			return (flist_clean(lst));
 		if (opt->options & REC_OPT && S_ISDIR(file->stat.st_mode)
-				&& !ft_strequ(file->name, ".") && !ft_strequ(file->name, ".."))
+				&& !ft_strequ(file->name, ".")
+				&& !ft_strequ(file->name, ".."))
 		{
-			if (!(tmp = flist_dircopy(file)))
+			if (!(tmp = flist_add(&(folder->next), file->path)))
 				return (flist_clean(lst));
-			flist_sort_insert(&(folder->next), tmp, opt->cmp);
 		}
 	}
 	closedir(dir);
@@ -55,8 +56,9 @@ static void		ls(t_opt *opt, t_flist *folder, void (*f)(t_opt *, t_flist *))
 {
 	t_flist	*lst;
 
+	errno = 0;
 	lst = ls_path(opt, folder);
-	if (opt->loops > 0)
+	if (errno != ENOENT && opt->loops > 0)
 		ft_printf("\n%s:\n", folder->path);
 	if (lst != NULL)
 	{
@@ -93,18 +95,15 @@ int				main(int argc, char **argv)
 	}
 	opt.files = NULL;
 	if (offset >= argc)
-		flist_add(&(opt.files), NULL, ".");
+		flist_diradd(&(opt.files), ".", opt.cmp);
 	while (offset < argc)
 	{
-		flist_add(&(opt.files), NULL, argv[offset]);
+		flist_diradd(&(opt.files), argv[offset], opt.cmp);
 		offset++;
 	}
-	opt.files = flist_sort(opt.files, opt.cmp);
 	opt.loops = 0;
 	while (opt.files != NULL)
 	{
-		if (opt.loops == 0 && opt.files->next != NULL)
-			ft_printf("%s:\n", opt.files->path);
 		ls(&opt, opt.files, f);
 		tmp = opt.files->next;
 		flist_free_elem(opt.files);
