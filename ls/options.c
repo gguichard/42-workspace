@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:12:29 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/25 21:37:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 22:36:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ static void	parse_opt(t_opt *opt, char c)
 	else if (c == '1')
 		parse_1_opt(opt);
 	else
-	{
 		opt->options |= opt_mask(c);
-	}
 }
 
 int			parse_options(t_opt *opt, int argc, char **argv)
@@ -54,6 +52,8 @@ int			parse_options(t_opt *opt, int argc, char **argv)
 	opt->options = 0;
 	while (i < argc && argv[i][0] == '-' && argv[i][1] != '\0')
 	{
+		if (ft_strequ(argv[i], "--"))
+			return (i + 1);
 		j = 1;
 		while (argv[i][j] != '\0')
 		{
