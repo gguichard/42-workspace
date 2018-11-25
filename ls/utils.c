@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 10:25:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 14:25:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 18:34:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,12 @@ void	file_error(const char *file)
 	ft_dprintf(2, "ft_ls: %s: %s\n", file, strerror(errno));
 }
 
-void	malloc_error(void)
-{
-	ft_dprintf(2, "ft_ls: malloc error\n");
-	exit(1);
-}
-
 char	*get_path(const char *dir, const char *file)
 {
 	char	*str;
 
-	ft_asprintf(&str, "%s/%s", dir, file);
+	if (file == NULL)
+		return (ft_strdup(dir));
+	ft_asprintf(&str, "%s/%s", ft_strcmp(dir, "/") == 0 ? "" : dir, file);
 	return (str);
 }

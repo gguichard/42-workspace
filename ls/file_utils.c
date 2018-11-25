@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/24 11:34:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 16:11:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 16:54:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "ft_ls.h"
 
 char	f_type(mode_t st_mode)

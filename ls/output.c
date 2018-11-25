@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 13:58:04 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 16:48:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 20:16:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,25 @@
 
 static void		fill_out(t_opt *opt, t_out *out, t_flist *lst)
 {
+	int		count;
 	t_flist	*current;
 
-	out->f_count = 0;
-	out->f_width = 0;
+	count = 0;
+	out->w_file = 0;
 	current = lst;
 	while (current != NULL)
 	{
-		(out->f_count)++;
-		out->f_width = ft_max(out->f_width, ft_strlen(current->name));
+		count++;
+		out->w_file = ft_max(out->w_file, ft_strlen(current->name));
 		current = current->next;
 	}
-	(out->f_width)++;
-	out->cols = ft_max(1, opt->ws.ws_col / out->f_width);
-	out->rows = (out->f_count / out->cols) + (out->f_count % out->cols > 0);
-	while ((out->cols * out->rows) - out->f_count >= out->rows)
+	(out->w_file)++;
+	out->cols = ft_max(1, opt->ws.ws_col / out->w_file);
+	out->rows = (count / out->cols) + (count % out->cols > 0);
+	while ((out->cols * out->rows) - count >= out->rows)
 	{
 		out->cols--;
-		out->rows = (out->f_count / out->cols) + (out->f_count % out->cols > 0);
+		out->rows = (count / out->cols) + (count % out->cols > 0);
 	}
 	out->size = out->cols * out->rows;
 }
@@ -46,7 +47,7 @@ static t_flist	**prepare_columns(t_out *out, t_flist *lst)
 	int		index;
 
 	if (!(columns = (t_flist **)malloc(out->cols * sizeof(*columns))))
-		malloc_error();
+		return (NULL);
 	columns[0] = lst;
 	current = lst;
 	col_index = 1;
@@ -83,60 +84,50 @@ void			show_columns(t_opt *opt, t_flist *lst)
 			if ((col_index + 1) == out.cols || columns[col_index + 1] == NULL)
 				ft_printf("%s\n", current->name);
 			else
-				ft_printf("%-*s", out.f_width, current->name);
+				ft_printf("%-*s", out.w_file, current->name);
 			columns[col_index] = current->next;
 		}
 		index++;
 	}
 }
 
-static void		fill_pad(t_pad *pad, t_flist *lst)
+static void		fill_out_padding(t_out *out, t_flist *lst)
 {
-	pad->links = 0;
-	pad->user = 0;
-	pad->group = 0;
-	pad->size = 0;
+	out->w_links = 0;
+	out->w_user = 0;
+	out->w_group = 0;
+	out->w_size = 0;
 	while (lst != NULL)
 	{
-		pad->links = ft_max(ft_llsize(lst->stat->st_nlink), pad->links);
-		pad->user = ft_max(ft_strlen(lst->pw_name), pad->user);
-		pad->group = ft_max(ft_strlen(lst->gr_name), pad->group);
-		pad->size = ft_max(ft_llsize(lst->stat->st_size), pad->size);
+		out->w_links = ft_max(ft_llsize(lst->stat.st_nlink), out->w_links);
+		out->w_user = ft_max(ft_strlen(lst->pw_name), out->w_user);
+		out->w_group = ft_max(ft_strlen(lst->gr_name), out->w_group);
+		out->w_size = ft_max(ft_llsize(lst->stat.st_size), out->w_size);
 		lst = lst->next;
 	}
 }
 
-void			show_simple_extended(t_opt *opt, t_flist *lst)
+static void		show_simple_extended(t_flist *lst)
 {
-	t_pad	pad;
+	t_out	out;
 	mode_t	mode;
-	char	extra_buf[1024];
 
-	(void)opt;
-	fill_pad(&pad, lst);
+	fill_out_padding(&out, lst);
 	while (lst != NULL)
 	{
-		mode = lst->stat->st_mode;
-		if (!(lst->link))
-			extra_buf[0] = '\0';
-		else
-		{
-			ft_memcpy(extra_buf, " -> ", 4);
-			ft_memcpy(extra_buf + 4, lst->link, ft_strlen(lst->link) + 1);
-		}
-		ft_printf("%c%c%c%c%c%c%c%c%c%c%c %-*d %-*s  %-*s  %-*d %s %s%s\n"
+		mode = lst->stat.st_mode;
+		ft_printf("%c%c%c%c%c%c%c%c%c%c%c %*d %-*s  %-*s  %*d %s %s\n"
 				, f_type(mode)
 				, f_perm(mode >> 6, 4), f_perm(mode >> 6, 2), f_perm(mode >> 6, 1)
 				, f_perm(mode >> 3, 4), f_perm(mode >> 3, 2), f_perm(mode >> 3, 1)
 				, f_perm(mode, 4), f_perm(mode, 2), f_perm(mode, 1)
 				, ' '
-				, pad.links, lst->stat->st_nlink
-				, pad.user, lst->pw_name
-				, pad.group, lst->gr_name
-				, pad.size, lst->stat->st_size
+				, out.w_links, lst->stat.st_nlink
+				, out.w_user, lst->pw_name
+				, out.w_group, lst->gr_name
+				, out.w_size, lst->stat.st_size
 				, "24 nov 15:42"
-				, lst->name
-				, extra_buf);
+				, lst->name);
 		lst = lst->next;
 	}
 }
@@ -145,7 +136,7 @@ void			show_simple(t_opt *opt, t_flist *lst)
 {
 	if (opt->options & LST_OPT)
 	{
-		show_simple_extended(opt, lst);
+		show_simple_extended(lst);
 		return ;
 	}
 	while (lst != NULL)

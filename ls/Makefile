@@ -6,18 +6,21 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/23 08:54:00 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/24 11:40:52 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/25 18:18:03 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= ft_ls
-SRC		= ft_ls.c options.c output.c sort_types.c flist.c file_utils.c utils.c
-OBJ		= $(SRC:.c=.o)
+NAME	= 	ft_ls
 
-LIBFT	= libft/libft.a
+SRC		= 	ft_ls.c options.c output.c sort_types.c \
+			flist.c flist_sort.c \
+			file_utils.c utils.c
+OBJ		= 	$(SRC:.c=.o)
 
-CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
+LIBFT	= 	libft/libft.a
+
+CC		= 	gcc
+CFLAGS	= 	-Wall -Wextra -Werror
 
 all: $(NAME)
 

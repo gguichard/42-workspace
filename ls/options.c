@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:12:29 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 14:46:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 21:37:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,31 @@ static void	invalid_opt(char c)
 	exit(1);
 }
 
-static void	parse_files(t_opt *opt, int argc, char **argv, int offset)
+static void	parse_column_opt(t_opt *opt)
 {
-	int	i;
+	opt->options |= COL_OPT;
+	opt->options &= ~ONE_OPT;
+}
 
-	opt->f_count = ft_max(1, argc - offset);
-	if (!(opt->files = malloc((opt->f_count + 1) * sizeof(char *))))
-		malloc_error();
-	(opt->files)[opt->f_count] = NULL;
-	if (argc - offset <= 0)
-		(opt->files)[0] = ".";
+static void	parse_1_opt(t_opt *opt)
+{
+	opt->options |= ONE_OPT;
+	opt->options &= ~COL_OPT;
+}
+
+static void	parse_opt(t_opt *opt, char c)
+{
+	if (c == 'C')
+		parse_column_opt(opt);
+	else if (c == '1')
+		parse_1_opt(opt);
 	else
 	{
-		i = 0;
-		while (i < opt->f_count)
-		{
-			(opt->files)[i] = argv[i + offset];
-			i++;
-		}
+		opt->options |= opt_mask(c);
 	}
 }
 
-void		parse_options(t_opt *opt, int argc, char **argv)
+int			parse_options(t_opt *opt, int argc, char **argv)
 {
 	int	i;
 	int	j;
@@ -56,12 +59,10 @@ void		parse_options(t_opt *opt, int argc, char **argv)
 		{
 			if (!ft_strchr(VALID_OPTIONS, argv[i][j]))
 				invalid_opt(argv[i][j]);
-			opt->options |= opt_mask(argv[i][j]);
+			parse_opt(opt, argv[i][j]);
 			j++;
 		}
 		i++;
 	}
-	parse_files(opt, argc, argv, i);
-	if (opt->options & COL_OPT)
-		ioctl(0, TIOCGWINSZ, &(opt->ws));
+	return (i);
 }

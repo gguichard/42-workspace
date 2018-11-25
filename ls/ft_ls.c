@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 16:38:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 21:41:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,80 +15,101 @@
 #include "libft.h"
 #include "ft_ls.h"
 
-static t_flist	*ls_path(t_opt *opt, char *path
-		, int (*cmp)(t_flist *, t_flist *))
+static t_flist	*ls_path(t_opt *opt, t_flist *folder)
 {
 	DIR				*dir;
 	t_flist			*lst;
+	t_flist			*next;
 	struct dirent	*data;
-	char			*f_path;
+	t_flist			*file;
+	t_flist			*tmp;
 
-	if (!(dir = opendir(path)))
+	if (!(dir = opendir(folder->path)))
 	{
-		file_error(path);
+		file_error((folder->name == NULL) ? "" : folder->name);
 		return (NULL);
 	}
 	lst = NULL;
+	next = folder->next;
+	folder->next = NULL;
 	while ((data = readdir(dir)) != NULL)
 	{
 		if ((data->d_name)[0] == '.' && !(opt->options & HID_OPT))
 			continue ;
-		f_path = get_path(path, data->d_name);
-		flist_add(&lst, data->d_name, f_path, cmp);
+		if (!(file = flist_add(&lst, data->d_name, folder->path)))
+			return (flist_clean(lst));
+		if (opt->options & REC_OPT && S_ISDIR(file->stat.st_mode)
+				&& !ft_strequ(file->name, ".") && !ft_strequ(file->name, ".."))
+		{
+			if (!(tmp = flist_dircopy(file)))
+				return (flist_clean(lst));
+			flist_sort_insert(&(folder->next), tmp, opt->cmp);
+		}
 	}
 	closedir(dir);
+	flist_push_back(&(folder->next), next);
 	return (lst);
 }
 
-static void		ls(t_opt *opt, char *path, void (*f)(t_opt *, t_flist *)
-		, int (*cmp)(t_flist *, t_flist *))
+static void		ls(t_opt *opt, t_flist *folder, void (*f)(t_opt *, t_flist *))
 {
 	t_flist	*lst;
 
-	lst = ls_path(opt, path, cmp);
+	lst = ls_path(opt, folder);
+	if (opt->loops > 0)
+		ft_printf("\n%s:\n", folder->path);
 	if (lst != NULL)
-		f(opt, lst);
-	if (opt->options & REC_OPT)
 	{
-		while (lst != NULL)
-		{
-			if (S_ISDIR(lst->stat->st_mode) && (lst->name)[0] != '.')
-			{
-				ft_printf("\n%s:\n", lst->path);
-				ls(opt, lst->path, f, cmp);
-			}
-			lst = lst->next;
-		}
+		lst = flist_sort(lst, opt->cmp);
+		f(opt, lst);
+		flist_clean(lst);
 	}
 }
 
 int				main(int argc, char **argv)
 {
 	t_opt	opt;
-	int		index;
+	int		offset;
 	void	(*f)(t_opt *, t_flist *);
-	int		(*cmp)(t_flist *, t_flist *);
+	t_flist	*tmp;
 
-	parse_options(&opt, argc, argv);
-	if (opt.options & COL_OPT
-		|| (isatty(STDOUT_FILENO) && !(opt.options & LST_OPT)))
-		f = &show_columns;
-	else
-		f = &show_simple;
+	offset = parse_options(&opt, argc, argv);
 	if (opt.options & SRT_OPT)
-		cmp = (opt.options & REV_OPT) ? &sort_by_time_asc : &sort_by_time_desc;
+		opt.cmp = &sort_desc_time;
 	else
-		cmp = (opt.options & REV_OPT) ? &sort_by_name_desc : &sort_by_name_asc;
-	index = 0;
-	while ((opt.files)[index] != NULL)
+		opt.cmp = &sort_asc_name;
+	if (opt.options & LST_OPT
+			|| opt.options & ONE_OPT
+			|| (!isatty(STDOUT_FILENO) && !(opt.options & COL_OPT)))
+		f = &show_simple;
+	else
 	{
-		if (opt.f_count > 1 && !(opt.options & REC_OPT))
-			ft_printf("%s:\n", (opt.files)[index]);
-		ls(&opt, (opt.files)[index], f, cmp);
-		if (opt.f_count > 1 && !(opt.options & REC_OPT)
-				&& (opt.files)[index + 1] != NULL)
-			ft_printf("\n");
-		index++;
+		if (ioctl(0, TIOCGWINSZ, &(opt.ws)) < 0)
+		{
+			ft_dprintf(2, "ft_ls: unable to get term size\n");
+			return (1);
+		}
+		f = &show_columns;
+	}
+	opt.files = NULL;
+	if (offset >= argc)
+		flist_add(&(opt.files), NULL, ".");
+	while (offset < argc)
+	{
+		flist_add(&(opt.files), NULL, argv[offset]);
+		offset++;
+	}
+	opt.files = flist_sort(opt.files, opt.cmp);
+	opt.loops = 0;
+	while (opt.files != NULL)
+	{
+		if (opt.loops == 0 && opt.files->next != NULL)
+			ft_printf("%s:\n", opt.files->path);
+		ls(&opt, opt.files, f);
+		tmp = opt.files->next;
+		flist_free_elem(opt.files);
+		opt.files = tmp;
+		(opt.loops)++;
 	}
 	return (0);
 }

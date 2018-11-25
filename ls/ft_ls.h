@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 16:33:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/25 21:36:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,60 +30,59 @@
 # define COL_OPT ((long)1 << 28)
 # define REC_OPT ((long)1 << 43)
 # define REV_OPT ((long)1 << 17)
+# define ONE_OPT ((long)1 << 53)
 
-typedef struct	s_opt
-{
-	int				f_count;
-	char			**files;
-	long			options;
-	struct winsize	ws;
-}				t_opt;
-
-typedef struct	s_flist
+typedef struct		s_flist
 {
 	char			*name;
 	char			*path;
-	struct stat		*stat;
-	char			*link;
+	struct stat		stat;
 	char			*pw_name;
 	char			*gr_name;
 	struct s_flist	*next;
-}				t_flist;
+}					t_flist;
 
-typedef struct	s_out
+typedef struct		s_opt
 {
-	int			cols;
-	int			rows;
-	int			size;
-	int			f_count;
-	int			f_width;
-}				t_out;
+	long			options;
+	int				(*cmp)(t_flist *, t_flist *);
+	int				loops;
+	struct s_flist	*files;
+	struct winsize	ws;
+}					t_opt;
 
-typedef struct	s_pad
+typedef struct		s_out
 {
-	int			links;
-	int			user;
-	int			group;
-	int			size;
-}				t_pad;
+	int				cols;
+	int				rows;
+	int				size;
+	int				w_file;
+	int				w_links;
+	int				w_user;
+	int				w_group;
+	int				w_size;
+}					t_out;
 
 long			opt_mask(char c);
 void			file_error(const char *file);
-void			malloc_error(void);
 char			*get_path(const char *dir, const char *file);
 
 char			f_type(mode_t st_mode);
 char			f_perm(mode_t mode, int perm);
 
-void			parse_options(t_opt *opt, int argc, char **argv);
+int				parse_options(t_opt *opt, int argc, char **argv);
 
-int				sort_by_name_asc(t_flist *f1, t_flist *f2);
-int				sort_by_name_desc(t_flist *f1, t_flist *f2);
-int				sort_by_time_asc(t_flist *f1, t_flist *f2);
-int				sort_by_time_desc(t_flist *f1, t_flist *f2);
+int				sort_asc_name(t_flist *f1, t_flist *f2);
+int				sort_desc_time(t_flist *f1, t_flist *f2);
 
-t_flist			*flist_add(t_flist **lst, char *name, char *path
-		, int (*cmp)(t_flist *f1, t_flist *f2));
+t_flist			*flist_free_elem(t_flist *elem);
+t_flist			*flist_clean(t_flist *lst);
+t_flist			*flist_dircopy(t_flist *file);
+t_flist			*flist_add(t_flist **lst, const char *name, const char *path);
+t_flist			*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *));
+void			flist_push_back(t_flist **lst, t_flist *elem);
+void			flist_sort_insert(t_flist **lst, t_flist *elem
+		, int (*cmp)(t_flist *, t_flist *));
 
 void			show_columns(t_opt *opt, t_flist *lst);
 void			show_simple(t_opt *opt, t_flist *lst);
