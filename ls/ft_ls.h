@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/25 22:55:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/26 15:19:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ typedef struct		s_flist
 	struct stat		stat;
 	char			*pw_name;
 	char			*gr_name;
+	char			*date;
+	char			*link;
 	struct s_flist	*next;
 }					t_flist;
 
@@ -56,38 +58,38 @@ typedef struct		s_out
 	int				cols;
 	int				rows;
 	int				size;
+	int				total_blocks;
 	int				w_file;
 	int				w_links;
 	int				w_user;
 	int				w_group;
 	int				w_size;
+	int				w_date;
 }					t_out;
 
-long			opt_mask(char c);
-void			file_error(const char *file);
-char			*get_path(const char *dir, const char *file);
+long				opt_mask(char c);
+void				file_error(const char *file);
+char				*get_path(const char *dir, const char *file);
 
-char			f_type(mode_t st_mode);
-char			f_perm(mode_t mode, int perm);
+char				f_type(mode_t st_mode);
+char				f_perm(mode_t mode, int perm);
 
-int				parse_options(t_opt *opt, int argc, char **argv);
+int					parse_options(t_opt *opt, int argc, char **argv);
 
-int				sort_asc_name(t_flist *f1, t_flist *f2);
-int				sort_desc_time(t_flist *f1, t_flist *f2);
+int					sort_asc_name(t_flist *f1, t_flist *f2);
+int					sort_desc_name(t_flist *f1, t_flist *f2);
+int					sort_asc_time(t_flist *f1, t_flist *f2);
+int					sort_desc_time(t_flist *f1, t_flist *f2);
 
-t_flist			*flist_create_elem(void);
-t_flist			*flist_free_elem(t_flist *elem);
-t_flist			*flist_clean(t_flist *lst);
-int				flist_stat(t_flist *file);
-t_flist			*flist_diradd(t_flist **lst, const char *path
-		, int (*cmp)(t_flist *, t_flist *));
-t_flist			*flist_add(t_flist **lst, const char *name, const char *path);
-t_flist			*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *));
-void			flist_push_back(t_flist **lst, t_flist *elem);
-void			flist_sort_insert(t_flist **lst, t_flist *elem
+t_flist				*flist_create_elem(void);
+t_flist				*flist_free_elem(t_flist *elem);
+t_flist				*flist_clean(t_flist *lst);
+t_flist				*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *));
+void				flist_push_back(t_flist **lst, t_flist *elem);
+void				flist_sort_insert(t_flist **lst, t_flist *elem
 		, int (*cmp)(t_flist *, t_flist *));
 
-void			show_columns(t_opt *opt, t_flist *lst);
-void			show_simple(t_opt *opt, t_flist *lst);
+void				show_columns(t_opt *opt, t_flist *lst);
+void				show_list(t_opt *opt, t_flist *lst);
 
 #endif

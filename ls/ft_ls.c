@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/25 23:08:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/26 16:25:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,60 @@
 #include "libft.h"
 #include "ft_ls.h"
 
+static t_flist	*ls_dir(t_opt *opt, t_flist **lst, const char *path)
+{
+	t_flist			*file;
+	struct passwd	*passwd;
+	struct group	*group;
+
+	if (!(file = flist_create_elem())
+			|| !(file->name = ft_strdup(path))
+			|| !(file->path = ft_strdup(path)))
+		return (flist_free_elem(file));
+	if (lstat(file->path, &(file->stat)) < 0)
+	{
+		file_error(path);
+		return (flist_free_elem(file));
+	}
+	if (S_ISDIR(file->stat.st_mode))
+	{
+		flist_sort_insert(lst, file, opt->cmp);
+	}
+	else if (opt->options & LST_OPT)
+	{
+		if (!(passwd = getpwuid(file->stat.st_uid))
+				|| !(group = getgrgid(file->stat.st_gid)))
+			return (flist_free_elem(file));
+		file->pw_name = ft_strdup(passwd->pw_name);
+		file->gr_name = ft_strdup(group->gr_name);
+	}
+	return (file);
+}
+
+static t_flist	*ls_file(t_opt *opt, t_flist **lst
+		, const char *path, const char *name)
+{
+	t_flist			*file;
+	struct passwd	*passwd;
+	struct group	*group;
+
+	if (!(file = flist_create_elem())
+			|| !(file->name = ft_strdup(name))
+			|| !(file->path = get_path(path, name))
+			|| lstat(file->path, &(file->stat)) < 0)
+		return (flist_free_elem(file));
+	if (opt->options & LST_OPT)
+	{
+		if (!(passwd = getpwuid(file->stat.st_uid))
+				|| !(group = getgrgid(file->stat.st_gid)))
+			return (flist_free_elem(file));
+		file->pw_name = ft_strdup(passwd->pw_name);
+		file->gr_name = ft_strdup(group->gr_name);
+	}
+	flist_sort_insert(lst, file, opt->cmp);
+	return (file);
+}
+
 static t_flist	*ls_path(t_opt *opt, t_flist *folder)
 {
 	DIR				*dir;
@@ -23,7 +77,6 @@ static t_flist	*ls_path(t_opt *opt, t_flist *folder)
 	t_flist			*next;
 	struct dirent	*data;
 	t_flist			*file;
-	t_flist			*tmp;
 
 	if (!(dir = opendir(folder->path)))
 	{
@@ -37,15 +90,12 @@ static t_flist	*ls_path(t_opt *opt, t_flist *folder)
 	{
 		if ((data->d_name)[0] == '.' && !(opt->options & HID_OPT))
 			continue ;
-		if (!(file = flist_add(&lst, data->d_name, folder->path)))
-			return (flist_clean(lst));
+		if (!(file = ls_file(opt, &lst, folder->path, data->d_name)))
+			continue ;
 		if (opt->options & REC_OPT && S_ISDIR(file->stat.st_mode)
 				&& !ft_strequ(file->name, ".")
 				&& !ft_strequ(file->name, ".."))
-		{
-			if (!(tmp = flist_add(&(folder->next), file->path)))
-				return (flist_clean(lst));
-		}
+			ls_dir(opt, &(folder->next), file->path);
 	}
 	closedir(dir);
 	flist_push_back(&(folder->next), next);
@@ -60,6 +110,10 @@ static void		ls(t_opt *opt, t_flist *folder, void (*f)(t_opt *, t_flist *))
 	lst = ls_path(opt, folder);
 	if (errno != ENOENT && opt->loops > 0)
 		ft_printf("\n%s:\n", folder->path);
+	else if (errno != ENOENT
+			&& opt->loops == 0 && folder->next != NULL
+			&& !(opt->options & REC_OPT))
+		ft_printf("%s:\n", folder->path);
 	if (lst != NULL)
 	{
 		lst = flist_sort(lst, opt->cmp);
@@ -74,16 +128,17 @@ int				main(int argc, char **argv)
 	int		offset;
 	void	(*f)(t_opt *, t_flist *);
 	t_flist	*tmp;
+	t_flist	*files;
 
 	offset = parse_options(&opt, argc, argv);
 	if (opt.options & SRT_OPT)
-		opt.cmp = &sort_desc_time;
+		opt.cmp = (opt.options & REV_OPT) ? &sort_asc_time : &sort_desc_time;
 	else
-		opt.cmp = &sort_asc_name;
+		opt.cmp = (opt.options & REV_OPT) ? &sort_desc_name : &sort_asc_name;
 	if (opt.options & LST_OPT
 			|| opt.options & ONE_OPT
 			|| (!isatty(STDOUT_FILENO) && !(opt.options & COL_OPT)))
-		f = &show_simple;
+		f = &show_list;
 	else
 	{
 		if (ioctl(0, TIOCGWINSZ, &(opt.ws)) < 0)
@@ -94,14 +149,27 @@ int				main(int argc, char **argv)
 		f = &show_columns;
 	}
 	opt.files = NULL;
+	opt.loops = 0;
 	if (offset >= argc)
-		flist_diradd(&(opt.files), ".", opt.cmp);
+		ls_dir(&opt, &(opt.files), ".");
+	files = NULL;
 	while (offset < argc)
 	{
-		flist_diradd(&(opt.files), argv[offset], opt.cmp);
+		tmp = ls_dir(&opt, &(opt.files), argv[offset]);
+		if (!S_ISDIR(tmp->stat.st_mode))
+		{
+			tmp->next = files;
+			files = tmp;
+		}
 		offset++;
 	}
-	opt.loops = 0;
+	if (files != NULL)
+	{
+		files = flist_sort(files, opt.cmp);
+		f(&opt, files);
+		flist_clean(files);
+		(opt.loops)++;
+	}
 	while (opt.files != NULL)
 	{
 		ls(&opt, opt.files, f);

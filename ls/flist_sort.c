@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/25 15:50:46 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/25 18:55:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/26 08:52:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_flist			*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *))
 	return (flist_merge_sort(left, right, cmp));
 }
 
-void		flist_push_back(t_flist **lst, t_flist *elem)
+void			flist_push_back(t_flist **lst, t_flist *elem)
 {
 	t_flist	*current;
 
@@ -83,7 +83,7 @@ void		flist_push_back(t_flist **lst, t_flist *elem)
 	}
 }
 
-void		flist_sort_insert(t_flist **lst, t_flist *elem
+void			flist_sort_insert(t_flist **lst, t_flist *elem
 		, int (*cmp)(t_flist *, t_flist *))
 {
 	t_flist	*previous;
