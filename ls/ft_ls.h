@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 15:19:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/26 23:18:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@
 
 typedef struct		s_flist
 {
-	char			*name;
 	char			*path;
+	char			*name;
 	struct stat		stat;
 	char			*pw_name;
 	char			*gr_name;
@@ -69,6 +69,7 @@ typedef struct		s_out
 
 long				opt_mask(char c);
 void				file_error(const char *file);
+void				exit_error(const char *err);
 char				*get_path(const char *dir, const char *file);
 
 char				f_type(mode_t st_mode);
@@ -85,8 +86,9 @@ t_flist				*flist_create_elem(void);
 t_flist				*flist_free_elem(t_flist *elem);
 t_flist				*flist_clean(t_flist *lst);
 t_flist				*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *));
-void				flist_push_back(t_flist **lst, t_flist *elem);
-void				flist_sort_insert(t_flist **lst, t_flist *elem
+void				flist_add(t_flist **lst, t_flist *file);
+void				flist_push_back(t_flist **lst, t_flist *file);
+void				flist_sort_insert(t_flist **lst, t_flist *file
 		, int (*cmp)(t_flist *, t_flist *));
 
 void				show_columns(t_opt *opt, t_flist *lst);

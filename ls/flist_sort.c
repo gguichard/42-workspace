@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/25 15:50:46 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 08:52:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/26 23:11:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,7 @@ t_flist			*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *))
 	return (flist_merge_sort(left, right, cmp));
 }
 
-void			flist_push_back(t_flist **lst, t_flist *elem)
-{
-	t_flist	*current;
-
-	current = *lst;
-	if (current == NULL)
-		*lst = elem;
-	else
-	{
-		while (current->next != NULL)
-			current = current->next;
-		current->next = elem;
-	}
-}
-
-void			flist_sort_insert(t_flist **lst, t_flist *elem
+void			flist_sort_insert(t_flist **lst, t_flist *file
 		, int (*cmp)(t_flist *, t_flist *))
 {
 	t_flist	*previous;
@@ -93,14 +78,14 @@ void			flist_sort_insert(t_flist **lst, t_flist *elem
 	current = *lst;
 	while (current != NULL)
 	{
-		if (cmp(current, elem) >= 0)
+		if (cmp(current, file) >= 0)
 			break ;
 		previous = current;
 		current = current->next;
 	}
-	elem->next = current;
+	file->next = current;
 	if (previous == NULL)
-		*lst = elem;
+		*lst = file;
 	else
-		previous->next = elem;
+		previous->next = file;
 }

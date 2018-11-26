@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 16:25:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/26 23:49:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,23 @@
 #include "libft.h"
 #include "ft_ls.h"
 
-static t_flist	*ls_dir(t_opt *opt, t_flist **lst, const char *path)
+static t_flist	*load_file(t_opt *opt, const char *path, const char *name)
 {
 	t_flist			*file;
 	struct passwd	*passwd;
 	struct group	*group;
 
 	if (!(file = flist_create_elem())
-			|| !(file->name = ft_strdup(path))
-			|| !(file->path = ft_strdup(path)))
+			|| !(file->path = get_path(path, name)))
+		return (flist_free_elem(file));
+	if (!(file->name = ft_strdup(name == NULL ? "" : name)))
 		return (flist_free_elem(file));
 	if (lstat(file->path, &(file->stat)) < 0)
 	{
 		file_error(path);
 		return (flist_free_elem(file));
 	}
-	if (S_ISDIR(file->stat.st_mode))
-	{
-		flist_sort_insert(lst, file, opt->cmp);
-	}
-	else if (opt->options & LST_OPT)
+	if (!S_ISDIR(file->stat.st_mode) && opt->options & LST_OPT)
 	{
 		if (!(passwd = getpwuid(file->stat.st_uid))
 				|| !(group = getgrgid(file->stat.st_gid)))
@@ -43,30 +40,6 @@ static t_flist	*ls_dir(t_opt *opt, t_flist **lst, const char *path)
 		file->pw_name = ft_strdup(passwd->pw_name);
 		file->gr_name = ft_strdup(group->gr_name);
 	}
-	return (file);
-}
-
-static t_flist	*ls_file(t_opt *opt, t_flist **lst
-		, const char *path, const char *name)
-{
-	t_flist			*file;
-	struct passwd	*passwd;
-	struct group	*group;
-
-	if (!(file = flist_create_elem())
-			|| !(file->name = ft_strdup(name))
-			|| !(file->path = get_path(path, name))
-			|| lstat(file->path, &(file->stat)) < 0)
-		return (flist_free_elem(file));
-	if (opt->options & LST_OPT)
-	{
-		if (!(passwd = getpwuid(file->stat.st_uid))
-				|| !(group = getgrgid(file->stat.st_gid)))
-			return (flist_free_elem(file));
-		file->pw_name = ft_strdup(passwd->pw_name);
-		file->gr_name = ft_strdup(group->gr_name);
-	}
-	flist_sort_insert(lst, file, opt->cmp);
 	return (file);
 }
 
@@ -80,7 +53,7 @@ static t_flist	*ls_path(t_opt *opt, t_flist *folder)
 
 	if (!(dir = opendir(folder->path)))
 	{
-		file_error((folder->name == NULL) ? "" : folder->name);
+		file_error(folder->name);
 		return (NULL);
 	}
 	lst = NULL;
@@ -90,12 +63,15 @@ static t_flist	*ls_path(t_opt *opt, t_flist *folder)
 	{
 		if ((data->d_name)[0] == '.' && !(opt->options & HID_OPT))
 			continue ;
-		if (!(file = ls_file(opt, &lst, folder->path, data->d_name)))
-			continue ;
+		if (!(file = load_file(opt, folder->path, data->d_name)))
+			return (flist_clean(lst));
+		flist_add(&lst, file);
 		if (opt->options & REC_OPT && S_ISDIR(file->stat.st_mode)
 				&& !ft_strequ(file->name, ".")
 				&& !ft_strequ(file->name, ".."))
-			ls_dir(opt, &(folder->next), file->path);
+			flist_sort_insert(&(folder->next)
+					, load_file(opt, folder->path, data->d_name)
+					, opt->cmp);
 	}
 	closedir(dir);
 	flist_push_back(&(folder->next), next);
@@ -142,25 +118,33 @@ int				main(int argc, char **argv)
 	else
 	{
 		if (ioctl(0, TIOCGWINSZ, &(opt.ws)) < 0)
-		{
-			ft_dprintf(2, "ft_ls: unable to get term size\n");
-			return (1);
-		}
+			exit_error("unable to get term size");
 		f = &show_columns;
 	}
 	opt.files = NULL;
 	opt.loops = 0;
 	if (offset >= argc)
-		ls_dir(&opt, &(opt.files), ".");
+	{
+		if (!(tmp = load_file(&opt, ".", NULL)))
+		{
+			flist_clean(opt.files);
+			exit_error("malloc error");
+		}
+		flist_add(&(opt.files), tmp);
+	}
 	files = NULL;
 	while (offset < argc)
 	{
-		tmp = ls_dir(&opt, &(opt.files), argv[offset]);
-		if (!S_ISDIR(tmp->stat.st_mode))
+		if (!(tmp = load_file(&opt, argv[offset], NULL)))
 		{
-			tmp->next = files;
-			files = tmp;
+			flist_clean(opt.files);
+			exit_error("malloc error");
 		}
+		tmp->name = ft_strdup(argv[offset]);
+		if (!S_ISDIR(tmp->stat.st_mode))
+			flist_add(&files, tmp);
+		else
+			flist_add(&(opt.files), tmp);
 		offset++;
 	}
 	if (files != NULL)
