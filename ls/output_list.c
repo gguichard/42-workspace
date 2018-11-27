@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 09:27:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 15:15:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 07:34:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ static void	prepare_list(t_out *out, t_flist *lst)
 		out->total_blocks += lst->stat.st_blocks;
 		lst->date = format_date(lst, now);
 		out->w_links = ft_max(ft_llsize(lst->stat.st_nlink), out->w_links);
-		out->w_user = ft_max(ft_strlen(lst->pw_name), out->w_user);
-		out->w_group = ft_max(ft_strlen(lst->gr_name), out->w_group);
+		if (lst->pw_name != NULL)
+			out->w_user = ft_max(ft_strlen(lst->pw_name), out->w_user);
+		if (lst->gr_name != NULL)
+			out->w_group = ft_max(ft_strlen(lst->gr_name), out->w_group);
 		out->w_size = ft_max(ft_llsize(lst->stat.st_size), out->w_size);
 		out->w_date = ft_max(ft_strlen(lst->date), out->w_date);
 		lst = lst->next;

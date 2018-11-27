@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 23:49:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 07:39:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ static t_flist	*load_file(t_opt *opt, const char *path, const char *name)
 	if (!(file = flist_create_elem())
 			|| !(file->path = get_path(path, name)))
 		return (flist_free_elem(file));
-	if (!(file->name = ft_strdup(name == NULL ? "" : name)))
+	if (name != NULL && !(file->name = ft_strdup(name)))
 		return (flist_free_elem(file));
 	if (lstat(file->path, &(file->stat)) < 0)
 	{
 		file_error(path);
 		return (flist_free_elem(file));
 	}
-	if (!S_ISDIR(file->stat.st_mode) && opt->options & LST_OPT)
+	if (opt->options & LST_OPT)
 	{
 		if (!(passwd = getpwuid(file->stat.st_uid))
 				|| !(group = getgrgid(file->stat.st_gid)))
@@ -125,34 +125,31 @@ int				main(int argc, char **argv)
 	opt.loops = 0;
 	if (offset >= argc)
 	{
-		if (!(tmp = load_file(&opt, ".", NULL)))
-		{
-			flist_clean(opt.files);
-			exit_error("malloc error");
-		}
-		flist_add(&(opt.files), tmp);
-	}
-	files = NULL;
-	while (offset < argc)
-	{
-		if (!(tmp = load_file(&opt, argv[offset], NULL)))
-		{
-			flist_clean(opt.files);
-			exit_error("malloc error");
-		}
-		tmp->name = ft_strdup(argv[offset]);
-		if (!S_ISDIR(tmp->stat.st_mode))
-			flist_add(&files, tmp);
-		else
+		if ((tmp = load_file(&opt, ".", NULL)) != NULL)
 			flist_add(&(opt.files), tmp);
-		offset++;
 	}
-	if (files != NULL)
+	else
 	{
-		files = flist_sort(files, opt.cmp);
-		f(&opt, files);
-		flist_clean(files);
-		(opt.loops)++;
+		files = NULL;
+		while (offset < argc)
+		{
+			if ((tmp = load_file(&opt, argv[offset], NULL)) != NULL)
+			{
+				tmp->name = ft_strdup(argv[offset]);
+				if (!S_ISDIR(tmp->stat.st_mode))
+					flist_add(&files, tmp);
+				else
+					flist_add(&(opt.files), tmp);
+			}
+			offset++;
+		}
+		if (files != NULL)
+		{
+			files = flist_sort(files, opt.cmp);
+			f(&opt, files);
+			flist_clean(files);
+			(opt.loops)++;
+		}
 	}
 	while (opt.files != NULL)
 	{
