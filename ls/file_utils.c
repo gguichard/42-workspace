@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/24 11:34:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 15:02:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 09:30:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "ft_ls.h"
 
-char	f_type(mode_t st_mode)
+char	file_type(mode_t st_mode)
 {
 	if (S_ISBLK(st_mode))
 		return ('b');
@@ -30,13 +30,19 @@ char	f_type(mode_t st_mode)
 	return ('-');
 }
 
-char	f_perm(mode_t mode, int perm)
+char	*file_permissions(mode_t mode, int shift)
 {
-	if (perm == 4 && mode & 4)
-		return ('r');
-	if (perm == 2 && mode & 2)
-		return ('w');
-	if (perm == 1 && mode & 1)
-		return ('x');
-	return ('-');
+	static char	out[3][4];
+	static int	index = -1;
+
+	index++;
+	if (index == 3)
+		index = 0;
+	out[index][3] = '\0';
+	out[index][0] = ((mode >> shift) & 4) ? 'r' : '-';
+	out[index][1] = ((mode >> shift) & 2) ? 'w' : '-';
+	out[index][2] = ((mode >> shift) & 1) ? 'x' : '-';
+	if ((shift == 6 && mode & S_ISUID) || (shift == 3 && mode & S_ISGID))
+		out[index][2] = !((mode >> shift) & 1) ? 'S' : 's';
+	return (out[index]);
 }

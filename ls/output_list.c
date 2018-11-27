@@ -6,24 +6,26 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 09:27:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 07:34:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 14:17:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include <stdlib.h>
 #include <time.h>
 #include "libft.h"
 #include "ft_ls.h"
 
-static char	*format_date(t_flist *lst, time_t now)
+static char	*format_date(t_flist *file, time_t now)
 {
 	long long	diff;
 	char		*tmp;
 	char		*date;
 
-	diff = now - lst->stat.st_mtime;
+	diff = now - file->stat.st_mtime;
 	if (diff < 0)
 		diff = -diff;
-	tmp = ctime(&(lst->stat.st_mtime));
+	tmp = ctime(&(file->stat.st_mtime));
 	if (diff <= 15811200)
 		return (ft_strndup(tmp + 4, 12));
 	ft_asprintf(&date, "%.7s%.5s", tmp + 4, tmp + 19);
@@ -56,28 +58,31 @@ static void	prepare_list(t_out *out, t_flist *lst)
 	}
 }
 
-static void	show_list_details(t_flist *lst)
+static void	show_list_details(t_opt *opt, t_flist *lst)
 {
 	t_out	out;
 	mode_t	mode;
 
 	prepare_list(&out, lst);
-	ft_printf("total %d\n", out.total_blocks);
+	if (opt->show_total)
+		ft_printf("total %d\n", out.total_blocks);
 	while (lst != NULL)
 	{
 		mode = lst->stat.st_mode;
-		ft_printf("%c%c%c%c%c%c%c%c%c%c%c %*d %-*s  %-*s  %*d %s %s\n"
-				, f_type(mode)
-				, f_perm(mode >> 6, 4), f_perm(mode >> 6, 2), f_perm(mode >> 6, 1)
-				, f_perm(mode >> 3, 4), f_perm(mode >> 3, 2), f_perm(mode >> 3, 1)
-				, f_perm(mode, 4), f_perm(mode, 2), f_perm(mode, 1)
+		ft_printf("%c%s%s%s%c %*d %-*s  %-*s  %*d %s %s%s%s\n"
+				, file_type(mode)
+				, file_permissions(mode, 6)
+				, file_permissions(mode, 3)
+				, file_permissions(mode, 0)
 				, ' '
 				, out.w_links, lst->stat.st_nlink
 				, out.w_user, lst->pw_name
 				, out.w_group, lst->gr_name
 				, out.w_size, lst->stat.st_size
 				, lst->date
-				, lst->name);
+				, lst->name
+				, lst->link != NULL ? " -> " : ""
+				, lst->link != NULL ? lst->link : "");
 		lst = lst->next;
 	}
 }
@@ -85,7 +90,7 @@ static void	show_list_details(t_flist *lst)
 void		show_list(t_opt *opt, t_flist *lst)
 {
 	if (opt->options & LST_OPT)
-		show_list_details(lst);
+		show_list_details(opt, lst);
 	else
 	{
 		while (lst != NULL)

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/23 08:54:00 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/26 09:48:42 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/27 14:52:32 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ $(NAME): $(LIBFT) $(OBJ)
 $(LIBFT):
 	$(MAKE) -C libft
 
-%.o: %.c
+%.o: %.c ft_ls.h
 	$(CC) $(CFLAGS) -I libft/includes/ -o $@ -c $<
 
 clean:

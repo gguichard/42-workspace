@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 11:56:27 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 19:54:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 16:21:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_flist	*flist_create_elem(void)
 		return (NULL);
 	file->path = NULL;
 	file->name = NULL;
+	file->is_dir = 0;
 	file->pw_name = NULL;
 	file->gr_name = NULL;
 	file->date = NULL;

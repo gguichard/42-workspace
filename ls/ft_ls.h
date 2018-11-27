@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 23:18:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 16:29:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct		s_flist
 	char			*path;
 	char			*name;
 	struct stat		stat;
+	int				is_dir;
 	char			*pw_name;
 	char			*gr_name;
 	char			*date;
@@ -49,8 +50,10 @@ typedef struct		s_opt
 	long			options;
 	int				(*cmp)(t_flist *, t_flist *);
 	int				loops;
+	int				total;
 	struct s_flist	*files;
 	struct winsize	ws;
+	int				show_total;
 }					t_opt;
 
 typedef struct		s_out
@@ -72,8 +75,8 @@ void				file_error(const char *file);
 void				exit_error(const char *err);
 char				*get_path(const char *dir, const char *file);
 
-char				f_type(mode_t st_mode);
-char				f_perm(mode_t mode, int perm);
+char				file_type(mode_t st_mode);
+char				*file_permissions(mode_t mode, int shift);
 
 int					parse_options(t_opt *opt, int argc, char **argv);
 

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 07:39:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 16:42:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static t_flist	*load_file(t_opt *opt, const char *path, const char *name)
 	t_flist			*file;
 	struct passwd	*passwd;
 	struct group	*group;
+	struct stat		link_data;
 
 	if (!(file = flist_create_elem())
 			|| !(file->path = get_path(path, name)))
@@ -32,13 +33,23 @@ static t_flist	*load_file(t_opt *opt, const char *path, const char *name)
 		file_error(path);
 		return (flist_free_elem(file));
 	}
+	file->is_dir = S_ISDIR(file->stat.st_mode);
+	if (S_ISLNK(file->stat.st_mode))
+	{
+		if (!(file->link = ft_strnew(file->stat.st_size)))
+			return (flist_free_elem(file));
+		if (readlink(file->path, file->link, file->stat.st_size) < 0)
+			return (flist_free_elem(file));
+		if (stat(file->link, &link_data) != -1 && S_ISDIR(link_data.st_mode))
+			file->is_dir = 1;
+	}
 	if (opt->options & LST_OPT)
 	{
 		if (!(passwd = getpwuid(file->stat.st_uid))
-				|| !(group = getgrgid(file->stat.st_gid)))
+				|| !(group = getgrgid(file->stat.st_gid))
+				|| !(file->pw_name = ft_strdup(passwd->pw_name))
+				|| !(file->gr_name = ft_strdup(group->gr_name)))
 			return (flist_free_elem(file));
-		file->pw_name = ft_strdup(passwd->pw_name);
-		file->gr_name = ft_strdup(group->gr_name);
 	}
 	return (file);
 }
@@ -86,9 +97,7 @@ static void		ls(t_opt *opt, t_flist *folder, void (*f)(t_opt *, t_flist *))
 	lst = ls_path(opt, folder);
 	if (errno != ENOENT && opt->loops > 0)
 		ft_printf("\n%s:\n", folder->path);
-	else if (errno != ENOENT
-			&& opt->loops == 0 && folder->next != NULL
-			&& !(opt->options & REC_OPT))
+	else if (errno != ENOENT && opt->total > 1)
 		ft_printf("%s:\n", folder->path);
 	if (lst != NULL)
 	{
@@ -121,12 +130,17 @@ int				main(int argc, char **argv)
 			exit_error("unable to get term size");
 		f = &show_columns;
 	}
+	opt.total = 0;
 	opt.files = NULL;
 	opt.loops = 0;
+	opt.show_total = 1;
 	if (offset >= argc)
 	{
 		if ((tmp = load_file(&opt, ".", NULL)) != NULL)
+		{
 			flist_add(&(opt.files), tmp);
+			(opt.total)++;
+		}
 	}
 	else
 	{
@@ -136,17 +150,23 @@ int				main(int argc, char **argv)
 			if ((tmp = load_file(&opt, argv[offset], NULL)) != NULL)
 			{
 				tmp->name = ft_strdup(argv[offset]);
-				if (!S_ISDIR(tmp->stat.st_mode))
+				if (!tmp->is_dir)
 					flist_add(&files, tmp);
 				else
+				{
 					flist_add(&(opt.files), tmp);
+					(opt.total)++;
+				}
 			}
 			offset++;
 		}
+		opt.files = flist_sort(opt.files, opt.cmp);
 		if (files != NULL)
 		{
 			files = flist_sort(files, opt.cmp);
+			opt.show_total = 0;
 			f(&opt, files);
+			opt.show_total = 1;
 			flist_clean(files);
 			(opt.loops)++;
 		}
