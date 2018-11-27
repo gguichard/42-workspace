@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 16:29:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 22:47:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,13 @@ typedef struct		s_flist
 
 typedef struct		s_opt
 {
+	int				offset;
 	long			options;
 	int				(*cmp)(t_flist *, t_flist *);
-	int				loops;
-	int				total;
+	void			(*print)(struct s_opt *, t_flist *);
 	struct s_flist	*files;
+	int				count;
+	int				loops;
 	struct winsize	ws;
 	int				show_total;
 }					t_opt;
@@ -67,18 +69,23 @@ typedef struct		s_out
 	int				w_user;
 	int				w_group;
 	int				w_size;
+	int				w_major;
+	int				w_minor;
 	int				w_date;
 }					t_out;
 
+void				parse_options(t_opt *opt, int argc, char **argv);
+
+t_flist				*load_file(t_opt *opt, const char *path, const char *name);
+void				ls(t_opt *opt, t_flist *folder);
+
 long				opt_mask(char c);
-void				file_error(const char *file);
-void				exit_error(const char *err);
+void				*file_error(const char *file);
+void				*str_error(const char *err);
 char				*get_path(const char *dir, const char *file);
 
 char				file_type(mode_t st_mode);
 char				*file_permissions(mode_t mode, int shift);
-
-int					parse_options(t_opt *opt, int argc, char **argv);
 
 int					sort_asc_name(t_flist *f1, t_flist *f2);
 int					sort_desc_name(t_flist *f1, t_flist *f2);

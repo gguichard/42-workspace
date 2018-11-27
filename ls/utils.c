@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 10:25:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 23:23:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 19:29:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,16 @@ long	opt_mask(char c)
 	return (0);
 }
 
-void	file_error(const char *file)
+void	*file_error(const char *file)
 {
 	ft_dprintf(2, "ft_ls: %s: %s\n", file, strerror(errno));
+	return (NULL);
 }
 
-void	exit_error(const char *err)
+void	*str_error(const char *err)
 {
 	ft_dprintf(2, "ft_ls: %s\n", err);
-	exit(1);
+	return (NULL);
 }
 
 char	*get_path(const char *dir, const char *file)

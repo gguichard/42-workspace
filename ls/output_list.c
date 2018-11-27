@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 09:27:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 14:17:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 22:58:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static void	prepare_list(t_out *out, t_flist *lst)
 	out->w_user = 0;
 	out->w_group = 0;
 	out->w_size = 0;
+	out->w_major = 0;
+	out->w_minor = 0;
 	out->w_date = 0;
 	while (lst != NULL)
 	{
@@ -52,6 +54,11 @@ static void	prepare_list(t_out *out, t_flist *lst)
 			out->w_user = ft_max(ft_strlen(lst->pw_name), out->w_user);
 		if (lst->gr_name != NULL)
 			out->w_group = ft_max(ft_strlen(lst->gr_name), out->w_group);
+		if (S_ISBLK(lst->stat.st_mode) || S_ISCHR(lst->stat.st_mode))
+		{
+			out->w_major = ft_max(ft_llsize(major(lst->stat.st_rdev)), out->w_major);
+			out->w_minor = ft_max(ft_llsize(minor(lst->stat.st_rdev)), out->w_minor);
+		}
 		out->w_size = ft_max(ft_llsize(lst->stat.st_size), out->w_size);
 		out->w_date = ft_max(ft_strlen(lst->date), out->w_date);
 		lst = lst->next;
@@ -69,20 +76,42 @@ static void	show_list_details(t_opt *opt, t_flist *lst)
 	while (lst != NULL)
 	{
 		mode = lst->stat.st_mode;
-		ft_printf("%c%s%s%s%c %*d %-*s  %-*s  %*d %s %s%s%s\n"
-				, file_type(mode)
-				, file_permissions(mode, 6)
-				, file_permissions(mode, 3)
-				, file_permissions(mode, 0)
-				, ' '
-				, out.w_links, lst->stat.st_nlink
-				, out.w_user, lst->pw_name
-				, out.w_group, lst->gr_name
-				, out.w_size, lst->stat.st_size
-				, lst->date
-				, lst->name
-				, lst->link != NULL ? " -> " : ""
-				, lst->link != NULL ? lst->link : "");
+		if (!S_ISBLK(lst->stat.st_mode) && !S_ISCHR(lst->stat.st_mode))
+		{
+			ft_printf("%c%s%s%s%c %*d %-*s  %-*s  %*d %s %s%s%s\n"
+					, file_type(mode)
+					, file_permissions(mode, 6)
+					, file_permissions(mode, 3)
+					, file_permissions(mode, 0)
+					, ' '
+					, out.w_links, lst->stat.st_nlink
+					, out.w_user, lst->pw_name
+					, out.w_group, lst->gr_name
+					, out.w_size, lst->stat.st_size
+					, lst->date
+					, lst->name
+					, lst->link != NULL ? " -> " : ""
+					, lst->link != NULL ? lst->link : "");
+		}
+		else
+		{
+			ft_printf("%c%s%s%s%c %*d %-*s  %-*s  %*ld, %*ld %s %s%s%s\n"
+					, file_type(mode)
+					, file_permissions(mode, 6)
+					, file_permissions(mode, 3)
+					, file_permissions(mode, 0)
+					, ' '
+					, out.w_links, lst->stat.st_nlink
+					, out.w_user, lst->pw_name
+					, out.w_group, lst->gr_name
+					, out.w_major, major(lst->stat.st_rdev)
+					, out.w_minor, minor(lst->stat.st_rdev)
+					, lst->date
+					, lst->name
+					, lst->link != NULL ? " -> " : ""
+					, lst->link != NULL ? lst->link : "");
+
+		}
 		lst = lst->next;
 	}
 }

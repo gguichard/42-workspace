@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/24 11:34:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 09:30:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/27 22:38:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,7 @@ char	*file_permissions(mode_t mode, int shift)
 	out[index][2] = ((mode >> shift) & 1) ? 'x' : '-';
 	if ((shift == 6 && mode & S_ISUID) || (shift == 3 && mode & S_ISGID))
 		out[index][2] = !((mode >> shift) & 1) ? 'S' : 's';
+	if (shift == 0 && mode & S_ISVTX)
+		out[index][2] = !(mode & 1) ? 'T' : 't';
 	return (out[index]);
 }
