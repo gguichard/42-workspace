@@ -6,16 +6,16 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/23 08:54:00 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/27 19:20:53 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/28 09:23:41 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= 	ft_ls
 
-SRC		= 	main.c options.c ft_ls.c \
-			output.c output_list.c sort_types.c \
-			flist.c flist_sort.c files.c \
-			file_utils.c utils.c
+SRC		= 	src/main.c src/options.c src/ft_ls.c \
+			src/output.c src/output_columns.c src/output_list.c \
+			src/flist.c src/flist_sort.c src/files.c \
+			src/sort_types.c src/file_utils.c src/utils.c
 OBJ		= 	$(SRC:.c=.o)
 
 LIBFT	= 	libft/libft.a
@@ -31,8 +31,8 @@ $(NAME): $(LIBFT) $(OBJ)
 $(LIBFT):
 	$(MAKE) -C libft
 
-%.o: %.c ft_ls.h
-	$(CC) $(CFLAGS) -I libft/includes/ -o $@ -c $<
+%.o: %.c includes/ft_ls.h
+	$(CC) $(CFLAGS) -I libft/includes/ -I includes/ -o $@ -c $<
 
 clean:
 	$(MAKE) -C libft clean

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 19:06:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 22:34:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/28 09:47:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,18 @@ static void	define_functions(t_opt *opt)
 		opt->cmp = (opt->options & REV_OPT) ? &sort_asc_time : &sort_desc_time;
 	else
 		opt->cmp = (opt->options & REV_OPT) ? &sort_desc_name : &sort_asc_name;
-	if (opt->options & LST_OPT
-			|| opt->options & ONE_OPT
-			|| (!isatty(STDOUT_FILENO) && !(opt->options & COL_OPT))
-			|| ioctl(0, TIOCGWINSZ, &(opt->ws)) < 0)
+	opt->print = &show_simple;
+	if (opt->options & LST_OPT)
 		opt->print = &show_list;
-	else
+	else if (opt->options & COL_OPT || isatty(STDOUT_FILENO))
+	{
+		if (ioctl(0, TIOCGWINSZ, &(opt->win_size)) < 0)
+		{
+			opt->print = &show_simple;
+			return ;
+		}
 		opt->print = &show_columns;
+	}
 }
 
 static int	add_files(t_opt *opt, t_flist **def, int count, char **files)
@@ -76,7 +81,6 @@ static void	load_files(t_opt *opt, int count, char **args)
 			def = flist_sort(def, opt->cmp);
 			opt->show_total = 0;
 			opt->print(opt, def);
-			opt->show_total = 1;
 			flist_clean(def);
 			(opt->loops)++;
 		}
@@ -94,6 +98,7 @@ int			main(int argc, char **argv)
 	parse_options(&opt, argc, argv);
 	define_functions(&opt);
 	load_files(&opt, argc - opt.offset, &(argv[opt.offset]));
+	opt.show_total = 1;
 	while (opt.files != NULL)
 	{
 		ls(&opt, opt.files);

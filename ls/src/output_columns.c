@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   output.c                                           :+:      :+:    :+:   */
+/*   output_columns.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 13:58:04 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 15:22:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/28 10:16:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void		fill_out(t_opt *opt, t_out *out, t_flist *lst)
 		current = current->next;
 	}
 	(out->w_file)++;
-	out->cols = ft_max(1, opt->ws.ws_col / out->w_file);
+	out->cols = ft_max(1, opt->win_size.ws_col / out->w_file);
 	out->rows = (count / out->cols) + (count % out->cols > 0);
 	while ((out->cols * out->rows) - count >= out->rows)
 	{

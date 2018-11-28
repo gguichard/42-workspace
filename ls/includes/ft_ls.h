@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 09:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 22:47:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/28 09:50:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct		s_flist
 	char			*gr_name;
 	char			*date;
 	char			*link;
+	char			x_attr;
 	struct s_flist	*next;
 }					t_flist;
 
@@ -54,7 +55,7 @@ typedef struct		s_opt
 	struct s_flist	*files;
 	int				count;
 	int				loops;
-	struct winsize	ws;
+	struct winsize	win_size;
 	int				show_total;
 }					t_opt;
 
@@ -101,6 +102,7 @@ void				flist_push_back(t_flist **lst, t_flist *file);
 void				flist_sort_insert(t_flist **lst, t_flist *file
 		, int (*cmp)(t_flist *, t_flist *));
 
+void				show_simple(t_opt *opt, t_flist *lst);
 void				show_columns(t_opt *opt, t_flist *lst);
 void				show_list(t_opt *opt, t_flist *lst);
 

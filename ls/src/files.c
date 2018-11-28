@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 18:28:17 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 22:23:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/28 09:22:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@
 
 static t_flist	*load_link_data(t_flist *file)
 {
+	size_t		size;
 	struct stat	link_data;
 
-	if (!(file->link = ft_strnew(file->stat.st_size))
-		|| readlink(file->path, file->link, file->stat.st_size) < 0)
+	size = file->stat.st_size;
+	if (size == 0)
+		size = 1024;
+	if (!(file->link = ft_strnew(size))
+		|| readlink(file->path, file->link, size) < 0)
 		return (NULL);
 	if (stat(file->link, &link_data) < 0)
 		errno = 0;
