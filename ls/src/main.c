@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 19:06:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/28 11:25:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/28 13:55:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,19 @@ static void	define_functions(t_opt *opt)
 		opt->cmp = &sort_name;
 	opt->cmp_mul = (opt->options & REV_OPT) ? -1 : 1;
 	opt->print = &show_simple;
-	if (opt->options & LST_OPT)
-		opt->print = &show_list;
-	else if (opt->options & COL_OPT || isatty(STDOUT_FILENO))
+	if (!(opt->options & ONE_OPT))
 	{
-		if (ioctl(0, TIOCGWINSZ, &(opt->win_size)) < 0)
+		if (opt->options & LST_OPT)
+			opt->print = &show_list;
+		else if (opt->options & COL_OPT || isatty(STDOUT_FILENO))
 		{
-			opt->print = &show_simple;
-			return ;
+			if (ioctl(0, TIOCGWINSZ, &(opt->win_size)) < 0)
+			{
+				opt->print = &show_simple;
+				return ;
+			}
+			opt->print = &show_columns;
 		}
-		opt->print = &show_columns;
 	}
 }
 
