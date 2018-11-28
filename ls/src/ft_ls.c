@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/23 08:59:15 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/27 19:39:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/28 11:09:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_flist	*ls_dir(t_opt *opt, t_flist *folder)
 		{
 			if (!(file = load_file(opt, folder->path, data->d_name)))
 				return (flist_clean(lst));
-			flist_sort_insert(&(folder->next), file, opt->cmp);
+			flist_sort_insert(&(folder->next), file, opt->cmp, opt->cmp_mul);
 		}
 	}
 	closedir(dir);
@@ -62,7 +62,7 @@ void			ls(t_opt *opt, t_flist *folder)
 	}
 	if (lst != NULL)
 	{
-		lst = flist_sort(lst, opt->cmp);
+		lst = flist_sort(lst, opt->cmp, opt->cmp_mul);
 		opt->print(opt, lst);
 		flist_clean(lst);
 	}

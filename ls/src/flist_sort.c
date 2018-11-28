@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/25 15:50:46 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/26 23:11:22 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/28 11:10:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 static t_flist	*flist_merge_sort(t_flist *left, t_flist *right
-		, int (*cmp)(t_flist *, t_flist *))
+		, int (*cmp)(t_flist *, t_flist *), int cmp_mul)
 {
 	t_flist	*lst;
 	t_flist	*tmp;
@@ -29,7 +29,7 @@ static t_flist	*flist_merge_sort(t_flist *left, t_flist *right
 		else if (right == NULL)
 			which = &left;
 		else
-			which = (cmp(left, right) < 0) ? &left : &right;
+			which = (cmp_mul * cmp(left, right) < 0) ? &left : &right;
 		tmp = (*which)->next;
 		if (!(tail))
 			lst = *which;
@@ -41,7 +41,8 @@ static t_flist	*flist_merge_sort(t_flist *left, t_flist *right
 	return (lst);
 }
 
-t_flist			*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *))
+t_flist			*flist_sort(t_flist *lst
+		, int (*cmp)(t_flist *, t_flist *), int cmp_mul)
 {
 	t_flist	*left;
 	t_flist	*right;
@@ -63,13 +64,13 @@ t_flist			*flist_sort(t_flist *lst, int (*cmp)(t_flist *, t_flist *))
 	}
 	if (count <= 1)
 		return (left);
-	left = flist_sort(left, cmp);
-	right = flist_sort(right, cmp);
-	return (flist_merge_sort(left, right, cmp));
+	left = flist_sort(left, cmp, cmp_mul);
+	right = flist_sort(right, cmp, cmp_mul);
+	return (flist_merge_sort(left, right, cmp, cmp_mul));
 }
 
 void			flist_sort_insert(t_flist **lst, t_flist *file
-		, int (*cmp)(t_flist *, t_flist *))
+		, int (*cmp)(t_flist *, t_flist *), int cmp_mul)
 {
 	t_flist	*previous;
 	t_flist	*current;
@@ -78,7 +79,7 @@ void			flist_sort_insert(t_flist **lst, t_flist *file
 	current = *lst;
 	while (current != NULL)
 	{
-		if (cmp(current, file) >= 0)
+		if (cmp_mul * cmp(current, file) >= 0)
 			break ;
 		previous = current;
 		current = current->next;

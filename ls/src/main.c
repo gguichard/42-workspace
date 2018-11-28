@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 19:06:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/28 09:47:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/28 11:25:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@
 
 static void	define_functions(t_opt *opt)
 {
-	if (opt->options & SRT_OPT)
-		opt->cmp = (opt->options & REV_OPT) ? &sort_asc_time : &sort_desc_time;
+	if (opt->options & SRT_T_OPT)
+		opt->cmp = &sort_mtime;
+	else if (opt->options & SRT_S_OPT)
+		opt->cmp = &sort_size;
 	else
-		opt->cmp = (opt->options & REV_OPT) ? &sort_desc_name : &sort_asc_name;
+		opt->cmp = &sort_name;
+	opt->cmp_mul = (opt->options & REV_OPT) ? -1 : 1;
 	opt->print = &show_simple;
 	if (opt->options & LST_OPT)
 		opt->print = &show_list;
@@ -75,10 +78,10 @@ static void	load_files(t_opt *opt, int count, char **args)
 	{
 		def = NULL;
 		add_files(opt, &def, count, args);
-		opt->files = flist_sort(opt->files, opt->cmp);
+		opt->files = flist_sort(opt->files, opt->cmp, opt->cmp_mul);
 		if (def != NULL)
 		{
-			def = flist_sort(def, opt->cmp);
+			def = flist_sort(def, opt->cmp, opt->cmp_mul);
 			opt->show_total = 0;
 			opt->print(opt, def);
 			flist_clean(def);
