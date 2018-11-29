@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/10 13:18:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/08/10 13:29:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/29 17:06:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ t_list	*ft_lstnew(void const *content, size_t content_size)
 	else
 	{
 		if (!(elem->content = malloc(content_size)))
+		{
+			free(elem);
 			return (NULL);
+		}
 		ft_memcpy(elem->content, content, content_size);
 		elem->content_size = content_size;
 	}
