@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/29 15:24:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/29 17:25:12 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/29 17:28:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include <stdlib.h>
 
-typedef struct	s_env
+void	set_env(t_list **lst, const char *name, const char *value)
 {
-	char		*name;
-	char		*value;
-}				t_env;
+	t_env	*env;
+	t_list	*elem;
 
-#endif
+	if (!(env = (t_env *)malloc(sizeof(*env))))
+		return (NULL);
+	env->name = name;
+	env->path = path;
+}
