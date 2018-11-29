@@ -1,0 +1,3 @@
+Les entrees DNS locales se situent dans /etc/hosts
+(je connaissais deja mais sinon une simple recherche telle que "file with DNS entries unix"
+permet de trouver la reponse https://www.unix.com/ip-networking/11705-dns-hosts-file.html)

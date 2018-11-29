@@ -1,2 +1,5 @@
-J'ai cherche sur Google "unix dns server" et le premier lien (https://unix.stackexchange.com/questions/28941/what-dns-servers-am-i-using) m'a donne la reponse qui est
-  -> /etc/resolv.conf
+/etc/resolv.conf
+
+J'ai cherche sur Google "unix dns server" et le premier lien
+(https://unix.stackexchange.com/questions/28941/what-dns-servers-am-i-using)
+m'a donne la reponse

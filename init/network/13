@@ -1,0 +1,2 @@
+traceroute to 10.13.12.4 (10.13.12.4), 64 hops max, 52 byte packets
+ 1  e3r12p4 (10.13.12.4)  0.174 ms  0.040 ms  0.035 ms

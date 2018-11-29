@@ -1,0 +1,3 @@
+Il suffit d'ecrire une nouvelle entree dans le fichier /etc/hosts :
+on ecrit premierement l'adresse IP donc 46.19.122.85 suivi d'un espace puis ensuite le nom de domaine
+desire (ici intra.42.fr)
