@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/24 13:12:47 by gguichar         ###   ########.fr        #
+#    Updated: 2018/11/29 15:33:13 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRC		=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c \
 			ft_lstdel.c ft_lstadd.c ft_lstpush.c ft_lstpop.c ft_lstpeek.c \
 			ft_lstsize.c ft_lstempty.c ft_lstiter.c ft_lstmap.c \
 			ft_min.c ft_max.c ft_abs.c ft_llsize.c
+SRC		+=	get_next_line.c
 SRC		+=	printf/printf.c printf/parser.c printf/tokens.c printf/buffer.c \
 		  	printf/convert_str.c printf/convert_int.c printf/convert_double.c \
 			printf/convert_misc.c printf/utf8_utils.c printf/int_utils.c \
