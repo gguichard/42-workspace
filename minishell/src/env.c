@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 16:09:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 17:02:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <stdlib.h>
 #include "libft.h"
 #include "minishell.h"
-
-extern char	**environ;
 
 static void	free_env(void *content, size_t content_size)
 {
@@ -88,7 +86,7 @@ char		*get_env(t_list *lst, const char *name)
 	return (NULL);
 }
 
-t_list		*setup_env(void)
+t_list		*setup_env(char **environ)
 {
 	size_t	index;
 	char	**parts;

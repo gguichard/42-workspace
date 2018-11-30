@@ -6,59 +6,54 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 12:06:53 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 15:21:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 18:52:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <dirent.h>
+#include <sys/stat.h>
 #include "libft.h"
 #include "printf.h"
 #include "minishell.h"
 
-static int	has_binary(const char *name, const char *path)
+int			is_binary_exec(const char *path)
 {
-	DIR				*dir;
-	struct dirent	*data;
+	struct stat	data;
 
-	if (!(dir = opendir(path)))
-		return (0);
-	while ((data = readdir(dir)) != NULL)
-	{
-		if (ft_strequ(name, data->d_name))
-		{
-			closedir(dir);
-			return (1);
-		}
-	}
-	closedir(dir);
-	return (0);
+	if (stat(path, &data) < 0)
+		return (NOT_FOUND_ERR);
+	if (!S_ISREG(data.st_mode))
+		return (NOT_REG_ERR);
+	if (!(data.st_mode & S_IXUSR))
+		return (NO_EXEC_RIGHTS_ERR);
+	return (1);
 }
 
-char		*search_for_binary(const char *name, t_list **env)
+int			search_for_binary(const char *name, t_list **env, char **path)
 {
-	char	*path;
 	char	**folders;
 	size_t	index;
-	char	*full_path;
+	char	*tmp;
+	int		res;
 
-	path = get_env(*env, PATH_ENV);
-	if (path == NULL)
-		return (NULL);
-	folders = ft_strsplit(path, ':');
+	folders = ft_strsplit(get_env(*env, PATH_ENV), ':');
 	if (!(folders))
-		return (NULL);
+		return (0);
 	index = 0;
 	while (folders[index] != NULL)
 	{
-		if (has_binary(name, folders[index]))
+		if (ft_asprintf(&tmp, "%s/%s", folders[index], name) < 0)
+			break ;
+		res = is_binary_exec(tmp);
+		if (res != NOT_FOUND_ERR)
 		{
-			full_path = NULL;
-			ft_asprintf(&full_path, "%s/%s", folders[index], name);
 			ft_strfree_tab(folders);
-			return (full_path);
+			*path = tmp;
+			return (res);
 		}
+		free(tmp);
 		index++;
 	}
-	return (ft_strfree_tab(folders));
+	ft_strfree_tab(folders);
+	return (0);
 }

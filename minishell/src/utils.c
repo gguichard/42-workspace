@@ -6,13 +6,24 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:00:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 15:49:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 18:21:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 #include "minishell.h"
+
+char	*str_error(int err)
+{
+	if (err == NOT_FOUND_ERR)
+		return ("No such file or directory");
+	if (err == NOT_REG_ERR)
+		return ("Is not a file");
+	if (err == NO_EXEC_RIGHTS_ERR)
+		return ("Permission denied");
+	return ("");
+}
 
 char	**env_as_str(t_list **lst)
 {

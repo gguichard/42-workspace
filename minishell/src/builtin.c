@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 09:34:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 15:46:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 19:08:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,16 @@ void	builtin_exit(int argc, char **argv, t_list **env)
 void	builtin_cd(int argc, char **argv, t_list **env)
 {
 	char	*cwd;
+	char	*path;
 
-	(void)env;
-	if (argc <= 1)
-		return ;
-	if (chdir(argv[1]) < 0)
+	path = NULL;
+	if (argc > 1)
+		path = argv[1];
+	else
+		path = get_env(*env, "HOME");
+	if (path != NULL && chdir(path) < 0)
 	{
-		ft_printf("%s: No such file or directory.\n", argv[1]);
+		ft_printf("%s: %s.\n", argv[1], str_error(NOT_FOUND_ERR));
 		return ;
 	}
 	if ((cwd = getcwd(NULL, 0)) != NULL)
@@ -65,7 +68,7 @@ void	builtin_setenv(int argc, char **argv, t_list **env)
 
 	if (argc <= 1)
 	{
-		ft_dprintf(2, "%s: missing env name\n", argv[0]);
+		ft_dprintf(2, "%s: Missing var name.\n", argv[0]);
 		return ;
 	}
 	value = "0";
@@ -73,23 +76,23 @@ void	builtin_setenv(int argc, char **argv, t_list **env)
 		value = argv[2];
 	if (!(set_env(env, argv[1], value)))
 	{
-		ft_dprintf(2, "%s: unable to set var\n", argv[0]);
+		ft_dprintf(2, "%s: Unable to set var value.\n", argv[0]);
 		return ;
 	}
-	ft_printf("%s: %s => %s\n", argv[0], argv[1], value);
+	ft_printf("%s: Set to %s.\n", argv[1], value);
 }
 
 void	builtin_unsetenv(int argc, char **argv, t_list **env)
 {
 	if (argc <= 1)
 	{
-		ft_dprintf(2, "%s: missing env name\n", argv[0]);
+		ft_dprintf(2, "%s: Missing var name.\n", argv[0]);
 		return ;
 	}
 	else if (!(unset_env(env, argv[1])))
 	{
-		ft_dprintf(2, "%s: no env var named %s\n", argv[0], argv[1]);
+		ft_dprintf(2, "%s: Not a valid var name.\n", argv[1]);
 		return ;
 	}
-	ft_printf("%s: %s removed\n", argv[0], argv[1]);
+	ft_printf("%s: Removed.\n", argv[1]);
 }
