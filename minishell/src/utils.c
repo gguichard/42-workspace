@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:00:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 23:55:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 00:45:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ char	*str_error(int err)
 		return ("No such file or directory");
 	if (err == NOT_REG_ERR)
 		return ("Is not a file");
+	if (err == NOT_DIR_ERR)
+		return ("Is not a dir");
 	if (err == NO_EXEC_RIGHTS_ERR)
 		return ("Permission denied");
-	return ("");
+	return ("Unknown error");
 }
 
 char	**env_as_str(t_list **lst)

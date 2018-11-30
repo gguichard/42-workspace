@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 15:24:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 23:52:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 00:51:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 
 # define NOT_FOUND_ERR -1
 # define NOT_REG_ERR -2
-# define NO_EXEC_RIGHTS_ERR -3
+# define NOT_DIR_ERR -3
+# define NO_EXEC_RIGHTS_ERR -4
+# define UNKNOWN_ERR -10
 
 # include "libft.h"
 
