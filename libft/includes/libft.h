@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 10:28:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 00:34:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,6 @@ int				ft_abs(int n);
 
 size_t			ft_llsize(long long l);
 
-void			*ft_strfree_tab(char **tab);
+void			*ft_strtab_free(char **tab);
 
 #endif

@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strfree_tab.c                                   :+:      :+:    :+:   */
+/*   ft_strtab_free.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 10:03:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 10:06:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 00:34:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-void	*ft_strfree_tab(char **tab)
+void	*ft_strtab_free(char **tab)
 {
 	size_t	index;
 
