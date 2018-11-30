@@ -1,50 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.c                                          :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 09:34:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 19:08:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 00:21:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
 #include "libft.h"
 #include "printf.h"
 #include "minishell.h"
-
-void	builtin_exit(int argc, char **argv, t_list **env)
-{
-	(void)argc;
-	(void)argv;
-	(void)env;
-	exit(0);
-}
-
-void	builtin_cd(int argc, char **argv, t_list **env)
-{
-	char	*cwd;
-	char	*path;
-
-	path = NULL;
-	if (argc > 1)
-		path = argv[1];
-	else
-		path = get_env(*env, "HOME");
-	if (path != NULL && chdir(path) < 0)
-	{
-		ft_printf("%s: %s.\n", argv[1], str_error(NOT_FOUND_ERR));
-		return ;
-	}
-	if ((cwd = getcwd(NULL, 0)) != NULL)
-	{
-		set_env(env, "PWD", cwd);
-		free(cwd);
-	}
-}
 
 void	builtin_env(int argc, char **argv, t_list **env)
 {
@@ -64,6 +32,7 @@ void	builtin_env(int argc, char **argv, t_list **env)
 
 void	builtin_setenv(int argc, char **argv, t_list **env)
 {
+	char	**parts;
 	char	*value;
 
 	if (argc <= 1)
@@ -71,15 +40,16 @@ void	builtin_setenv(int argc, char **argv, t_list **env)
 		ft_dprintf(2, "%s: Missing var name.\n", argv[0]);
 		return ;
 	}
-	value = "0";
-	if (argc >= 3)
-		value = argv[2];
-	if (!(set_env(env, argv[1], value)))
-	{
+	parts = ft_strsplit(argv[1], '=');
+	if (parts[1] != NULL)
+		value = parts[1];
+	else
+		value = (argc >= 3) ? argv[2] : "0";
+	if (!(parts) || !(set_env(env, parts[0], value)))
 		ft_dprintf(2, "%s: Unable to set var value.\n", argv[0]);
-		return ;
-	}
-	ft_printf("%s: Set to %s.\n", argv[1], value);
+	else
+		ft_printf("%s: Set to \"%s\".\n", parts[0], value);
+	ft_strfree_tab(parts);
 }
 
 void	builtin_unsetenv(int argc, char **argv, t_list **env)

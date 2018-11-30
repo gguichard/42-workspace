@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:00:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 18:21:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 23:55:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	**env_as_str(t_list **lst)
 	char	*str;
 	t_list	*beg;
 
-	str = ft_strdup("");
+	str = NULL;
 	beg = *lst;
 	while (beg != NULL)
 	{

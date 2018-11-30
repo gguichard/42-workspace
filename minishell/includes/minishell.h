@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 15:24:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 18:46:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 23:52:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct	s_env
 
 void			show_prompt(t_list **env);
 
+void			read_input(t_list **env);
+
 int				is_binary_exec(const char *path);
 int				search_for_binary(const char *name, t_list **env, char **path);
 
@@ -49,6 +51,7 @@ void			builtin_exit(int argc, char **argv, t_list **env);
 void			builtin_env(int argc, char **argv, t_list **env);
 void			builtin_unsetenv(int argc, char **argv, t_list **env);
 void			builtin_setenv(int argc, char **argv, t_list **env);
+void			builtin_echo(int argc, char **argv, t_list **env);
 
 char			*str_error(int err);
 char			**env_as_str(t_list **lst);
