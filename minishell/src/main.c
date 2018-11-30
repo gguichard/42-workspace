@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 15:25:14 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 11:43:56 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 16:08:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 #include "minishell.h"
 
-int		main(int argc, char **argv)
+int				main(int argc, char **argv)
 {
 	t_list	*env;
 

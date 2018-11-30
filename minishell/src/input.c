@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 14:40:20 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 15:04:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 16:18:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,17 @@ t_cmd		g_builtin[] =
 static char	*read_cmd(void)
 {
 	char	*cmd;
+	int		res;
 
 	cmd = NULL;
-	if (get_next_line(STDOUT_FILENO, &cmd) < 0)
+	if ((res = get_next_line(STDOUT_FILENO, &cmd)) == 0)
 	{
-		ft_dprintf(2, "minishell: unable to read from command line\n");
+		ft_printf("\n");
+		exit(0);
+	}
+	else if (res < 0)
+	{
+		ft_dprintf(2, "minishell: Unable to read from command line.\n");
 		return (NULL);
 	}
 	return (cmd);
@@ -48,7 +54,7 @@ static void	exec_cmd(char *path, char **argv, t_list **env)
 		waitpid(pid, NULL, 0);
 	else if (!(execve(path, argv, env_as_str(env))))
 	{
-		ft_dprintf(2, "minishell: error when executing: %s\n", argv[0]);
+		ft_dprintf(2, "minishell: Error when executing %s.\n", argv[0]);
 		exit(1);
 	}
 }
@@ -70,30 +76,32 @@ static void	interpret_cmd(int argc, char **argv, t_list **env)
 	}
 	if (!(path = search_for_binary(argv[0], env)))
 	{
-		ft_dprintf(2, "minishell: command not found: %s\n", argv[0]);
+		ft_dprintf(2, "%s: Command not found.\n", argv[0]);
 		return ;
 	}
 	exec_cmd(path, argv, env);
 	free(path);
 }
 
-void	show_prompt(t_list **env)
+void		show_prompt(t_list **env)
 {
 	char	*cmd;
 	char	**argv;
 	int		argc;
 
-	ft_printf("$> ");
-	if ((cmd = read_cmd()) != NULL)
+	ft_printf("%s:%s%% ", get_env(*env, "USER"), get_env(*env, "PWD"));
+	if ((cmd = read_cmd()) != NULL && cmd[0] != '\0')
 	{
 		if (!(argv = ft_strsplit(cmd, ' ')))
 		{
-			ft_dprintf(2, "minishell: command error: %s\n", cmd);
+			ft_dprintf(2, "%s: Command error.\n", cmd);
 			return ;
 		}
+		free(cmd);
 		argc = 0;
 		while (argv[argc] != NULL)
 			argc++;
 		interpret_cmd(argc, argv, env);
+		ft_strfree_tab(argv);
 	}
 }

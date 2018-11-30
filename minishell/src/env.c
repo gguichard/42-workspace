@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 13:36:22 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 16:09:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,27 @@ static void	free_env(void *content, size_t content_size)
 
 int			set_env(t_list **lst, const char *name, const char *value)
 {
+	t_list	*begin;
 	t_env	env;
 	t_list	*elem;
 
-	unset_env(lst, name);
-	env.name = NULL;
-	env.value = NULL;
-	if (!(env.name = ft_strdup(name))
-			|| !(env.value = ft_strdup(value))
-			|| !(elem = ft_lstnew(&env, sizeof(env))))
+	if (!(env.value = ft_strdup(value)))
+		return (0);
+	begin = *lst;
+	while (begin != NULL)
 	{
-		free(env.name);
+		if (ft_strequ(name, ((t_env *)(begin->content))->name))
+		{
+			((t_env *)(begin->content))->value = env.value;
+			return (1);
+		}
+		begin = begin->next;
+	}
+	env.name = NULL;
+	if (!(env.name = ft_strdup(name)) || !(elem = ft_lstnew(&env, sizeof(env))))
+	{
 		free(env.value);
+		free(env.name);
 		return (0);
 	}
 	ft_lstpush(lst, elem);

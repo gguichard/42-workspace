@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 12:06:53 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 14:14:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 15:21:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ static int	has_binary(const char *name, const char *path)
 	while ((data = readdir(dir)) != NULL)
 	{
 		if (ft_strequ(name, data->d_name))
+		{
+			closedir(dir);
 			return (1);
+		}
 	}
 	closedir(dir);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 09:34:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 13:55:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/11/30 15:46:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,21 @@ void	builtin_exit(int argc, char **argv, t_list **env)
 
 void	builtin_cd(int argc, char **argv, t_list **env)
 {
+	char	*cwd;
+
 	(void)env;
 	if (argc <= 1)
 		return ;
 	if (chdir(argv[1]) < 0)
-		ft_printf("cd: no such file or directory: %s\n", argv[1]);
+	{
+		ft_printf("%s: No such file or directory.\n", argv[1]);
+		return ;
+	}
+	if ((cwd = getcwd(NULL, 0)) != NULL)
+	{
+		set_env(env, "PWD", cwd);
+		free(cwd);
+	}
 }
 
 void	builtin_env(int argc, char **argv, t_list **env)
