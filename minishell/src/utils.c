@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/29 15:25:14 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 11:43:56 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/30 13:00:43 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/30 13:26:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include <stdlib.h>
+#include "libft.h"
 #include "minishell.h"
 
-int		main(int argc, char **argv)
+char	**env_as_str(t_list **lst)
 {
-	t_list	*env;
+	char	*str;
+	t_list	*beg;
 
-	(void)argc;
-	(void)argv;
-	if (!(env = setup_env()))
+	str = ft_strdup("");
+	beg = *lst;
+	while (beg != NULL)
 	{
-		ft_dprintf(2, "unable to read environ\n");
-		return (1);
+		str = ft_strjoin_free(str, ((t_env *)(beg->content))->name);
+		str = ft_strjoin_free(str, "=");
+		str = ft_strjoin_free(str, ((t_env *)(beg->content))->value);
+		str = ft_strjoin_free(str, ":");
+		beg = beg->next;
 	}
-	while (1)
-		show_prompt(&env);
-	return (0);
+	return (ft_strsplit(str, ':'));
 }
