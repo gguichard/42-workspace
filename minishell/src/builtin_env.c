@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 09:34:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:21:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 00:37:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,24 @@ void	builtin_setenv(int argc, char **argv, t_list **env)
 	char	**parts;
 	char	*value;
 
-	if (argc <= 1)
+	parts = NULL;
+	if (argc <= 1
+		|| (parts = ft_strsplit(argv[1], '='))
+		|| !(parts[0]))
 	{
+		ft_strtab_free(parts);
 		ft_dprintf(2, "%s: Missing var name.\n", argv[0]);
 		return ;
 	}
-	parts = ft_strsplit(argv[1], '=');
 	if (parts[1] != NULL)
 		value = parts[1];
 	else
 		value = (argc >= 3) ? argv[2] : "0";
-	if (!(parts) || !(set_env(env, parts[0], value)))
+	if (!set_env(env, parts[0], value))
 		ft_dprintf(2, "%s: Unable to set var value.\n", argv[0]);
 	else
 		ft_printf("%s: Set to \"%s\".\n", parts[0], value);
-	ft_strfree_tab(parts);
+	ft_strtab_free(parts);
 }
 
 void	builtin_unsetenv(int argc, char **argv, t_list **env)

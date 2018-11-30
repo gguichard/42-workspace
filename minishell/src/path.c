@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 12:06:53 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 18:52:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 00:36:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ int			search_for_binary(const char *name, t_list **env, char **path)
 		res = is_binary_exec(tmp);
 		if (res != NOT_FOUND_ERR)
 		{
-			ft_strfree_tab(folders);
+			ft_strtab_free(folders);
 			*path = tmp;
 			return (res);
 		}
 		free(tmp);
 		index++;
 	}
-	ft_strfree_tab(folders);
+	ft_strtab_free(folders);
 	return (0);
 }

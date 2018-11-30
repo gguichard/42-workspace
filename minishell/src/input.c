@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 14:40:20 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:16:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 00:36:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ static void		process_cmd(char *cmd, t_list **env)
 		ft_strtolower(argv[0]);
 		interpret_cmd(argc, argv, env);
 	}
-	ft_strfree_tab(argv);
+	ft_strtab_free(argv);
 }
 
 void			read_input(t_list **env)
@@ -143,5 +143,5 @@ void			read_input(t_list **env)
 		free(cmd);
 		index++;
 	}
-	ft_strfree_tab(cmds);
+	ft_strtab_free(cmds);
 }
