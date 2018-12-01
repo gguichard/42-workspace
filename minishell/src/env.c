@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 10:35:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 11:20:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@
 #include "libft.h"
 #include "minishell.h"
 
-static void	free_env(void *content, size_t content_size)
+static int	replace_val(t_list *elem, char *value)
 {
-	(void)content_size;
-	free(((t_env *)content)->name);
-	free(((t_env *)content)->value);
-	free(content);
+	char	*tmp;
+
+	tmp = ((t_env *)(elem->content))->value;
+	((t_env *)(elem->content))->value = value;
+	free(tmp);
+	return (1);
 }
 
 int			set_env(t_list **lst, const char *name, const char *value)
@@ -35,10 +37,7 @@ int			set_env(t_list **lst, const char *name, const char *value)
 	while (begin != NULL)
 	{
 		if (ft_strequ(name, ((t_env *)(begin->content))->name))
-		{
-			((t_env *)(begin->content))->value = env.value;
-			return (1);
-		}
+			return (replace_val(begin, env.value));
 		begin = begin->next;
 	}
 	if (!(env.name = ft_strdup(name))

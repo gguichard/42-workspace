@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 23:45:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:51:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 11:24:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ void		builtin_cd(int argc, char **argv, t_list **env)
 	else
 		path = get_env(*env, "HOME");
 	if (ft_strequ(path, "-"))
+	{
 		path = get_env(*env, "OLDPWD");
+		ft_printf("%s\n", path);
+	}
 	res = cd_dir_check(path);
 	if (res < 0)
 	{

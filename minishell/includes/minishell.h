@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 15:24:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 10:28:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 11:17:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void			builtin_echo(int argc, char **argv, t_list **env);
 
 char			*expand_str(char *str, t_list **env);
 
+void			free_env(void *content, size_t content_size);
 char			*str_error(int err);
 char			**env_as_str(t_list **lst);
 

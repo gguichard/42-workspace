@@ -6,13 +6,21 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:00:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 10:33:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 11:17:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 #include "minishell.h"
+
+void	free_env(void *content, size_t content_size)
+{
+	(void)content_size;
+	free(((t_env *)content)->name);
+	free(((t_env *)content)->value);
+	free(content);
+}
 
 char	*str_error(int err)
 {
