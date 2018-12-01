@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 09:55:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 10:35:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int			set_env(t_list **lst, const char *name, const char *value)
 		}
 		begin = begin->next;
 	}
-	env.name = NULL;
-	if (!(env.name = ft_strdup(name)) || !(elem = ft_lstnew(&env, sizeof(env))))
+	if (!(env.name = ft_strdup(name))
+			|| !(elem = ft_lstnew(&env, sizeof(env))))
 	{
 		free(env.value);
 		free(env.name);

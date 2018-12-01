@@ -6,14 +6,14 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/29 15:19:40 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/01 09:37:18 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/01 10:26:07 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 
-SRC		=	src/main.c src/input.c src/env.c \
-			src/builtin_env.c src/builtin_misc.c \
+SRC		=	src/main.c src/input.c src/commands.c \
+			src/env.c src/builtin_env.c src/builtin_misc.c \
 			src/expansions.c src/path.c src/utils.c
 OBJ		=	$(SRC:.c=.o)
 

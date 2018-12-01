@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:00:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:45:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 10:33:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ char	**env_as_str(t_list **lst)
 		str = ft_strjoin_free(str, ((t_env *)(beg->content))->name);
 		str = ft_strjoin_free(str, "=");
 		str = ft_strjoin_free(str, ((t_env *)(beg->content))->value);
-		str = ft_strjoin_free(str, ";");
+		str = ft_strjoin_free(str, "\n");
 		beg = beg->next;
 	}
-	return (ft_strsplit(str, ';'));
+	return (ft_strsplit(str, '\n'));
 }
