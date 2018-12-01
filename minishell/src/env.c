@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:36:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 09:55:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char		*get_env(t_list *lst, const char *name)
 			return (((t_env *)(lst->content))->value);
 		lst = lst->next;
 	}
-	return (NULL);
+	return ("");
 }
 
 t_list		*setup_env(char **environ)

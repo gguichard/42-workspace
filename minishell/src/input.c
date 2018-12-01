@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 14:40:20 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:36:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 09:40:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,10 @@ static void		process_cmd(char *cmd, t_list **env)
 	}
 	argc = 0;
 	while (argv[argc] != NULL)
+	{
+		argv[argc] = expand_str(argv[argc], env);
 		argc++;
+	}
 	if (argc >= 1)
 	{
 		ft_strtolower(argv[0]);

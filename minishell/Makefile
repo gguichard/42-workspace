@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/29 15:19:40 by gguichar          #+#    #+#              #
-#    Updated: 2018/11/30 23:48:03 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/01 09:37:18 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	=	minishell
 
 SRC		=	src/main.c src/input.c src/env.c \
 			src/builtin_env.c src/builtin_misc.c \
-			src/path.c src/utils.c
+			src/expansions.c src/path.c src/utils.c
 OBJ		=	$(SRC:.c=.o)
 
 CC		=	gcc

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 15:24:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:51:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 09:38:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void			builtin_env(int argc, char **argv, t_list **env);
 void			builtin_unsetenv(int argc, char **argv, t_list **env);
 void			builtin_setenv(int argc, char **argv, t_list **env);
 void			builtin_echo(int argc, char **argv, t_list **env);
+
+char			*expand_str(char *str, t_list **env);
 
 char			*str_error(int err);
 char			**env_as_str(t_list **lst);
