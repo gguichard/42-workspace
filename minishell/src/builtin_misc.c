@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 23:45:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 11:24:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 14:46:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@
 
 void		builtin_exit(int argc, char **argv, t_list **env)
 {
+	int	res;
+
 	(void)argc;
 	(void)argv;
 	(void)env;
-	exit(0);
+	res = 0;
+	if (argc > 1)
+		res = ft_atoi(argv[1]);
+	exit(res);
 }
 
 static int	cd_dir_check(char *path)
@@ -33,10 +38,10 @@ static int	cd_dir_check(char *path)
 		return (UNKNOWN_ERR);
 	else if (stat(path, &data) < 0)
 		return (NOT_FOUND_ERR);
-	else if (!(data.st_mode & S_IXUSR))
-		return (NO_EXEC_RIGHTS_ERR);
 	else if (!S_ISDIR(data.st_mode))
 		return (NOT_DIR_ERR);
+	else if (!(data.st_mode & S_IXUSR))
+		return (NO_EXEC_RIGHTS_ERR);
 	else if (chdir(path) < 0)
 		return (UNKNOWN_ERR);
 	return (1);
@@ -61,7 +66,7 @@ void		builtin_cd(int argc, char **argv, t_list **env)
 	res = cd_dir_check(path);
 	if (res < 0)
 	{
-		ft_printf("%s: %s.\n", argv[1], str_error(res));
+		ft_dprintf(2, "%s: %s.\n", path, str_error(res));
 		return ;
 	}
 	set_env(env, "OLDPWD", get_env(*env, "PWD"));

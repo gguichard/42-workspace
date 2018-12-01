@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 09:34:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 09:23:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 14:06:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 #include "printf.h"
 #include "minishell.h"
 
-void	builtin_env(int argc, char **argv, t_list **env)
+static void	print_env(t_list **env)
 {
 	t_list	*lst;
 
-	(void)argc;
-	(void)argv;
 	lst = *env;
 	while (lst != NULL)
 	{
@@ -30,18 +28,28 @@ void	builtin_env(int argc, char **argv, t_list **env)
 	}
 }
 
-void	builtin_setenv(int argc, char **argv, t_list **env)
+void		builtin_env(int argc, char **argv, t_list **env)
+{
+	(void)argc;
+	(void)argv;
+	print_env(env);
+}
+
+void		builtin_setenv(int argc, char **argv, t_list **env)
 {
 	char	**parts;
 	char	*value;
 
+	if (argc <= 1)
+	{
+		print_env(env);
+		return ;
+	}
 	parts = NULL;
-	if (argc <= 1
-		|| !(parts = ft_strsplit(argv[1], '='))
-		|| !(parts[0]))
+	if (!(parts = ft_strsplit(argv[1], '=')) || !(parts[0]))
 	{
 		ft_strtab_free(parts);
-		ft_dprintf(2, "%s: Missing var name.\n", argv[0]);
+		ft_dprintf(2, "%s: Invalid name.\n", argv[0]);
 		return ;
 	}
 	if (parts[1] != NULL)
@@ -55,17 +63,24 @@ void	builtin_setenv(int argc, char **argv, t_list **env)
 	ft_strtab_free(parts);
 }
 
-void	builtin_unsetenv(int argc, char **argv, t_list **env)
+void		builtin_unsetenv(int argc, char **argv, t_list **env)
 {
+	int	index;
+
 	if (argc <= 1)
 	{
-		ft_dprintf(2, "%s: Missing var name.\n", argv[0]);
+		ft_dprintf(2, "%s: Missing name.\n", argv[0]);
 		return ;
 	}
-	else if (!(unset_env(env, argv[1])))
+	index = 1;
+	while (index < argc)
 	{
-		ft_dprintf(2, "%s: Not a valid var name.\n", argv[1]);
-		return ;
+		if (!(unset_env(env, argv[index])))
+		{
+			ft_dprintf(2, "%s: Not a valid name.\n", argv[index]);
+			return ;
+		}
+		ft_printf("%s: Has been removed.\n", argv[index]);
+		index++;
 	}
-	ft_printf("%s: Removed.\n", argv[1]);
 }

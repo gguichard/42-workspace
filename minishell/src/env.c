@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 11:20:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 12:06:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,9 @@ t_list		*setup_env(char **environ)
 	while (environ[index] != NULL)
 	{
 		res = 0;
-		if ((parts = ft_strsplit(environ[index], '=')) != NULL)
-			res = set_env(&lst, parts[0], parts[1]);
+		if (!(parts = ft_strsplit(environ[index], '=')))
+			return (ft_lstdel(&lst, &free_env));
+		res = set_env(&lst, parts[0], parts[1] == NULL ? "" : parts[1]);
 		ft_strtab_free(parts);
 		if (!res)
 			return (ft_lstdel(&lst, &free_env));

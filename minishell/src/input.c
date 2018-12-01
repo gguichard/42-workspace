@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 14:40:20 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 10:25:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 11:56:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*wait_cmdline(void)
 	int		res;
 
 	cmd = NULL;
-	if ((res = get_next_line(STDOUT_FILENO, &cmd)) == 0)
+	if ((res = get_next_line(STDIN_FILENO, &cmd)) == 0)
 	{
 		ft_printf("\n");
 		exit(0);
