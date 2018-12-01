@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 09:34:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:37:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 09:23:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	builtin_setenv(int argc, char **argv, t_list **env)
 
 	parts = NULL;
 	if (argc <= 1
-		|| (parts = ft_strsplit(argv[1], '='))
+		|| !(parts = ft_strsplit(argv[1], '='))
 		|| !(parts[0]))
 	{
 		ft_strtab_free(parts);
