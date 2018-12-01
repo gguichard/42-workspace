@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 12:06:53 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 00:36:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 16:11:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "printf.h"
 #include "minishell.h"
 
-int			is_binary_exec(const char *path)
+int	is_binary_exec(const char *path)
 {
 	struct stat	data;
 
@@ -29,15 +29,15 @@ int			is_binary_exec(const char *path)
 	return (1);
 }
 
-int			search_for_binary(const char *name, t_list **env, char **path)
+int	search_for_binary(const char *name, t_list **env, char **path)
 {
 	char	**folders;
 	size_t	index;
 	char	*tmp;
 	int		res;
 
-	folders = ft_strsplit(get_env(*env, PATH_ENV), ':');
-	if (!(folders))
+	folders = ft_strsplit(get_env(*env, "PATH", ""), ':');
+	if (folders == NULL)
 		return (0);
 	index = 0;
 	while (folders[index] != NULL)

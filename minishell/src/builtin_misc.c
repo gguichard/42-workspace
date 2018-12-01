@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 23:45:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 14:46:56 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 16:28:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void		builtin_exit(int argc, char **argv, t_list **env)
 	(void)argc;
 	(void)argv;
 	(void)env;
+	if (argc >= 3)
+	{
+		ft_dprintf(2, "%s: %s.\n", argv[0], "Too many arguments");
+		return ;
+	}
 	res = 0;
 	if (argc > 1)
 		res = ft_atoi(argv[1]);
@@ -53,14 +58,11 @@ void		builtin_cd(int argc, char **argv, t_list **env)
 	char	*path;
 	int		res;
 
-	path = NULL;
-	if (argc > 1)
-		path = argv[1];
-	else
-		path = get_env(*env, "HOME");
+	cwd = getcwd(NULL, 0);
+	path = (argc > 1) ? argv[1] : get_env(*env, "HOME", cwd);
 	if (ft_strequ(path, "-"))
 	{
-		path = get_env(*env, "OLDPWD");
+		path = get_env(*env, "OLDPWD", cwd);
 		ft_printf("%s\n", path);
 	}
 	res = cd_dir_check(path);
@@ -69,7 +71,8 @@ void		builtin_cd(int argc, char **argv, t_list **env)
 		ft_dprintf(2, "%s: %s.\n", path, str_error(res));
 		return ;
 	}
-	set_env(env, "OLDPWD", get_env(*env, "PWD"));
+	set_env(env, "OLDPWD", cwd);
+	free(cwd);
 	if ((cwd = getcwd(NULL, 0)) != NULL)
 	{
 		set_env(env, "PWD", cwd);

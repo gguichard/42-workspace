@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 12:06:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 16:05:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int			unset_env(t_list **lst, const char *name)
 	return (1);
 }
 
-char		*get_env(t_list *lst, const char *name)
+char		*get_env(t_list *lst, const char *name, const char *def)
 {
 	while (lst != NULL)
 	{
@@ -82,7 +82,7 @@ char		*get_env(t_list *lst, const char *name)
 			return (((t_env *)(lst->content))->value);
 		lst = lst->next;
 	}
-	return ("");
+	return (char *)(def);
 }
 
 t_list		*setup_env(char **environ)

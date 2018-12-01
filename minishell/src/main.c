@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 15:25:14 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 11:34:56 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 15:10:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,14 @@ void		show_prompt(t_list **env)
 	char	*pwd;
 	char	*tmp;
 
-	home = get_env(*env, "HOME");
-	pwd = get_env(*env, "PWD");
+	home = get_env(*env, "HOME", "");
+	pwd = get_env(*env, "PWD", "");
 	tmp = ft_strstr(pwd, home);
 	if (tmp == NULL || tmp != pwd)
-		ft_printf("%s:%s%% ", get_env(*env, "USER"), pwd);
+		ft_printf("%s:%s%% ", get_env(*env, "USER", "guest"), pwd);
 	else
-		ft_printf("%s:~%s%% ", get_env(*env, "USER"), pwd + ft_strlen(home));
+		ft_printf("%s:~%s%% ", get_env(*env, "USER", "guest")
+				, pwd + ft_strlen(home));
 }
 
 int			main(int argc, char **argv, char **environ)

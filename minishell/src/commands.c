@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 10:02:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 10:28:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 17:13:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static void		interpret_cmd(int argc, char **argv, t_list **env)
 	if (exec_builtin(argc, argv, env))
 		return ;
 	path = NULL;
-	if (!ft_strchr(argv[0], '/'))
+	if (!ft_strchr(argv[0], '/')
+			&& get_env(*env, "PATH", " ")[0] != '\0')
 		res = search_for_binary(argv[0], env, &path);
 	else
 	{
@@ -86,6 +87,22 @@ static void		interpret_cmd(int argc, char **argv, t_list **env)
 	free(path);
 }
 
+static int		expand_args(char **argv, t_list **env)
+{
+	int		argc;
+	char	*tmp;
+
+	argc = 0;
+	while (argv[argc] != NULL)
+	{
+		if (!(tmp = expand_str(argv[argc], env)))
+			return (-1);
+		argv[argc] = tmp;
+		argc++;
+	}
+	return (argc);
+}
+
 void			process_cmd(char *cmd, t_list **env)
 {
 	char	**argv;
@@ -96,12 +113,7 @@ void			process_cmd(char *cmd, t_list **env)
 		ft_dprintf(2, "%s: Command error.\n", cmd);
 		return ;
 	}
-	argc = 0;
-	while (argv[argc] != NULL)
-	{
-		argv[argc] = expand_str(argv[argc], env);
-		argc++;
-	}
+	argc = expand_args(argv, env);
 	if (argc >= 1)
 	{
 		ft_strtolower(argv[0]);

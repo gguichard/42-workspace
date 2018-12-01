@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 15:24:49 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 11:17:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 16:03:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void			process_cmd(char *cmd, t_list **env);
 int				is_binary_exec(const char *path);
 int				search_for_binary(const char *name, t_list **env, char **path);
 
-char			*get_env(t_list *lst, const char *name);
+char			*get_env(t_list *lst, const char *name, const char *def);
 int				set_env(t_list **lst, const char *name, const char *path);
 int				unset_env(t_list **lst, const char *name);
 char			**get_envtab(t_list *lst);

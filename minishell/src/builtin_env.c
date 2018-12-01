@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 09:34:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 14:06:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/01 16:12:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		builtin_setenv(int argc, char **argv, t_list **env)
 	if (parts[1] != NULL)
 		value = parts[1];
 	else
-		value = (argc >= 3) ? argv[2] : "0";
+		value = (argc >= 3) ? argv[2] : "";
 	if (!set_env(env, parts[0], value))
 		ft_dprintf(2, "%s: Unable to set var value.\n", argv[0]);
 	else
