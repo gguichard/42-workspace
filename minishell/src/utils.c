@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 13:00:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 11:17:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/02 12:42:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char	*str_error(int err)
 char	**env_as_str(t_list **lst)
 {
 	char	*str;
+	char	**tab;
 	t_list	*beg;
 
 	str = NULL;
@@ -50,5 +51,7 @@ char	**env_as_str(t_list **lst)
 		str = ft_strjoin_free(str, "\n");
 		beg = beg->next;
 	}
-	return (ft_strsplit(str, '\n'));
+	tab = ft_strsplit(str, '\n');
+	free(str);
+	return (tab);
 }
