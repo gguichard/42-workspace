@@ -6,66 +6,74 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 11:42:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/03 14:40:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/03 21:20:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 #include "ft_select.h"
 
-static void	set_cols(t_select *select)
+static void	compute_cols(t_select *select)
 {
-	t_list	*lst;
-	int		count;
+	t_choice	*lst;
+	int			t_cols;
 
-	lst = select->options;
-	count = 0;
+	lst = select->choices;
+	t_cols = tgetnum("co");
+	select->col_width = 1;
 	while (lst != NULL)
 	{
 		select->col_width = ft_max(ft_strlen(lst->content), select->col_width);
 		lst = lst->next;
-		count++;
 	}
-	select->col_width++;
-	select->cols = ft_max(1, tgetnum("co") / select->col_width);
-	select->rows = (count / select->cols) + (count % select->cols > 0);
-	while ((select->cols * select->rows) - count >= select->rows)
-	{
-		select->cols--;
-		select->rows = (count / select->cols) + (count % select->cols > 0);
-	}
+	select->col_width += 2;
+	select->cols = ft_max(1, t_cols / select->col_width);
+	select->col_width += t_cols / select->cols - select->col_width;
 }
 
-static void	print_choices(t_select *select)
+static void	print_select(t_select *select)
 {
-	char	*cm;
-	t_list	*lst;
-	int		index;
-	int		col;
-	int		row;
+	char		*cmotion;
+	t_choice	*lst;
+	int			index;
+	int			col;
+	int			diff;
 
-	if (!(cm = tgetstr("cm", NULL)))
+	if (!(cmotion = tgetstr("cm", NULL)))
 		return ;
-	lst = select->options;
+	lst = select->choices;
 	index = 0;
 	while (lst != NULL)
 	{
 		col = select->col_width * (index % select->cols);
-		row = index / select->cols;
-		tputs(tgoto(cm, col, row), 1, putchar);
-		tputs(lst->content, 1, putchar);
-		lst = lst->next;
+		tputs(tgoto(cmotion, col, index / select->cols), 1, ft_tputchar);
+		diff = select->col_width - ft_strlen(lst->content);
+		ft_printf("[%-*s", diff / 2 + diff % 2 - 1, "");
+		if (lst->cursor)
+			tputs(tgetstr("us", NULL), 1, ft_tputchar);
+		if (lst->selected)
+			tputs(tparm(tgetstr("AB", NULL), 8), 1, ft_tputchar);
+		ft_printf("%s", lst->content);
+		if (lst->cursor || lst->selected)
+			tputs(tgetstr("me", NULL), 1, ft_tputchar);
+		ft_printf("%*s]", diff / 2 - 1, "");
 		index++;
+		lst = lst->next;
 	}
 }
 
 void		init_select(t_select *select)
 {
-	char	*cl;
+	char	*clear;
 
-	if (!(cl = tgetstr("cl", NULL)))
+	if (!(clear = tgetstr("cl", NULL)))
 		return ;
-	tputs(cl, 1, putchar);
-	set_cols(select);
-	print_choices(select);
+	tputs(clear, 1, ft_tputchar);
+	compute_cols(select);
+	print_select(select);
+	while (42)
+	{
+		if (read(STDIN_FILENO, NULL, 4))
+			break;
+	}
 }

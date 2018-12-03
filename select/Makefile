@@ -6,13 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/02 11:42:49 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/03 16:10:58 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	ft_select
 
-SRC		=	src/main.c src/signals.c src/select.c
+SRC		=	src/main.c src/signals.c src/select.c src/utils.c
 OBJ		=	$(SRC:.c=.o)
 
 CC		=	gcc
