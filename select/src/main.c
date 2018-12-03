@@ -6,15 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:47:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/02 15:04:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/03 14:23:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_select.h"
-#include <unistd.h>
 #include <stdlib.h>
 #include <signal.h>
-#include <term.h>
+#include <sys/ioctl.h>
+#include "ft_select.h"
 
 int				g_run = 1;
 
@@ -34,7 +33,7 @@ static t_list	*chain_args(int argc, char **argv)
 	index = 1;
 	while (index < argc)
 	{
-		elem = ft_lstnew(argv[index], ft_strlen(argv[index]));
+		elem = ft_lstnew(argv[index], ft_strlen(argv[index]) + 1);
 		if (elem == NULL)
 			return (ft_lstdel(&args, &free_arg));
 		ft_lstpush(&args, elem);
@@ -45,25 +44,24 @@ static t_list	*chain_args(int argc, char **argv)
 
 int				main(int argc, char **argv)
 {
-	t_list			*lst;
-	char			*buff;
-	struct termios	term;
+	t_select	select;
 
-	if (!(lst = chain_args(argc, argv)))
-		ft_dprintf(2, "Error while parsing args.\n");
-	else if (!(buff = (char *)malloc(2048 * sizeof(char))))
-		ft_dprintf(2, "Unable to malloc buffer.\n");
-	else if (tgetent(buff, getenv("TERM")) <= 0)
+	if (!(select.options = chain_args(argc, argv)))
+		return (1);
+	else if (tgetent(select.buff, getenv("TERM")) <= 0)
 		ft_dprintf(2, "No term entry for %s.\n", getenv("TERM"));
 	else
 	{
 		signal(SIGHUP, &handle_signal);
-		show_select(lst);
-		tcgetattr(STDIN_FILENO, &term);
-
-		tcsetattr(STDIN_FILENO, TCSANOW, &term);
-		while (read(0, NULL, 1)) ;
+		tcgetattr(STDIN_FILENO, &(select.term));
+		ft_memcpy(&(select.def), &(select.term), sizeof(struct termios));
+		select.term.c_lflag &= ~(ICANON | ECHO);
+		select.term.c_cc[VMIN] = 1;
+		select.term.c_cc[VTIME] = 0;
+		tcsetattr(STDIN_FILENO, TCSANOW, &(select.term));
+		init_select(&select);
+		tcsetattr(STDIN_FILENO, TCSANOW, &(select.def));
 	}
-	ft_lstdel(&lst, &free_arg);
+	ft_lstdel(&(select.options), &free_arg);
 	return (0);
 }
