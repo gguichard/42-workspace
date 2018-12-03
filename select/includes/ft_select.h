@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:55:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/03 16:10:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/03 22:31:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,7 @@ int				ft_tputchar(int c);
 void			handle_signal(int signal);
 
 void			init_select(t_select *select);
+
+void			handle_keys(t_select *select, char *buf);
 
 #endif

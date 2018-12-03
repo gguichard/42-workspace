@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 11:42:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/03 21:20:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/03 22:34:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static void	print_select(t_select *select)
 void		init_select(t_select *select)
 {
 	char	*clear;
+	char	buff[3];
 
 	if (!(clear = tgetstr("cl", NULL)))
 		return ;
@@ -73,7 +74,9 @@ void		init_select(t_select *select)
 	print_select(select);
 	while (42)
 	{
-		if (read(STDIN_FILENO, NULL, 4))
-			break;
+		read(STDIN_FILENO, &buff, 3);
+		handle_keys(select, buff);
+		ft_memset(buff, 0, 3);
+		print_select(select);
 	}
 }
