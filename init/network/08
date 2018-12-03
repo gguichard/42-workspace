@@ -1,0 +1,3 @@
+Slash16 utilise Amazon AWS, il suffit de ping le domaine slash16.org afin de
+recuperer l'adresse IP (13.32.211.139) puis d'aller sur cette adresse via son
+navigateur pour voir apparaitre CloudFront qui n'est autre qu'un service d'AWS
