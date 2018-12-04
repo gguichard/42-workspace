@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:55:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 16:39:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 17:47:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void			prev_choice(t_choice **current);
 void			next_choice(t_choice **current);
 
 void			handle_resize(int signal);
+void			handle_pause(int signal);
+void			handle_continue(int signal);
 void			handle_signal(int signal);
 
 int				ft_tputchar(int c);

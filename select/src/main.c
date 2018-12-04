@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:47:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 15:26:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 17:47:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ int				main(int argc, char **argv)
 	}
 	signal(SIGTERM, &handle_signal);
 	signal(SIGINT, &handle_signal);
-	//signal(SIGTSTP, &handle_signal);
-	//signal(SIGCONT, &handle_signal);
 	signal(SIGQUIT, &handle_signal);
+	signal(SIGTSTP, &handle_pause);
+	signal(SIGCONT, &handle_continue);
 	signal(SIGWINCH, &handle_resize);
 	init_term();
 	init_select();

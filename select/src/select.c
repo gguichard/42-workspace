@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 11:42:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 14:27:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 17:53:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int		compute_col_width(void)
 		if ((lst = lst->next) == g_select->head)
 			break ;
 	}
-	return (col_width + 2);
+	return (col_width + 4);
 }
 
 static void		compute_cols(void)
