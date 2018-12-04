@@ -1,0 +1,2 @@
+Ce sont les startup service que l'on peut recuperer grace a la commande
+systemctl list-unit-files --type=service

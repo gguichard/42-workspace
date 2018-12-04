@@ -1,0 +1,4 @@
+Le nom du materiel est nat-1 et son adresse IP est 10.60.1.11
+(le principe du NAT est de faire correspondre notre IP a l'IP publique
+du reseau de 42 c4ets donc bien lui qui fait la correspondance entre le reseau
+local et l'exterieur)
