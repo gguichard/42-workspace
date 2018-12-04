@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 22:25:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 17:55:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 20:14:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,7 @@ static void		del_choice(t_choice **current)
 
 	tmp = *current;
 	if (tmp->next == tmp)
-	{
-		handle_signal(SIGINT);
-		return ;
-	}
+		clean_exit();
 	if (g_select->head == tmp)
 		g_select->head = tmp->next;
 	if (g_select->back == tmp)
@@ -85,7 +82,7 @@ void			listen_keys(void)
 	if (key == ENTER_KEY)
 		exit_select();
 	else if (key == ESC_KEY)
-		handle_signal(SIGINT);
+		clean_exit();
 	else if (key == DEL_KEY || key == BS_KEY)
 		del_choice(&current);
 	else if (key == SPACE_KEY)
@@ -95,7 +92,7 @@ void			listen_keys(void)
 	else if (key == MOVEDOWN_KEY)
 		down_choice(&current);
 	else if (key == MOVELEFT_KEY)
-		prev_choice(&current);
+		left_choice(&current);
 	else if (key == MOVERIGHT_KEY)
-		next_choice(&current);
+		right_choice(&current);
 }

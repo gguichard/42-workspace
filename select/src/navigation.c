@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 12:07:59 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 13:12:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 20:11:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	down_choice(t_choice **current)
 	*current = tmp;
 }
 
-void	prev_choice(t_choice **current)
+void	left_choice(t_choice **current)
 {
 	t_choice	*tmp;
 
@@ -55,7 +55,7 @@ void	prev_choice(t_choice **current)
 	*current = tmp;
 }
 
-void	next_choice(t_choice **current)
+void	right_choice(t_choice **current)
 {
 	t_choice	*tmp;
 
