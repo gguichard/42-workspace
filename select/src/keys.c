@@ -6,86 +6,37 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 22:25:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 09:34:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 12:13:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "printf.h"
 #include "ft_select.h"
 
-static void	select_choice(t_choice **current)
+extern t_select	*g_select;
+
+static void		select_choice(t_choice **current)
 {
 	(*current)->selected = !(*current)->selected;
 }
 
-static void	up_choice(t_choice **current)
+static void		quit_nav(void)
 {
-	t_choice	*tmp;
-
-	tmp = *current;
-	tmp->cursor = 0;
-	tmp = tmp->prev;
-	while (tmp->col != (*current)->col)
-		tmp = tmp->prev;
-	tmp->cursor = 1;
-	*current = tmp;
+	reset_term();
+	exit(0);
 }
 
-static void	down_choice(t_choice **current)
-{
-	t_choice	*tmp;
-
-	tmp = *current;
-	tmp->cursor = 0;
-	tmp = tmp->next;
-	while (tmp->col != (*current)->col)
-		tmp = tmp->next;
-	tmp->cursor = 1;
-	*current = tmp;
-}
-
-static void	prev_choice(t_choice **current)
-{
-	t_choice	*tmp;
-
-	tmp = *current;
-	tmp->cursor = 0;
-	if (tmp->prev->row == tmp->row)
-		tmp = tmp->prev;
-	else
-	{
-		while (tmp->next->row == tmp->row)
-			tmp = tmp->next;
-	}
-	tmp->cursor = 1;
-	*current = tmp;
-}
-
-static void	next_choice(t_choice **current)
-{
-	t_choice	*tmp;
-
-	tmp = *current;
-	tmp->cursor = 0;
-	if (tmp->next->row == tmp->row)
-		tmp = tmp->next;
-	else
-	{
-		while (tmp->prev->row == tmp->row)
-			tmp = tmp->prev;
-	}
-	tmp->cursor = 1;
-	*current = tmp;
-}
-
-void		handle_keys(t_select *select, char *buf)
+void			handle_keys(char *buf)
 {
 	static t_choice	*current = NULL;
 
 	if (current == NULL)
-		current = select->head;
+		current = g_select->head;
 	if (buf[0] == ' ')
 		select_choice(&current);
+	if (buf[0] == 0x1B && buf[1] == 0 && buf[2] == 0)
+		quit_nav();
 	if (buf[0] == 0x1B && buf[1] == '[')
 	{
 		if (buf[2] == 'D')

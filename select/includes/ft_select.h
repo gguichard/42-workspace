@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:55:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 08:56:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 12:12:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,23 @@ typedef struct	s_select
 	int				cols;
 }				t_select;
 
-int				ft_tputchar(int c);
+void			clean_choices(void);
+
+int				list_choices(int argc, char **argv);
+
+void			reset_term(void);
+
+void			init_select(void);
+
+void			handle_keys(char *buf);
+
+void			up_choice(t_choice **current);
+void			down_choice(t_choice **current);
+void			prev_choice(t_choice **current);
+void			next_choice(t_choice **current);
 
 void			handle_signal(int signal);
 
-void			init_select(t_select *select);
-
-void			handle_keys(t_select *select, char *buf);
+int				ft_tputchar(int c);
 
 #endif
