@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:55:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 20:14:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 23:56:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void			clean_choices(void);
 
 int				list_choices(int argc, char **argv);
 
-void			init_term(void);
+void			setup_term(void);
 void			reset_term(void);
 
 void			init_select(void);
@@ -65,12 +65,9 @@ void			down_choice(t_choice **current);
 void			left_choice(t_choice **current);
 void			right_choice(t_choice **current);
 
-void			handle_resize(int signal);
-void			handle_pause(int signal);
-void			handle_continue(int signal);
 void			handle_signal(int signal);
 
 int				ft_tputchar(int c);
-void			clean_exit(void);
+void			clean_exit(int code);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:47:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 20:07:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 23:57:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static int		catch_errors(int argc)
 	return (1);
 }
 
-void			init_term(void)
+void			setup_term(void)
 {
-	signal(SIGTSTP, &handle_pause);
+	signal(SIGTSTP, &handle_signal);
 	tcgetattr(STDIN_FILENO, &(g_select->term));
 	ft_memcpy(&(g_select->def), &(g_select->term), sizeof(struct termios));
 	g_select->term.c_lflag &= ~(ICANON | ECHO);
@@ -59,12 +59,12 @@ int				main(int argc, char **argv)
 		ft_dprintf(2, "ft_select: malloc error\n");
 		return (1);
 	}
-	signal(SIGTERM, &handle_signal);
-	signal(SIGINT, &handle_signal);
-	signal(SIGQUIT, &handle_signal);
-	signal(SIGCONT, &handle_continue);
-	signal(SIGWINCH, &handle_resize);
-	init_term();
+	signal(SIGTERM, &clean_exit);
+	signal(SIGINT, &clean_exit);
+	signal(SIGQUIT, &clean_exit);
+	signal(SIGCONT, &handle_signal);
+	signal(SIGWINCH, &handle_signal);
+	setup_term();
 	init_select();
 	while (1)
 	{
