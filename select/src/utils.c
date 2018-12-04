@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:09:19 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/03 16:10:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 13:08:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int	ft_tputchar(int c)
 {
-	return (write(STDOUT_FILENO, &c, 1));
+	return (write(STDERR_FILENO, &c, 1));
 }

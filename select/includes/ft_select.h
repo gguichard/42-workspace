@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:55:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 12:12:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 13:37:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 # include "libft.h"
 # include <unistd.h>
 # include <term.h>
+
+# define MOVEUP_KEY 4283163
+# define MOVEDOWN_KEY 4348699
+# define MOVELEFT_KEY 4479771
+# define MOVERIGHT_KEY 4414235
+# define SPACE_KEY 32
+# define ESC_KEY 27
+# define ENTER_KEY 10
 
 typedef struct	s_choice
 {
@@ -45,8 +53,9 @@ int				list_choices(int argc, char **argv);
 void			reset_term(void);
 
 void			init_select(void);
+void			print_select(void);
 
-void			handle_keys(char *buf);
+void			listen_keys(void);
 
 void			up_choice(t_choice **current);
 void			down_choice(t_choice **current);

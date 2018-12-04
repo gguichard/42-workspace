@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/04 11:46:06 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 11:48:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 13:20:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 extern t_select	*g_select;
 
-static t_choice	*list_new_choice(char *str)
+static t_choice	*create_new_choice(char *str)
 {
 	t_choice	*elem;
 
@@ -55,10 +55,13 @@ int				list_choices(int argc, char **argv)
 	index = 1;
 	while (index < argc)
 	{
-		if (!(elem = list_new_choice(argv[index])))
+		if (!(elem = create_new_choice(argv[index])))
 			return (0);
 		else if (g_select->back == NULL)
+		{
+			elem->cursor = 1;
 			g_select->head = elem;
+		}
 		else
 		{
 			elem->prev = g_select->back;
