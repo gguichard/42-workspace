@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:55:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/03 22:31:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 08:56:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ typedef struct	s_choice
 {
 	int				cursor;
 	int				selected;
+	int				col;
+	int				row;
 	char			*content;
 	struct s_choice	*prev;
 	struct s_choice	*next;
@@ -28,7 +30,8 @@ typedef struct	s_choice
 
 typedef struct	s_select
 {
-	struct s_choice	*choices;
+	struct s_choice	*head;
+	struct s_choice	*back;
 	struct termios	def;
 	struct termios	term;
 	int				col_width;
