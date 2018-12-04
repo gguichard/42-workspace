@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:47:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 13:42:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 15:26:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int		catch_errors(int argc)
 	return (1);
 }
 
-static void		init_term(void)
+void			init_term(void)
 {
 	tcgetattr(STDIN_FILENO, &(g_select->term));
 	ft_memcpy(&(g_select->def), &(g_select->term), sizeof(struct termios));
@@ -60,7 +60,10 @@ int				main(int argc, char **argv)
 	}
 	signal(SIGTERM, &handle_signal);
 	signal(SIGINT, &handle_signal);
+	//signal(SIGTSTP, &handle_signal);
+	//signal(SIGCONT, &handle_signal);
 	signal(SIGQUIT, &handle_signal);
+	signal(SIGWINCH, &handle_resize);
 	init_term();
 	init_select();
 	while (1)

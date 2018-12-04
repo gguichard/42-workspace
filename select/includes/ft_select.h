@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:55:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 13:37:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 16:39:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # define SPACE_KEY 32
 # define ESC_KEY 27
 # define ENTER_KEY 10
+# define DEL_KEY 127
+# define BS_KEY 2117294875
 
 typedef struct	s_choice
 {
@@ -50,6 +52,7 @@ void			clean_choices(void);
 
 int				list_choices(int argc, char **argv);
 
+void			init_term(void);
 void			reset_term(void);
 
 void			init_select(void);
@@ -62,6 +65,7 @@ void			down_choice(t_choice **current);
 void			prev_choice(t_choice **current);
 void			next_choice(t_choice **current);
 
+void			handle_resize(int signal);
 void			handle_signal(int signal);
 
 int				ft_tputchar(int c);

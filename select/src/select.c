@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 11:42:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 13:24:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/04 14:27:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/ioctl.h>
 #include <stdlib.h>
 #include "printf.h"
 #include "ft_select.h"
@@ -34,11 +35,14 @@ static int		compute_col_width(void)
 
 static void		compute_cols(void)
 {
-	int			t_cols;
-	int			index;
-	t_choice	*lst;
+	int				t_cols;
+	struct winsize	ws;
+	int				index;
+	t_choice		*lst;
 
-	t_cols = tgetnum("co");
+	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) < 0)
+		return ;
+	t_cols = ws.ws_col;
 	g_select->col_width = compute_col_width();
 	g_select->cols = ft_max(1, t_cols / g_select->col_width);
 	index = 0;
