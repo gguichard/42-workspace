@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 22:25:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/05 11:21:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/05 14:33:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void		exit_select(void)
 	t_choice	*lst;
 
 	first = 1;
+	clean_search();
 	reset_term();
 	lst = g_select->head;
 	while (lst != NULL)
@@ -37,7 +38,6 @@ static void		exit_select(void)
 			break ;
 	}
 	clean_choices();
-	clean_search();
 	exit(0);
 }
 
@@ -72,7 +72,6 @@ static void		toggle_choice(t_choice **current)
 		tmp->next->cursor = 1;
 		*current = tmp->next;
 	}
-	clean_search();
 }
 
 static int		handle_special_key(int key, t_choice **current)
@@ -109,6 +108,6 @@ void			listen_keys(void)
 	read(STDIN_FILENO, &key, 4);
 	if (handle_special_key(key, &current))
 		clean_search();
-	else
+	else if (key > 32)
 		search_choice(&current, key);
 }

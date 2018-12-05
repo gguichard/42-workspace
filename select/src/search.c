@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 09:35:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/05 11:18:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/05 14:10:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@ void			clean_search(void)
 {
 	free(g_select->search);
 	g_select->search = NULL;
+	tputs(tgoto(tgetstr("cm", NULL), 0, g_select->back->row + 2)
+			, 1, ft_tputchar);
+	tputs(tgetstr("dl", NULL), 1, ft_tputchar);
+}
+
+void			show_search(void)
+{
+	if (g_select->search != NULL)
+	{
+		tputs(tgoto(tgetstr("cm", NULL), 0, g_select->back->row + 2)
+				, 1, ft_tputchar);
+		ft_dprintf(STDERR_FILENO, "Recherche : %s\n", g_select->search);
+	}
 }
 
 static char		*search_filestr(char *str)
@@ -57,6 +70,7 @@ static void		search_levenshtein(t_choice **current)
 	(*current)->cursor = 0;
 	lowest_choice->cursor = 1;
 	*current = lowest_choice;
+	show_search();
 }
 
 void			search_choice(t_choice **current, int key)

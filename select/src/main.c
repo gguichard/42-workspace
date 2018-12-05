@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:47:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/05 09:40:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/05 14:35:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int				main(int argc, char **argv)
 		ft_dprintf(2, "ft_select: malloc error\n");
 		return (1);
 	}
+	signal(SIGHUP, &clean_exit);
 	signal(SIGTERM, &clean_exit);
 	signal(SIGINT, &clean_exit);
 	signal(SIGQUIT, &clean_exit);

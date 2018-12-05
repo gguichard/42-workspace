@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 11:42:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 23:46:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/05 14:10:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,4 +113,5 @@ void			print_select(void)
 		if (lst == g_select->head)
 			break ;
 	}
+	show_search();
 }
