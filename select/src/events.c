@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 22:25:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 23:52:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/05 11:21:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void		exit_select(void)
 			break ;
 	}
 	clean_choices();
+	clean_search();
 	exit(0);
 }
 
@@ -71,6 +72,30 @@ static void		toggle_choice(t_choice **current)
 		tmp->next->cursor = 1;
 		*current = tmp->next;
 	}
+	clean_search();
+}
+
+static int		handle_special_key(int key, t_choice **current)
+{
+	if (key == ENTER_KEY)
+		exit_select();
+	else if (key == ESC_KEY)
+		clean_exit(0);
+	else if (key == DEL_KEY || key == BS_KEY)
+		del_choice(current);
+	else if (key == SPACE_KEY)
+		toggle_choice(current);
+	else if (key == MOVEUP_KEY)
+		up_choice(current);
+	else if (key == MOVEDOWN_KEY)
+		down_choice(current);
+	else if (key == MOVELEFT_KEY)
+		left_choice(current);
+	else if (key == MOVERIGHT_KEY)
+		right_choice(current);
+	else
+		return (0);
+	return (1);
 }
 
 void			listen_keys(void)
@@ -82,20 +107,8 @@ void			listen_keys(void)
 		current = g_select->head;
 	key = 0;
 	read(STDIN_FILENO, &key, 4);
-	if (key == ENTER_KEY)
-		exit_select();
-	else if (key == ESC_KEY)
-		clean_exit(0);
-	else if (key == DEL_KEY || key == BS_KEY)
-		del_choice(&current);
-	else if (key == SPACE_KEY)
-		toggle_choice(&current);
-	else if (key == MOVEUP_KEY)
-		up_choice(&current);
-	else if (key == MOVEDOWN_KEY)
-		down_choice(&current);
-	else if (key == MOVELEFT_KEY)
-		left_choice(&current);
-	else if (key == MOVERIGHT_KEY)
-		right_choice(&current);
+	if (handle_special_key(key, &current))
+		clean_search();
+	else
+		search_choice(&current, key);
 }

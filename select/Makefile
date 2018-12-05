@@ -6,14 +6,15 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/04 23:57:10 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/05 09:56:27 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	ft_select
 
 SRC		=	src/main.c src/choices.c src/select.c \
-			src/events.c src/navigation.c src/utils.c
+			src/events.c src/navigation.c src/search.c \
+			src/utils.c
 OBJ		=	$(SRC:.c=.o)
 
 CC		=	gcc

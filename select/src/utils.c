@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/03 16:09:19 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 23:58:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/05 09:52:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int				ft_tputchar(int c)
 void			clean_exit(int code)
 {
 	reset_term();
+	clean_search();
 	clean_choices();
 	exit(code);
 }

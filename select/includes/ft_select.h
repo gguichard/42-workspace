@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/02 09:55:21 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/04 23:56:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/05 09:56:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct	s_select
 	struct termios	term;
 	int				col_width;
 	int				cols;
+	char			*search;
 }				t_select;
 
 void			clean_choices(void);
@@ -64,6 +65,9 @@ void			up_choice(t_choice **current);
 void			down_choice(t_choice **current);
 void			left_choice(t_choice **current);
 void			right_choice(t_choice **current);
+
+void			clean_search(void);
+void			search_choice(t_choice **current, int key);
 
 void			handle_signal(int signal);
 
