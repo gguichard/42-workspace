@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/06 16:56:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/06 20:13:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int		init_mlx(t_fdf *fdf)
 		clean_mlx(fdf);
 		return (0);
 	}
-	fdf->lib.img_data = mlx_get_data_addr(fdf->lib.img_ptr
+	fdf->lib.img_data = (unsigned int *)mlx_get_data_addr(fdf->lib.img_ptr
 			, &(fdf->lib.bits_per_pixel)
 			, &(fdf->lib.size_line)
 			, &(fdf->lib.endian));
@@ -53,8 +53,16 @@ int		main(int argc, char **argv)
 {
 	t_fdf	fdf;
 
-	(void)argc;
-	(void)argv;
+	if (argc < 2)
+	{
+		ft_dprintf(2, "usage: ./fdf [map_file]\n");
+		return (1);
+	}
+	else if (!(read_file(argv[1])))
+	{
+		ft_dprintf(2, "fdf: unable to parse map file\n");
+		return (1);
+	}
 	fdf.width = WIN_WIDTH;
 	fdf.height = WIN_HEIGHT;
 	ft_memset(&(fdf.lib), 0, sizeof(t_mlx));
