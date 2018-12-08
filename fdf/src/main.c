@@ -6,13 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/06 20:13:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/07 10:22:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
 #include "fdf.h"
-#include "libft.h"
 #include "printf.h"
 
 void	clean_mlx(t_fdf *fdf)
@@ -58,7 +57,7 @@ int		main(int argc, char **argv)
 		ft_dprintf(2, "usage: ./fdf [map_file]\n");
 		return (1);
 	}
-	else if (!(read_file(argv[1])))
+	else if (!(fdf.points = read_file(argv[1])))
 	{
 		ft_dprintf(2, "fdf: unable to parse map file\n");
 		return (1);
@@ -71,6 +70,8 @@ int		main(int argc, char **argv)
 		ft_dprintf(2, "fdf: unable to init minilibx\n");
 		return (1);
 	}
+	draw_map(&fdf);
+	mlx_put_image_to_window(fdf.lib.mlx_ptr, fdf.lib.win_ptr, fdf.lib.img_ptr, 0, 0);
 	mlx_loop(fdf.lib.mlx_ptr);
 	return (0);
 }

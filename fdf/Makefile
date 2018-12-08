@@ -6,13 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/06 20:07:51 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/07 10:09:50 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fdf
 
-SRC		=	src/main.c src/parser.c
+SRC		=	src/main.c src/parser.c src/graphics.c
 OBJ		=	$(SRC:.c=.o)
 
 CC		=	gcc
