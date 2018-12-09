@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 20:40:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/09 21:37:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/09 23:25:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct		s_pf
 	char			type;
 	va_list			ap;
 	int				fd;
-	char			*buf;
+	char			buf[PRINTF_BUF];
 	size_t			buf_off;
 	int				buf_write;
 }					t_pf;
