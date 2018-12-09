@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/09 19:58:45 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/09 21:35:10 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ OBJ		= 	$(SRC:.c=.o)
 OBJ_DIR	= 	.obj
 
 CC		= 	gcc
-CFLAGS	= 	-Wall -Wextra -Werror -I libft/includes -I includes
+CFLAGS	= 	-Wall -Wextra -Werror -O2 -I libft/includes -I includes
 
 LIBFT	= 	libft/libft.a
 

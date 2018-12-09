@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 20:40:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/09 19:57:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/09 21:37:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <string.h>
 # include <stdarg.h>
 
-# define PRINTF_BUF 1024
+# define PRINTF_BUF 512
 
 /*
 ** FLAGS
