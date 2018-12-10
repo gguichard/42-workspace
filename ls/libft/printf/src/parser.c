@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 23:19:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/10 10:14:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 19:39:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,33 +28,8 @@ static int	pf_ptok(t_pf *pf, const char **tok)
 	return (0);
 }
 
-static void	pf_wildcards(t_pf *pf)
-{
-	int	tmp;
-
-	if (pf->flags & WIDTH_WILDCARD)
-	{
-		tmp = va_arg(pf->ap, int);
-		if (tmp < 0 && pf->w_field < 0)
-		{
-			tmp = -tmp;
-			pf->flags |= MINUS_FLAG;
-			pf->flags &= ~ZERO_FLAG;
-		}
-		if (pf->w_field < 0)
-			pf->w_field = tmp;
-	}
-	if (pf->flags & PRECISION_WILDCARD)
-	{
-		tmp = va_arg(pf->ap, int);
-		if (pf->precision < 0)
-			pf->precision = tmp;
-	}
-}
-
 static void	pf_conv_type(t_pf *pf)
 {
-	pf_wildcards(pf);
 	if (pf->type == 'S' || pf->type == 'C'
 			|| pf->type == 'D' || pf->type == 'O' || pf->type == 'U')
 	{

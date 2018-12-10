@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 20:40:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/10 13:52:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 19:44:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,6 @@
 # define LUP_MODIFIER (1 << 9)
 # define J_MODIFIER (1 << 10)
 # define Z_MODIFIER (1 << 11)
-
-/*
-** WILDCARDS
-*/
-# define WIDTH_WILDCARD (1 << 12)
-# define PRECISION_WILDCARD (1 << 13)
 
 /*
 ** PRINTF

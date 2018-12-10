@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 21:21:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/09 20:58:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 19:39:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,28 @@ int	pf_precision(t_pf *pf, const char **tok)
 	else
 	{
 		(*tok)++;
-		pf->precision = -1;
-		pf->flags |= PRECISION_WILDCARD;
+		pf->precision = va_arg(pf->ap, int);
 	}
 	return (1);
 }
 
 int	pf_w_field(t_pf *pf, const char **tok)
 {
+	int	tmp;
+
 	if (**tok != '*')
 		pf->w_field = ft_simple_atoi(tok);
 	else
 	{
 		(*tok)++;
-		pf->w_field = -1;
-		pf->flags |= WIDTH_WILDCARD;
+		tmp = va_arg(pf->ap, int);
+		if (tmp < 0)
+		{
+			tmp = -tmp;
+			pf->flags |= MINUS_FLAG;
+			pf->flags &= ~ZERO_FLAG;
+		}
+		pf->w_field = tmp;
 	}
 	return (1);
 }

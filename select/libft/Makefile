@@ -6,11 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/05 11:13:27 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/10 14:09:49 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	libft.a
+
+PRINTF	=	printf/printf.a
 
 SRC		=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c \
 			ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlen.c \
@@ -33,30 +35,36 @@ SRC		=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c \
 			ft_lstdel.c ft_lstadd.c ft_lstpush.c ft_lstpop.c ft_lstpeek.c \
 			ft_lstsize.c ft_lstempty.c ft_lstiter.c ft_lstmap.c \
 			ft_min.c ft_max.c ft_abs.c ft_llsize.c ft_strtab_free.c \
-			ft_levenshtein.c
-SRC		+=	get_next_line.c
-SRC		+=	printf/printf.c printf/parser.c printf/tokens.c printf/buffer.c \
-		  	printf/convert_str.c printf/convert_int.c printf/convert_double.c \
-			printf/convert_misc.c printf/utf8_utils.c printf/int_utils.c \
-			printf/utils.c
-SRC		:=	$(addprefix src/, $(SRC))
+			ft_levenshtein.c ft_wcharlen.c ft_wstrlen.c get_next_line.c
+SRC_DIR	=	src
+
 OBJ		=	$(SRC:.c=.o)
+OBJ_DIR	=	.obj
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -I includes
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME): $(PRINTF) $(addprefix $(OBJ_DIR)/,$(OBJ))
 	ar rcs $@ $^
 
-%.o: %.c
-	$(CC) $(CFLAGS) -I includes/ -o $@ -c $<
+$(PRINTF):
+	$(MAKE) -C printf
+	/bin/cp $@ $(NAME)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+$(OBJ_DIR):
+	/bin/mkdir $@
 
 clean:
-	/bin/rm -f $(OBJ)
+	$(MAKE) -C printf clean
+	/bin/rm -rf $(OBJ_DIR)
 
 fclean: clean
+	$(MAKE) -C printf fclean
 	/bin/rm -f $(NAME)
 
 re: fclean all

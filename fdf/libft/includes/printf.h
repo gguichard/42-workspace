@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/12 09:27:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/22 15:29:04 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/08 20:40:38 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/10 19:44:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,76 +17,84 @@
 # include <stdarg.h>
 # include <wchar.h>
 
-# define PRINTF_BUF 1024
+# define PRINTF_BUF 512
 
-# define HASH_FLAG 0x1
-# define ZERO_FLAG 0x2
-# define MINUS_FLAG 0x4
-# define SPACE_FLAG 0x8
-# define PLUS_FLAG 0x10
+/*
+** FLAGS
+** modifie le resulat d'une conversion
+*/
+# define HASH_FLAG (1 << 0)
+# define ZERO_FLAG (1 << 1)
+# define MINUS_FLAG (1 << 2)
+# define SPACE_FLAG (1 << 3)
+# define PLUS_FLAG (1 << 4)
 
-# define HH_MODIFIER 0x1
-# define H_MODIFIER 0x2
-# define L_MODIFIER 0x4
-# define LL_MODIFIER 0x8
-# define LUP_MODIFIER 0x10
-# define J_MODIFIER 0x20
-# define Z_MODIFIER 0x40
+/*
+** MODIFIERS
+** change la facon dont les parametres sont recuperes
+*/
+# define HH_MODIFIER (1 << 5)
+# define H_MODIFIER (1 << 6)
+# define L_MODIFIER (1 << 7)
+# define LL_MODIFIER (1 << 8)
+# define LUP_MODIFIER (1 << 9)
+# define J_MODIFIER (1 << 10)
+# define Z_MODIFIER (1 << 11)
 
-# define WIDTH_WILDCARD 0x1
-# define PRECISION_WILDCARD 0x2
-
-typedef struct	s_buf
+/*
+** PRINTF
+*/
+typedef struct		s_pf
 {
-	char		*str;
-	int			size;
-	int			offset;
-}				t_buf;
+	int				flags;
+	int				w_field;
+	int				precision;
+	char			type;
+	va_list			ap;
+	int				fd;
+	char			*buf;
+	size_t			buf_off;
+	int				buf_write;
+	char			**ret;
+}					t_pf;
 
-typedef struct	s_token
-{
-	int			flags;
-	int			width_field;
-	int			precision;
-	int			modifiers;
-	char		type;
-	int			wildcards;
-	t_buf		buf;
-}				t_token;
+int					ft_printf(const char *format, ...);
+int					ft_dprintf(int fd, const char *format, ...);
+int					ft_asprintf(char **ret, const char *format, ...);
 
-typedef struct	s_intstuff
-{
-	int			neg;
-	int			is_zero;
-	int			can_expand;
-	int			offset;
-}				t_intstuff;
+/*
+** PARSING
+*/
+int					pf_flag(t_pf *pf, const char **tok);
+int					pf_modifier(t_pf *pf, const char **tok);
+int					pf_precision(t_pf *pf, const char **tok);
+int					pf_w_field(t_pf *pf, const char **tok);
+void				pf_parse(t_pf *pf, const char *format);
 
-int				ft_printf(const char *format, ...);
-int				ft_dprintf(int fd, const char *format, ...);
-int				ft_sprintf(char *str, const char *format, ...);
-int				ft_asprintf(char **ret, const char *format, ...);
+/*
+** BUFFER
+*/
+void				buf_write(t_pf *pf, const char *buf, size_t nbytes);
+void				buf_pad(t_pf *pf);
+void				buf_char(t_pf *pf, char c, size_t nbytes);
 
-int				tok_parse(t_token *tok, const char *str);
-void			pf_convert(t_token *tok, va_list ap);
+/*
+** CONVERSIONS
+*/
+void				pf_conv_s(t_pf *pf);
+void				pf_conv_c(t_pf *pf);
+void				pf_conv_di(t_pf *pf);
+void				pf_conv_u(t_pf *pf);
+void				pf_conv_x(t_pf *pf);
+void				pf_conv_o(t_pf *pf);
+void				pf_conv_p(t_pf *pf);
+void				pf_conv_misc(t_pf *pf);
 
-void			expand_buf(t_buf *buf);
-int				fill_buf(t_buf *buf, const char *str, va_list ap);
-
-char			pad_byte(t_token *tok);
-void			buf_pad(t_buf *buf, char pad, int width, int right_pad);
-void			buf_prepend(char *s1, t_buf *buf);
-int				utf8_bytes(wint_t c);
-int				utf8_valid(wint_t c);
-int				intval_to_buf(t_token *tok, va_list ap);
-
-int				convert_utf8(char *dst, wint_t c);
-int				convert_utf8_str(char *dst, wchar_t *str);
-void			convert_str(t_token *tok, va_list ap);
-void			convert_char(t_token *tok, va_list ap);
-void			convert_int(t_token *tok, va_list ap);
-void			convert_double(t_token *tok, va_list ap);
-void			convert_pointer(t_token *tok, va_list ap);
-void			convert_other(t_token *tok);
+/*
+** CONV UTILS
+*/
+long long			pf_value(t_pf *pf);
+unsigned long long	pf_uvalue(t_pf *pf);
+void				pf_write_utf8(t_pf *pf, wint_t c);
 
 #endif
