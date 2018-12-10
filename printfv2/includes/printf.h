@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 20:40:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/10 12:49:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 13:52:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,13 @@
 
 /*
 ** WILDCARDS
-**
-**/
+*/
 # define WIDTH_WILDCARD (1 << 12)
 # define PRECISION_WILDCARD (1 << 13)
 
 /*
 ** PRINTF
-**
-**/
+*/
 typedef struct		s_pf
 {
 	int				flags;
@@ -72,7 +70,6 @@ int					ft_asprintf(char **ret, const char *format, ...);
 
 /*
 ** PARSING
-**
 */
 int					pf_flag(t_pf *pf, const char **tok);
 int					pf_modifier(t_pf *pf, const char **tok);
@@ -82,7 +79,6 @@ void				pf_parse(t_pf *pf, const char *format);
 
 /*
 ** BUFFER
-**
 */
 void				buf_write(t_pf *pf, const char *buf, size_t nbytes);
 void				buf_pad(t_pf *pf);
@@ -90,7 +86,6 @@ void				buf_char(t_pf *pf, char c, size_t nbytes);
 
 /*
 ** CONVERSIONS
-**
 */
 void				pf_conv_s(t_pf *pf);
 void				pf_conv_c(t_pf *pf);
@@ -103,7 +98,6 @@ void				pf_conv_misc(t_pf *pf);
 
 /*
 ** CONV UTILS
-**
 */
 long long			pf_value(t_pf *pf);
 unsigned long long	pf_uvalue(t_pf *pf);
