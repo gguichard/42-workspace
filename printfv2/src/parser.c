@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 23:19:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/09 20:46:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 10:14:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ static void	pf_wildcards(t_pf *pf)
 static void	pf_conv_type(t_pf *pf)
 {
 	pf_wildcards(pf);
-	if (pf->type == 'D' || pf->type == 'O' || pf->type == 'U')
+	if (pf->type == 'S' || pf->type == 'C'
+			|| pf->type == 'D' || pf->type == 'O' || pf->type == 'U')
 	{
 		pf->type = ft_tolower(pf->type);
 		pf->flags &= ~(LUP_MODIFIER | J_MODIFIER | Z_MODIFIER

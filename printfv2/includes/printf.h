@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 20:40:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/09 23:25:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 10:03:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <string.h>
 # include <stdarg.h>
+# include <wchar.h>
 
 # define PRINTF_BUF 512
 
@@ -104,5 +105,6 @@ void				pf_conv_misc(t_pf *pf);
 */
 long long			pf_value(t_pf *pf);
 unsigned long long	pf_uvalue(t_pf *pf);
+void				pf_write_utf8(t_pf *pf, wint_t c);
 
 #endif
