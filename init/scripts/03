@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ $EUID -ne 0 ]
+then
+	echo "Please run as root."
+	exit 1
+fi
+
+apt-get install nginx
+
+if [ ! -f /etc/apt/sources.list.d/backports.list ]
+then
+	echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list.d/backports.list 
+	apt-get update
+fi
+
+apt-get install python-certbot-nginx -t stretch-backports
+certbot --nginx
+certbot renew --dry-run
