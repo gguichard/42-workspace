@@ -1,1 +1,1 @@
-cat /proc/partitions
+fdisk -l

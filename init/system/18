@@ -1,1 +1,1 @@
-/etc/init.d/ssh stop
+service ssh stop
