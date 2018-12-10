@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_wstrlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 13:29:36 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 10:27:23 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/10 10:32:24 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/10 10:34:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
 
-void	*ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+size_t	ft_wstrlen(wchar_t *str)
 {
-	t_list	*elem;
-	t_list	*next;
+	size_t	len;
 
-	if (alst != NULL)
+	len = 0;
+	while (*str != L'\0')
 	{
-		elem = *alst;
-		while (elem != NULL)
-		{
-			next = elem->next;
-			if (del != NULL)
-				del(elem->content, elem->content_size);
-			free(elem);
-			elem = next;
-		}
-		*alst = NULL;
+		len += ft_wcharlen(*str);
+		str++;
 	}
-	return (NULL);
+	return (len);
 }

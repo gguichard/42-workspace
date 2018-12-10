@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_strtab_free.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 13:29:36 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 10:27:23 by gguichar         ###   ########.fr       */
+/*   Created: 2018/11/30 10:03:47 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/01 00:34:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
-void	*ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+void	*ft_strtab_free(char **tab)
 {
-	t_list	*elem;
-	t_list	*next;
+	size_t	index;
 
-	if (alst != NULL)
+	if (tab == NULL)
+		return (NULL);
+	index = 0;
+	while (tab[index] != NULL)
 	{
-		elem = *alst;
-		while (elem != NULL)
-		{
-			next = elem->next;
-			if (del != NULL)
-				del(elem->content, elem->content_size);
-			free(elem);
-			elem = next;
-		}
-		*alst = NULL;
+		free(tab[index]);
+		index++;
 	}
+	free(tab);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/24 13:12:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 10:35:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <string.h>
+# include <wchar.h>
 # include "printf.h"
 
 typedef	unsigned char	t_byte;
@@ -44,6 +45,10 @@ void			ft_bzero(void *s, size_t n);
 size_t			ft_strlen(const char *s);
 
 size_t			ft_strnlen(const char *s, size_t maxlen);
+
+size_t			ft_wcharlen(wint_t c);
+
+size_t			ft_wstrlen(wchar_t *str);
 
 char			*ft_strdup(const char *s);
 
@@ -175,9 +180,9 @@ void			ft_putnbr_fd(int n, int fd);
 
 t_list			*ft_lstnew(void const *content, size_t content_size);
 
-void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
+void			*ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 
-void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
+void			*ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 
 void			ft_lstadd(t_list **alst, t_list *new);
 
@@ -202,5 +207,9 @@ int				ft_max(int a, int b);
 int				ft_abs(int n);
 
 size_t			ft_llsize(long long l);
+
+void			*ft_strtab_free(char **tab);
+
+int				ft_levenshtein(const char *s1, const char *s2);
 
 #endif

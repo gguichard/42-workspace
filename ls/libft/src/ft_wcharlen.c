@@ -1,35 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_wcharlen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 13:29:36 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 10:27:23 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/10 10:30:49 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/10 10:31:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
 
-void	*ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+size_t	ft_wcharlen(wint_t c)
 {
-	t_list	*elem;
-	t_list	*next;
-
-	if (alst != NULL)
-	{
-		elem = *alst;
-		while (elem != NULL)
-		{
-			next = elem->next;
-			if (del != NULL)
-				del(elem->content, elem->content_size);
-			free(elem);
-			elem = next;
-		}
-		*alst = NULL;
-	}
-	return (NULL);
+	if (c < (1 << 7))
+		return (1);
+	else if (c < (1 << 11))
+		return (2);
+	else if (c < (1 << 16))
+		return (3);
+	else if (c < (1 << 21))
+		return (4);
+	return (-1);
 }

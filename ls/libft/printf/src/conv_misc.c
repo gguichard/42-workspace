@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   conv_misc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/10 13:29:36 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/30 10:27:23 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/09 10:26:35 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/09 19:58:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "libft.h"
+#include "printf.h"
 
-void	*ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+void	pf_conv_misc(t_pf *pf)
 {
-	t_list	*elem;
-	t_list	*next;
-
-	if (alst != NULL)
-	{
-		elem = *alst;
-		while (elem != NULL)
-		{
-			next = elem->next;
-			if (del != NULL)
-				del(elem->content, elem->content_size);
-			free(elem);
-			elem = next;
-		}
-		*alst = NULL;
-	}
-	return (NULL);
+	pf->w_field -= 1;
+	if (pf->w_field > 0 && !(pf->flags & MINUS_FLAG))
+		buf_pad(pf);
+	buf_char(pf, pf->type, 1);
+	if (pf->w_field > 0 && pf->flags & MINUS_FLAG)
+		buf_pad(pf);
 }
