@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 23:37:25 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/10 11:10:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 11:13:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 
 static size_t	pf_strlen(t_pf *pf, char *str)
 {
-	size_t	len;
-
 	if (!(pf->flags & L_MODIFIER))
 		return (ft_strlen(str));
 	else
