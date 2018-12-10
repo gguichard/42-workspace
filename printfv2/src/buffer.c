@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 21:01:44 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/09 11:03:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/10 12:57:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	buf_write(t_pf *pf, const char *buf, size_t nbytes)
 	{
 		off = PRINTF_BUF - pf->buf_off;
 		buf_write(pf, buf, off);
-		pf->buf_write += write(pf->fd, pf->buf, PRINTF_BUF);
+		if (pf->ret == NULL)
+			pf->buf_write += write(pf->fd, pf->buf, PRINTF_BUF);
+		else
+			pf->buf_write += PRINTF_BUF;
 		pf->buf_off = 0;
 		buf_write(pf, buf + off, nbytes - off);
 	}
