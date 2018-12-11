@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:12 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/11 16:18:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/11 17:48:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,6 @@ typedef struct	s_piece
 */
 void			*read_player(t_filler *filler);
 int				read_board(t_filler *filler);
-t_piece		 	*parse_piece(void);
+int			 	parse_piece(t_piece *piece);
 
 #endif

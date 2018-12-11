@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 15:08:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/11 16:33:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/11 17:51:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,44 +47,46 @@ static int	parse_piece_size(t_piece *piece, char *offset)
 	while (index < piece->height)
 	{
 		if (!(piece->board[index] = (char *)malloc(piece->width + 1)))
-		{
-			ft_strtab_free(piece->board);
 			return (0);
-		}
 		index++;
 	}
 	return (1);
 }
 
-t_piece		*parse_piece(void)
+static int	parse_piece_lines(t_piece *piece)
 {
-	static t_piece	piece;
-	char			*line;
-	int				index;
+	int		index;
+	char	*line;
 
-	if (get_next_line(STDIN_FILENO, &line) < 0)
-		return (NULL);
-	if (!ft_strnstr(line, "Piece ", 6) || !parse_piece_size(&piece, line + 6))
-	{
-		free(line);
-		return (NULL);
-	}
-	free(line);
 	index = 0;
-	while (index < piece.height)
+	while (index < piece->height)
 	{
-		if (get_next_line(STDIN_FILENO, &line) < 0)
-			return (ft_strtab_free(piece.board));
-		if (!valid_piece_line(&piece, line))
+		if (get_next_line(STDIN_FILENO, &line) <= 0)
+			return (0);
+		if (!valid_piece_line(piece, line))
 		{
 			free(line);
-			return (ft_strtab_free(piece.board));
+			return (0);
 		}
-		ft_memcpy(piece.board[index], line, piece.width);
-		piece.board[index][piece.width] = '\0';
+		ft_memcpy(piece->board[index], line, piece->width);
+		piece->board[index][piece->width] = '\0';
 		free(line);
-		ft_dprintf(2, "PIECE %d: %s\n", index, piece.board[index]);
 		index++;
 	}
-	return (&piece);
+	return (1);
+}
+
+int			parse_piece(t_piece *piece)
+{
+	char	*line;
+
+	if (get_next_line(STDIN_FILENO, &line) <= 0)
+		return (0);
+	if (!ft_strnstr(line, "Piece ", 6) || !parse_piece_size(piece, line + 6))
+	{
+		free(line);
+		return (0);
+	}
+	free(line);
+	return (parse_piece_lines(piece));
 }

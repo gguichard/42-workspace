@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 14:50:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/11 16:32:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/11 17:58:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ static int	check_board(t_filler *filler, char *offset)
 			return (0);
 		filler->board[rows] = NULL;
 		filler->cols = cols;
-		while (++filler->rows < rows)
+		filler->rows = rows;
+		rows = 0;
+		while (rows < filler->rows)
 		{
-			if (!(filler->board[filler->rows] = (char *)malloc(cols + 1)))
-			{
-				ft_strtab_free(filler->board);
+			if (!(filler->board[rows] = (char *)malloc(cols + 1)))
 				return (0);
-			}
+			rows++;
 		}
 	}
 	return (filler->rows == rows && filler->cols == cols);
@@ -69,7 +69,7 @@ static int	read_board_lines(t_filler *filler)
 	row = 0;
 	while (row < filler->rows)
 	{
-		if (get_next_line(STDIN_FILENO, &line) < 0)
+		if (get_next_line(STDIN_FILENO, &line) <= 0)
 			return (0);
 		if (!valid_board_line(filler, line))
 		{
@@ -88,7 +88,7 @@ int			read_board(t_filler *filler)
 {
 	char	*line;
 
-	if (get_next_line(STDIN_FILENO, &line) < 0)
+	if (get_next_line(STDIN_FILENO, &line) <= 0)
 		return (0);
 	if (!ft_strnstr(line, "Plateau ", 8) || !check_board(filler, line + 8))
 	{
@@ -96,7 +96,7 @@ int			read_board(t_filler *filler)
 		return (0);
 	}
 	free(line);
-	if (get_next_line(STDIN_FILENO, &line) < 0)
+	if (get_next_line(STDIN_FILENO, &line) <= 0)
 		return (0);
 	if (ft_strlen(line) != (size_t)(4 + filler->cols))
 	{
