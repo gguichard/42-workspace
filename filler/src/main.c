@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:28 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/11 17:48:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/11 22:38:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 #include "printf.h"
 #include "filler.h"
 
-int	main(int argc, char **argv)
+int	main(void)
 {
 	t_filler	filler;
 	t_piece		piece;
 
-	(void)argc;
-	(void)argv;
 	if (!read_player(&filler))
 		return (1);
 	filler.board = NULL;
