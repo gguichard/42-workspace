@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 15:08:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 15:31:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 17:52:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,31 +76,23 @@ static int	parse_piece_lines(t_piece *piece)
 	return (1);
 }
 
-static void	piece_top_left(t_piece *piece)
+static void	piece_set_offsets(t_piece *piece)
 {
-	int	row;
+	int		row;
+	char	*tmp;
 
-	if (piece->height > 0 && !ft_strchr(piece->board[0], '*'))
+	piece->off_x = 0;
+	piece->off_y = 0;
+	row = 0;
+	while (row < piece->height)
 	{
-		row = 0;
-		while (++row < piece->height)
-			ft_memcpy(piece->board[row - 1], piece->board[row], piece->width);
-		piece->height--;
-		piece->off_y++;
-		piece_top_left(piece);
-	}
-	else if (piece->width > 0 && piece->height > 0 && piece->board[0][0] != '*')
-	{
-		row = -1;
-		while (++row < piece->height)
-			if (piece->board[row][0] == '*')
-				return ;
-		piece->width--;
-		piece->off_x++;
-		row = -1;
-		while (++row < piece->height)
-			ft_memcpy(piece->board[row], &(piece->board[row][1]), piece->width);
-		piece_top_left(piece);
+		if ((tmp = ft_strchr(piece->board[row], '*')) != NULL)
+		{
+			piece->off_x = (int)(tmp - piece->board[row]);
+			piece->off_y = row;
+			break ;
+		}
+		row++;
 	}
 }
 
@@ -118,9 +110,6 @@ int			parse_piece(t_piece *piece)
 	free(line);
 	if (!parse_piece_lines(piece))
 		return (0);
-	piece->off_x = 0;
-	piece->off_y = 0;
-	piece_top_left(piece);
-	piece->in_x = (int)(ft_strchr(piece->board[0], '*') - piece->board[0]);
+	piece_set_offsets(piece);
 	return (1);
 }

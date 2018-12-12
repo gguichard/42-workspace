@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:12 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 15:30:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 17:50:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct	s_filler
 	int			cols;
 	char		**board;
 	t_pos		pos;
-	t_pos		opp_pos;
 }				t_filler;
 
 typedef struct	s_piece
@@ -36,7 +35,6 @@ typedef struct	s_piece
 	char		**board;
 	int			off_x;
 	int			off_y;
-	int			in_x;
 }				t_piece;
 
 /*

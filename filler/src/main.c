@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:28 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 15:32:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 21:14:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ int	main(void)
 			break ;
 		}
 		iq_search_pos(&filler, &piece);
-		ft_printf("%d %d\n"
-				, filler.pos.y - piece.off_y
-				, filler.pos.x - piece.off_x - piece.in_x);
+		ft_printf("%d %d\n", filler.pos.y, filler.pos.x);
 		ft_strtab_free(piece.board);
 	}
 	ft_strtab_free(filler.board);

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:10:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 15:35:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 21:39:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	iq_first_pos(t_filler *filler)
 	}
 }
 
-static int	check_piece_overlap(t_filler *filler
+/*static int	check_piece_overlap(t_filler *filler
 		, t_piece *piece, int row, int col)
 {
 	int		overlap;
@@ -45,11 +45,9 @@ static int	check_piece_overlap(t_filler *filler
 	int		x;
 	char	map;
 
+	// todo: check map bounds
 	overlap = 0;
 	y = 0;
-	if (col + piece->width >= filler->cols
-			|| row + piece->height >= filler->rows)
-		return (0);
 	while (y < piece->height)
 	{
 		x = 0;
@@ -68,38 +66,22 @@ static int	check_piece_overlap(t_filler *filler
 		y++;
 	}
 	return (overlap == 1);
-}
+}*/
 
 static void	iq_piece_pos(t_filler *filler, t_piece *piece)
 {
-	int	row;
-	int	col;
-
-	row = 0;
-	while (row < filler->rows)
-	{
-		col = 0;
-		while (col < filler->cols)
-		{
-			if (check_piece_overlap(filler, piece, row, col - piece->in_x))
-			{
-				filler->pos.x = col;
-				filler->pos.y = row;
-				return ;
-			}
-			col++;
-		}
-		row++;
-	}
+	(void)filler;
+	(void)piece;
 }
 
 void		iq_search_pos(t_filler *filler, t_piece *piece)
 {
-	if (filler->pos.x == -1 && filler->pos.y == -1)
+	if (filler->pos.x != -1 && filler->pos.y != -1)
+		iq_piece_pos(filler, piece);
+	else
 	{
 		iq_first_pos(filler);
-		filler->pos.x -= piece->in_x;
+		filler->pos.x -= piece->off_x;
+		filler->pos.y -= piece->off_y;
 	}
-	else
-		iq_piece_pos(filler, piece);
 }
