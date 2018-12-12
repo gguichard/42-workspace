@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:28 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/11 22:38:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 15:32:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,20 @@ int	main(void)
 	filler.board = NULL;
 	filler.rows = -1;
 	filler.cols = -1;
+	filler.pos.x = -1;
+	filler.pos.y = -1;
 	while (read_board(&filler))
 	{
 		ft_memset(&piece, 0, sizeof(piece));
-		if (parse_piece(&piece))
+		if (!parse_piece(&piece))
 		{
-			// todo: place piece
-			ft_printf("8 2\n");
+			ft_strtab_free(piece.board);
+			break ;
 		}
+		iq_search_pos(&filler, &piece);
+		ft_printf("%d %d\n"
+				, filler.pos.y - piece.off_y
+				, filler.pos.x - piece.off_x - piece.in_x);
 		ft_strtab_free(piece.board);
 	}
 	ft_strtab_free(filler.board);

@@ -6,13 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/11 16:16:27 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/12 14:17:41 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= 	gguichar.filler
 
-SRC		= 	main.c parsing.c board_parsing.c piece_parsing.c
+SRC		= 	main.c parsing.c board_parsing.c piece_parsing.c fake_iq.c
 SRC_DIR	= 	src
 
 OBJ		= 	$(SRC:.c=.o)

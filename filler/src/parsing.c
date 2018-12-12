@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 11:44:04 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/11 14:52:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 08:45:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		*read_player(t_filler *filler)
 		return (ft_strtab_free(parts));
 	if (!ft_strequ(parts[2], "p1") && !ft_strequ(parts[2], "p2"))
 		return (ft_strtab_free(parts));
-	filler->player = (parts[2][1] - '0');
+	filler->player = (parts[2][1] == '1') ? 'O' : 'X';
 	ft_strtab_free(parts);
 	return (filler);
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 14:50:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/11 17:58:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 09:20:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,19 @@ static int	check_board(t_filler *filler, char *offset)
 
 static int	valid_board_line(t_filler *filler, const char *line)
 {
+	int	col;
+
 	if (ft_strlen(line) != (size_t)(4 + filler->cols))
 		return (0);
 	line += 4;
-	while (*line != '\0')
+	col = 0;
+	while (line[col] != '\0')
 	{
-		if (*line != '.'
-				&& *line != 'x' && *line != 'X'
-				&& *line != 'o' && *line != 'O')
+		if (line[col] != '.'
+				&& line[col] != 'x' && line[col] != 'X'
+				&& line[col] != 'o' && line[col] != 'O')
 			return (0);
-		line++;
+		col++;
 	}
 	return (1);
 }
