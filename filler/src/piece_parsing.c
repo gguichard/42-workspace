@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 15:08:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 17:52:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 22:54:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,17 +81,16 @@ static void	piece_set_offsets(t_piece *piece)
 	int		row;
 	char	*tmp;
 
-	piece->off_x = 0;
+	piece->off_x = piece->width;
 	piece->off_y = 0;
 	row = 0;
 	while (row < piece->height)
 	{
-		if ((tmp = ft_strchr(piece->board[row], '*')) != NULL)
-		{
+		tmp = ft_strchr(piece->board[row], '*');
+		if (row <= piece->off_y && tmp == NULL)
+			piece->off_y++;
+		if (tmp != NULL && (int)(tmp - piece->board[row]) < piece->off_x)
 			piece->off_x = (int)(tmp - piece->board[row]);
-			piece->off_y = row;
-			break ;
-		}
 		row++;
 	}
 }

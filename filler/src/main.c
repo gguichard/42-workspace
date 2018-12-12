@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:28 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 21:14:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 23:21:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	main(void)
 	filler.cols = -1;
 	filler.pos.x = -1;
 	filler.pos.y = -1;
+	filler.target.x = -1;
+	filler.target.y = -1;
 	while (read_board(&filler))
 	{
 		ft_memset(&piece, 0, sizeof(piece));

@@ -6,15 +6,16 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:10:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 21:39:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/12 23:38:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 #include "libft.h"
 #include "filler.h"
+#include <math.h>
 
-static void	iq_first_pos(t_filler *filler)
+static void	iq_lock_target(t_filler *filler)
 {
 	int	row;
 	int	col;
@@ -25,10 +26,11 @@ static void	iq_first_pos(t_filler *filler)
 		col = 0;
 		while (col < filler->cols)
 		{
-			if (filler->board[row][col] == filler->player)
+			if (filler->board[row][col] != '.' 
+					&& filler->board[row][col] != filler->player)
 			{
-				filler->pos.x = col;
-				filler->pos.y = row;
+				filler->target.x = col;
+				filler->target.y = row;
 				return ;
 			}
 			col++;
@@ -37,51 +39,40 @@ static void	iq_first_pos(t_filler *filler)
 	}
 }
 
-/*static int	check_piece_overlap(t_filler *filler
-		, t_piece *piece, int row, int col)
-{
-	int		overlap;
-	int		y;
-	int		x;
-	char	map;
-
-	// todo: check map bounds
-	overlap = 0;
-	y = 0;
-	while (y < piece->height)
-	{
-		x = 0;
-		while (x < piece->width)
-		{
-			if (piece->board[y][x] == '*')
-			{
-				map = ft_toupper(filler->board[row + y][col + x]);
-				if (map != filler->player && map != '.')
-					return (0);
-				else if (map == filler->player && (++overlap) > 1)
-					return (0);
-			}
-			x++;
-		}
-		y++;
-	}
-	return (overlap == 1);
-}*/
-
 static void	iq_piece_pos(t_filler *filler, t_piece *piece)
 {
-	(void)filler;
-	(void)piece;
+	int	row;
+	int	col;
+	int	delta;
+	int	best_delta;
+
+	row = 0;
+	best_delta = 99999;
+	while (row < filler->rows)
+	{
+		col = 0;
+		while (col < filler->cols)
+		{
+			if (check_piece_pos(filler, piece, row, col))
+			{
+				delta = pow(filler->target.x - col - piece->off_x, 2)
+					+ pow(filler->target.y - row - piece->off_y, 2);
+				if (delta < best_delta)
+				{
+					best_delta = delta;
+					filler->pos.x = col - piece->off_x;
+					filler->pos.y = row - piece->off_y;
+				}
+			}
+			col++;
+		}
+		row++;
+	}
 }
 
 void		iq_search_pos(t_filler *filler, t_piece *piece)
 {
-	if (filler->pos.x != -1 && filler->pos.y != -1)
-		iq_piece_pos(filler, piece);
-	else
-	{
-		iq_first_pos(filler);
-		filler->pos.x -= piece->off_x;
-		filler->pos.y -= piece->off_y;
-	}
+	if (filler->target.x == -1 && filler->target.y == -1)
+		iq_lock_target(filler);
+	iq_piece_pos(filler, piece);
 }
