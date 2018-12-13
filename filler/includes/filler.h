@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:12 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 23:20:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 09:27:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ typedef struct	s_pos
 typedef struct	s_filler
 {
 	char		player;
+	char		opp;
 	int			rows;
 	int			cols;
 	char		**board;
+	char		**old_board;
 	t_pos		pos;
 	t_pos		target;
 }				t_filler;

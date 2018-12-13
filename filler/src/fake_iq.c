@@ -6,19 +6,20 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:10:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 23:38:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 10:06:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <limits.h>
 #include "printf.h"
 #include "libft.h"
 #include "filler.h"
-#include <math.h>
 
 static void	iq_lock_target(t_filler *filler)
 {
-	int	row;
-	int	col;
+	int		row;
+	int		col;
+	char	map;
 
 	row = 0;
 	while (row < filler->rows)
@@ -26,8 +27,9 @@ static void	iq_lock_target(t_filler *filler)
 		col = 0;
 		while (col < filler->cols)
 		{
-			if (filler->board[row][col] != '.' 
-					&& filler->board[row][col] != filler->player)
+			map = ft_toupper(filler->board[row][col]);
+			if ((map == filler->opp && filler->old_board == NULL) ||
+					(map == filler->opp && map != filler->old_board[row][col]))
 			{
 				filler->target.x = col;
 				filler->target.y = row;
@@ -47,16 +49,17 @@ static void	iq_piece_pos(t_filler *filler, t_piece *piece)
 	int	best_delta;
 
 	row = 0;
-	best_delta = 99999;
+	best_delta = INT_MAX;
 	while (row < filler->rows)
 	{
 		col = 0;
 		while (col < filler->cols)
 		{
-			if (check_piece_pos(filler, piece, row, col))
+			if (check_piece_pos(filler, piece
+						, row - piece->off_y, col - piece->off_x))
 			{
-				delta = pow(filler->target.x - col - piece->off_x, 2)
-					+ pow(filler->target.y - row - piece->off_y, 2);
+				delta = ft_pow(filler->target.x - (col - piece->off_x), 2)
+					+ ft_pow(filler->target.y - (row - piece->off_y), 2);
 				if (delta < best_delta)
 				{
 					best_delta = delta;
@@ -72,7 +75,6 @@ static void	iq_piece_pos(t_filler *filler, t_piece *piece)
 
 void		iq_search_pos(t_filler *filler, t_piece *piece)
 {
-	if (filler->target.x == -1 && filler->target.y == -1)
-		iq_lock_target(filler);
+	iq_lock_target(filler);
 	iq_piece_pos(filler, piece);
 }
