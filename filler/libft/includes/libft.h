@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/10 10:35:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 09:23:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,8 @@ int				ft_min(int a, int b);
 int				ft_max(int a, int b);
 
 int				ft_abs(int n);
+
+int				ft_pow(int n, int pow);
 
 size_t			ft_llsize(long long l);
 
