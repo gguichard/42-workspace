@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:28 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/13 10:39:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 18:20:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,12 @@ static void	save_old_board(t_filler *filler)
 
 	if (filler->old_board == NULL)
 	{
-		if (!(filler->old_board
-					= (char **)malloc((filler->rows + 1) * sizeof(char *))))
+		if (!(filler->old_board = malloc((filler->rows + 1) * sizeof(char *))))
 			return ;
 		row = 0;
 		while (row < filler->rows)
 		{
-			if (!(filler->old_board[row]
-						= (char *)malloc((filler->cols + 1) * sizeof(char))))
+			if (!(filler->old_board[row] = (char *)malloc(filler->cols + 1)))
 			{
 				ft_strtab_free(filler->old_board);
 				return ;

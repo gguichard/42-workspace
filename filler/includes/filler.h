@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 10:51:12 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/13 09:27:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 17:09:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ typedef struct	s_piece
  */
 void			*read_player(t_filler *filler);
 int				read_board(t_filler *filler);
+
 int			 	parse_piece(t_piece *piece);
+
+void			piece_fix_height(t_piece *piece);
+void			piece_fix_width(t_piece *piece);
 
 /*
  ** FILLER IQ

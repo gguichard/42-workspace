@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 22:19:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/13 10:16:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 18:22:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,24 @@ int	check_piece_pos(t_filler *filler, t_piece *piece, int row, int col)
 	int		overlap;
 	char	map;
 
-	if (row + piece->height >= filler->rows
-			|| col + piece->width >= filler->cols)
+	if (row + piece->height > filler->rows || col + piece->width > filler->cols)
 		return (0);
 	overlap = 0;
-	y = piece->off_y;
-	while (y < piece->height)
+	y = -1;
+	while (++y < piece->height)
 	{
-		x = piece->off_x;
-		while (x < piece->width)
+		x = -1;
+		while (++x < piece->width)
 		{
-			map = ft_toupper(filler->board[row + y][col + x]);
 			if (piece->board[y][x] == '*')
-				if ((map != filler->player && map != '.')
-						|| (map == filler->player && (++overlap) > 1))
+			{
+				map = ft_toupper(filler->board[row + y][col + x]);
+				if (map != filler->player && map != '.')
 					return (0);
-			x++;
+				if (map == filler->player && (++overlap) > 1)
+					return (0);
+			}
 		}
-		y++;
 	}
 	return (overlap == 1);
 }

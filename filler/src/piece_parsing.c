@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 15:08:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 22:54:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 17:08:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,25 +76,6 @@ static int	parse_piece_lines(t_piece *piece)
 	return (1);
 }
 
-static void	piece_set_offsets(t_piece *piece)
-{
-	int		row;
-	char	*tmp;
-
-	piece->off_x = piece->width;
-	piece->off_y = 0;
-	row = 0;
-	while (row < piece->height)
-	{
-		tmp = ft_strchr(piece->board[row], '*');
-		if (row <= piece->off_y && tmp == NULL)
-			piece->off_y++;
-		if (tmp != NULL && (int)(tmp - piece->board[row]) < piece->off_x)
-			piece->off_x = (int)(tmp - piece->board[row]);
-		row++;
-	}
-}
-
 int			parse_piece(t_piece *piece)
 {
 	char	*line;
@@ -109,6 +90,7 @@ int			parse_piece(t_piece *piece)
 	free(line);
 	if (!parse_piece_lines(piece))
 		return (0);
-	piece_set_offsets(piece);
+	piece_fix_height(piece);
+	piece_fix_width(piece);
 	return (1);
 }

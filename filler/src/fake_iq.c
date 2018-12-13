@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/12 09:10:47 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/13 10:06:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 18:22:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "filler.h"
 
-static void	iq_lock_target(t_filler *filler)
+static void	iq_search_target(t_filler *filler)
 {
 	int		row;
 	int		col;
@@ -48,18 +48,17 @@ static void	iq_piece_pos(t_filler *filler, t_piece *piece)
 	int	delta;
 	int	best_delta;
 
-	row = 0;
+	row = -1;
 	best_delta = INT_MAX;
-	while (row < filler->rows)
+	while (++row < filler->rows)
 	{
-		col = 0;
-		while (col < filler->cols)
+		col = -1;
+		while (++col < filler->cols)
 		{
-			if (check_piece_pos(filler, piece
-						, row - piece->off_y, col - piece->off_x))
+			if (check_piece_pos(filler, piece, row, col))
 			{
-				delta = ft_pow(filler->target.x - (col - piece->off_x), 2)
-					+ ft_pow(filler->target.y - (row - piece->off_y), 2);
+				delta = ft_pow(filler->target.x - col, 2)
+					+ ft_pow(filler->target.y - row, 2);
 				if (delta < best_delta)
 				{
 					best_delta = delta;
@@ -67,14 +66,12 @@ static void	iq_piece_pos(t_filler *filler, t_piece *piece)
 					filler->pos.y = row - piece->off_y;
 				}
 			}
-			col++;
 		}
-		row++;
 	}
 }
 
 void		iq_search_pos(t_filler *filler, t_piece *piece)
 {
-	iq_lock_target(filler);
+	iq_search_target(filler);
 	iq_piece_pos(filler, piece);
 }
