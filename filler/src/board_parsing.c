@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 14:50:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/12 09:20:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/13 11:37:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,6 @@ static int	valid_board_line(t_filler *filler, const char *line)
 {
 	int	col;
 
-	if (ft_strlen(line) != (size_t)(4 + filler->cols))
-		return (0);
-	line += 4;
 	col = 0;
 	while (line[col] != '\0')
 	{
@@ -61,25 +58,27 @@ static int	valid_board_line(t_filler *filler, const char *line)
 			return (0);
 		col++;
 	}
-	return (1);
+	return (col == filler->cols);
 }
 
 static int	read_board_lines(t_filler *filler)
 {
 	char	*line;
 	int		row;
+	char	*tmp;
 
 	row = 0;
 	while (row < filler->rows)
 	{
 		if (get_next_line(STDIN_FILENO, &line) <= 0)
 			return (0);
-		if (!valid_board_line(filler, line))
+		tmp = ft_strchr(line, ' ');
+		if (!tmp || !valid_board_line(filler, tmp + 1))
 		{
 			free(line);
 			return (0);
 		}
-		ft_memcpy(filler->board[row], line + 4, filler->cols);
+		ft_memcpy(filler->board[row], tmp + 1, filler->cols);
 		filler->board[row][filler->cols] = '\0';
 		free(line);
 		row++;
