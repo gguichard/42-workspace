@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 11:44:04 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/13 09:28:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/18 14:02:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		*read_player(t_filler *filler)
 	char	*line;
 	char	**parts;
 
-	if (get_next_line(STDIN_FILENO, &line) < 0)
+	if (get_next_line(STDIN_FILENO, &line) <= 0)
 		return (NULL);
 	parts = ft_strsplit(line, ' ');
 	free(line);
