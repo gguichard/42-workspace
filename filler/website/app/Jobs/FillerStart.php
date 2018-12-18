@@ -36,9 +36,10 @@ class FillerStart implements ShouldQueue
         for ($row = 0; $row < $rows; $row++)
         {
             $buffer = fgets($handle);
-            array_push($board, substr($buffer, 4, strlen($buffer)));
+            array_push($board, substr($buffer, 4, strlen($buffer) - 5));
         }
         event(new FillerBoardUpdate($this->game, $board));
+        return $board;
     }
 
     /**
@@ -53,16 +54,17 @@ class FillerStart implements ShouldQueue
         $opponent_path = storage_path("app") . "/players/{$this->game->id}/{$this->game->opponent_name}.filler";
         chmod($champion_path, 740);
         chmod($opponent_path, 740);
-        $handle = popen(storage_path("app") . "/filler_vm -f " . storage_path("app") . "/maps/{$this->game->map_size} -p1 {$champion_path} -p2 {$opponent_path}", "r");
+        $handle = popen(storage_path("app") . "/filler_vm -f " . storage_path("app") . "/maps/{$this->game->map_width}x{$this->game->map_height} -p1 {$champion_path} -p2 {$opponent_path}", "r");
         $winner = "???";
-        $winner_pts = 0;
-        $looser_pts = 0;
+        $winner_score = 0;
+        $looser_score = 0;
+        $board = [];
         while (($buffer = fgets($handle)) !== false)
         {
             if (substr($buffer, 0, 7) === "Plateau")
             {
                 $parts = explode(" ", $buffer);
-                $this->read_board($handle, $parts[1]);
+                $board = $this->read_board($handle, $parts[1]);
             }
             else if (substr($buffer, 0, 3) === "== ")
             {
@@ -90,6 +92,7 @@ class FillerStart implements ShouldQueue
         $this->game->winner = $winner;
         $this->game->winner_score = $winner_score;
         $this->game->looser_score = $looser_score;
+        $this->game->board = implode("|", $board);
         $this->game->save();
     }
 }

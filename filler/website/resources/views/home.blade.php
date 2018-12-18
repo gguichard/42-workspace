@@ -28,9 +28,9 @@
                         <div class="form-group">
                             <label for="map">Map size</label>
                             <select id="map" name="map" class="form-control" required>
-                                <option value="15">15x15</option>
-                                <option value="24">24x24</option>
-                                <option value="100">100x100</option>
+                                <option value="17x15">17x15 (map00)</option>
+                                <option value="40x24">40x24 (map01)</option>
+                                <option value="99x100" disabled>99x100 (map02)</option>
                             </select>
                         </div>
                         <div class="form-group">

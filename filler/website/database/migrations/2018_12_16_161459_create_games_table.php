@@ -15,7 +15,8 @@ class CreateGamesTable extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('map_size');
+            $table->integer('map_width');
+            $table->integer('map_height');
             $table->string('session_id');
             $table->string('champion_name');
             $table->string('opponent_sid')->nullable();

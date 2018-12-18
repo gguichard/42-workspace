@@ -11,7 +11,7 @@
                         <p class="card-text"><strong>{{ $game->winner }}</strong> won the game! (<strong>{{ $game->winner_score }}</strong> vs {{ $game->looser_score }})</p>
                         @elseif (!is_null($game->opponent_sid))
                         <h5 id="status-title" class="card-title">Game queued</h5>
-                        <p id="status-desc" class="card-text">The game has been queued. It should start in few seconds.</p>
+                        <p id="status-desc" class="card-text">The game has been queued. It should start within few seconds.</p>
                         @else
                         <h5 id="status-title" class="card-title">Waiting for an opponent...</h5>
                         <p id="status-desc" class="card-text">In order to join the game, please give this link to your opponent:</p>
@@ -24,13 +24,29 @@
                 <h5>Filler #{{ $game->id }}</h5>
                 <div class="filler-color text-success float-left"><span class="font-weight-bold">O</span> - {{ $game->champion_name }}</div>
                 <div class="filler-color text-danger float-right"><span class="font-weight-bold">X</span> - <span id="opponent-name">{{ $game->opponent_name ?: '???' }}</span></div>
-                @for ($y = 0; $y < $game->map_size; $y++)
-                    <div class="filler-map">
-                    @for ($x = 0; $x < $game->map_size; $x++)
-                        <span id="filler-{{ $y }}-{{ $x }}">.</span>
+                @if (isset($board))
+                    @for ($y = 0; $y < $game->map_height; $y++)
+                <div class="filler-map">
+                    @for ($x = 0; $x < $game->map_width; $x++)
+                        @if ($board[$y][$x] == 'O' || $board[$y][$x] == 'o')
+                    <span class="text-success bg-success">.</span>
+                        @elseif ($board[$y][$x] == 'X' || $board[$y][$x] == 'x')
+                    <span class="text-danger bg-danger">.</span>
+                        @else
+                    <span>.</span>
+                        @endif
                     @endfor
-                    </div>
-                @endfor
+                </div>
+                    @endfor
+                @else
+                    @for ($y = 0; $y < $game->map_height; $y++)
+                <div class="filler-map">
+                    @for ($x = 0; $x < $game->map_width; $x++)
+                    <span id="filler-{{ $y }}-{{ $x }}">.</span>
+                    @endfor
+                </div>
+                    @endfor
+                @endif
             </div>
         </div>
     </div>
@@ -41,7 +57,7 @@
                 <form method="post" action="{{ route('game.join', ['id' => $game->id]) }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalTitle">Join the game</h5>
+                        <h5 class="modal-title" id="modalTitle">Join the battle</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -61,11 +77,11 @@
         </div>
     </div>
         @push('scripts')
-        <script>
-            $(document).ready(function() {
-                $('#joinModal').modal('show');
-            });
-        </script>
+    <script>
+        $(document).ready(function() {
+            $('#joinModal').modal('show');
+        });
+    </script>
         @endpush
     @endif
 @endsection
