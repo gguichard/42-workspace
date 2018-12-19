@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/13 09:23:25 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/19 17:16:08 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,8 +32,8 @@ SRC		=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c \
 			ft_ulltoa.c ft_ulltoa_base.c ft_putchar.c ft_putchar_fd.c \
 			ft_putstr.c ft_putstr_fd.c ft_putendl.c ft_putendl_fd.c \
 			ft_putnbr.c ft_putnbr_fd.c ft_lstnew.c ft_lstdelone.c \
-			ft_lstdel.c ft_lstadd.c ft_lstpush.c ft_lstpop.c ft_lstpeek.c \
-			ft_lstsize.c ft_lstempty.c ft_lstiter.c ft_lstmap.c \
+			ft_lstdel.c ft_lstfree.c ft_lstadd.c ft_lstpush.c ft_lstpop.c \
+			ft_lstpeek.c ft_lstsize.c ft_lstempty.c ft_lstiter.c ft_lstmap.c \
 			ft_min.c ft_max.c ft_abs.c ft_pow.c ft_llsize.c ft_strtab_free.c \
 			ft_levenshtein.c ft_wcharlen.c ft_wstrlen.c get_next_line.c
 SRC_DIR	=	src
