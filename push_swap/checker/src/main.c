@@ -6,63 +6,69 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/19 19:09:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 00:51:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
+#include <fcntl.h>
 #include "libft.h"
 #include "checker.h"
 
-static int		check_number(char *arg, int *number)
+static void	setup_checker(t_checker *checker)
 {
-	long int	res;
+	checker->options = 0;
+	checker->file = NULL;
+	checker->fd = 0;
+	checker->a = NULL;
+	checker->b = NULL;
+}
 
-	res = ft_strtol(arg, &arg, 10);
-	if (*arg != '\0')
-		return (0);
-	if (res != (int)res)
-		return (0);
-	*number = (int)res;
+static int	show_error(void)
+{
+	ft_dprintf(2, "Error\n");
 	return (1);
 }
 
-static t_list	*check_args(int size, char **args)
+static int	show_help(const char *name)
 {
-	int		index;
-	int		number;
-	t_list	*lst;
-	t_list	*back;
-	t_list	*elem;
-
-	index = 0;
-	lst = NULL;
-	back = NULL;
-	while (index < size)
-	{
-		if (!check_number(args[index], &number)
-				|| !(elem = ft_lstnew(&number, sizeof(int))))
-			return (ft_lstfree(&lst));
-		if (lst == NULL)
-			lst = elem;
-		elem->next = back;
-		back = elem;
-		index++;
-	}
-	return (lst);
+	ft_printf("usage: %s [-%s] numbers ...\n", name, VALID_OPT);
+	ft_printf("\tf [path] - read instructions from file\n");
+	ft_printf("\tv - verbose mode\n");
+	ft_printf("\th - show this help\n");
+	return (0);
 }
 
-int				main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	t_list	*a;
-	t_list	*b;
+	t_checker	checker;
 
-	if (argc > 1 && !(a = check_args(argc - 1, argv + 1)))
+	checker.argc = argc - 1;
+	checker.argv = argv + 1;
+	setup_checker(&checker);
+	if (!parse_options(&checker))
+		return (show_error());
+	if (checker.options & HELP_OPT)
+		return (show_help(argv[0]));
+	if (checker.options & FILE_OPT)
 	{
-		ft_dprintf(2, "Error\n");
-		return (1);
+		checker.file = checker.argv[0];
+		checker.argc--;
+		checker.argv++;
 	}
-	b = NULL;
-	if (!apply_sets(argc - 1, &a, &b))
+	if (checker.argc > 0 && (checker.a = create_list(&checker)) == NULL)
+		return (show_error());
+	if (checker.options & FILE_OPT)
+	{
+		checker.fd = open(checker.file, O_RDONLY);
+		if (checker.fd < 0)
+		{
+			ft_dprintf(2, "%s: %s: unable to open file\n"
+					, argv[0], checker.file);
+			return (1);
+		}
+	}
+	if (!apply_sets(&checker) || !check_lists(&checker))
 	{
 		ft_dprintf(2, "KO\n");
 		return (1);
