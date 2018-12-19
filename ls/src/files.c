@@ -6,13 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/27 18:28:17 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/28 09:22:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/19 15:24:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "libft.h"
 #include "ft_ls.h"
 
@@ -23,7 +24,7 @@ static t_flist	*load_link_data(t_flist *file)
 
 	size = file->stat.st_size;
 	if (size == 0)
-		size = 1024;
+		size = PATH_MAX;
 	if (!(file->link = ft_strnew(size))
 		|| readlink(file->path, file->link, size) < 0)
 		return (NULL);
@@ -39,10 +40,15 @@ static t_flist	*load_group_data(t_flist *file)
 	struct passwd	*passwd;
 	struct group	*group;
 
-	if (!(passwd = getpwuid(file->stat.st_uid))
-			|| !(group = getgrgid(file->stat.st_gid))
-			|| !(file->pw_name = ft_strdup(passwd->pw_name))
-			|| !(file->gr_name = ft_strdup(group->gr_name)))
+	if ((passwd = getpwuid(file->stat.st_uid)) != NULL)
+		file->pw_name = ft_strdup(passwd->pw_name);
+	if ((group = getgrgid(file->stat.st_gid)) != NULL)
+		file->gr_name = ft_strdup(group->gr_name);
+	if (file->pw_name == NULL)
+		file->pw_name = ft_lltoa(file->stat.st_uid);
+	if (file->gr_name == NULL)
+		file->gr_name = ft_lltoa(file->stat.st_gid);
+	if (file->pw_name == NULL || file->gr_name == NULL)
 		return (NULL);
 	return (file);
 }
