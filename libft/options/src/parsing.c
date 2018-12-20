@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 20:41:11 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 21:27:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:42:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "options.h"
 
-static int	parse_cur_arg(t_opt *opt, const char **argv)
+static int	parse_cur_arg(t_opt *opt, char **argv)
 {
 	int	index;
 	int	offset;
@@ -40,7 +40,7 @@ static int	parse_cur_arg(t_opt *opt, const char **argv)
 	return (index != 1);
 }
 
-t_opt		*parse_opts(int argc, const char **argv, const char *optstring)
+t_opt		*parse_opts(int argc, char **argv, const char *optstring)
 {
 	static t_opt	opt;
 

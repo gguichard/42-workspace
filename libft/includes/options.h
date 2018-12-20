@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 20:32:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 21:11:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:42:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ typedef struct	s_opt
 /*
 ** PARSING.
 */
-t_opt			*parse_opts(int argc, const char **argv
-		, const char *optstring);
+t_opt			*parse_opts(int argc, char **argv, const char *optstring);
 
 /*
 ** UTILS.
