@@ -6,11 +6,10 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 22:02:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/19 23:28:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 12:40:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "checker.h"
 
 static int	parse_number(char *arg, int *number)

@@ -6,12 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 19:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 12:25:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 12:41:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "libft.h"
 #include "get_next_line.h"
 #include "checker.h"
 

@@ -6,13 +6,14 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/19 22:06:55 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/20 12:39:30 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= 	checker
 
-SRC		= 	main.c parsing.c options.c checker.c sets.c
+SRC		= 	main.c options.c parsing.c \
+			checker.c sets.c utils.c
 SRC_DIR	= 	src
 
 OBJ		= 	$(SRC:.c=.o)

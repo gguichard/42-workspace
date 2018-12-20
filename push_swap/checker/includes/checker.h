@@ -6,19 +6,20 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:39:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 00:41:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 12:41:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CHECKER_H
 # define CHECKER_H
 
+# include "libft.h"
+
 typedef struct	s_checker
 {
 	int			argc;
 	char		**argv;
 	int			options;
-	char		*file;
 	int			fd;
 	t_list		*a;
 	t_list		*b;
@@ -52,5 +53,11 @@ int				swap(t_list **lst);
 int				push(t_list **to, t_list **from);
 int				rotate(t_list **lst);
 int				rev_rotate(t_list **lst);
+
+/*
+** UTILS.
+*/
+int				show_error(void);
+int				show_help(void);
 
 #endif

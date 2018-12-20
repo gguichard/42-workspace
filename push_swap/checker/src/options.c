@@ -6,11 +6,10 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 21:39:28 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/19 23:25:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 12:40:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "checker.h"
 
 static int	option_mask(char c)
