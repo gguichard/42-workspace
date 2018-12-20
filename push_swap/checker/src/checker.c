@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 19:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/19 23:30:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 12:25:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,17 @@ int			check_lists(t_checker *checker)
 
 	if (checker->b != NULL)
 		return (0);
-	if (checker->a == NULL)
-		return (1);
-	prev = checker->a;
-	lst = prev->next;
-	while (lst != NULL)
+	if (checker->a != NULL)
 	{
-		if (*((int *)lst->content) < *((int *)prev->content))
-			return (0);
-		prev = lst;
-		lst = lst->next;
+		prev = checker->a;
+		lst = prev->next;
+		while (lst != NULL)
+		{
+			if (*((int *)lst->content) < *((int *)prev->content))
+				return (0);
+			prev = lst;
+			lst = lst->next;
+		}
 	}
 	return (1);
 }

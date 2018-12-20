@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 00:51:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 12:27:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,52 +27,59 @@ static void	setup_checker(t_checker *checker)
 static int	show_error(void)
 {
 	ft_dprintf(2, "Error\n");
-	return (1);
+	return (0);
 }
 
-static int	show_help(const char *name)
+static int	show_help(void)
 {
-	ft_printf("usage: %s [-%s] numbers ...\n", name, VALID_OPT);
+	ft_printf("usage: checker [-%s] numbers ...\n", VALID_OPT);
 	ft_printf("\tf [path] - read instructions from file\n");
 	ft_printf("\tv - verbose mode\n");
 	ft_printf("\th - show this help\n");
 	return (0);
 }
 
+static int	run_checker(t_checker *checker)
+{
+	if (checker->options & FILE_OPT)
+	{
+		if (checker->argc == 0)
+			return (show_help());
+		checker->fd = open(checker->argv[0], O_RDONLY);
+		if (checker->fd < 0)
+		{
+			ft_dprintf(2, "checker: %s: unable to open file\n"
+					, checker->argv[0]);
+			return (0);
+		}
+		checker->argc--;
+		checker->argv++;
+	}
+	if (checker->argc == 0)
+		return (1);
+	checker->a = create_list(checker);
+	if (checker->a == NULL)
+		return (show_error());
+	return (1);
+}
+
 int			main(int argc, char **argv)
 {
 	t_checker	checker;
 
+	setup_checker(&checker);
 	checker.argc = argc - 1;
 	checker.argv = argv + 1;
-	setup_checker(&checker);
-	if (!parse_options(&checker))
-		return (show_error());
-	if (checker.options & HELP_OPT)
-		return (show_help(argv[0]));
-	if (checker.options & FILE_OPT)
+	if (!parse_options(&checker) || checker.options & HELP_OPT)
+		return (show_help());
+	if (run_checker(&checker))
 	{
-		checker.file = checker.argv[0];
-		checker.argc--;
-		checker.argv++;
+		if (apply_sets(&checker) && check_lists(&checker))
+			ft_printf("OK\n");
+		else
+			ft_dprintf(2, "KO\n");
 	}
-	if (checker.argc > 0 && (checker.a = create_list(&checker)) == NULL)
-		return (show_error());
-	if (checker.options & FILE_OPT)
-	{
-		checker.fd = open(checker.file, O_RDONLY);
-		if (checker.fd < 0)
-		{
-			ft_dprintf(2, "%s: %s: unable to open file\n"
-					, argv[0], checker.file);
-			return (1);
-		}
-	}
-	if (!apply_sets(&checker) || !check_lists(&checker))
-	{
-		ft_dprintf(2, "KO\n");
-		return (1);
-	}
-	ft_printf("OK\n");
+	if (checker.options & FILE_OPT && checker.fd >= 0)
+		close(checker.fd);
 	return (0);
 }
