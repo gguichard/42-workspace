@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:39:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 12:41:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 14:54:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int				parse_options(t_checker *checker);
 /*
 ** PARSING.
 */
-t_list			*create_list(t_checker *checker);
+int				create_list(t_list **lst, int argc, char **argv);
 
 /*
 ** CHECKER PART.

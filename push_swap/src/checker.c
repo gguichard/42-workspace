@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 14:25:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 14:53:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void	init_checker(t_checker *checker, int argc, char **argv)
 
 static int	setup_checker(t_checker *checker)
 {
+	int	offset;
+
 	if (checker->options & FILE_OPT)
 	{
 		if (checker->argc == 0)
@@ -42,9 +44,11 @@ static int	setup_checker(t_checker *checker)
 	}
 	if (checker->argc == 0)
 		return (1);
-	checker->a = create_list(checker);
-	if (checker->a == NULL)
+	offset = create_list(&(checker->a), checker->argc, checker->argv);
+	if (offset < 0)
 		return (show_error());
+	checker->argc -= offset;
+	checker->argv += offset;
 	return (1);
 }
 

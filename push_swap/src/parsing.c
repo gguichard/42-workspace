@@ -6,11 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 22:02:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 12:40:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 14:54:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "libft.h"
 
 static int	parse_number(char *arg, int *number)
 {
@@ -25,27 +25,29 @@ static int	parse_number(char *arg, int *number)
 	return (1);
 }
 
-t_list		*create_list(t_checker *checker)
+int			create_list(t_list **lst, int argc, char **argv)
 {
+	int		index;
 	int		number;
-	t_list	*lst;
 	t_list	*back;
 	t_list	*elem;
 
-	lst = NULL;
+	index = 0;
 	back = NULL;
-	while (checker->argc > 0)
+	while (index < argc)
 	{
-		if (!parse_number(checker->argv[0], &number)
+		if (!parse_number(argv[index], &number)
 				|| !(elem = ft_lstnew(&number, sizeof(int))))
-			return (ft_lstfree(&lst));
-		if (lst == NULL)
-			lst = elem;
+		{
+			ft_lstfree(lst);
+			return (-1);
+		}
+		if (*lst == NULL)
+			*lst = elem;
 		if (back != NULL)
 			back->next = elem;
 		back = elem;
-		checker->argc--;
-		checker->argv++;
+		index++;
 	}
-	return (lst);
+	return (index);
 }
