@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:39:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 14:54:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/20 21:43:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ typedef struct	s_checker
 {
 	int			argc;
 	char		**argv;
-	int			options;
 	int			fd;
 	t_list		*a;
 	t_list		*b;
@@ -28,12 +27,10 @@ typedef struct	s_checker
 /*
 ** OPTIONS.
 */
-# define VALID_OPT "fhv"
-# define HELP_OPT (1 << 7)
-# define FILE_OPT (1 << 5)
-# define VERB_OPT (1 << 21)
-
-int				parse_options(t_checker *checker);
+# define VALID_OPT "f:hv"
+# define HELP_OPT 'h'
+# define FILE_OPT 'f'
+# define VERB_OPT 'v'
 
 /*
 ** PARSING.

@@ -6,43 +6,36 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/20 21:43:26 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/20 21:14:39 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= 	checker
+NAME	= 	options.a
 
-SRC		= 	checker.c parsing.c apply_sets.c sets.c utils.c
+SRC		= 	parsing.c utils.c
 SRC_DIR	= 	src
 
 OBJ		= 	$(SRC:.c=.o)
 OBJ_DIR	= 	.obj
 
 CC		= 	gcc
-CFLAGS	= 	-Wall -Wextra -Werror -I libft/includes -I includes
-
-LIBFT	= 	libft/libft.a
+CFLAGS	= 	-Wall -Wextra -Werror -O2 -I ../includes
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(addprefix $(OBJ_DIR)/,$(OBJ))
-	$(CC) $(CFLAGS) -o $@ $^
+$(NAME): $(addprefix $(OBJ_DIR)/,$(OBJ))
+	ar rcs $@ $^
 
-$(LIBFT):
-	$(MAKE) -C libft
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c includes/checker.h  | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c includes/options.h  | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	/bin/mkdir $@
 
 clean:
-	$(MAKE) -C libft clean
 	/bin/rm -rf $(OBJ_DIR)
 
 fclean: clean
-	$(MAKE) -C libft fclean
 	/bin/rm -f $(NAME)
 
 re: fclean all
