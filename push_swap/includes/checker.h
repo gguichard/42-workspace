@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:39:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/21 10:00:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/21 12:20:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int				create_list(t_list **lst, int argc, char **argv);
 /*
 ** CHECKER PART.
 */
-int				apply_sets(t_checker *checker);
+int				apply_rotations(t_checker *checker);
 int				check_lists(t_checker *checker);
 
 /*
