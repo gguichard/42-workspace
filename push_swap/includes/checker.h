@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:39:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 21:43:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/21 10:00:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CHECKER_H
 
 # include "libft.h"
+# include "options.h"
 
 typedef struct	s_checker
 {
@@ -55,6 +56,6 @@ int				rev_rotate(t_list **lst);
 ** UTILS.
 */
 int				show_error(void);
-int				show_help(void);
+int				show_help(t_opt *opt);
 
 #endif

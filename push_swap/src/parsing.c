@@ -6,13 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 22:02:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 14:54:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/21 09:59:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	parse_number(char *arg, int *number)
+static int	parse_arg(char *arg, int *number)
 {
 	long int	res;
 
@@ -28,7 +28,7 @@ static int	parse_number(char *arg, int *number)
 int			create_list(t_list **lst, int argc, char **argv)
 {
 	int		index;
-	int		number;
+	int		value;
 	t_list	*back;
 	t_list	*elem;
 
@@ -36,8 +36,8 @@ int			create_list(t_list **lst, int argc, char **argv)
 	back = NULL;
 	while (index < argc)
 	{
-		if (!parse_number(argv[index], &number)
-				|| !(elem = ft_lstnew(&number, sizeof(int))))
+		if (!parse_arg(argv[index], &value)
+				|| !(elem = ft_lstnew(&value, sizeof(int))))
 		{
 			ft_lstfree(lst);
 			return (-1);

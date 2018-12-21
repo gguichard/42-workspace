@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 12:37:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 12:40:56 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/21 10:02:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ int	show_error(void)
 	return (0);
 }
 
-int	show_help(void)
+int	show_help(t_opt *opt)
 {
+	if (opt->error != 0)
+		ft_dprintf(2, "checker: illegal option -- %c\n", opt->error);
 	ft_printf("usage: checker [-%s] numbers ...\n", VALID_OPT);
 	ft_printf("\tf [path] - read instructions from file\n");
 	ft_printf("\tv - verbose mode\n");

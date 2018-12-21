@@ -6,13 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 21:41:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/21 10:05:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <fcntl.h>
-#include "options.h"
 #include "checker.h"
 
 static void	init_checker(t_checker *checker, int argc, char **argv)
@@ -38,11 +37,14 @@ static int	setup_checker(t_opt *opt, t_checker *checker)
 			return (0);
 		}
 	}
-	offset = create_list(&(checker->a), checker->argc, checker->argv);
-	if (offset < 0)
-		return (show_error());
-	checker->argc -= offset;
-	checker->argv += offset;
+	if (checker->argc > 0)
+	{
+		offset = create_list(&(checker->a), checker->argc, checker->argv);
+		if (offset < 0)
+			return (show_error());
+		checker->argc -= offset;
+		checker->argv += offset;
+	}
 	return (1);
 }
 
@@ -54,10 +56,10 @@ int			main(int argc, char **argv)
 	init_checker(&checker, argc, argv);
 	opt = parse_opts(argc, argv, VALID_OPT);
 	if (opt->error != 0 || has_opt(opt, HELP_OPT))
-		return (show_help());
+		return (show_help(opt));
 	checker.argc -= opt->index;
 	checker.argv += opt->index;
-	if (checker.argc > 0 && setup_checker(opt, &checker))
+	if (setup_checker(opt, &checker))
 	{
 		if (!apply_sets(&checker))
 			return (show_error());
