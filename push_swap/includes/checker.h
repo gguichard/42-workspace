@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:39:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/21 12:20:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/21 13:24:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,10 @@ typedef struct	s_checker
 # define VERB_OPT 'v'
 
 /*
-** PARSING.
-*/
-int				create_list(t_list **lst, int argc, char **argv);
-
-/*
 ** CHECKER PART.
 */
-int				apply_rotations(t_checker *checker);
+int				apply_rots(t_checker *checker);
 int				check_lists(t_checker *checker);
-
-/*
-** INSTRUCTIONS.
-*/
-int				swap(t_list **lst);
-int				push(t_list **to, t_list **from);
-int				rotate(t_list **lst);
-int				rev_rotate(t_list **lst);
 
 /*
 ** UTILS.

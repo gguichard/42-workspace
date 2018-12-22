@@ -6,16 +6,19 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/21 12:28:38 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/21 13:25:14 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= 	checker
+PS_NAME	= 	push_swap
+CH_NAME	=	checker
 
-SRC		= 	checker_main.c parsing.c checker.c sets.c utils.c
+PS_SRC	= 	push_swap.c parsing.c
+CH_SRC	= 	checker.c parsing.c rotations.c apply_rots.c utils.c
 SRC_DIR	= 	src
 
-OBJ		= 	$(SRC:.c=.o)
+PS_OBJ	= 	$(PS_SRC:.c=.o)
+CH_OBJ	= 	$(CH_SRC:.c=.o)
 OBJ_DIR	= 	.obj
 
 CC		= 	gcc
@@ -23,15 +26,18 @@ CFLAGS	= 	-Wall -Wextra -Werror -I libft/includes -I includes
 
 LIBFT	= 	libft/libft.a
 
-all: $(NAME)
+all: $(PS_NAME) $(CH_NAME)
 
-$(NAME): $(LIBFT) $(addprefix $(OBJ_DIR)/,$(OBJ))
+$(PS_NAME): $(LIBFT) $(addprefix $(OBJ_DIR)/,$(PS_OBJ))
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(CH_NAME): $(LIBFT) $(addprefix $(OBJ_DIR)/,$(CH_OBJ))
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(LIBFT):
 	$(MAKE) -C libft
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c includes/checker.h  | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
@@ -43,7 +49,8 @@ clean:
 
 fclean: clean
 	$(MAKE) -C libft fclean
-	/bin/rm -f $(NAME)
+	/bin/rm -f $(PS_NAME)
+	/bin/rm -f $(CH_NAME)
 
 re: fclean all
 

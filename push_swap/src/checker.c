@@ -5,73 +5,76 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/19 19:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/21 12:29:03 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/22 13:27:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "get_next_line.h"
+#include <unistd.h>
+#include <fcntl.h>
+#include "parsing.h"
 #include "checker.h"
 
-static int	apply_instruction(char *name, t_checker *checker)
+static void	init_checker(t_checker *checker, int argc, char **argv)
 {
-	int	ret;
-
-	ret = 0;
-	if (ft_strequ("sa", name) || ft_strequ("ss", name))
-		ret = swap(&(checker->a));
-	if (ft_strequ("sb", name) || ft_strequ("ss", name))
-		ret = swap(&(checker->b));
-	if (ft_strequ("pa", name))
-		ret = push(&(checker->a), &(checker->b));
-	if (ft_strequ("pb", name))
-		ret = push(&(checker->b), &(checker->a));
-	if (ft_strequ("ra", name) || ft_strequ("rr", name))
-		ret = rotate(&(checker->a));
-	if (ft_strequ("rb", name) || ft_strequ("rr", name))
-		ret = rotate(&(checker->b));
-	if (ft_strequ("rra", name) || ft_strequ("rrr", name))
-		ret = rev_rotate(&(checker->a));
-	if (ft_strequ("rrb", name) || ft_strequ("rrr", name))
-		ret = rev_rotate(&(checker->b));
-	return (ret);
+	checker->argc = argc;
+	checker->argv = argv;
+	checker->fd = 0;
+	checker->a = NULL;
+	checker->b = NULL;
 }
 
-int			apply_rotations(t_checker *checker)
+static int	setup_checker(t_opt *opt, t_checker *checker)
 {
-	char	*line;
+	int	offset;
 
-	while (get_next_line(checker->fd, &line) > 0)
+	if (has_opt(opt, FILE_OPT))
 	{
-		if (!apply_instruction(line, checker))
+		checker->fd = open(get_optarg(opt, FILE_OPT), O_RDONLY);
+		if (checker->fd < 0)
 		{
-			free(line);
+			ft_dprintf(2, "checker: %s: unable to open file\n"
+					, get_optarg(opt, FILE_OPT));
 			return (0);
 		}
-		free(line);
+	}
+	if (checker->argc > 0)
+	{
+		offset = create_list(&(checker->a), checker->argc, checker->argv);
+		if (offset < 0)
+			return (show_error());
+		checker->argc -= offset;
+		checker->argv += offset;
 	}
 	return (1);
 }
 
-int			check_lists(t_checker *checker)
+int	test(t_list *a, t_list *b)
 {
-	t_list	*prev;
-	t_list	*lst;
+	return (*((int *)a->content) - *((int *)b->content));
+}
 
-	if (checker->b != NULL)
-		return (0);
-	if (checker->a != NULL)
+int			main(int argc, char **argv)
+{
+	t_checker	checker;
+	t_opt		*opt;
+
+	init_checker(&checker, argc, argv);
+	opt = parse_opts(argc, argv, VALID_OPT);
+	if (opt->error != 0 || has_opt(opt, HELP_OPT))
+		return (show_help(opt));
+	checker.argc -= opt->index;
+	checker.argv += opt->index;
+	if (setup_checker(opt, &checker))
 	{
-		prev = checker->a;
-		lst = prev->next;
-		while (lst != NULL)
-		{
-			if (*((int *)lst->content) < *((int *)prev->content))
-				return (0);
-			prev = lst;
-			lst = lst->next;
-		}
+		if (!apply_rots(&checker))
+			return (show_error());
+		if (check_lists(&checker))
+			ft_printf("OK\n");
+		else
+			ft_dprintf(2, "KO\n");
 	}
-	return (1);
+	if (has_opt(opt, FILE_OPT) && checker.fd >= 0)
+		close(checker.fd);
+	return (0);
 }

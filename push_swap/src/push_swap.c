@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/20 12:37:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/22 13:46:08 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/22 12:54:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "printf.h"
+#include "parsing.h"
+#include "push_swap.h"
 
-int	show_error(void)
+/*void	quick_sort(t_list *lst)
 {
-	ft_dprintf(2, "Error\n");
-	return (0);
-}
+}*/
 
-int	show_help(t_opt *opt)
+int		main(int argc, char **argv)
 {
-	if (opt->error != 0)
-		ft_dprintf(2, "checker: illegal option -- %c\n", opt->error);
-	ft_printf("USAGE: checker [options] <numbers>\n\n");
-	ft_printf("OPTIONS:\n");
-	ft_printf("  -f <path>\tRead instructions from file\n");
-	ft_printf("  -v\t\tEnable verbose mode\n");
-	ft_printf("  -h\t\tShow this help\n");
+	t_list	*lst;
+
+	if (create_list(&lst, argc - 1, argv + 1) < 0)
+	{
+		ft_dprintf(2, "Error\n");
+		return (0);
+	}
 	return (0);
 }
