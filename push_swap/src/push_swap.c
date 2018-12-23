@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/23 13:16:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/23 13:58:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,15 @@ void	quicksort(int n, t_list **lst)
 
 	if (n <= 1)
 		return ;
+	if (n == 2)
+	{
+		if (*((int *)(*lst)->content) > *((int *)(*lst)->next->content))
+		{
+			swap(lst);
+			ft_putendl("sa");
+		}
+		return ;
+	}
 	find_pivot(n, lst);
 	pivot = partition(n, lst, *((int *)(*lst)->content), &tmp);
 	rev_rotate(&tmp);
@@ -72,24 +81,27 @@ void	quicksort(int n, t_list **lst)
 		ft_putendl("pa");
 	}
 	quicksort(pivot - 1, lst);
-	index = 0;
-	while (index < pivot)
+	if (n - pivot > 1)
 	{
-		rotate(lst);
-		ft_putendl("ra");
-		index++;
-	}
-	quicksort(n - pivot, lst);
-	index = 0;
-	while (index < pivot)
-	{
-		rev_rotate(lst);
-		ft_putendl("rra");
-		index++;
+		index = 0;
+		while (index < pivot)
+		{
+			rotate(lst);
+			ft_putendl("ra");
+			index++;
+		}
+		quicksort(n - pivot, lst);
+		index = 0;
+		while (index < pivot)
+		{
+			rev_rotate(lst);
+			ft_putendl("rra");
+			index++;
+		}
 	}
 }
 
-int	main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
 	t_opt	*opt;
 	t_list	*lst;
