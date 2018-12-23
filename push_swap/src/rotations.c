@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 19:12:28 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/21 13:12:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/22 16:33:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "rotations.h"
 
 int	swap(t_list **lst)
 {
