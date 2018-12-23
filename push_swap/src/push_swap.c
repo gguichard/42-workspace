@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/23 13:58:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/23 16:09:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,89 +16,10 @@
 #include "rotations.h"
 #include "push_swap.h"
 
-void	find_pivot(int n, t_list **lst)
+void	quicksort(int n, t_list **lst)
 {
 	(void)n;
 	(void)lst;
-}
-
-int		partition(int n, t_list **lst, int pivot, t_list **tmp)
-{
-	int	index;
-	int	total;
-
-	index = 0;
-	total = 0;
-	while (index < n)
-	{
-		if (*((int *)(*lst)->content) > pivot)
-		{
-			rotate(lst);
-			ft_putendl("ra");
-		}
-		else
-		{
-			push(tmp, lst);
-			ft_putendl("pb");
-			total++;
-		}
-		index++;
-	}
-	return (total);
-}
-
-void	quicksort(int n, t_list **lst)
-{
-	static t_list	*tmp = NULL;
-	int				pivot;
-	int				index;
-
-	if (n <= 1)
-		return ;
-	if (n == 2)
-	{
-		if (*((int *)(*lst)->content) > *((int *)(*lst)->next->content))
-		{
-			swap(lst);
-			ft_putendl("sa");
-		}
-		return ;
-	}
-	find_pivot(n, lst);
-	pivot = partition(n, lst, *((int *)(*lst)->content), &tmp);
-	rev_rotate(&tmp);
-	ft_putendl("rrb");
-	index = 0;
-	while (index < (n - pivot))
-	{
-		rev_rotate(lst);
-		ft_putendl("rra");
-		index++;
-	}
-	while (tmp != NULL)
-	{
-		push(lst, &tmp);
-		ft_putendl("pa");
-	}
-	quicksort(pivot - 1, lst);
-	if (n - pivot > 1)
-	{
-		index = 0;
-		while (index < pivot)
-		{
-			rotate(lst);
-			ft_putendl("ra");
-			index++;
-		}
-		quicksort(n - pivot, lst);
-		index = 0;
-		while (index < pivot)
-		{
-			rev_rotate(lst);
-			ft_putendl("rra");
-			index++;
-		}
-	}
 }
 
 int		main(int argc, char **argv)
@@ -107,8 +28,10 @@ int		main(int argc, char **argv)
 	t_list	*lst;
 
 	opt = parse_opts(argc, argv, "vh");
-	if (has_opt(opt, 'h'))
+	if (has_opt(opt, 'h') || opt->error != 0)
 	{
+		if (opt->error != 0)
+			ft_dprintf(2, "push_swap: illegal option -- %c\n", opt->error);
 		ft_printf("USAGE: push_swap [options] <numbers>\n\n");
 		ft_printf("OPTIONS:\n");
 		ft_printf("  -v\tEnable verbose mode\n");
