@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/22 13:27:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/23 16:16:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,6 @@ static int	setup_checker(t_opt *opt, t_checker *checker)
 	return (1);
 }
 
-int	test(t_list *a, t_list *b)
-{
-	return (*((int *)a->content) - *((int *)b->content));
-}
-
 int			main(int argc, char **argv)
 {
 	t_checker	checker;
@@ -68,11 +63,13 @@ int			main(int argc, char **argv)
 	if (setup_checker(opt, &checker))
 	{
 		if (!apply_rots(&checker))
-			return (show_error());
-		if (check_lists(&checker))
+			show_error();
+		else if (check_lists(&checker))
 			ft_printf("OK\n");
 		else
 			ft_dprintf(2, "KO\n");
+		ft_lstfree(&(checker.a));
+		ft_lstfree(&(checker.b));
 	}
 	if (has_opt(opt, FILE_OPT) && checker.fd >= 0)
 		close(checker.fd);
