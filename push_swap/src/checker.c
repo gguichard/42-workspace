@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/23 16:16:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/24 13:51:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int			main(int argc, char **argv)
 
 	init_checker(&checker, argc, argv);
 	opt = parse_opts(argc, argv, VALID_OPT);
-	if (opt->error != 0 || has_opt(opt, HELP_OPT))
+	if (has_opt(opt, HELP_OPT) || (opt->error != 0 && !ft_isdigit(opt->error)))
 		return (show_help(opt));
 	checker.argc -= opt->index;
 	checker.argv += opt->index;
