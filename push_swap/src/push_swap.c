@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/23 16:21:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/23 23:53:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,6 @@ static void	verbose_mode(t_opt *opt, t_list *lst)
 		ft_printf("%d\n", *((int *)lst->content));
 		lst = lst->next;
 	}
-}
-
-static void	quicksort(int n, t_list **lst)
-{
-	(void)n;
-	(void)lst;
 }
 
 int			main(int argc, char **argv)
