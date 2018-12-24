@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/24 00:55:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/24 13:43:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,11 @@ static int	find_pivot(int n, t_list *lst)
 	return (*((int *)lst->content));
 }
 
-static int	is_under_pivot(int n, t_list *lst)
+static int	is_lte_value(int n, t_list *lst, int value)
 {
-	int	pivot;
-
-	pivot = find_pivot(n, lst);
 	while (n > 1)
 	{
-		if (*((int *)lst->content) > pivot)
+		if (*((int *)lst->content) > value)
 			return (0);
 		lst = lst->next;
 		n--;
@@ -88,12 +85,11 @@ static int	partition(int n, t_list **lst, t_list **tmp, int value)
 void		quicksort(int n, t_list **lst)
 {
 	static t_list	*tmp = NULL;
+	int				value;
 	int				pivot;
 	int				index;
 
-	if (n < 2)
-		return ;
-	if (is_sorted(n, 0, *lst))
+	if (n < 2 || is_sorted(n, 0, *lst))
 		return ;
 	if (n == 2)
 	{
@@ -101,38 +97,27 @@ void		quicksort(int n, t_list **lst)
 		ft_putendl("sa");
 		return ;
 	}
-	if (is_under_pivot(n, *lst))
+	value = find_pivot(n, *lst);
+	if (is_lte_value(n, *lst, value))
 		pivot = n;
 	else
-		pivot = partition(n, lst, &tmp, find_pivot(n, *lst));
-	index = pivot;
-	while (index < n)
 	{
-		rev_rotate(lst);
-		ft_putendl("rra");
-		index++;
-	}
-	while (tmp != NULL)
-	{
-		push(lst, &tmp);
-		ft_putendl("pa");
+		pivot = partition(n, lst, &tmp, value);
+		index = pivot;
+		while (index < n)
+		{
+			rev_rotate(lst);
+			ft_putendl("rra");
+			index++;
+		}
+		quicksort(n - pivot, lst);
+		index = 0;
+		while (index < pivot)
+		{
+			push(lst, &tmp);
+			ft_putendl("pa");
+			index++;
+		}
 	}
 	quicksort(pivot - 1, lst);
-	if (n - pivot < 2 || is_sorted(n - pivot, pivot, *lst))
-		return ;
-	index = 0;
-	while (index < pivot)
-	{
-		rotate(lst);
-		ft_putendl("ra");
-		index++;
-	}
-	quicksort(n - pivot, lst);
-	index = 0;
-	while (index < pivot)
-	{
-		rev_rotate(lst);
-		ft_putendl("rra");
-		index++;
-	}
 }
