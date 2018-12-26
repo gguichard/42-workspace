@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/24 13:50:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 01:06:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "printf.h"
 #include "parsing.h"
 #include "options.h"
-#include "rotations.h"
 #include "push_swap.h"
 
 static int	show_help(t_opt *opt)
@@ -38,6 +38,22 @@ static void	verbose_mode(t_opt *opt, t_list *lst)
 	}
 }
 
+static void	print_rots(void)
+{
+	t_list	*rots;
+	t_list	*next;
+
+	rots = *(get_rots());
+	while (rots != NULL)
+	{
+		next = rots->next;
+		ft_putendl(rots->content);
+		free(rots->content);
+		free(rots);
+		rots = next;
+	}
+}
+
 int			main(int argc, char **argv)
 {
 	t_opt	*opt;
@@ -52,6 +68,8 @@ int			main(int argc, char **argv)
 		return (0);
 	}
 	quicksort(ft_lstsize(lst), &lst);
+	optimize_rots();
+	print_rots();
 	verbose_mode(opt, lst);
 	ft_lstfree(&lst);
 	return (0);

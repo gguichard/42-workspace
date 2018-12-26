@@ -6,119 +6,87 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/25 13:37:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 01:27:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 #include "rotations.h"
 #include "push_swap.h"
 
-static int	is_sorted(int n, t_list *lst)
+static int	find_median_pivot(int n, t_list *lst)
 {
-	while (n > 1)
+	int	*tab;
+	int	index;
+	int	pivot;
+
+	if (!(tab = (int *)malloc(sizeof(int) * n)))
+		return (-1);
+	index = 0;
+	while (index < n)
 	{
-		if (*((int *)lst->content) > *((int *)lst->next->content))
-			return (0);
+		tab[index] = *((int *)lst->content);
 		lst = lst->next;
-		n--;
+		index++;
 	}
-	return (1);
+	bubble_sort(n, tab);
+	pivot = tab[n / 2];
+	free(tab);
+	return (pivot);
 }
 
-static int	is_lte_value(int n, t_list *lst, int value)
+static int	part(t_list **lst, t_list **tmp, int value)
 {
-	while (n > 0)
+	if (*((int *)(*lst)->content) >= value)
 	{
-		if (*((int *)lst->content) > value)
-			return (0);
-		lst = lst->next;
-		n--;
+		rot(RA, lst, tmp);
+		return (0);
 	}
-	return (1);
-}
-
-static int	is_gt_value(int n, t_list *lst, int value)
-{
-	while (n > 0)
+	else
 	{
-		if (*((int *)lst->content) <= value)
-			return (0);
-		lst = lst->next;
-		n--;
+		rot(PB, lst, tmp);
+		return (1);
 	}
-	return (1);
-}
-
-static int	find_pivot(int n, t_list *lst)
-{
-	int	tab[n];
-	int	i;
-	int	tmp;
-
-	i = 0;
-	while (i < n)
-	{
-		tab[i] = *((int *)lst->content);
-		lst = lst->next;
-		i++;
-	}
-	i = 1;
-	while (i < n)
-	{
-		if (tab[i - 1] > tab[i])
-		{
-			tmp = tab[i - 1];
-			tab[i - 1] = tab[i];
-			tab[i] = tmp;
-			if (i > 1)
-				i -= 1;
-			continue ;
-		}
-		i++;
-	}
-	tmp = tab[n / 2];
-	return (tmp);
 }
 
 static int	partition(int n, t_list **lst, t_list **tmp, int value)
 {
 	int	index;
 	int	pivot;
-	int	rots;
 
 	index = 0;
 	pivot = 0;
-	rots = 0;
-	while (index < n && !is_gt_value(n - index, *lst, value))
+	while (n > 0)
 	{
-		if (*((int *)(*lst)->content) >= value)
-		{
-			rotate(lst);
-			ft_putendl("ra");
-			rots++;
-		}
-		else
-		{
-			push(tmp, lst);
-			ft_putendl("pb");
-			pivot++;
-		}
-		index++;
+		part(lst, tmp, value) ? pivot++ : index++;
+		n--;
 	}
-	while (rots > 0)
+	while (index > 0)
 	{
-		rev_rotate(lst);
-		ft_putendl("rra");
+		rot(RRA, lst, tmp);
 		if (*((int *)(*lst)->content) == value)
 		{
-			push(tmp, lst);
-			ft_putendl("pb");
+			rot(PB, lst, tmp);
 			pivot++;
 		}
-		rots--;
+		index--;
 	}
 	return (pivot);
+}
+
+void		sort_simple(int n, t_list **lst, t_list **tmp)
+{
+	if (!is_sorted(2, *lst))
+		rot(SA, lst, tmp);
+	else
+	{
+		rot(RA, lst, tmp);
+		rot(SA, lst, tmp);
+		rot(RRA, lst, tmp);
+	}
+	if (!is_sorted(n, *lst))
+		sort_simple(n, lst, tmp);
 }
 
 void		quicksort(int n, t_list **lst)
@@ -130,26 +98,19 @@ void		quicksort(int n, t_list **lst)
 
 	if (n < 2 || is_sorted(n, *lst))
 		return ;
-	if (n == 2)
+	if (n <= 3)
 	{
-		swap(lst);
-		ft_putendl("sa");
+		sort_simple(n, lst, &tmp);
 		return ;
 	}
-	value = find_pivot(n, *lst);
-	if (is_lte_value(n, *lst, value))
-		pivot = n;
-	else
+	value = find_median_pivot(n, *lst);
+	pivot = partition(n, lst, &tmp, value);
+	quicksort(n - pivot, lst);
+	index = 0;
+	while (index < pivot)
 	{
-		pivot = partition(n, lst, &tmp, value);
-		quicksort(n - pivot, lst);
-		index = 0;
-		while (index < pivot)
-		{
-			push(lst, &tmp);
-			ft_putendl("pa");
-			index++;
-		}
+		rot(PA, lst, &tmp);
+		index++;
 	}
 	quicksort(pivot - 1, lst);
 }

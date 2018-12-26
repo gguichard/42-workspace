@@ -6,14 +6,15 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/23 23:54:04 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/26 00:58:44 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 PS_NAME	= 	push_swap
 CH_NAME	=	checker
 
-PS_SRC	= 	push_swap.c parsing.c rotations.c quicksort.c
+PS_SRC	= 	push_swap.c parsing.c rotations.c \
+			quicksort.c sort_utils.c optimize.c
 CH_SRC	= 	checker.c parsing.c rotations.c apply_rots.c utils.c
 SRC_DIR	= 	src
 
