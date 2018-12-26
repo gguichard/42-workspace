@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 01:27:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 01:45:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,11 @@ static int	part(t_list **lst, t_list **tmp, int value)
 
 static int	partition(int n, t_list **lst, t_list **tmp, int value)
 {
-	int	index;
-	int	pivot;
+	int		index;
+	int		pivot;
+	int		lst_size;
+	int		rot_count;
+	t_rot	rot_type;
 
 	index = 0;
 	pivot = 0;
@@ -62,15 +65,14 @@ static int	partition(int n, t_list **lst, t_list **tmp, int value)
 		part(lst, tmp, value) ? pivot++ : index++;
 		n--;
 	}
-	while (index > 0)
+	lst_size = ft_lstsize(*lst);
+	rot_count = (lst_size - index <= lst_size / 2) ? lst_size - index : index;
+	rot_type = (lst_size - index <= lst_size / 2) ? RA : RRA;
+	index = 0;
+	while (index < rot_count)
 	{
-		rot(RRA, lst, tmp);
-		if (*((int *)(*lst)->content) == value)
-		{
-			rot(PB, lst, tmp);
-			pivot++;
-		}
-		index--;
+		rot(rot_type, lst, tmp);
+		index++;
 	}
 	return (pivot);
 }
@@ -112,5 +114,5 @@ void		quicksort(int n, t_list **lst)
 		rot(PA, lst, &tmp);
 		index++;
 	}
-	quicksort(pivot - 1, lst);
+	quicksort(pivot, lst);
 }
