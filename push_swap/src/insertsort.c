@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 02:06:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 14:02:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 14:15:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	setup_tab_list(int n, t_list **lst, t_list **tmp, int *tab)
 		curr = curr->next;
 		index++;
 	}
+	if (n >= 5 && is_sorted(2, *tmp))
+		rot(SB, lst, tmp);
 }
 
 static void	create_tab_hole(int n, int *tab, int at)
