@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/24 13:51:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 18:14:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ int			main(int argc, char **argv)
 			ft_printf("OK\n");
 		else
 			ft_dprintf(2, "KO\n");
-		ft_lstfree(&(checker.a));
 		ft_lstfree(&(checker.b));
 	}
+	ft_lstfree(&(checker.a));
 	if (has_opt(opt, FILE_OPT) && checker.fd >= 0)
 		close(checker.fd);
 	return (0);

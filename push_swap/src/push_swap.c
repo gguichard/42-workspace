@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 02:23:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 18:15:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static void	print_rots(void)
 		free(rots);
 		rots = next;
 	}
+	*(get_rots()) = NULL;
 }
 
 int			main(int argc, char **argv)
@@ -64,6 +65,7 @@ int			main(int argc, char **argv)
 		return (show_help(opt));
 	if (create_list(&lst, argc - opt->index, argv + opt->index) < 0)
 	{
+		ft_lstfree(&lst);
 		ft_dprintf(2, "Error\n");
 		return (0);
 	}

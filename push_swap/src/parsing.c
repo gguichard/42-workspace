@@ -6,23 +6,33 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 22:02:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/21 09:59:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 18:18:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	parse_arg(char *arg, int *number)
+static int	parse_nb(char *str, int *store)
 {
-	long int	res;
+	long int	value;
+	char		*endptr;
 
-	res = ft_strtol(arg, &arg, 10);
-	if (*arg != '\0')
+	value = ft_strtol(str, &endptr, 10);
+	if (*endptr != '\0' || value != (int)value)
 		return (0);
-	if (res != (int)res)
-		return (0);
-	*number = (int)res;
+	*store = (int)value;
 	return (1);
+}
+
+static int	is_duplicated(int value, t_list *lst)
+{
+	while (lst != NULL)
+	{
+		if (*((int *)lst->content) == value)
+			return (1);
+		lst = lst->next;
+	}
+	return (0);
 }
 
 int			create_list(t_list **lst, int argc, char **argv)
@@ -36,12 +46,10 @@ int			create_list(t_list **lst, int argc, char **argv)
 	back = NULL;
 	while (index < argc)
 	{
-		if (!parse_arg(argv[index], &value)
-				|| !(elem = ft_lstnew(&value, sizeof(int))))
-		{
-			ft_lstfree(lst);
+		if (!parse_nb(argv[index], &value) || is_duplicated(value, *lst))
 			return (-1);
-		}
+		if (!(elem = ft_lstnew(&value, sizeof(value))))
+			return (-1);
 		if (*lst == NULL)
 			*lst = elem;
 		if (back != NULL)
