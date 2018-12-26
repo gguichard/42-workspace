@@ -1,59 +1,58 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_utils.c                                       :+:      :+:    :+:   */
+/*   insertsort.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/25 14:09:26 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 01:55:53 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/26 02:06:40 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/26 02:42:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 
-int		is_gte_value(int n, t_list *lst, int value)
+static int	is_minval(int n, t_list *lst)
 {
-	while (n > 0)
-	{
-		if (*((int *)lst->content) < value)
-			return (0);
-		lst = lst->next;
-		n--;
-	}
-	return (1);
-}
+	int	value;
 
-int		is_sorted(int n, t_list *lst)
-{
+	value = *((int *)lst->content);
 	while (n > 1)
 	{
-		if (*((int *)lst->content) > *((int *)lst->next->content))
-			return (0);
 		lst = lst->next;
+		if (*((int *)lst->content) < value)
+			return (0);
 		n--;
 	}
 	return (1);
 }
 
-void	bubble_sort(int n, int *tab)
+void		insertsort(int n, t_list **lst, t_list **tmp)
 {
 	int	index;
-	int	tmp;
+	int	count;
 
-	index = 1;
-	while (index < n)
+	index = 0;
+	while (index < n && !is_sorted(n - index, *lst))
 	{
-		if (tab[index] < tab[index - 1])
+		count = 0;
+		while (!is_minval(n - index, *lst))
 		{
-			tmp = tab[index - 1];
-			tab[index - 1] = tab[index];
-			tab[index] = tmp;
-			if (index > 1)
-				index--;
-			continue ;
+			rot(RA, lst, tmp);
+			count++;
+		}
+		rot(PB, lst, tmp);
+		while (count > 0)
+		{
+			rot(RRA, lst, tmp);
+			count--;
 		}
 		index++;
+	}
+	while (index > 0)
+	{
+		rot(PA, lst, tmp);
+		index--;
 	}
 }

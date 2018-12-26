@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 13:42:11 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 01:16:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 02:07:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ void	optimize_rots(void);
 /*
 ** SORTING part.
 */
+int		is_gte_value(int n, t_list *lst, int value);
 int		is_sorted(int n, t_list *lst);
 void	bubble_sort(int n, int *tab);
 void	quicksort(int n, t_list **lst);
+void	insertsort(int n, t_list **lst, t_list **tmp);
 
 #endif

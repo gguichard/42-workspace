@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 00:32:41 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 00:58:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 02:24:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void		optimize_rots(void)
 			rots->next->next = NULL;
 			ft_lstfree(&rots);
 			rots = *(get_rots());
+			prev = NULL;
 			continue ;
 		}
 		prev = rots;
