@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 02:39:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 14:00:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,19 @@ static int	partition(int n, t_list **lst, t_list **tmp, int value)
 	return (pivot);
 }
 
-static void	simple_sort(int n, t_list **lst, t_list **tmp)
+static int	sort_special_cases(int n, t_list **lst, t_list **tmp)
 {
-	if (!is_sorted(2, *lst))
-		rot(SA, lst, tmp);
-	else
+	if (n <= 3)
 	{
-		rot(RA, lst, tmp);
-		rot(SA, lst, tmp);
-		rot(RRA, lst, tmp);
+		threesort(n, lst, tmp);
+		return (1);
 	}
-	if (!is_sorted(n, *lst))
-		simple_sort(n, lst, tmp);
+	else if (n <= 12)
+	{
+		insertsort(n, lst, tmp);
+		return (1);
+	}
+	return (0);
 }
 
 void		quicksort(int n, t_list **lst)
@@ -98,18 +99,8 @@ void		quicksort(int n, t_list **lst)
 	int				pivot;
 	int				index;
 
-	if (n < 2 || is_sorted(n, *lst))
+	if (n < 2 || is_sorted(n, *lst) || sort_special_cases(n, lst, &tmp))
 		return ;
-	if (n <= 3)
-	{
-		simple_sort(n, lst, &tmp);
-		return ;
-	}
-	if (n <= 15)
-	{
-		insertsort(n, lst, &tmp);
-		return ;
-	}
 	value = find_median_pivot(n, *lst);
 	pivot = partition(n, lst, &tmp, value);
 	quicksort(n - pivot, lst);
