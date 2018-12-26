@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 19:12:28 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/22 16:33:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 23:34:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "rotations.h"
 
-int	swap(t_list **lst)
+int	ps_swap(t_list **lst)
 {
 	t_list	*elem;
 
@@ -26,7 +26,7 @@ int	swap(t_list **lst)
 	return (1);
 }
 
-int	push(t_list **to, t_list **from)
+int	ps_push(t_list **to, t_list **from)
 {
 	t_list	*elem;
 
@@ -39,7 +39,7 @@ int	push(t_list **to, t_list **from)
 	return (1);
 }
 
-int	rotate(t_list **lst)
+int	ps_rotate(t_list **lst)
 {
 	t_list	*head;
 
@@ -52,7 +52,7 @@ int	rotate(t_list **lst)
 	return (1);
 }
 
-int	rev_rotate(t_list **lst)
+int	ps_rev_rotate(t_list **lst)
 {
 	t_list	*tail;
 	t_list	*prev;

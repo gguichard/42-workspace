@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 14:00:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 23:38:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ static int	part(t_list **lst, t_list **tmp, int value)
 {
 	if (*((int *)(*lst)->content) >= value)
 	{
-		rot(RA, lst, tmp);
+		ps_rot(RA, lst, tmp);
 		return (0);
 	}
 	else
 	{
-		rot(PB, lst, tmp);
+		ps_rot(PB, lst, tmp);
 		return (1);
 	}
 }
@@ -71,7 +71,7 @@ static int	partition(int n, t_list **lst, t_list **tmp, int value)
 	index = 0;
 	while (index < rot_count)
 	{
-		rot(rot_type, lst, tmp);
+		ps_rot(rot_type, lst, tmp);
 		index++;
 	}
 	return (pivot);
@@ -107,7 +107,7 @@ void		quicksort(int n, t_list **lst)
 	index = 0;
 	while (index < pivot)
 	{
-		rot(PA, lst, &tmp);
+		ps_rot(PA, lst, &tmp);
 		index++;
 	}
 	quicksort(pivot, lst);

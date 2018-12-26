@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:13:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/21 13:14:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 23:34:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include "rotations.h"
 
-int	swap(t_list **lst);
-int	push(t_list **to, t_list **from);
-int	rotate(t_list **lst);
-int	rev_rotate(t_list **lst);
+int	ps_swap(t_list **lst);
+int	ps_push(t_list **to, t_list **from);
+int	ps_rotate(t_list **lst);
+int	ps_rev_rotate(t_list **lst);
 
 #endif

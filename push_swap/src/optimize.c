@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 00:32:41 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 02:24:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 23:39:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_list		**get_rots(void)
 	return (&rots);
 }
 
-void		rot(t_rot type, t_list **lst, t_list **tmp)
+void		ps_rot(t_rot type, t_list **lst, t_list **tmp)
 {
 	char	*name;
 	t_list	*elem;
@@ -58,14 +58,14 @@ void		rot(t_rot type, t_list **lst, t_list **tmp)
 	if (!(elem = ft_lstnew(name, ft_strlen(name) + 1)))
 		return ;
 	ft_lstpush(get_rots(), elem);
-	(type == PA) ? push(lst, tmp) : 0;
-	(type == PB) ? push(tmp, lst) : 0;
-	(type == SA || type == SS) ? swap(lst) : 0;
-	(type == SB || type == SS) ? swap(tmp) : 0;
-	(type == RA || type == RR) ? rotate(lst) : 0;
-	(type == RB || type == RR) ? rotate(tmp) : 0;
-	(type == RRA || type == RRR) ? rev_rotate(lst) : 0;
-	(type == RRB || type == RRR) ? rev_rotate(tmp) : 0;
+	(type == PA) ? ps_push(lst, tmp) : 0;
+	(type == PB) ? ps_push(tmp, lst) : 0;
+	(type == SA || type == SS) ? ps_swap(lst) : 0;
+	(type == SB || type == SS) ? ps_swap(tmp) : 0;
+	(type == RA || type == RR) ? ps_rotate(lst) : 0;
+	(type == RB || type == RR) ? ps_rotate(tmp) : 0;
+	(type == RRA || type == RRR) ? ps_rev_rotate(lst) : 0;
+	(type == RRB || type == RRR) ? ps_rev_rotate(tmp) : 0;
 }
 
 static int	can_optimize_rot(const char *curr, const char *next)

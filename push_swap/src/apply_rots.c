@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 19:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/22 13:34:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 23:35:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,21 @@ static int	apply_rot(char *name, t_checker *checker)
 
 	ret = 0;
 	if (ft_strequ("sa", name) || ft_strequ("ss", name))
-		ret = swap(&(checker->a));
+		ret = ps_swap(&(checker->a));
 	if (ft_strequ("sb", name) || ft_strequ("ss", name))
-		ret = swap(&(checker->b));
+		ret = ps_swap(&(checker->b));
 	if (ft_strequ("pa", name))
-		ret = push(&(checker->a), &(checker->b));
+		ret = ps_push(&(checker->a), &(checker->b));
 	if (ft_strequ("pb", name))
-		ret = push(&(checker->b), &(checker->a));
+		ret = ps_push(&(checker->b), &(checker->a));
 	if (ft_strequ("ra", name) || ft_strequ("rr", name))
-		ret = rotate(&(checker->a));
+		ret = ps_rotate(&(checker->a));
 	if (ft_strequ("rb", name) || ft_strequ("rr", name))
-		ret = rotate(&(checker->b));
+		ret = ps_rotate(&(checker->b));
 	if (ft_strequ("rra", name) || ft_strequ("rrr", name))
-		ret = rev_rotate(&(checker->a));
+		ret = ps_rev_rotate(&(checker->a));
 	if (ft_strequ("rrb", name) || ft_strequ("rrr", name))
-		ret = rev_rotate(&(checker->b));
+		ret = ps_rev_rotate(&(checker->b));
 	return (ret);
 }
 

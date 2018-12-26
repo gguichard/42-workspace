@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 13:42:11 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 13:28:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/26 23:37:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef enum	e_rot
 }				t_rot;
 
 t_list	**get_rots(void);
-void	rot(t_rot type, t_list **lst, t_list **tmp);
+void	ps_rot(t_rot type, t_list **lst, t_list **tmp);
 void	optimize_rots(void);
 
 /*
