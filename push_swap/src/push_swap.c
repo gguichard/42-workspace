@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 18:00:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 18:09:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ int			main(int argc, char **argv)
 	int		n;
 
 	opt = parse_opts(argc, argv, "vh");
-	if (has_opt(opt, 'h') || (opt->error != 0 && !ft_isdigit(opt->error)))
+	if (has_opt(opt, 'h')
+		|| (opt->error != 0 && !ft_isdigit(opt->error))
+		|| argc - opt->index <= 0)
 		return (show_help(opt));
 	if (create_list(&lst, argc - opt->index, argv + opt->index) < 0)
 	{
