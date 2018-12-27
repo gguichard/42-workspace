@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 17:51:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 21:28:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,21 @@ static int	find_median_pivot(int n, t_list *lst)
 	return (pivot);
 }
 
-static int	part(t_list **lst, t_list **tmp, int value)
+static int	part(t_ps *ps, int value)
 {
-	if (*((int *)(*lst)->content) >= value)
+	if (*((int *)(ps->lst)->content) >= value)
 	{
-		ps_rot(RA, lst, tmp);
+		ps_rot(RA, ps);
 		return (0);
 	}
 	else
 	{
-		ps_rot(PB, lst, tmp);
+		ps_rot(PB, ps);
 		return (1);
 	}
 }
 
-static int	partition(int n, t_list **lst, t_list **tmp, int value)
+static int	partition(int n, t_ps *ps, int value)
 {
 	int		index;
 	int		pivot;
@@ -59,55 +59,54 @@ static int	partition(int n, t_list **lst, t_list **tmp, int value)
 
 	index = 0;
 	pivot = 0;
-	while (n > 0 && !is_gte_value(n, *lst, value))
+	while (n > 0 && !is_gte_value(n, ps->lst, value))
 	{
-		part(lst, tmp, value) ? pivot++ : index++;
+		part(ps, value) ? pivot++ : index++;
 		n--;
 	}
-	lst_size = ft_lstsize(*lst);
+	lst_size = ft_lstsize(ps->lst);
 	rot_count = (lst_size - index <= lst_size / 2) ? lst_size - index : index;
 	rot_type = (lst_size - index <= lst_size / 2) ? RA : RRA;
 	index = 0;
 	while (index < rot_count)
 	{
-		ps_rot(rot_type, lst, tmp);
+		ps_rot(rot_type, ps);
 		index++;
 	}
 	return (pivot);
 }
 
-static int	sort_special_cases(int n, t_list **lst, t_list **tmp)
+static int	sort_special_cases(int n, t_ps *ps)
 {
 	if (n <= 3)
 	{
-		threesort(n, lst, tmp);
+		threesort(n, ps);
 		return (1);
 	}
 	else if (n <= 12)
 	{
-		insertsort(n, lst, tmp);
+		insertsort(n, ps);
 		return (1);
 	}
 	return (0);
 }
 
-void		quicksort(int n, t_list **lst)
+void		quicksort(int n, t_ps *ps)
 {
-	static t_list	*tmp = NULL;
-	int				value;
-	int				pivot;
-	int				index;
+	int	value;
+	int	pivot;
+	int	index;
 
-	if (n < 2 || is_sorted(n, *lst) || sort_special_cases(n, lst, &tmp))
+	if (n < 2 || is_sorted(n, ps->lst) || sort_special_cases(n, ps))
 		return ;
-	value = find_median_pivot(n, *lst);
-	pivot = partition(n, lst, &tmp, value);
-	quicksort(n - pivot, lst);
+	value = find_median_pivot(n, ps->lst);
+	pivot = partition(n, ps, value);
+	quicksort(n - pivot, ps);
 	index = 0;
 	while (index < pivot)
 	{
-		ps_rot(PA, lst, &tmp);
+		ps_rot(PA, ps);
 		index++;
 	}
-	quicksort(pivot, lst);
+	quicksort(pivot, ps);
 }

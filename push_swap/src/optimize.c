@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 00:32:41 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 17:59:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 21:40:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,25 @@ static char	*rot_name(t_rot type)
 	return (rots[type]);
 }
 
-void		ps_rot(t_rot type, t_list **lst, t_list **tmp)
+void		ps_rot(t_rot type, t_ps *ps)
 {
 	char	*name;
 	t_list	*elem;
 
 	name = rot_name(type);
-	if (!(elem = ft_lstnew(name, ft_strlen(name) + 1)))
-		return ;
-	ft_lstpush(get_rots(), elem);
-	(type == PA) ? ps_push(lst, tmp) : 0;
-	(type == PB) ? ps_push(tmp, lst) : 0;
-	(type == SA || type == SS) ? ps_swap(lst) : 0;
-	(type == SB || type == SS) ? ps_swap(tmp) : 0;
-	(type == RA || type == RR) ? ps_rotate(lst) : 0;
-	(type == RB || type == RR) ? ps_rotate(tmp) : 0;
-	(type == RRA || type == RRR) ? ps_rev_rotate(lst) : 0;
-	(type == RRB || type == RRR) ? ps_rev_rotate(tmp) : 0;
+	if (has_opt(ps->opt, 'v'))
+		ft_printf("\nInstruction : %s\n", name);
+	else if ((elem = ft_lstnew(name, ft_strlen(name) + 1)) != NULL)
+		ft_lstpush(get_rots(), elem);
+	(type == PA) ? ps_push(&(ps->lst), &(ps->tmp)) : 0;
+	(type == PB) ? ps_push(&(ps->tmp), &(ps->lst)) : 0;
+	(type == SA || type == SS) ? ps_swap(&(ps->lst)) : 0;
+	(type == SB || type == SS) ? ps_swap(&(ps->tmp)) : 0;
+	(type == RA || type == RR) ? ps_rotate(&(ps->lst)) : 0;
+	(type == RB || type == RR) ? ps_rotate(&(ps->tmp)) : 0;
+	(type == RRA || type == RRR) ? ps_rev_rotate(&(ps->lst)) : 0;
+	(type == RRB || type == RRR) ? ps_rev_rotate(&(ps->tmp)) : 0;
+	verbose_mode(ps);
 }
 
 static int	can_optimize_rot(const char *curr, const char *next)

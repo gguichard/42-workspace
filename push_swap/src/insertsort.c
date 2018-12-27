@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 02:06:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 12:59:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 21:31:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "push_swap.h"
 
-static void	setup_tab_list(int n, t_list **lst, t_list **tmp, int *tab)
+static void	setup_tab_list(int n, t_ps *ps, int *tab)
 {
 	int		index;
 	t_list	*curr;
@@ -22,12 +22,12 @@ static void	setup_tab_list(int n, t_list **lst, t_list **tmp, int *tab)
 	index = 3;
 	while (index < n)
 	{
-		ps_rot(PB, lst, tmp);
+		ps_rot(PB, ps);
 		index++;
 	}
-	threesort(3, lst, tmp);
+	threesort(3, ps);
 	index = 0;
-	curr = *lst;
+	curr = ps->lst;
 	while (index < 3)
 	{
 		tab[index] = *((int *)curr->content);
@@ -48,7 +48,7 @@ static void	create_tab_hole(int n, int *tab, int at)
 	}
 }
 
-static void	rotate_to(int index, t_list **lst, t_list **tmp)
+static void	rotate_to(int index, t_ps *ps)
 {
 	static int	offset = 0;
 
@@ -56,7 +56,7 @@ static void	rotate_to(int index, t_list **lst, t_list **tmp)
 	{
 		while (offset < index)
 		{
-			ps_rot(RA, lst, tmp);
+			ps_rot(RA, ps);
 			offset++;
 		}
 	}
@@ -64,13 +64,13 @@ static void	rotate_to(int index, t_list **lst, t_list **tmp)
 	{
 		while (offset > index)
 		{
-			ps_rot(RRA, lst, tmp);
+			ps_rot(RRA, ps);
 			offset--;
 		}
 	}
 }
 
-void		insertsort(int n, t_list **lst, t_list **tmp)
+void		insertsort(int n, t_ps *ps)
 {
 	int	index;
 	int	*tab;
@@ -78,19 +78,19 @@ void		insertsort(int n, t_list **lst, t_list **tmp)
 
 	if (!(tab = (int *)malloc(n * sizeof(int))))
 		return ;
-	setup_tab_list(n, lst, tmp, tab);
+	setup_tab_list(n, ps, tab);
 	index = 3;
 	while (index < n)
 	{
 		j = 0;
-		while (j < index && tab[j] < *((int *)(*tmp)->content))
+		while (j < index && tab[j] < *((int *)(ps->tmp)->content))
 			j++;
 		create_tab_hole(index, tab, j);
-		tab[j] = *((int *)(*tmp)->content);
-		rotate_to(j, lst, tmp);
-		ps_rot(PA, lst, tmp);
+		tab[j] = *((int *)(ps->tmp)->content);
+		rotate_to(j, ps);
+		ps_rot(PA, ps);
 		index++;
 	}
-	rotate_to(0, lst, tmp);
+	rotate_to(0, ps);
 	free(tab);
 }

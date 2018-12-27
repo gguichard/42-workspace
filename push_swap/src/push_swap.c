@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 18:09:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 21:39:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,32 @@ static int	show_help(t_opt *opt)
 	return (0);
 }
 
-static void	verbose_mode(t_opt *opt, t_list *lst)
+void		verbose_mode(t_ps *ps)
 {
-	if (!has_opt(opt, 'v'))
+	t_list	*lst;
+	t_list	*tmp;
+
+	if (!has_opt(ps->opt, 'v'))
 		return ;
+	lst = ps->lst;
+	tmp = ps->tmp;
+	ft_printf("%-10s %s", "Pile A", "Pile B\n");
+	while (lst != NULL && tmp != NULL)
+	{
+		ft_printf("%-10d %d\n"
+				, *((int *)lst->content), *((int *)tmp->content));
+		lst = lst->next;
+		tmp = tmp->next;
+	}
 	while (lst != NULL)
 	{
 		ft_printf("%d\n", *((int *)lst->content));
 		lst = lst->next;
+	}
+	while (tmp != NULL)
+	{
+		ft_printf("%10s %d\n", "", *((int *)tmp->content));
+		tmp = tmp->next;
 	}
 }
 
@@ -59,29 +77,29 @@ static void	print_rots(void)
 
 int			main(int argc, char **argv)
 {
-	t_opt	*opt;
-	t_list	*lst;
+	t_ps	ps;
 	int		n;
 
-	opt = parse_opts(argc, argv, "vh");
-	if (has_opt(opt, 'h')
-		|| (opt->error != 0 && !ft_isdigit(opt->error))
-		|| argc - opt->index <= 0)
-		return (show_help(opt));
-	if (create_list(&lst, argc - opt->index, argv + opt->index) < 0)
+	ps.opt = parse_opts(argc, argv, "vh");
+	if (has_opt(ps.opt, 'h')
+			|| (ps.opt->error != 0 && !ft_isdigit(ps.opt->error))
+			|| argc - ps.opt->index <= 0)
+		return (show_help(ps.opt));
+	if (create_list(&(ps.lst), argc - ps.opt->index, argv + ps.opt->index) < 0)
 	{
-		ft_lstfree(&lst);
+		ft_lstfree(&(ps.lst));
 		ft_dprintf(2, "Error\n");
 		return (0);
 	}
-	n = ft_lstsize(lst);
-	if (n > 1 && !is_sorted(n, lst))
+	ps.tmp = NULL;
+	n = ft_lstsize(ps.lst);
+	if (n > 1 && !is_sorted(n, ps.lst))
 	{
-		(n <= 3) ? minsort(n, &lst) : quicksort(n, &lst);
+		verbose_mode(&ps);
+		(n <= 3) ? minsort(n, &ps) : quicksort(n, &ps);
 		optimize_rots();
 		print_rots();
 	}
-	verbose_mode(opt, lst);
-	ft_lstfree(&lst);
+	ft_lstfree(&(ps.lst));
 	return (0);
 }
