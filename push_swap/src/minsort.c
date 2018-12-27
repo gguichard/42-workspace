@@ -6,11 +6,10 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 14:03:20 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 14:28:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 17:50:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <limits.h>
 #include "libft.h"
 #include "push_swap.h"
 

@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 22:02:45 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 18:18:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 17:50:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "parsing.h"
 
 static int	parse_nb(char *str, int *store)
 {

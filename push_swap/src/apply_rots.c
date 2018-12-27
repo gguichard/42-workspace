@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 19:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 23:35:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 17:52:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "get_next_line.h"
-#include "checker.h"
 #include "rotations.h"
+#include "checker.h"
 
 static int	apply_rot(char *name, t_checker *checker)
 {

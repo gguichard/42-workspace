@@ -6,13 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 23:38:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 17:51:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
-#include "rotations.h"
 #include "push_swap.h"
 
 static int	find_median_pivot(int n, t_list *lst)
