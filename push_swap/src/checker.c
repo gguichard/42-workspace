@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 18:14:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 01:52:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int			main(int argc, char **argv)
 		return (show_help(opt));
 	checker.argc -= opt->index;
 	checker.argv += opt->index;
-	if (setup_checker(opt, &checker))
+	if (checker.argc > 0 && setup_checker(opt, &checker))
 	{
 		if (!apply_rots(&checker))
 			show_error();
