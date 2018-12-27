@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 00:32:41 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 14:43:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 17:59:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,22 @@
 #include "rotations.h"
 #include "push_swap.h"
 
-static char	*rot_name(t_rot type)
-{
-	if (type == PA)
-		return ("pa");
-	if (type == PB)
-		return ("pb");
-	if (type == SA)
-		return ("sa");
-	if (type == SB)
-		return ("sb");
-	if (type == SS)
-		return ("ss");
-	if (type == RA)
-		return ("ra");
-	if (type == RB)
-		return ("rb");
-	if (type == RR)
-		return ("rr");
-	if (type == RRA)
-		return ("rra");
-	if (type == RRB)
-		return ("rrb");
-	if (type == RRR)
-		return ("rrr");
-	return ("");
-}
-
 t_list		**get_rots(void)
 {
 	static t_list	*rots = NULL;
 
 	return (&rots);
+}
+
+static char	*rot_name(t_rot type)
+{
+	static char	*rots[] = {
+		"pa", "pb",
+		"sa", "sb", "ss",
+		"ra", "rb", "rr",
+		"rra", "rrb", "rrr"
+	};
+	return (rots[type]);
 }
 
 void		ps_rot(t_rot type, t_list **lst, t_list **tmp)
@@ -83,26 +67,28 @@ static int	can_optimize_rot(const char *curr, const char *next)
 
 void		optimize_rots(void)
 {
+	t_list	**rots;
 	t_list	*prev;
-	t_list	*rots;
+	t_list	*curr;
 
+	rots = get_rots();
+	curr = *rots;
 	prev = NULL;
-	rots = *(get_rots());
-	while (rots != NULL && rots->next != NULL)
+	while (curr != NULL && curr->next != NULL)
 	{
-		if (can_optimize_rot(rots->content, rots->next->content))
+		if (can_optimize_rot(curr->content, curr->next->content))
 		{
 			if (prev == NULL)
-				*(get_rots()) = rots->next->next;
+				*rots = curr->next->next;
 			else
-				prev->next = rots->next->next;
-			rots->next->next = NULL;
-			ft_lstfree(&rots);
-			rots = *(get_rots());
+				prev->next = curr->next->next;
+			curr->next->next = NULL;
+			ft_lstfree(&curr);
+			curr = *rots;
 			prev = NULL;
 			continue ;
 		}
-		prev = rots;
-		rots = rots->next;
+		prev = curr;
+		curr = curr->next;
 	}
 }

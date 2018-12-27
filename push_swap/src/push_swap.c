@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 14:30:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 18:00:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,21 @@ static void	verbose_mode(t_opt *opt, t_list *lst)
 
 static void	print_rots(void)
 {
-	t_list	*rots;
+	t_list	**rots;
+	t_list	*curr;
 	t_list	*next;
 
-	rots = *(get_rots());
-	while (rots != NULL)
+	rots = get_rots();
+	curr = *rots;
+	while (curr != NULL)
 	{
-		next = rots->next;
-		ft_putendl(rots->content);
-		free(rots->content);
-		free(rots);
-		rots = next;
+		next = curr->next;
+		ft_putendl(curr->content);
+		free(curr->content);
+		free(curr);
+		curr = next;
 	}
-	*(get_rots()) = NULL;
+	*rots = NULL;
 }
 
 int			main(int argc, char **argv)
