@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 13:42:11 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 23:37:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 14:20:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int		is_gte_value(int n, t_list *lst, int value);
 int		is_sorted(int n, t_list *lst);
 void	bubble_sort(int n, int *tab);
 
+void	minsort(int n, t_list **lst);
 void	quicksort(int n, t_list **lst);
 void	threesort(int n, t_list **lst, t_list **tmp);
 void	insertsort(int n, t_list **lst, t_list **tmp);

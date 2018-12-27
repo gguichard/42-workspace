@@ -6,11 +6,10 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 00:32:41 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 23:39:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 14:43:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "libft.h"
 #include "rotations.h"
 #include "push_swap.h"

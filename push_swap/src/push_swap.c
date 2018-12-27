@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 18:15:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/27 14:30:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int			main(int argc, char **argv)
 {
 	t_opt	*opt;
 	t_list	*lst;
+	int		n;
 
 	opt = parse_opts(argc, argv, "vh");
 	if (has_opt(opt, 'h') || (opt->error != 0 && !ft_isdigit(opt->error)))
@@ -69,9 +70,13 @@ int			main(int argc, char **argv)
 		ft_dprintf(2, "Error\n");
 		return (0);
 	}
-	quicksort(ft_lstsize(lst), &lst);
-	optimize_rots();
-	print_rots();
+	n = ft_lstsize(lst);
+	if (n > 1 && !is_sorted(n, lst))
+	{
+		(n <= 3) ? minsort(n, &lst) : quicksort(n, &lst);
+		optimize_rots();
+		print_rots();
+	}
 	verbose_mode(opt, lst);
 	ft_lstfree(&lst);
 	return (0);
