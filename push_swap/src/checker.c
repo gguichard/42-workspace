@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 14:52:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 15:15:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,8 @@ int			main(int argc, char **argv)
 	{
 		if (!apply_rots(&checker))
 			show_error();
-		else if (check_lists(&checker))
-			ft_printf("OK\n");
 		else
-			ft_dprintf(2, "KO\n");
+			ft_putendl(check_lists(&checker) ? "OK" : "KO");
 		ft_lstfree(&(checker.b));
 	}
 	ft_lstfree(&(checker.a));
