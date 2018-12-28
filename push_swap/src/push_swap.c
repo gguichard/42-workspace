@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 21:39:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 02:00:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,22 +37,15 @@ void		verbose_mode(t_ps *ps)
 	lst = ps->lst;
 	tmp = ps->tmp;
 	ft_printf("%-10s %s", "Pile A", "Pile B\n");
-	while (lst != NULL && tmp != NULL)
+	while (lst != NULL || tmp != NULL)
 	{
-		ft_printf("%-10d %d\n"
-				, *((int *)lst->content), *((int *)tmp->content));
-		lst = lst->next;
-		tmp = tmp->next;
-	}
-	while (lst != NULL)
-	{
-		ft_printf("%d\n", *((int *)lst->content));
-		lst = lst->next;
-	}
-	while (tmp != NULL)
-	{
-		ft_printf("%10s %d\n", "", *((int *)tmp->content));
-		tmp = tmp->next;
+		ft_printf("%-10.0d %.0d\n"
+				, lst == NULL ? 0 : *((int *)lst->content)
+				, tmp == NULL ? 0 : *((int *)tmp->content));
+		if (lst != NULL)
+			lst = lst->next;
+		if (tmp != NULL)
+			tmp = tmp->next;
 	}
 }
 
@@ -86,19 +79,19 @@ int			main(int argc, char **argv)
 			|| argc - ps.opt->index <= 0)
 		return (show_help(ps.opt));
 	if (create_list(&(ps.lst), argc - ps.opt->index, argv + ps.opt->index) < 0)
-	{
-		ft_lstfree(&(ps.lst));
 		ft_dprintf(2, "Error\n");
-		return (0);
-	}
-	ps.tmp = NULL;
-	n = ft_lstsize(ps.lst);
-	if (n > 1 && !is_sorted(n, ps.lst))
+	else
 	{
-		verbose_mode(&ps);
-		(n <= 3) ? minsort(n, &ps) : quicksort(n, &ps);
-		optimize_rots();
-		print_rots();
+		ps.tmp = NULL;
+		n = ft_lstsize(ps.lst);
+		if (n > 1 && !is_sorted(n, ps.lst))
+		{
+			verbose_mode(&ps);
+			(n <= 3) ? minsort(n, &ps) : quicksort(n, &ps);
+			optimize_rots();
+			print_rots();
+			ft_lstfree(&(ps.tmp));
+		}
 	}
 	ft_lstfree(&(ps.lst));
 	return (0);

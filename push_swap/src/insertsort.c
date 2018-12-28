@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 02:06:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 21:31:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 02:14:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,24 @@
 #include "libft.h"
 #include "push_swap.h"
 
-static void	setup_tab_list(int n, t_ps *ps, int *tab)
+static void	setup_tab_list(int n, int left, t_ps *ps, int *tab)
 {
 	int		index;
 	t_list	*curr;
 
-	index = 3;
+	index = left;
 	while (index < n)
 	{
 		ps_rot(PB, ps);
 		index++;
 	}
-	threesort(3, ps);
+	if (ft_lstsize(ps->lst) == (unsigned int)left)
+		minsort(left, ps);
+	else
+		threesort(left, ps);
 	index = 0;
 	curr = ps->lst;
-	while (index < 3)
+	while (index < left)
 	{
 		tab[index] = *((int *)curr->content);
 		curr = curr->next;
@@ -72,14 +75,16 @@ static void	rotate_to(int index, t_ps *ps)
 
 void		insertsort(int n, t_ps *ps)
 {
-	int	index;
 	int	*tab;
+	int	left;
+	int	index;
 	int	j;
 
 	if (!(tab = (int *)malloc(n * sizeof(int))))
 		return ;
-	setup_tab_list(n, ps, tab);
-	index = 3;
+	left = ft_min(3, n);
+	setup_tab_list(n, left, ps, tab);
+	index = left;
 	while (index < n)
 	{
 		j = 0;
