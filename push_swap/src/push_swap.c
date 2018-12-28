@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:12:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/28 02:00:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 18:06:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void		verbose_mode(t_ps *ps)
 	ft_printf("%-10s %s", "Pile A", "Pile B\n");
 	while (lst != NULL || tmp != NULL)
 	{
-		ft_printf("%-10.0d %.0d\n"
-				, lst == NULL ? 0 : *((int *)lst->content)
-				, tmp == NULL ? 0 : *((int *)tmp->content));
+		ft_printf("%-10s %s\n"
+				, lst == NULL ? "" : ft_itoa(*((int *)lst->content))
+				, tmp == NULL ? "" : ft_itoa(*((int *)tmp->content)));
 		if (lst != NULL)
 			lst = lst->next;
 		if (tmp != NULL)
