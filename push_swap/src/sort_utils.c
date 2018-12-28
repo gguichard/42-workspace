@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/25 14:09:26 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/26 01:55:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 13:39:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ void	bubble_sort(int n, int *tab)
 	index = 1;
 	while (index < n)
 	{
-		if (tab[index] < tab[index - 1])
+		if (tab[index] >= tab[index - 1])
+			index++;
+		else
 		{
 			tmp = tab[index - 1];
 			tab[index - 1] = tab[index];
 			tab[index] = tmp;
 			if (index > 1)
 				index--;
-			continue ;
 		}
-		index++;
 	}
 }
