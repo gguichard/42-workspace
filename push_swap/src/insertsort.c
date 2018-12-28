@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 02:06:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/28 13:46:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 15:04:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	setup_tab_list(int n, int left, t_ps *ps, int *tab)
 		index++;
 	}
 	if (!is_sorted(left, ps->lst))
-		(ft_lstsize(ps->lst) == (size_t)left)
+		((int)ft_lstsize(ps->lst) == left)
 			? minsort(left, ps) : threesort(left, ps);
 	index = 0;
 	curr = ps->lst;
@@ -53,22 +53,24 @@ static void	create_tab_hole(int n, int *tab, int at)
 static void	rotate_to(int index, t_ps *ps)
 {
 	static int	offset = 0;
+	int			tmp;
+	int			lst_size;
+	int			rot_count;
+	t_rot		rot_type;
 
+	tmp = ft_abs(index - offset);
+	lst_size = ft_lstsize(ps->lst);
+	rot_count = (lst_size - tmp <= lst_size / 2) ? lst_size - tmp : tmp;
 	if (offset < index)
-	{
-		while (offset < index)
-		{
-			ps_rot(RA, ps);
-			offset++;
-		}
-	}
+		rot_type = (lst_size - tmp <= lst_size / 2) ? RRA : RA;
 	else
+		rot_type = (lst_size - tmp <= lst_size / 2) ? RA : RRA;
+	offset = index;
+	index = 0;
+	while (index < rot_count)
 	{
-		while (offset > index)
-		{
-			ps_rot(RRA, ps);
-			offset--;
-		}
+		ps_rot(rot_type, ps);
+		index++;
 	}
 }
 
