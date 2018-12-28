@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 21:28:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 13:43:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,16 +97,18 @@ void		quicksort(int n, t_ps *ps)
 	int	pivot;
 	int	index;
 
-	if (n < 2 || is_sorted(n, ps->lst) || sort_special_cases(n, ps))
+	if (n < 2 || sort_special_cases(n, ps))
 		return ;
 	value = find_median_pivot(n, ps->lst);
 	pivot = partition(n, ps, value);
-	quicksort(n - pivot, ps);
+	if (!is_sorted(n, ps->lst))
+		quicksort(n - pivot, ps);
 	index = 0;
 	while (index < pivot)
 	{
 		ps_rot(PA, ps);
 		index++;
 	}
-	quicksort(pivot, ps);
+	if (!is_sorted(pivot, ps->lst))
+		quicksort(pivot, ps);
 }

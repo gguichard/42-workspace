@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/27 14:03:20 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 21:29:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 13:44:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void		minsort(int n, t_ps *ps)
 {
 	int	max;
 
-	if (is_sorted(n, ps->lst))
-		return ;
 	max = lstmax_value(n, ps->lst);
 	if (*((int *)(ps->lst)->content) == max)
 		ps_rot(RA, ps);
@@ -44,5 +42,6 @@ void		minsort(int n, t_ps *ps)
 		ps_rot(SA, ps);
 		return ;
 	}
-	minsort(n, ps);
+	if (!is_sorted(n, ps->lst))
+		minsort(n, ps);
 }

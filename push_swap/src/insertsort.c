@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 02:06:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/28 02:14:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 13:46:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ static void	setup_tab_list(int n, int left, t_ps *ps, int *tab)
 		ps_rot(PB, ps);
 		index++;
 	}
-	if (ft_lstsize(ps->lst) == (unsigned int)left)
-		minsort(left, ps);
-	else
-		threesort(left, ps);
+	if (!is_sorted(left, ps->lst))
+		(ft_lstsize(ps->lst) == (size_t)left)
+			? minsort(left, ps) : threesort(left, ps);
 	index = 0;
 	curr = ps->lst;
 	while (index < left)

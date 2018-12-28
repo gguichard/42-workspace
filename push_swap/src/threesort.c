@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 13:25:06 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 21:32:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 13:43:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 void	threesort(int n, t_ps *ps)
 {
-	if (is_sorted(n, ps->lst))
-		return ;
 	if (!is_sorted(2, ps->lst))
 		ps_rot(SA, ps);
 	else
@@ -25,5 +23,6 @@ void	threesort(int n, t_ps *ps)
 		ps_rot(SA, ps);
 		ps_rot(RRA, ps);
 	}
-	threesort(n, ps);
+	if (!is_sorted(n, ps->lst))
+		threesort(n, ps);
 }
