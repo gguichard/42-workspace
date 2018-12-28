@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 00:32:41 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/27 21:40:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 14:02:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static char	*rot_name(t_rot type)
 		"ra", "rb", "rr",
 		"rra", "rrb", "rrr"
 	};
+
 	return (rots[type]);
 }
 
