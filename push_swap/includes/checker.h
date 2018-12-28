@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:39:09 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/21 13:24:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 16:34:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,9 @@ typedef struct	s_checker
 /*
 ** OPTIONS.
 */
-# define VALID_OPT "f:hv"
+# define VALID_OPT "f:h"
 # define HELP_OPT 'h'
 # define FILE_OPT 'f'
-# define VERB_OPT 'v'
 
 /*
 ** CHECKER PART.

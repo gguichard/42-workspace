@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 12:37:34 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/22 13:46:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/28 16:34:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	show_help(t_opt *opt)
 	ft_printf("USAGE: checker [options] <numbers>\n\n");
 	ft_printf("OPTIONS:\n");
 	ft_printf("  -f <path>\tRead instructions from file\n");
-	ft_printf("  -v\t\tEnable verbose mode\n");
 	ft_printf("  -h\t\tShow this help\n");
 	return (0);
 }
