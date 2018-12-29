@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/08 11:34:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/29 18:14:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,5 @@ void	draw_line(t_fdf *fdf, int x1, int y1, int x2, int y2)
 
 void	draw_map(t_fdf *fdf)
 {
-	t_list	*lst;
-
-	lst = fdf->points;
-	while (lst != NULL)
-	{
-		lst = lst->next;
-	}
+	(void)fdf;
 }

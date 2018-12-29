@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/07 10:10:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/29 18:12:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ typedef enum		e_type
 	ISO
 }					t_type;
 
-typedef struct		s_image
-{
-	void			*ptr;
-	char			*data;
-}					t_image;
-
 typedef struct		s_mlx
 {
 	void			*mlx_ptr;
@@ -40,24 +34,24 @@ typedef struct		s_mlx
 	int				endian;
 }					t_mlx;
 
+typedef struct		s_pos
+{
+	int				x;
+	int				y;
+	int				z;
+	int				color;
+}					t_pos;
+
 typedef struct		s_fdf
 {
 	int				width;
 	int				height;
 	t_type			type;
 	t_mlx			lib;
-	t_list			*points;
+	t_pos			*pos;
 }					t_fdf;
 
-typedef struct		s_point
-{
-	int				x;
-	int				y;
-	int				z;
-	int				color;
-}					t_point;
-
-t_list				*read_file(const char *name);
+int					read_file(const char *name);
 
 void				draw_map(t_fdf *fdf);
 
