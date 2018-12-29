@@ -6,14 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/29 18:12:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 00:37:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
-
-# include "libft.h"
 
 # define WIN_WIDTH 400
 # define WIN_HEIGHT 400
@@ -48,11 +46,20 @@ typedef struct		s_fdf
 	int				height;
 	t_type			type;
 	t_mlx			lib;
-	t_pos			*pos;
+	t_pos			**pos;
+	int				rows;
+	int				cols;
 }					t_fdf;
 
-int					read_file(const char *name);
+/*
+** PARSING.
+*/
+int					read_file(const char *name, t_fdf *fdf);
 
+/*
+** GRAPHICS.
+*/
+void				iso(t_pos *pos, int *x, int *y);
 void				draw_map(t_fdf *fdf);
 
 #endif

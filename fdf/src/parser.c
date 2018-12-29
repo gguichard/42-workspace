@@ -6,17 +6,18 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/29 18:11:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 00:37:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include "libft.h"
 #include "get_next_line.h"
 #include "fdf.h"
 
-static int	parse_pos(t_pos *pos, char **line)
+static int		parse_pos(t_pos *pos, char **line)
 {
 	pos->z = ft_strtol(*line, line, 10);
 	if ((*line)[0] != ',')
@@ -33,30 +34,49 @@ static int	parse_pos(t_pos *pos, char **line)
 	return (1);
 }
 
-static int	parse_line(const char *line, int row, t_list **lst)
+static int		parse_line(t_fdf *fdf, char *line, t_list **lst)
 {
 	t_pos	pos;
 	t_list	*elem;
 
 	pos.x = 0;
-	pos.y = row;
-	while (*line != '\0')
+	pos.y = fdf->rows;
+	while (*line != '\0' && (pos.x < fdf->cols || fdf->cols < 0))
 	{
-		if (!(parse_pos(&pos, (char **)&line)))
+		if (!parse_pos(&pos, &line))
 			return (0);
 		if (!(elem = ft_lstnew(&pos, sizeof(t_pos))))
 			return (0);
 		ft_lstadd(lst, elem);
 		(pos.x)++;
 	}
-	return (1);
+	if (fdf->cols < 0)
+		fdf->cols = pos.x;
+	return (pos.x == fdf->cols);
 }
 
-int			read_file(const char *name)
+static t_pos	**tab_from_list(t_fdf *fdf, t_list *lst)
+{
+	size_t	size;
+	t_pos	**tab;
+	t_pos	*pos;
+
+	size = fdf->rows * fdf->cols + 1;
+	if (!(tab = (t_pos **)malloc(size * sizeof(t_pos *))))
+		return (NULL);
+	while (lst != NULL)
+	{
+		pos = (t_pos *)lst->content;
+		tab[pos->y * fdf->cols + pos->x] = pos;
+		lst = lst->next;
+	}
+	return (tab);
+}
+
+int				read_file(const char *name, t_fdf *fdf)
 {
 	int		fd;
 	int		ret;
-	int		row;
 	char	*line;
 	t_list	*lst;
 
@@ -64,15 +84,17 @@ int			read_file(const char *name)
 	if (fd < 0)
 		return (0);
 	ret = 1;
-	row = 0;
 	lst = NULL;
+	fdf->rows = 0;
 	while (ret && get_next_line(fd, &line) > 0)
 	{
-		ret = parse_line(line, row, &lst);
+		ret = parse_line(fdf, line, &lst);
 		free(line);
-		row++;
+		(fdf->rows)++;
 	}
 	close(fd);
-	ft_lstfree(&lst);
+	if (ret && !(fdf->pos = tab_from_list(fdf, lst)))
+		ret = 0;
+	//ft_lstfree(&lst);
 	return (ret);
 }
