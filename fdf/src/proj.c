@@ -6,15 +6,16 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 00:35:52 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 01:40:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 05:13:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "fdf.h"
 
-void	iso(t_pos *pos, int *x, int *y)
+void	iso(t_fdf *fdf, t_pos *pos, t_pos *to)
 {
-	*x = (pos->x - pos->y) * cos(0.523599);
-	*y = -(pos->z) + (pos->x + pos->y) * sin(0.523599);
+	to->x = (pos->x - pos->y) * cos(0.523599) * fdf->scale;
+	to->y = -(pos->z * fdf->depth) + (pos->x + pos->y)
+		* sin(0.523599) * fdf->scale;
 }

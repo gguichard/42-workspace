@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 00:37:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 05:30:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int		parse_pos(t_pos *pos, char **line)
 {
 	pos->z = ft_strtol(*line, line, 10);
 	if ((*line)[0] != ',')
-		pos->color = 0xFFFFFF; 
+		pos->color = 0xFFFFFF;
 	else
 	{
 		(*line)++;
@@ -73,6 +73,12 @@ static t_pos	**tab_from_list(t_fdf *fdf, t_list *lst)
 	return (tab);
 }
 
+static void		free_list(void *content, size_t content_size)
+{
+	(void)content;
+	(void)content_size;
+}
+
 int				read_file(const char *name, t_fdf *fdf)
 {
 	int		fd;
@@ -85,6 +91,7 @@ int				read_file(const char *name, t_fdf *fdf)
 		return (0);
 	ret = 1;
 	lst = NULL;
+	fdf->cols = -1;
 	fdf->rows = 0;
 	while (ret && get_next_line(fd, &line) > 0)
 	{
@@ -95,6 +102,6 @@ int				read_file(const char *name, t_fdf *fdf)
 	close(fd);
 	if (ret && !(fdf->pos = tab_from_list(fdf, lst)))
 		ret = 0;
-	//ft_lstfree(&lst);
+	ft_lstdel(&lst, &free_list);
 	return (ret);
 }

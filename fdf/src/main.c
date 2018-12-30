@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 00:37:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 05:37:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "fdf.h"
 
-static int	clean_mlx(t_fdf *fdf)
+int			clean_mlx(t_fdf *fdf)
 {
 	if (fdf->lib.win_ptr != NULL)
 		mlx_destroy_window(fdf->lib.mlx_ptr, fdf->lib.win_ptr);
@@ -45,6 +45,15 @@ static int	init_mlx(t_fdf *fdf)
 	return (1);
 }
 
+static int	init_fdf(t_fdf *fdf)
+{
+	fdf->width = WIN_WIDTH;
+	fdf->height = WIN_HEIGHT;
+	fdf->scale = 20;
+	fdf->depth = 1;
+	return (init_mlx(fdf));
+}
+
 int			main(int argc, char **argv)
 {
 	t_fdf	fdf;
@@ -54,22 +63,20 @@ int			main(int argc, char **argv)
 		ft_dprintf(2, "usage: ./fdf [map_file]\n");
 		return (1);
 	}
-	fdf.cols = -1;
 	if (!read_file(argv[1], &fdf))
 	{
 		ft_dprintf(2, "fdf: unable to parse map file\n");
 		return (1);
 	}
-	fdf.width = WIN_WIDTH;
-	fdf.height = WIN_HEIGHT;
-	if (!init_mlx(&fdf))
+	if (!init_fdf(&fdf))
 	{
 		ft_dprintf(2, "fdf: unable to init minilibx\n");
 		return (1);
 	}
-	draw_map(&fdf);
-	mlx_put_image_to_window(fdf.lib.mlx_ptr, fdf.lib.win_ptr, fdf.lib.img_ptr
-			, 0, 0);
+	fill_window_image(&fdf);
+	mlx_hook(fdf.lib.win_ptr, 17, (1L << 17), &exit_fdf, &fdf);
+	mlx_key_hook(fdf.lib.win_ptr, &key_hook, &fdf);
+	mlx_expose_hook(fdf.lib.win_ptr, &expose_hook, &fdf);
 	mlx_loop(fdf.lib.mlx_ptr);
 	return (0);
 }

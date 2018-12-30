@@ -6,64 +6,53 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 02:31:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 05:25:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "fdf.h"
 
-static void	draw_line(t_fdf *fdf, int x1, int y1, int x2, int y2)
+static void	apply_offsets(t_fdf *fdf, t_pos *pos)
 {
-	int	dx;
-	int	dy;
-	int	delta;
-
-	dx = x2 - x1;
-	dy = y2 - y1;
-	delta = 2 * dy - dx;
-	while (x1 <= x2)
-	{
-		fdf->lib.img_data[y1 * fdf->width + x1] = 0xFFFFFF;
-		if (delta > 0)
-		{
-			y1 += 1;
-			delta -= 2 * dx;
-		}
-		delta += 2 * dy;
-		x1++;
-	}
+	(void)fdf;
+	(void)pos;
+	pos->x += (fdf->width / 2) - ((fdf->cols * fdf->scale) / 4);
+	pos->y += (fdf->height / 2) - ((fdf->rows * fdf->scale) / 2);
 }
 
 static void	draw_edges(t_fdf *fdf, t_pos *pos)
 {
-	int	x1;
-	int	y1;
-	int	x2;
-	int	y2;
-	int	scale;
+	t_pos	pos1;
+	t_pos	pos2;
 
-	scale = fdf->width
-	iso(pos, &x1, &y1);
-	iso((fdf->pos)[pos->y * fdf->cols + pos->x + 1], &x2, &y2);
-	draw_line(fdf, x1, y1, x2, y2);
-	iso((fdf->pos)[(pos->y + 1) * fdf->cols + pos->x], &x2, &y2);
-	draw_line(fdf, x2, y2, x1, y1);
+	iso(fdf, pos, &pos1);
+	apply_offsets(fdf, &pos1);
+	if (pos->x + 1 < fdf->cols)
+	{
+		iso(fdf, (fdf->pos)[pos->y * fdf->cols + pos->x + 1], &pos2);
+		apply_offsets(fdf, &pos2);
+		draw_line(fdf, pos1, pos2);
+	}
+	if (pos->y + 1 < fdf->rows)
+	{
+		iso(fdf, (fdf->pos)[(pos->y + 1) * fdf->cols + pos->x], &pos2);
+		apply_offsets(fdf, &pos2);
+		draw_line(fdf, pos1, pos2);
+	}
 }
 
-void		draw_map(t_fdf *fdf)
+void		fill_window_image(t_fdf *fdf)
 {
-	int	x;
-	int	y;
+	int	index;
+	int	total;
 
-	y = 0;
-	while (y < fdf->rows - 1)
+	ft_memset(fdf->lib.img_data, 0, fdf->lib.size_line * fdf->height);
+	index = 0;
+	total = fdf->rows * fdf->cols;
+	while (index < total)
 	{
-		x = 0;
-		while (x < fdf->cols - 1)
-		{
-			draw_edges(fdf, fdf->pos[y * fdf->cols + x]);
-			x++;
-		}
-		y++;
+		draw_edges(fdf, fdf->pos[index]);
+		index++;
 	}
 }
