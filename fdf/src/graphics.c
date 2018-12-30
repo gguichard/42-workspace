@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 08:21:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 08:33:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	draw_edge(t_fdf *fdf, t_pos pos, t_point *point, t_pos offset)
 	t_pos	edge_pos;
 	int		color;
 
-	edge = (fdf->point)
+	edge = (fdf->points)
 		[(point->y + offset.y) * fdf->cols + point->x + offset.x];
 	fdf->f_proj(fdf, edge, &edge_pos);
 	apply_off(fdf, &edge_pos);
@@ -59,8 +59,8 @@ static void	compute_offsets(t_fdf *fdf)
 	t_pos	min;
 	t_pos	max;
 
-	fdf->f_proj(fdf, fdf->point[0], &min);
-	fdf->f_proj(fdf, fdf->point[fdf->rows * fdf->cols - 1], &max);
+	fdf->f_proj(fdf, fdf->points[0], &min);
+	fdf->f_proj(fdf, fdf->points[fdf->rows * fdf->cols - 1], &max);
 	fdf->offset_x = (max.x - min.x) * .5;
 	fdf->offset_y = (max.y - min.y) * .5;
 }
@@ -76,7 +76,7 @@ void		fill_window_image(t_fdf *fdf)
 	total = fdf->rows * fdf->cols;
 	while (index < total)
 	{
-		draw_edges(fdf, fdf->point[index]);
+		draw_edges(fdf, fdf->points[index]);
 		index++;
 	}
 }

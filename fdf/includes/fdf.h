@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 08:16:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 08:32:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct		s_fdf
 	t_proj			proj;
 	void			(*f_proj)(struct s_fdf *, t_point *, t_pos *);
 	t_mlx			lib;
-	t_point			**point;
+	t_point			**points;
 	int				rows;
 	int				cols;
 	int				offset_x;

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 07:28:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 08:33:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int				read_file(const char *name, t_fdf *fdf)
 		(fdf->rows)++;
 	}
 	close(fd);
-	if (ret && !(fdf->point = tab_from_list(fdf, lst)))
+	if (ret && !(fdf->points = tab_from_list(fdf, lst)))
 		ret = 0;
 	ft_lstdel(&lst, &free_list);
 	return (ret);
