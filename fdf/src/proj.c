@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 00:35:52 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 21:13:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 21:27:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ void	iso(t_fdf *fdf, t_point *point, t_pos *to)
 
 void	parallel(t_fdf *fdf, t_point *point, t_pos *to)
 {
-	to->x = fdf->scale * (point->x - point->z * fdf->depth * .1
-			* cos(0.785398));
-	to->y = fdf->scale * (point->y - point->z * fdf->depth * .1
-			* sin(0.785398));
+	double	x;
+	double	y;
+
+	x = point->x - point->z * fdf->depth * .1 * cos(fdf->angle_rad);
+	y = point->y - point->z * fdf->depth * .1 * sin(fdf->angle_rad);
+	to->x = fdf->scale * x;
+	to->y = fdf->scale * y;
 }
