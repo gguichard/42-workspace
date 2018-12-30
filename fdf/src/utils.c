@@ -6,13 +6,18 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 05:08:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 06:48:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 07:43:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 #include "fdf.h"
+
+int		point_to_index(t_fdf *fdf, t_point *point)
+{
+	return (point->y * fdf->cols + point->x);
+}
 
 int		exit_fdf(t_fdf *fdf)
 {
