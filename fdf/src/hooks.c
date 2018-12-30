@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 06:13:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 06:54:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "printf.h"
 #include "fdf.h"
 
-int	expose_hook(t_fdf *fdf)
+int			expose_hook(t_fdf *fdf)
 {
 	char	*str;
 
@@ -23,8 +23,12 @@ int	expose_hook(t_fdf *fdf)
 			, fdf->lib.win_ptr
 			, fdf->lib.img_ptr
 			, 0, 0);
-	ft_asprintf(&str, "Scale factor: %d | Depth factor: %d"
-			, fdf->scale, fdf->depth);
+	ft_asprintf(&str
+			, "Scale: %d | Depth: %d | Projection: %s | Press %c to change"
+			, fdf->scale
+			, fdf->depth
+			, fdf->proj == ISO ? "Isometric" : "Parallel"
+			, fdf->proj == ISO ? 'P' : 'I');
 	if (str != NULL)
 	{
 		mlx_string_put(fdf->lib.mlx_ptr
@@ -34,19 +38,53 @@ int	expose_hook(t_fdf *fdf)
 	return (0);
 }
 
-int	key_hook(int keycode, t_fdf *fdf)
+static int	handle_scale(t_fdf *fdf, int keycode)
 {
-	if (keycode == 53)
-		exit_fdf(fdf);
-	else if (keycode == 69)
+	if (keycode == 69)
 		(fdf->scale) += 2;
 	else if (keycode == 78)
 		(fdf->scale) -= 2;
-	else if (keycode == 116)
+	return (1);
+}
+
+static int	handle_depth(t_fdf *fdf, int keycode)
+{
+	if (keycode == 116)
 		(fdf->depth) += 1;
 	else if (keycode == 121)
 		(fdf->depth) -= 1;
-	if (keycode == 69 || keycode == 78 || keycode == 116 || keycode == 121)
+	return (1);
+}
+
+static int	handle_proj(t_fdf *fdf, int keycode)
+{
+	if (keycode == 34)
+	{
+		fdf->proj = ISO;
+		fdf->f_proj = &iso;
+	}
+	else if (keycode == 35)
+	{
+		fdf->proj = PARALLEL;
+		fdf->f_proj = &parallel;
+	}
+	return (1);
+}
+
+int			key_hook(int keycode, t_fdf *fdf)
+{
+	int	ret;
+
+	ret = 0;
+	if (keycode == 53)
+		exit_fdf(fdf);
+	else if (keycode == 69 || keycode == 78)
+		ret = handle_scale(fdf, keycode);
+	else if (keycode == 116 || keycode == 121)
+		ret = handle_depth(fdf, keycode);
+	else if (keycode == 34 || keycode == 35)
+		ret = handle_proj(fdf, keycode);
+	if (ret)
 	{
 		fill_window_image(fdf);
 		expose_hook(fdf);

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 05:37:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 06:46:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	init_fdf(t_fdf *fdf)
 	fdf->height = WIN_HEIGHT;
 	fdf->scale = 20;
 	fdf->depth = 1;
+	fdf->proj = ISO;
+	fdf->f_proj = &iso;
 	return (init_mlx(fdf));
 }
 

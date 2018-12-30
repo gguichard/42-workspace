@@ -6,19 +6,21 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 06:00:28 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 06:42:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
+# include "options.h"
+
 # define WIN_WIDTH 1280
 # define WIN_HEIGHT 800
 
 typedef enum		e_proj
 {
-	ISO
+	ISO, PARALLEL
 }					t_proj;
 
 typedef struct		s_mlx
@@ -42,11 +44,13 @@ typedef struct		s_pos
 
 typedef struct		s_fdf
 {
+	t_opt			*opt;
 	int				width;
 	int				height;
 	int				scale;
 	int				depth;
 	t_proj			proj;
+	void			(*f_proj)(struct s_fdf *, t_pos *, t_pos *);
 	t_mlx			lib;
 	t_pos			**pos;
 	int				rows;
@@ -67,6 +71,8 @@ int					read_file(const char *name, t_fdf *fdf);
 ** GRAPHICS.
 */
 void				iso(t_fdf *fdf, t_pos *pos, t_pos *to);
+void				parallel(t_fdf *fdf, t_pos *pos, t_pos *to);
+
 void				fill_window_image(t_fdf *fdf);
 
 void				draw_pixel(t_fdf *fdf, int x, int y);

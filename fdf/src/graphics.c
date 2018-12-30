@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 06:00:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 06:40:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ static void	draw_edges(t_fdf *fdf, t_pos *pos)
 	t_pos	pos1;
 	t_pos	pos2;
 
-	iso(fdf, pos, &pos1);
+	fdf->f_proj(fdf, pos, &pos1);
 	apply_offsets(fdf, &pos1);
 	if (pos->x + 1 < fdf->cols)
 	{
-		iso(fdf, (fdf->pos)[pos->y * fdf->cols + pos->x + 1], &pos2);
+		fdf->f_proj(fdf, (fdf->pos)[pos->y * fdf->cols + pos->x + 1], &pos2);
 		apply_offsets(fdf, &pos2);
 		draw_line(fdf, pos1, pos2);
 	}
 	if (pos->y + 1 < fdf->rows)
 	{
-		iso(fdf, (fdf->pos)[(pos->y + 1) * fdf->cols + pos->x], &pos2);
+		fdf->f_proj(fdf, (fdf->pos)[(pos->y + 1) * fdf->cols + pos->x], &pos2);
 		apply_offsets(fdf, &pos2);
 		draw_line(fdf, pos1, pos2);
 	}
@@ -48,10 +48,10 @@ static void	compute_offsets(t_fdf *fdf)
 
 	pos.x = 0;
 	pos.y = 0;
-	iso(fdf, &pos, &min);
-	pos.x = fdf->cols - 1;
-	pos.y = fdf->rows - 1;
-	iso(fdf, &pos, &max);
+	fdf->f_proj(fdf, &pos, &min);
+	pos.x = fdf->cols;
+	pos.y = fdf->rows;
+	fdf->f_proj(fdf, &pos, &max);
 	fdf->offset_x = (max.x - min.x) / 2;
 	fdf->offset_y = (max.y - min.y) / 2;
 }
