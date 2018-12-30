@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 00:38:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 02:31:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ static void	draw_edges(t_fdf *fdf, t_pos *pos)
 	int	y1;
 	int	x2;
 	int	y2;
+	int	scale;
 
+	scale = fdf->width
 	iso(pos, &x1, &y1);
 	iso((fdf->pos)[pos->y * fdf->cols + pos->x + 1], &x2, &y2);
 	draw_line(fdf, x1, y1, x2, y2);

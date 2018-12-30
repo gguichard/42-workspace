@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 00:37:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 01:40:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # define WIN_WIDTH 400
 # define WIN_HEIGHT 400
 
-typedef enum		e_type
+typedef enum		e_proj
 {
 	ISO
-}					t_type;
+}					t_proj;
 
 typedef struct		s_mlx
 {
@@ -44,7 +44,7 @@ typedef struct		s_fdf
 {
 	int				width;
 	int				height;
-	t_type			type;
+	t_proj			proj;
 	t_mlx			lib;
 	t_pos			**pos;
 	int				rows;
