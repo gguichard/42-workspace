@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 06:54:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 08:42:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,13 @@ int			expose_hook(t_fdf *fdf)
 static int	handle_scale(t_fdf *fdf, int keycode)
 {
 	if (keycode == 69)
-		(fdf->scale) += 2;
+		(fdf->scale) += 1;
 	else if (keycode == 78)
-		(fdf->scale) -= 2;
+	{
+		if (fdf->scale - 1 <= 0)
+			return (0);
+		(fdf->scale) -= 1;
+	}
 	return (1);
 }
 
@@ -52,7 +56,11 @@ static int	handle_depth(t_fdf *fdf, int keycode)
 	if (keycode == 116)
 		(fdf->depth) += 1;
 	else if (keycode == 121)
+	{
+		if (fdf->depth - 1 < 0)
+			return (0);
 		(fdf->depth) -= 1;
+	}
 	return (1);
 }
 
