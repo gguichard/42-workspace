@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 08:33:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 08:55:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int		parse_line(t_fdf *fdf, char *line, t_list **lst)
 
 	point.x = 0;
 	point.y = fdf->rows;
-	while (*line != '\0' && (point.x < fdf->cols || fdf->cols < 0))
+	while (*line != '\0' && (point.x < fdf->cols || fdf->cols == 0))
 	{
 		if (!parse_point(&point, &line))
 			return (0);
@@ -50,7 +50,7 @@ static int		parse_line(t_fdf *fdf, char *line, t_list **lst)
 		ft_lstadd(lst, elem);
 		(point.x)++;
 	}
-	if (fdf->cols < 0)
+	if (fdf->cols == 0)
 		fdf->cols = point.x;
 	return (point.x == fdf->cols);
 }
@@ -91,7 +91,7 @@ int				read_file(const char *name, t_fdf *fdf)
 		return (0);
 	ret = 1;
 	lst = NULL;
-	fdf->cols = -1;
+	fdf->cols = 0;
 	fdf->rows = 0;
 	while (ret && get_next_line(fd, &line) > 0)
 	{
@@ -100,6 +100,8 @@ int				read_file(const char *name, t_fdf *fdf)
 		(fdf->rows)++;
 	}
 	close(fd);
+	if (fdf->rows == 0 || fdf->cols == 0)
+		ret = 0;
 	if (ret && !(fdf->points = tab_from_list(fdf, lst)))
 		ret = 0;
 	ft_lstdel(&lst, &free_list);
