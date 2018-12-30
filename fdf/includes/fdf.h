@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 18:33:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 21:09:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ typedef struct		s_fdf
 	int				height;
 	int				scale;
 	int				depth;
+	int				angle;
+	double			angle_rad;
 	t_proj			proj;
 	void			(*f_proj)(struct s_fdf *, t_point *, t_pos *);
 	t_mlx			lib;
@@ -92,5 +94,10 @@ void				draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2, int color);
 */
 int					key_hook(int keycode, t_fdf *fdf);
 int					expose_hook(t_fdf *fdf);
+
+int					handle_scale(t_fdf *fdf, int keycode);
+int					handle_depth(t_fdf *fdf, int keycode);
+int					handle_angle(t_fdf *fdf, int keycode);
+int					handle_proj(t_fdf *fdf, int keycode);
 
 #endif

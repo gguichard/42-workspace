@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 18:32:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 21:19:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
+#include <math.h>
 #include "libft.h"
 #include "fdf.h"
 
@@ -50,22 +51,22 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 	fdf->opt = parse_opts(argc, argv, "w:h:");
 	fdf->argc = argc - fdf->opt->index;
 	fdf->argv = argv + fdf->opt->index;
-	fdf->width = has_opt(fdf->opt, 'w')
-		? window_size(get_optarg(fdf->opt, 'w')) : WIN_WIDTH;
-	if (fdf->width < 0)
+	if ((fdf->width = has_opt(fdf->opt, 'w')
+				? window_size(get_optarg(fdf->opt, 'w')) : WIN_WIDTH) < 0)
 	{
 		ft_dprintf(2, "fdf: please provide valid width or remove -w option\n");
 		return (0);
 	}
-	fdf->height = has_opt(fdf->opt, 'h')
-		? window_size(get_optarg(fdf->opt, 'h')) : WIN_HEIGHT;
-	if (fdf->height < 0)
+	if ((fdf->height = has_opt(fdf->opt, 'h')
+				? window_size(get_optarg(fdf->opt, 'h')) : WIN_HEIGHT) < 0)
 	{
 		ft_dprintf(2, "fdf: please provide valid height or remove -h option\n");
 		return (0);
 	}
 	fdf->scale = 30;
 	fdf->depth = 1;
+	fdf->angle = 45;
+	fdf->angle_rad = fdf->angle * M_PI / 180.0;
 	fdf->proj = ISO;
 	fdf->f_proj = &iso;
 	fdf->offset_x = 0;

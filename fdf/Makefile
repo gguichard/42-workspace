@@ -6,13 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/30 05:15:09 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/30 21:02:12 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fdf
 
-SRC		=	src/main.c src/parser.c src/hooks.c \
+SRC		=	src/main.c src/parser.c src/hooks.c src/handle_hooks.c \
 			src/graphics.c src/proj.c src/utils.c
 OBJ		=	$(SRC:.c=.o)
 
