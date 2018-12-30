@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 21:09:56 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 22:14:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@ typedef struct		s_pos
 	int				y;
 }					t_pos;
 
+typedef struct		s_move
+{
+	int				scale;
+	int				depth;
+	int				angle;
+}					t_move;
+
 typedef struct		s_fdf
 {
 	t_opt			*opt;
@@ -67,6 +74,7 @@ typedef struct		s_fdf
 	int				cols;
 	int				offset_x;
 	int				offset_y;
+	t_move			move;
 }					t_fdf;
 
 int					window_size(const char *str);
@@ -92,12 +100,14 @@ void				draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2, int color);
 /*
 ** HOOKS.
 */
-int					key_hook(int keycode, t_fdf *fdf);
+int					loop_hook(t_fdf *fdf);
+int					keypress_hook(int keycode, t_fdf *fdf);
+int					keyrelease_hook(int keycode, t_fdf *fdf);
 int					expose_hook(t_fdf *fdf);
 
-int					handle_scale(t_fdf *fdf, int keycode);
-int					handle_depth(t_fdf *fdf, int keycode);
-int					handle_angle(t_fdf *fdf, int keycode);
+int					handle_scale(t_fdf *fdf);
+int					handle_depth(t_fdf *fdf);
+int					handle_angle(t_fdf *fdf);
 int					handle_proj(t_fdf *fdf, int keycode);
 
 #endif

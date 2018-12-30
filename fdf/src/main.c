@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 21:19:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 22:07:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 	fdf->f_proj = &iso;
 	fdf->offset_x = 0;
 	fdf->offset_y = 0;
+	ft_memset(&(fdf->move), 0, sizeof(t_move));
 	return (1);
 }
 
@@ -108,9 +109,11 @@ int			main(int argc, char **argv)
 	if (!init(&fdf, argc, argv))
 		return (1);
 	fill_window_image(&fdf);
-	mlx_hook(fdf.lib.win_ptr, 17, (1L << 17), &exit_fdf, &fdf);
-	mlx_key_hook(fdf.lib.win_ptr, &key_hook, &fdf);
+	mlx_loop_hook(fdf.lib.mlx_ptr, &loop_hook, &fdf);
 	mlx_expose_hook(fdf.lib.win_ptr, &expose_hook, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 17, (1L << 17), &exit_fdf, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 2, (1L << 0), &keypress_hook, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 3, (1L << 1), &keyrelease_hook, &fdf);
 	mlx_loop(fdf.lib.mlx_ptr);
 	return (0);
 }

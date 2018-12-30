@@ -6,14 +6,26 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 21:21:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 22:17:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include <mlx.h>
 #include <stdlib.h>
 #include "printf.h"
 #include "fdf.h"
+
+int	loop_hook(t_fdf *fdf)
+{
+	if (handle_scale(fdf) || handle_depth(fdf) || handle_angle(fdf))
+	{
+		fill_window_image(fdf);
+		expose_hook(fdf);
+		usleep(100000);
+	}
+	return (0);
+}
 
 int	expose_hook(t_fdf *fdf)
 {
@@ -39,7 +51,18 @@ int	expose_hook(t_fdf *fdf)
 	return (0);
 }
 
-int	key_hook(int keycode, t_fdf *fdf)
+int	keypress_hook(int keycode, t_fdf *fdf)
+{
+	if (keycode == 69 || keycode == 78)
+		fdf->move.scale = (keycode == 78) ? -1 : 1;
+	else if (keycode == 116 || keycode == 121)
+		fdf->move.depth = (keycode == 121) ? -1 : 1;
+	else if (keycode == 123 || keycode == 124)
+		fdf->move.angle = (keycode == 124) ? -15 : 15;
+	return (0);
+}
+
+int	keyrelease_hook(int keycode, t_fdf *fdf)
 {
 	int	ret;
 
@@ -47,11 +70,11 @@ int	key_hook(int keycode, t_fdf *fdf)
 	if (keycode == 53)
 		exit_fdf(fdf);
 	else if (keycode == 69 || keycode == 78)
-		ret = handle_scale(fdf, keycode);
+		fdf->move.scale = 0;
 	else if (keycode == 116 || keycode == 121)
-		ret = handle_depth(fdf, keycode);
+		fdf->move.depth = 0;
 	else if (keycode == 123 || keycode == 124)
-		ret = handle_angle(fdf, keycode);
+		fdf->move.angle = 0;
 	else if (keycode == 34 || keycode == 35)
 		ret = handle_proj(fdf, keycode);
 	if (ret)
