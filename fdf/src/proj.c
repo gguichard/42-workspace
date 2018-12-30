@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 00:35:52 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 07:50:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 09:48:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 void	iso(t_fdf *fdf, t_point *point, t_pos *to)
 {
-	to->x = fdf->scale * ((point->x - point->y) * cos(0.523599));
+	to->x = fdf->scale * ((point->x - point->y)
+			* cos(0.523599));
 	to->y = fdf->scale * (-(point->z * fdf->depth * .1) + (point->x + point->y)
 			* sin(0.523599));
 }
