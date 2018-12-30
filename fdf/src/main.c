@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 18:26:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 18:32:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,20 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 	fdf->opt = parse_opts(argc, argv, "w:h:");
 	fdf->argc = argc - fdf->opt->index;
 	fdf->argv = argv + fdf->opt->index;
-	if (has_opt(fdf->opt, 'w') && !get_optarg(fdf->opt, 'w'))
-	{
-		ft_dprintf(2, "fdf: please provide width or remove -w option\n");
-		return (0);
-	}
 	fdf->width = has_opt(fdf->opt, 'w')
-		? ft_atoi(get_optarg(fdf->opt, 'w')) : WIN_WIDTH;
-	if (has_opt(fdf->opt, 'h') && !get_optarg(fdf->opt, 'h'))
+		? window_size(get_optarg(fdf->opt, 'w')) : WIN_WIDTH;
+	if (fdf->width < 0)
 	{
-		ft_dprintf(2, "fdf: please provide height or remove -h option\n");
+		ft_dprintf(2, "fdf: please provide valid width or remove -w option\n");
 		return (0);
 	}
 	fdf->height = has_opt(fdf->opt, 'h')
-		? ft_atoi(get_optarg(fdf->opt, 'h')) : WIN_HEIGHT;
+		? window_size(get_optarg(fdf->opt, 'h')) : WIN_HEIGHT;
+	if (fdf->height < 0)
+	{
+		ft_dprintf(2, "fdf: please provide valid height or remove -h option\n");
+		return (0);
+	}
 	fdf->scale = 30;
 	fdf->depth = 1;
 	fdf->proj = ISO;

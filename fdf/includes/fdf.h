@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 11:49:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 18:33:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct		s_fdf
 	int				offset_y;
 }					t_fdf;
 
+int					window_size(const char *str);
 int					clean_mlx(t_fdf *fdf);
 int					exit_fdf(t_fdf *fdf);
 
