@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 07:49:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 08:16:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,28 +19,38 @@ static void	apply_off(t_fdf *fdf, t_pos *pos)
 	pos->y += (fdf->height / 2) - fdf->offset_y;
 }
 
+static void	draw_edge(t_fdf *fdf, t_pos pos, t_point *point, t_pos offset)
+{
+	t_point	*edge;
+	t_pos	edge_pos;
+	int		color;
+
+	edge = (fdf->point)
+		[(point->y + offset.y) * fdf->cols + point->x + offset.x];
+	fdf->f_proj(fdf, edge, &edge_pos);
+	apply_off(fdf, &edge_pos);
+	color = point->z > edge->z ? point->color : edge->color;
+	draw_line(fdf, pos, edge_pos, color);
+}
+
 static void	draw_edges(t_fdf *fdf, t_point *point)
 {
-	t_pos	pos1;
-	t_pos	pos2;
+	t_pos	pos;
+	t_pos	offset;
 
-	fdf->f_proj(fdf, point, &pos1);
-	apply_off(fdf, &pos1);
+	fdf->f_proj(fdf, point, &pos);
+	apply_off(fdf, &pos);
 	if (point->x + 1 < fdf->cols)
 	{
-		point->x += 1;
-		fdf->f_proj(fdf, (fdf->point)[point_to_index(fdf, point)], &pos2);
-		apply_off(fdf, &pos2);
-		draw_line(fdf, pos1, pos2);
-		point->x -= 1;
+		offset.x = 1;
+		offset.y = 0;
+		draw_edge(fdf, pos, point, offset);
 	}
 	if (point->y + 1 < fdf->rows)
 	{
-		point->y += 1;
-		fdf->f_proj(fdf, (fdf->point)[point_to_index(fdf, point)], &pos2);
-		apply_off(fdf, &pos2);
-		draw_line(fdf, pos1, pos2);
-		point->y -= 1;
+		offset.x = 0;
+		offset.y = 1;
+		draw_edge(fdf, pos, point, offset);
 	}
 }
 

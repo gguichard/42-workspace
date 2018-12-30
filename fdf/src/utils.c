@@ -6,18 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 05:08:55 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 07:43:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 08:12:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 #include "fdf.h"
-
-int		point_to_index(t_fdf *fdf, t_point *point)
-{
-	return (point->y * fdf->cols + point->x);
-}
 
 int		exit_fdf(t_fdf *fdf)
 {
@@ -26,13 +21,13 @@ int		exit_fdf(t_fdf *fdf)
 	return (0);
 }
 
-void	draw_pixel(t_fdf *fdf, int x, int y)
+void	draw_pixel(t_fdf *fdf, int x, int y, int color)
 {
 	if (y >= 0 && x >= 0 && y < fdf->height && x < fdf->width)
-		fdf->lib.img_data[y * fdf->width + x] = 0xFFFFFF;
+		fdf->lib.img_data[y * fdf->width + x] = color;
 }
 
-void	draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2)
+void	draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2, int color)
 {
 	t_pos	delta;
 	t_pos	step;
@@ -46,7 +41,7 @@ void	draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2)
 	err = delta.x + delta.y;
 	while (pos1.x != pos2.x || pos1.y != pos2.y)
 	{
-		draw_pixel(fdf, pos1.x, pos1.y);
+		draw_pixel(fdf, pos1.x, pos1.y, color);
 		tmp = 2 * err;
 		if (tmp >= delta.y)
 		{

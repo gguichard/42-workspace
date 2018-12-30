@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 07:43:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 08:16:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "options.h"
 
-# define WIN_WIDTH 1280
-# define WIN_HEIGHT 800
+# define WIN_WIDTH 1640
+# define WIN_HEIGHT 1280
 
 typedef enum		e_proj
 {
@@ -65,7 +65,6 @@ typedef struct		s_fdf
 	int				offset_y;
 }					t_fdf;
 
-int					point_to_index(t_fdf *fdf, t_point *point);
 int					clean_mlx(t_fdf *fdf);
 int					exit_fdf(t_fdf *fdf);
 
@@ -82,8 +81,8 @@ void				parallel(t_fdf *fdf, t_point *point, t_pos *to);
 
 void				fill_window_image(t_fdf *fdf);
 
-void				draw_pixel(t_fdf *fdf, int x, int y);
-void				draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2);
+void				draw_pixel(t_fdf *fdf, int x, int y, int color);
+void				draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2, int color);
 
 /*
 ** HOOKS.
