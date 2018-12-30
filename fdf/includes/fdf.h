@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 05:36:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 06:00:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct		s_fdf
 	t_pos			**pos;
 	int				rows;
 	int				cols;
+	int				offset_x;
+	int				offset_y;
 }					t_fdf;
 
 int					clean_mlx(t_fdf *fdf);

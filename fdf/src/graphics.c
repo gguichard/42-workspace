@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 05:25:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 06:00:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 
 static void	apply_offsets(t_fdf *fdf, t_pos *pos)
 {
-	(void)fdf;
-	(void)pos;
-	pos->x += (fdf->width / 2) - ((fdf->cols * fdf->scale) / 4);
-	pos->y += (fdf->height / 2) - ((fdf->rows * fdf->scale) / 2);
+	pos->x += (fdf->width / 2) - fdf->offset_x;
+	pos->y += (fdf->height / 2) - fdf->offset_y;
 }
 
 static void	draw_edges(t_fdf *fdf, t_pos *pos)
@@ -42,11 +40,28 @@ static void	draw_edges(t_fdf *fdf, t_pos *pos)
 	}
 }
 
+static void	compute_offsets(t_fdf *fdf)
+{
+	t_pos	pos;
+	t_pos	min;
+	t_pos	max;
+
+	pos.x = 0;
+	pos.y = 0;
+	iso(fdf, &pos, &min);
+	pos.x = fdf->cols - 1;
+	pos.y = fdf->rows - 1;
+	iso(fdf, &pos, &max);
+	fdf->offset_x = (max.x - min.x) / 2;
+	fdf->offset_y = (max.y - min.y) / 2;
+}
+
 void		fill_window_image(t_fdf *fdf)
 {
 	int	index;
 	int	total;
 
+	compute_offsets(fdf);
 	ft_memset(fdf->lib.img_data, 0, fdf->lib.size_line * fdf->height);
 	index = 0;
 	total = fdf->rows * fdf->cols;
