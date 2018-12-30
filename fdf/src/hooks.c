@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 08:42:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 11:42:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,7 @@ static int	handle_depth(t_fdf *fdf, int keycode)
 	if (keycode == 116)
 		(fdf->depth) += 1;
 	else if (keycode == 121)
-	{
-		if (fdf->depth - 1 < 0)
-			return (0);
 		(fdf->depth) -= 1;
-	}
 	return (1);
 }
 

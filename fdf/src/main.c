@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 06:57:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/30 18:26:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,38 +45,67 @@ static int	init_mlx(t_fdf *fdf)
 	return (1);
 }
 
-static int	init_fdf(t_fdf *fdf)
+static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 {
-	fdf->width = WIN_WIDTH;
-	fdf->height = WIN_HEIGHT;
-	fdf->scale = 20;
+	fdf->opt = parse_opts(argc, argv, "w:h:");
+	fdf->argc = argc - fdf->opt->index;
+	fdf->argv = argv + fdf->opt->index;
+	if (has_opt(fdf->opt, 'w') && !get_optarg(fdf->opt, 'w'))
+	{
+		ft_dprintf(2, "fdf: please provide width or remove -w option\n");
+		return (0);
+	}
+	fdf->width = has_opt(fdf->opt, 'w')
+		? ft_atoi(get_optarg(fdf->opt, 'w')) : WIN_WIDTH;
+	if (has_opt(fdf->opt, 'h') && !get_optarg(fdf->opt, 'h'))
+	{
+		ft_dprintf(2, "fdf: please provide height or remove -h option\n");
+		return (0);
+	}
+	fdf->height = has_opt(fdf->opt, 'h')
+		? ft_atoi(get_optarg(fdf->opt, 'h')) : WIN_HEIGHT;
+	fdf->scale = 30;
 	fdf->depth = 1;
 	fdf->proj = ISO;
 	fdf->f_proj = &iso;
 	fdf->offset_x = 0;
 	fdf->offset_y = 0;
-	return (init_mlx(fdf));
+	return (1);
+}
+
+static int	init(t_fdf *fdf, int argc, char **argv)
+{
+	if (!init_fdf(fdf, argc, argv))
+		return (0);
+	if (fdf->opt->error != 0 || fdf->argc <= 0)
+	{
+		if (fdf->opt->error)
+			ft_dprintf(2, "fdf: illegal option -- %c\n", fdf->opt->error);
+		ft_printf("USAGE: ./fdf [options] <map_file>\n\n");
+		ft_printf("OPTIONS:\n");
+		ft_printf("  -w <size>\tSpecify width for window size\n");
+		ft_printf("  -h <size>\tSpecify height for window size\n");
+		return (0);
+	}
+	if (!read_file((fdf->argv)[0], fdf))
+	{
+		ft_dprintf(2, "fdf: unable to parse map file\n");
+		return (0);
+	}
+	if (!init_mlx(fdf))
+	{
+		ft_dprintf(2, "fdf: unable to init minilibx\n");
+		return (0);
+	}
+	return (1);
 }
 
 int			main(int argc, char **argv)
 {
 	t_fdf	fdf;
 
-	if (argc < 2)
-	{
-		ft_dprintf(2, "usage: ./fdf [map_file]\n");
+	if (!init(&fdf, argc, argv))
 		return (1);
-	}
-	if (!read_file(argv[1], &fdf))
-	{
-		ft_dprintf(2, "fdf: unable to parse map file\n");
-		return (1);
-	}
-	if (!init_fdf(&fdf))
-	{
-		ft_dprintf(2, "fdf: unable to init minilibx\n");
-		return (1);
-	}
 	fill_window_image(&fdf);
 	mlx_hook(fdf.lib.win_ptr, 17, (1L << 17), &exit_fdf, &fdf);
 	mlx_key_hook(fdf.lib.win_ptr, &key_hook, &fdf);
