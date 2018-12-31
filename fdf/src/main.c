@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 06:53:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 07:03:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 		return (0);
 	ft_memset(&(fdf->cam), 0, sizeof(t_cam));
 	fdf->scale = 30;
-	fdf->depth = 1;
+	fdf->depth = 10;
 	fdf->angle = 45;
 	fdf->angle_sin = sin(fdf->angle * M_PI / 180.0);
 	fdf->angle_cos = cos(fdf->angle * M_PI / 180.0);
