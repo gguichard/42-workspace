@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 03:41:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 06:27:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ static void	draw_edge(t_fdf *fdf, t_pos *pos, t_pos offset)
 	edge = (fdf->pos)[(pos->y + offset.y) * fdf->cols + pos->x + offset.x];
 	fdf->f_proj(fdf, edge);
 	apply_off(fdf, edge);
+	if ((pos->proj_x < 0 && edge->proj_x < 0)
+			|| (pos->proj_y < 0 && edge->proj_y < 0)
+			|| (pos->proj_x >= fdf->width && edge->proj_x >= fdf->width)
+			|| (pos->proj_y >= fdf->height && edge->proj_y >= fdf->height))
+		return ;
 	draw_line(fdf, *pos, *edge);
 }
 
