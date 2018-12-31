@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 03:37:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 06:51:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ typedef struct		s_fdf
 	int				scale;
 	int				depth;
 	int				angle;
-	double			angle_rad;
+	double			angle_cos;
+	double			angle_sin;
 	t_proj			proj;
 	void			(*f_proj)(struct s_fdf *, t_pos *);
 	t_mlx			lib;

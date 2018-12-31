@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 03:47:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 06:53:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,15 @@ int	handle_depth(t_fdf *fdf)
 
 int	handle_angle(t_fdf *fdf)
 {
+	double	rad;
+
 	if (fdf->move.angle == 0)
 		return (0);
 	fdf->angle += fdf->move.angle;
 	fdf->angle %= 360;
-	fdf->angle_rad = fdf->angle * M_PI / 180.0;
+	rad = fdf->angle * M_PI / 180.0;
+	fdf->angle_sin = sin(rad);
+	fdf->angle_cos = cos(rad);
 	return (1);
 }
 
