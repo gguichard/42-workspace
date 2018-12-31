@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 22:07:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 03:17:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,12 @@ static int	init_mlx(t_fdf *fdf)
 
 static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 {
-	fdf->opt = parse_opts(argc, argv, "w:h:");
+	fdf->opt = parse_opts(argc, argv, "w:h:p:");
 	fdf->argc = argc - fdf->opt->index;
 	fdf->argv = argv + fdf->opt->index;
-	if ((fdf->width = has_opt(fdf->opt, 'w')
-				? window_size(get_optarg(fdf->opt, 'w')) : WIN_WIDTH) < 0)
-	{
-		ft_dprintf(2, "fdf: please provide valid width or remove -w option\n");
+	fdf->palette = NULL;
+	if (!check_options(fdf))
 		return (0);
-	}
-	if ((fdf->height = has_opt(fdf->opt, 'h')
-				? window_size(get_optarg(fdf->opt, 'h')) : WIN_HEIGHT) < 0)
-	{
-		ft_dprintf(2, "fdf: please provide valid height or remove -h option\n");
-		return (0);
-	}
 	fdf->scale = 30;
 	fdf->depth = 1;
 	fdf->angle = 45;
@@ -87,6 +78,7 @@ static int	init(t_fdf *fdf, int argc, char **argv)
 		ft_printf("OPTIONS:\n");
 		ft_printf("  -w <size>\tSpecify width for window size\n");
 		ft_printf("  -h <size>\tSpecify height for window size\n");
+		ft_printf("  -p <file>\tUse file as color palette\n");
 		return (0);
 	}
 	if (!read_file((fdf->argv)[0], fdf))

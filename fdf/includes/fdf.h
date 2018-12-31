@@ -6,13 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 02:07:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 03:17:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
+# include "libft.h"
 # include "options.h"
 
 # define WIN_WIDTH 1640
@@ -22,6 +23,12 @@ typedef enum		e_proj
 {
 	ISO, PARALLEL
 }					t_proj;
+
+typedef struct		s_color
+{
+	int				max;
+	int				value;
+}					t_color;
 
 typedef struct		s_mlx
 {
@@ -58,6 +65,7 @@ typedef struct		s_fdf
 	char			**argv;
 	int				width;
 	int				height;
+	t_list			*palette;
 	int				scale;
 	int				depth;
 	int				angle;
@@ -73,9 +81,15 @@ typedef struct		s_fdf
 	t_move			move;
 }					t_fdf;
 
-int					window_size(const char *str);
+int					check_options(t_fdf *fdf);
 int					clean_mlx(t_fdf *fdf);
 int					exit_fdf(t_fdf *fdf);
+
+/*
+** COLORS parsing.
+*/
+int					parse_palette(const char *file, t_fdf *fdf);
+int					get_palette_color(t_fdf *fdf, int z);
 
 /*
 ** PARSING.

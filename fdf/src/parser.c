@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 02:02:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 03:07:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 #include "get_next_line.h"
 #include "fdf.h"
 
-static int		parse_pos(t_pos *pos, char **line)
+static int		parse_pos(t_fdf *fdf, t_pos *pos, char **line)
 {
 	pos->z = ft_strtol(*line, line, 10);
 	if ((*line)[0] != ',')
-		pos->color = 0xFFFFFF;
+		pos->color = get_palette_color(fdf, pos->z);
 	else
 	{
 		(*line)++;
@@ -43,7 +43,7 @@ static int		parse_line(t_fdf *fdf, char *line, t_list **lst)
 	pos.y = fdf->rows;
 	while (*line != '\0' && (pos.x < fdf->cols || fdf->cols == 0))
 	{
-		if (!parse_pos(&pos, &line))
+		if (!parse_pos(fdf, &pos, &line))
 			return (0);
 		if (!(elem = ft_lstnew(&pos, sizeof(t_pos))))
 			return (0);
