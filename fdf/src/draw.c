@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 02:13:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 07:15:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,18 @@ void			draw_line(t_fdf *fdf, t_pos start, t_pos end)
 	int		tmp;
 
 	delta.x = ft_abs(end.proj_x - start.proj_x);
-	delta.y = ft_abs(end.proj_y - start.proj_y);
+	delta.y = -ft_abs(end.proj_y - start.proj_y);
 	step.x = start.proj_x < end.proj_x ? 1 : -1;
 	step.y = start.proj_y < end.proj_y ? 1 : -1;
 	curr.proj_x = start.proj_x;
 	curr.proj_y = start.proj_y;
-	err = delta.x - delta.y;
+	err = delta.x + delta.y;
 	while (curr.proj_x != end.proj_x || curr.proj_y != end.proj_y)
 	{
 		draw_pixel(fdf, start, end, curr);
 		tmp = 2 * err;
-		(tmp >= -(delta.y)) ? err -= delta.y : 0;
-		(tmp >= -(delta.y)) ? curr.proj_x += step.x : 0;
+		(tmp >= delta.y) ? err += delta.y : 0;
+		(tmp >= delta.y) ? curr.proj_x += step.x : 0;
 		(tmp <= delta.x) ? err += delta.x : 0;
 		(tmp <= delta.x) ? curr.proj_y += step.y : 0;
 	}
