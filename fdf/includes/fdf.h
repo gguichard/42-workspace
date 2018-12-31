@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 01:39:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 02:07:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,13 @@ typedef struct		s_mlx
 	int				endian;
 }					t_mlx;
 
-typedef struct		s_point
-{
-	int				x;
-	int				y;
-	int				z;
-	int				color;
-}					t_point;
-
 typedef struct		s_pos
 {
 	int				x;
 	int				y;
+	int				z;
+	int				proj_x;
+	int				proj_y;
 	int				color;
 }					t_pos;
 
@@ -68,9 +63,9 @@ typedef struct		s_fdf
 	int				angle;
 	double			angle_rad;
 	t_proj			proj;
-	void			(*f_proj)(struct s_fdf *, t_point *, t_pos *);
+	void			(*f_proj)(struct s_fdf *, t_pos *);
 	t_mlx			lib;
-	t_point			**points;
+	t_pos			**pos;
 	int				rows;
 	int				cols;
 	int				offset_x;
@@ -90,13 +85,13 @@ int					read_file(const char *name, t_fdf *fdf);
 /*
 ** GRAPHICS.
 */
-void				iso(t_fdf *fdf, t_point *point, t_pos *to);
-void				parallel(t_fdf *fdf, t_point *point, t_pos *to);
+void				iso(t_fdf *fdf, t_pos *pos);
+void				parallel(t_fdf *fdf, t_pos *pos);
 
 void				fill_window_image(t_fdf *fdf);
 
-void				draw_pixel(t_fdf *fdf, t_pos pos1, t_pos pos2, t_pos curr);
-void				draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2);
+void				draw_pixel(t_fdf *fdf, t_pos start, t_pos end, t_pos curr);
+void				draw_line(t_fdf *fdf, t_pos start, t_pos end);
 
 /*
 ** HOOKS.

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 01:42:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 02:08:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static double	get_ratio(int start, int end, int current)
 	return ((current - start) / dist);
 }
 
-static int		get_color(t_pos pos1, t_pos pos2, t_pos curr, t_pos delta)
+static int		get_color(t_pos start, t_pos end, t_pos curr, t_pos delta)
 {
 	int		r;
 	int		g;
@@ -36,31 +36,31 @@ static int		get_color(t_pos pos1, t_pos pos2, t_pos curr, t_pos delta)
 	double	ratio;
 
 	if (delta.x > delta.y)
-		ratio = get_ratio(pos1.x, pos2.x, curr.x);
+		ratio = get_ratio(start.proj_x, end.proj_x, curr.proj_x);
 	else
-		ratio = get_ratio(pos1.y, pos2.y, curr.y);
-	r = get_light((pos1.color >> 16) & 0xFF, (pos2.color >> 16) & 0xFF, ratio);
-	g = get_light((pos1.color >> 8) & 0xFF, (pos2.color >> 8) & 0xFF, ratio);
-	b = get_light(pos1.color & 0xFF, pos2.color & 0xFF, ratio);
+		ratio = get_ratio(start.proj_y, end.proj_y, curr.proj_y);
+	r = get_light((start.color >> 16) & 0xFF, (end.color >> 16) & 0xFF, ratio);
+	g = get_light((start.color >> 8) & 0xFF, (end.color >> 8) & 0xFF, ratio);
+	b = get_light(start.color & 0xFF, end.color & 0xFF, ratio);
 	return ((r << 16) | (g << 8) | b);
 }
 
-void			draw_pixel(t_fdf *fdf, t_pos pos1, t_pos pos2, t_pos curr)
+void			draw_pixel(t_fdf *fdf, t_pos start, t_pos end, t_pos curr)
 {
 	t_pos	delta;
 	int		color;
 
-	if (curr.x >= 0 && curr.y >= 0
-			&& curr.x < fdf->width && curr.y < fdf->height)
+	if (curr.proj_x >= 0 && curr.proj_y >= 0
+			&& curr.proj_x < fdf->width && curr.proj_y < fdf->height)
 	{
-		delta.x = ft_abs(pos2.x - pos1.x);
-		delta.y = ft_abs(pos2.y - pos1.y);
-		color = get_color(pos1, pos2, curr, delta);
-		fdf->lib.img_data[curr.y * fdf->width + curr.x] = color;
+		delta.x = ft_abs(end.proj_x - start.proj_x);
+		delta.y = ft_abs(end.proj_y - start.proj_y);
+		color = get_color(start, end, curr, delta);
+		fdf->lib.img_data[curr.proj_y * fdf->width + curr.proj_x] = color;
 	}
 }
 
-void			draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2)
+void			draw_line(t_fdf *fdf, t_pos start, t_pos end)
 {
 	t_pos	delta;
 	t_pos	step;
@@ -68,20 +68,20 @@ void			draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2)
 	int		err;
 	int		tmp;
 
-	delta.x = ft_abs(pos2.x - pos1.x);
-	delta.y = ft_abs(pos2.y - pos1.y);
-	step.x = pos1.x < pos2.x ? 1 : -1;
-	step.y = pos1.y < pos2.y ? 1 : -1;
-	curr.x = pos1.x;
-	curr.y = pos1.y;
+	delta.x = ft_abs(end.proj_x - start.proj_x);
+	delta.y = ft_abs(end.proj_y - start.proj_y);
+	step.x = start.proj_x < end.proj_x ? 1 : -1;
+	step.y = start.proj_y < end.proj_y ? 1 : -1;
+	curr.proj_x = start.proj_x;
+	curr.proj_y = start.proj_y;
 	err = delta.x - delta.y;
-	while (curr.x != pos2.x || curr.y != pos2.y)
+	while (curr.proj_x != end.proj_x || curr.proj_y != end.proj_y)
 	{
-		draw_pixel(fdf, pos1, pos2, curr);
+		draw_pixel(fdf, start, end, curr);
 		tmp = 2 * err;
 		(tmp >= -(delta.y)) ? err -= delta.y : 0;
-		(tmp >= -(delta.y)) ? curr.x += step.x : 0;
+		(tmp >= -(delta.y)) ? curr.proj_x += step.x : 0;
 		(tmp <= delta.x) ? err += delta.x : 0;
-		(tmp <= delta.x) ? curr.y += step.y : 0;
+		(tmp <= delta.x) ? curr.proj_y += step.y : 0;
 	}
 }

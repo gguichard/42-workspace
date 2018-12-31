@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 01:35:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 02:09:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,54 +15,51 @@
 
 static void	apply_off(t_fdf *fdf, t_pos *pos)
 {
-	pos->x += (fdf->width / 2) - fdf->offset_x;
-	pos->y += (fdf->height / 2) - fdf->offset_y;
+	pos->proj_x += (fdf->width / 2) - fdf->offset_x;
+	pos->proj_y += (fdf->height / 2) - fdf->offset_y;
 }
 
-static void	draw_edge(t_fdf *fdf, t_pos pos, t_point *point, t_pos offset)
+static void	draw_edge(t_fdf *fdf, t_pos *pos, t_pos offset)
 {
-	t_point	*edge;
-	t_pos	edge_pos;
+	t_pos	*edge;
 
-	edge = (fdf->points)
-		[(point->y + offset.y) * fdf->cols + point->x + offset.x];
-	edge_pos.color = edge->color;
-	fdf->f_proj(fdf, edge, &edge_pos);
-	apply_off(fdf, &edge_pos);
-	draw_line(fdf, pos, edge_pos);
+	edge = (fdf->pos)[(pos->y + offset.y) * fdf->cols + pos->x + offset.x];
+	fdf->f_proj(fdf, edge);
+	apply_off(fdf, edge);
+	draw_line(fdf, *pos, *edge);
 }
 
-static void	draw_edges(t_fdf *fdf, t_point *point)
+static void	draw_edges(t_fdf *fdf, t_pos *pos)
 {
-	t_pos	pos;
 	t_pos	offset;
 
-	pos.color = point->color;
-	fdf->f_proj(fdf, point, &pos);
-	apply_off(fdf, &pos);
-	if (point->x + 1 < fdf->cols)
+	fdf->f_proj(fdf, pos);
+	apply_off(fdf, pos);
+	if (pos->x + 1 < fdf->cols)
 	{
 		offset.x = 1;
 		offset.y = 0;
-		draw_edge(fdf, pos, point, offset);
+		draw_edge(fdf, pos, offset);
 	}
-	if (point->y + 1 < fdf->rows)
+	if (pos->y + 1 < fdf->rows)
 	{
 		offset.x = 0;
 		offset.y = 1;
-		draw_edge(fdf, pos, point, offset);
+		draw_edge(fdf, pos, offset);
 	}
 }
 
 static void	compute_offsets(t_fdf *fdf)
 {
-	t_pos	min;
-	t_pos	max;
+	t_pos	*min;
+	t_pos	*max;
 
-	fdf->f_proj(fdf, fdf->points[0], &min);
-	fdf->f_proj(fdf, fdf->points[fdf->rows * fdf->cols - 1], &max);
-	fdf->offset_x = (max.x - min.x) * .5;
-	fdf->offset_y = (max.y - min.y) * .5;
+	min = (fdf->pos)[0];
+	max = (fdf->pos)[fdf->rows * fdf->cols - 1];
+	fdf->f_proj(fdf, min);
+	fdf->f_proj(fdf, max);
+	fdf->offset_x = (max->proj_x - min->proj_x) * .5;
+	fdf->offset_y = (max->proj_y - min->proj_y) * .5;
 }
 
 void		fill_window_image(t_fdf *fdf)
@@ -76,7 +73,7 @@ void		fill_window_image(t_fdf *fdf)
 	total = fdf->rows * fdf->cols;
 	while (index < total)
 	{
-		draw_edges(fdf, fdf->points[index]);
+		draw_edges(fdf, fdf->pos[index]);
 		index++;
 	}
 }
