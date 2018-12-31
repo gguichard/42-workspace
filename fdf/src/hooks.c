@@ -6,11 +6,10 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 22:28:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 02:20:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include <mlx.h>
 #include <stdlib.h>
 #include "printf.h"
@@ -22,7 +21,6 @@ int	loop_hook(t_fdf *fdf)
 	{
 		fill_window_image(fdf);
 		expose_hook(fdf);
-		usleep(100000);
 	}
 	return (0);
 }
