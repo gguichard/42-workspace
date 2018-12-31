@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 02:08:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 02:13:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,14 @@ void			draw_pixel(t_fdf *fdf, t_pos start, t_pos end, t_pos curr)
 	if (curr.proj_x >= 0 && curr.proj_y >= 0
 			&& curr.proj_x < fdf->width && curr.proj_y < fdf->height)
 	{
-		delta.x = ft_abs(end.proj_x - start.proj_x);
-		delta.y = ft_abs(end.proj_y - start.proj_y);
-		color = get_color(start, end, curr, delta);
+		if (start.color == end.color)
+			color = start.color;
+		else
+		{
+			delta.x = ft_abs(end.proj_x - start.proj_x);
+			delta.y = ft_abs(end.proj_y - start.proj_y);
+			color = get_color(start, end, curr, delta);
+		}
 		fdf->lib.img_data[curr.proj_y * fdf->width + curr.proj_x] = color;
 	}
 }
