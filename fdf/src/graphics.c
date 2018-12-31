@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 02:09:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 03:41:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 static void	apply_off(t_fdf *fdf, t_pos *pos)
 {
-	pos->proj_x += (fdf->width / 2) - fdf->offset_x;
-	pos->proj_y += (fdf->height / 2) - fdf->offset_y;
+	pos->proj_x += (fdf->width / 2) - fdf->offset_x + fdf->cam.x;
+	pos->proj_y += (fdf->height / 2) - fdf->offset_y + fdf->cam.y;
 }
 
 static void	draw_edge(t_fdf *fdf, t_pos *pos, t_pos offset)

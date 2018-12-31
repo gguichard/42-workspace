@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 03:17:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 03:37:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,18 @@ typedef struct		s_pos
 
 typedef struct		s_move
 {
+	int				x;
+	int				y;
 	int				scale;
 	int				depth;
 	int				angle;
 }					t_move;
+
+typedef struct		s_cam
+{
+	int				x;
+	int				y;
+}					t_cam;
 
 typedef struct		s_fdf
 {
@@ -66,6 +74,7 @@ typedef struct		s_fdf
 	int				width;
 	int				height;
 	t_list			*palette;
+	t_cam			cam;
 	int				scale;
 	int				depth;
 	int				angle;
@@ -115,6 +124,7 @@ int					keypress_hook(int keycode, t_fdf *fdf);
 int					keyrelease_hook(int keycode, t_fdf *fdf);
 int					expose_hook(t_fdf *fdf);
 
+int					handle_move(t_fdf *fdf);
 int					handle_scale(t_fdf *fdf);
 int					handle_depth(t_fdf *fdf);
 int					handle_angle(t_fdf *fdf);

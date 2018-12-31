@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 02:20:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 03:42:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 
 int	loop_hook(t_fdf *fdf)
 {
-	if (handle_scale(fdf) || handle_depth(fdf) || handle_angle(fdf))
+	if (handle_move(fdf) || handle_scale(fdf)
+			|| handle_depth(fdf) || handle_angle(fdf))
 	{
 		fill_window_image(fdf);
 		expose_hook(fdf);
@@ -51,7 +52,11 @@ int	expose_hook(t_fdf *fdf)
 
 int	keypress_hook(int keycode, t_fdf *fdf)
 {
-	if (keycode == 69 || keycode == 78)
+	if (keycode == 0 || keycode == 2)
+		fdf->move.x = (keycode == 2) ? -10 : 10;
+	else if (keycode == 1 || keycode == 13)
+		fdf->move.y = (keycode == 1) ? -10 : 10;
+	else if (keycode == 69 || keycode == 78)
 		fdf->move.scale = (keycode == 78) ? -1 : 1;
 	else if (keycode == 116 || keycode == 121)
 		fdf->move.depth = (keycode == 121) ? -1 : 1;
@@ -62,11 +67,12 @@ int	keypress_hook(int keycode, t_fdf *fdf)
 
 int	keyrelease_hook(int keycode, t_fdf *fdf)
 {
-	int	ret;
-
-	ret = 0;
 	if (keycode == 53)
 		exit_fdf(fdf);
+	else if (keycode == 0 || keycode == 2)
+		fdf->move.x = 0;
+	else if (keycode == 1 || keycode == 13)
+		fdf->move.y = 0;
 	else if (keycode == 69 || keycode == 78)
 		fdf->move.scale = 0;
 	else if (keycode == 116 || keycode == 121)
@@ -74,11 +80,12 @@ int	keyrelease_hook(int keycode, t_fdf *fdf)
 	else if (keycode == 123 || keycode == 124)
 		fdf->move.angle = 0;
 	else if (keycode == 34 || keycode == 35)
-		ret = handle_proj(fdf, keycode);
-	if (ret)
 	{
-		fill_window_image(fdf);
-		expose_hook(fdf);
+		if (handle_proj(fdf, keycode))
+		{
+			fill_window_image(fdf);
+			expose_hook(fdf);
+		}
 	}
 	return (0);
 }

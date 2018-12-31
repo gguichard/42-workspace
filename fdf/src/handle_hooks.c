@@ -6,12 +6,21 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 22:16:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 03:47:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "fdf.h"
+
+int	handle_move(t_fdf *fdf)
+{
+	if (fdf->move.x != 0)
+		fdf->cam.x += fdf->move.x;
+	if (fdf->move.y != 0)
+		fdf->cam.y += fdf->move.y;
+	return (fdf->move.x != 0 || fdf->move.y != 0);
+}
 
 int	handle_scale(t_fdf *fdf)
 {
