@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 08:33:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 01:35:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,13 @@ static void	draw_edge(t_fdf *fdf, t_pos pos, t_point *point, t_pos offset)
 {
 	t_point	*edge;
 	t_pos	edge_pos;
-	int		color;
 
 	edge = (fdf->points)
 		[(point->y + offset.y) * fdf->cols + point->x + offset.x];
+	edge_pos.color = edge->color;
 	fdf->f_proj(fdf, edge, &edge_pos);
 	apply_off(fdf, &edge_pos);
-	color = ft_abs(point->z) > ft_abs(edge->z) ? point->color : edge->color;
-	draw_line(fdf, pos, edge_pos, color);
+	draw_line(fdf, pos, edge_pos);
 }
 
 static void	draw_edges(t_fdf *fdf, t_point *point)
@@ -38,6 +37,7 @@ static void	draw_edges(t_fdf *fdf, t_point *point)
 	t_pos	pos;
 	t_pos	offset;
 
+	pos.color = point->color;
 	fdf->f_proj(fdf, point, &pos);
 	apply_off(fdf, &pos);
 	if (point->x + 1 < fdf->cols)

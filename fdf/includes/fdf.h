@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/30 22:14:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/31 01:39:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct		s_pos
 {
 	int				x;
 	int				y;
+	int				color;
 }					t_pos;
 
 typedef struct		s_move
@@ -94,8 +95,8 @@ void				parallel(t_fdf *fdf, t_point *point, t_pos *to);
 
 void				fill_window_image(t_fdf *fdf);
 
-void				draw_pixel(t_fdf *fdf, int x, int y, int color);
-void				draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2, int color);
+void				draw_pixel(t_fdf *fdf, t_pos pos1, t_pos pos2, t_pos curr);
+void				draw_line(t_fdf *fdf, t_pos pos1, t_pos pos2);
 
 /*
 ** HOOKS.
