@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 04:08:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 16:52:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,8 @@ void				parallel(t_fdf *fdf, t_pos *pos);
 
 void				fill_window_image(t_fdf *fdf);
 
-void				draw_pixel(t_fdf *fdf, t_pos start, t_pos end, t_pos curr);
+void				draw_pixel(t_fdf *fdf, t_pos limits[2]
+		, t_pos delta, t_pos curr);
 void				draw_line(t_fdf *fdf, t_pos start, t_pos end);
 
 /*

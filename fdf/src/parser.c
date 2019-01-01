@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 03:07:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 17:13:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,10 @@ static t_pos	**tab_from_list(t_fdf *fdf, t_list *lst)
 	t_pos	**tab;
 	t_pos	*pos;
 
-	size = fdf->rows * fdf->cols + 1;
-	if (!(tab = (t_pos **)malloc(size * sizeof(t_pos *))))
+	size = fdf->rows * fdf->cols;
+	if (!(tab = (t_pos **)malloc((size + 1) * sizeof(t_pos *))))
 		return (NULL);
+	tab[size] = NULL;
 	while (lst != NULL)
 	{
 		pos = (t_pos *)lst->content;
@@ -71,12 +72,6 @@ static t_pos	**tab_from_list(t_fdf *fdf, t_list *lst)
 		lst = lst->next;
 	}
 	return (tab);
-}
-
-static void		free_list(void *content, size_t content_size)
-{
-	(void)content;
-	(void)content_size;
 }
 
 int				read_file(const char *name, t_fdf *fdf)
@@ -104,6 +99,6 @@ int				read_file(const char *name, t_fdf *fdf)
 		ret = 0;
 	if (ret && !(fdf->pos = tab_from_list(fdf, lst)))
 		ret = 0;
-	ft_lstdel(&lst, &free_list);
+	ft_lstdel(&lst, NULL);
 	return (ret);
 }

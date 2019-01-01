@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 04:10:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 16:04:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,6 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 
 static int	init(t_fdf *fdf, int argc, char **argv)
 {
-	ft_memset(&(fdf->lib), 0, sizeof(t_mlx));
-	fdf->palette = NULL;
-	fdf->pos = NULL;
-	fdf->z_buffer = NULL;
 	if (!init_fdf(fdf, argc, argv))
 		return (0);
 	if (fdf->opt->error != 0 || fdf->argc <= 0)
@@ -113,6 +109,10 @@ int			main(int argc, char **argv)
 {
 	t_fdf	fdf;
 
+	ft_memset(&(fdf.lib), 0, sizeof(t_mlx));
+	fdf.palette = NULL;
+	fdf.pos = NULL;
+	fdf.z_buffer = NULL;
 	if (!init(&fdf, argc, argv))
 	{
 		clean_fdf(&fdf);

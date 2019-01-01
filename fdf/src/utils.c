@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 05:08:55 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 04:05:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 16:05:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,6 @@ static int	window_size(const char *str)
 
 int			check_options(t_fdf *fdf)
 {
-	if (has_opt(fdf->opt, 'p')
-			&& !parse_palette(get_optarg(fdf->opt, 'p'), fdf))
-	{
-		ft_dprintf(2, "fdf: unable to load color palette\n");
-		return (0);
-	}
 	if ((fdf->width = has_opt(fdf->opt, 'w')
 				? window_size(get_optarg(fdf->opt, 'w')) : WIN_WIDTH) < 0)
 	{
@@ -56,6 +50,12 @@ int			check_options(t_fdf *fdf)
 				? window_size(get_optarg(fdf->opt, 'h')) : WIN_HEIGHT) < 0)
 	{
 		ft_dprintf(2, "fdf: please provide valid height or remove -h option\n");
+		return (0);
+	}
+	if (has_opt(fdf->opt, 'p')
+			&& !parse_palette(get_optarg(fdf->opt, 'p'), fdf))
+	{
+		ft_dprintf(2, "fdf: unable to load color palette\n");
 		return (0);
 	}
 	return (1);
