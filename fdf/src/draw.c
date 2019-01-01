@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 22:30:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/02 00:15:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,15 @@ void		draw_pixel(t_fdf *fdf, t_line line)
 
 static void	step_line(t_line *line)
 {
-	line->tmp = 2 * line->err;
-	if (line->tmp >= line->dy)
+	int	tmp;
+
+	tmp = 2 * line->err;
+	if (tmp >= line->dy)
 	{
 		line->err += line->dy;
 		line->x += line->sx;
 	}
-	if (line->tmp <= line->dx)
+	if (tmp <= line->dx)
 	{
 		line->err += line->dx;
 		line->y += line->sy;

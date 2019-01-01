@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 22:20:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/02 00:15:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,6 @@ typedef struct		s_line
 	int				y;
 	int				z;
 	int				err;
-	int				tmp;
 }					t_line;
 
 void				draw_pixel(t_fdf *fdf, t_line line);
