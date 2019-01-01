@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 01:53:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 04:12:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	loop_hook(t_fdf *fdf)
 int	keypress_hook(int keycode, t_fdf *fdf)
 {
 	if (keycode == 0 || keycode == 2)
-		fdf->move.x = (keycode == 2) ? -5 : 5;
+		fdf->move.x = (keycode == 2) ? -10 : 10;
 	else if (keycode == 1 || keycode == 13)
-		fdf->move.y = (keycode == 1) ? -5 : 5;
+		fdf->move.y = (keycode == 1) ? -10 : 10;
 	else if (keycode == 24 || keycode == 27)
 		fdf->move.scale = (keycode == 27) ? -1 : 1;
 	else if (keycode == 116 || keycode == 121)

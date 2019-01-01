@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 01:47:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 04:12:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 int	handle_move(t_fdf *fdf)
 {
 	if (fdf->move.x != 0)
-		fdf->cam.x += fdf->move.x;
+		fdf->cam.x += fdf->move.x * fdf->scale;
 	if (fdf->move.y != 0)
-		fdf->cam.y += fdf->move.y;
+		fdf->cam.y += fdf->move.y * fdf->scale;
 	return (fdf->move.x != 0 || fdf->move.y != 0);
 }
 

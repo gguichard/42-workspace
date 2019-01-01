@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 06:51:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 04:08:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct		s_cam
 
 typedef struct		s_fdf
 {
+	t_mlx			lib;
 	t_opt			*opt;
 	int				argc;
 	char			**argv;
@@ -75,6 +76,7 @@ typedef struct		s_fdf
 	int				height;
 	t_list			*palette;
 	t_cam			cam;
+	t_move			move;
 	int				scale;
 	int				depth;
 	int				angle;
@@ -82,18 +84,29 @@ typedef struct		s_fdf
 	double			angle_sin;
 	t_proj			proj;
 	void			(*f_proj)(struct s_fdf *, t_pos *);
-	t_mlx			lib;
 	t_pos			**pos;
+	int				*z_buffer;
 	int				rows;
 	int				cols;
 	int				offset_x;
 	int				offset_y;
-	t_move			move;
 }					t_fdf;
 
+int					clean_fdf(t_fdf *fdf);
+
+/*
+** UTILS.
+*/
+int					print_usage(t_fdf *fdf);
 int					check_options(t_fdf *fdf);
-int					clean_mlx(t_fdf *fdf);
 int					exit_fdf(t_fdf *fdf);
+
+/*
+** MATHS UTILS.
+*/
+int					lint(int start, int end, double percent);
+double				pcnt(int start, int end, int current);
+int					get_color(t_pos start, t_pos end, double percent);
 
 /*
 ** COLORS parsing.

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/31 03:00:49 by gguichar         ###   ########.fr        #
+#    Updated: 2019/01/01 03:46:09 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME	=	fdf
 SRC		=	src/main.c src/palette.c src/parser.c \
 			src/hooks.c src/handle_hooks.c \
 			src/draw.c src/proj.c src/graphics.c \
-			src/utils.c
+			src/math_utils.c src/utils.c
 OBJ		=	$(SRC:.c=.o)
 
 CC		=	gcc
