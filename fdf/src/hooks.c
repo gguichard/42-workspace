@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 15:42:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 01:53:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,6 @@
 #include <stdlib.h>
 #include "printf.h"
 #include "fdf.h"
-
-int	loop_hook(t_fdf *fdf)
-{
-	if (handle_move(fdf) || handle_scale(fdf)
-			|| handle_depth(fdf) || handle_angle(fdf))
-	{
-		fill_window_image(fdf);
-		expose_hook(fdf);
-	}
-	return (0);
-}
 
 int	expose_hook(t_fdf *fdf)
 {
@@ -50,14 +39,25 @@ int	expose_hook(t_fdf *fdf)
 	return (0);
 }
 
+int	loop_hook(t_fdf *fdf)
+{
+	if (handle_move(fdf) || handle_scale(fdf)
+			|| handle_depth(fdf) || handle_angle(fdf))
+	{
+		fill_window_image(fdf);
+		expose_hook(fdf);
+	}
+	return (0);
+}
+
 int	keypress_hook(int keycode, t_fdf *fdf)
 {
 	if (keycode == 0 || keycode == 2)
 		fdf->move.x = (keycode == 2) ? -5 : 5;
 	else if (keycode == 1 || keycode == 13)
 		fdf->move.y = (keycode == 1) ? -5 : 5;
-	else if (keycode == 69 || keycode == 78)
-		fdf->move.scale = (keycode == 78) ? -1 : 1;
+	else if (keycode == 24 || keycode == 27)
+		fdf->move.scale = (keycode == 27) ? -1 : 1;
 	else if (keycode == 116 || keycode == 121)
 		fdf->move.depth = (keycode == 121) ? -1 : 1;
 	else if (keycode == 123 || keycode == 124)
@@ -73,7 +73,7 @@ int	keyrelease_hook(int keycode, t_fdf *fdf)
 		fdf->move.x = 0;
 	else if (keycode == 1 || keycode == 13)
 		fdf->move.y = 0;
-	else if (keycode == 69 || keycode == 78)
+	else if (keycode == 24 || keycode == 27)
 		fdf->move.scale = 0;
 	else if (keycode == 116 || keycode == 121)
 		fdf->move.depth = 0;

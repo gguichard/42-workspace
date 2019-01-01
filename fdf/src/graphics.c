@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 06:27:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 01:50:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 static void	apply_off(t_fdf *fdf, t_pos *pos)
 {
-	pos->proj_x += (fdf->width / 2) - fdf->offset_x + fdf->cam.x;
-	pos->proj_y += (fdf->height / 2) - fdf->offset_y + fdf->cam.y;
+	pos->proj_x += (fdf->width / 2) - fdf->offset_x;
+	pos->proj_y += (fdf->height / 2) - fdf->offset_y;
 }
 
 static void	draw_edge(t_fdf *fdf, t_pos *pos, t_pos offset)
@@ -58,13 +58,18 @@ static void	compute_offsets(t_fdf *fdf)
 {
 	t_pos	*min;
 	t_pos	*max;
+	t_pos	delta;
+	int		size;
 
 	min = (fdf->pos)[0];
 	max = (fdf->pos)[fdf->rows * fdf->cols - 1];
 	fdf->f_proj(fdf, min);
 	fdf->f_proj(fdf, max);
-	fdf->offset_x = (max->proj_x - min->proj_x) * .5;
-	fdf->offset_y = (max->proj_y - min->proj_y) * .5;
+	delta.x = (max->proj_x - min->proj_x); 
+	delta.y = (max->proj_y - min->proj_y);
+	size = ft_max(ft_abs(delta.x), ft_abs(delta.y));
+	fdf->offset_x = delta.x * .5 - (fdf->cam.x * size * .01);
+	fdf->offset_y = delta.y * .5 - (fdf->cam.y * size * .01);
 }
 
 void		fill_window_image(t_fdf *fdf)
