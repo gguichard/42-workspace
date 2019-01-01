@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 16:52:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 22:20:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef struct		s_pos
 	int				x;
 	int				y;
 	int				z;
-	int				proj_x;
-	int				proj_y;
+	double			proj_x;
+	double			proj_y;
 	int				color;
 }					t_pos;
 
@@ -64,6 +64,11 @@ typedef struct		s_cam
 {
 	int				x;
 	int				y;
+	int				scale;
+	int				depth;
+	int				angle;
+	double			angle_cos;
+	double			angle_sin;
 }					t_cam;
 
 typedef struct		s_fdf
@@ -74,22 +79,15 @@ typedef struct		s_fdf
 	char			**argv;
 	int				width;
 	int				height;
-	t_list			*palette;
-	t_cam			cam;
-	t_move			move;
-	int				scale;
-	int				depth;
-	int				angle;
-	double			angle_cos;
-	double			angle_sin;
-	t_proj			proj;
-	void			(*f_proj)(struct s_fdf *, t_pos *);
-	t_pos			**pos;
-	int				*z_buffer;
 	int				rows;
 	int				cols;
-	int				offset_x;
-	int				offset_y;
+	t_list			*palette;
+	t_pos			*pos;
+	int				*z_buffer;
+	t_cam			cam;
+	t_move			move;
+	t_proj			proj;
+	void			(*f_proj)(t_pos, double *, double *);
 }					t_fdf;
 
 int					clean_fdf(t_fdf *fdf);
@@ -106,7 +104,7 @@ int					exit_fdf(t_fdf *fdf);
 */
 int					lint(int start, int end, double percent);
 double				pcnt(int start, int end, int current);
-int					get_color(t_pos start, t_pos end, double percent);
+int					get_color(int start, int end, double percent);
 
 /*
 ** COLORS parsing.
@@ -122,13 +120,32 @@ int					read_file(const char *name, t_fdf *fdf);
 /*
 ** GRAPHICS.
 */
-void				iso(t_fdf *fdf, t_pos *pos);
-void				parallel(t_fdf *fdf, t_pos *pos);
+void				iso(t_pos pos, double *x, double *y);
+void				parallel(t_pos pos, double *x, double *y);
 
 void				fill_window_image(t_fdf *fdf);
 
-void				draw_pixel(t_fdf *fdf, t_pos limits[2]
-		, t_pos delta, t_pos curr);
+typedef struct		s_line
+{	int				x0;
+	int				y0;
+	int				z0;
+	int				c0;
+	int				x1;
+	int				y1;
+	int				z1;
+	int				c1;
+	int				dx;
+	int				dy;
+	int				sx;
+	int				sy;
+	int				x;
+	int				y;
+	int				z;
+	int				err;
+	int				tmp;
+}					t_line;
+
+void				draw_pixel(t_fdf *fdf, t_line line);
 void				draw_line(t_fdf *fdf, t_pos start, t_pos end);
 
 /*

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 04:12:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 20:40:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 int	handle_move(t_fdf *fdf)
 {
 	if (fdf->move.x != 0)
-		fdf->cam.x += fdf->move.x * fdf->scale;
+		fdf->cam.x += fdf->move.x;
 	if (fdf->move.y != 0)
-		fdf->cam.y += fdf->move.y * fdf->scale;
+		fdf->cam.y += fdf->move.y;
 	return (fdf->move.x != 0 || fdf->move.y != 0);
 }
 
@@ -28,10 +28,10 @@ int	handle_scale(t_fdf *fdf)
 
 	if (fdf->move.scale == 0)
 		return (0);
-	tmp = fdf->scale + fdf->move.scale;
+	tmp = fdf->cam.scale + fdf->move.scale;
 	if (tmp <= 0)
 		return (0);
-	fdf->scale = tmp;
+	fdf->cam.scale = tmp;
 	return (1);
 }
 
@@ -39,7 +39,7 @@ int	handle_depth(t_fdf *fdf)
 {
 	if (fdf->move.depth == 0)
 		return (0);
-	fdf->depth += fdf->move.depth;
+	fdf->cam.depth += fdf->move.depth;
 	return (1);
 }
 
@@ -49,11 +49,11 @@ int	handle_angle(t_fdf *fdf)
 
 	if (fdf->move.angle == 0)
 		return (0);
-	fdf->angle += fdf->move.angle;
-	fdf->angle %= 360;
-	rad = fdf->angle * M_PI / 180.0;
-	fdf->angle_sin = sin(rad);
-	fdf->angle_cos = cos(rad);
+	fdf->cam.angle += fdf->move.angle;
+	fdf->cam.angle %= 360;
+	rad = fdf->cam.angle * M_PI / 180.0;
+	fdf->cam.angle_sin = sin(rad);
+	fdf->cam.angle_cos = cos(rad);
 	return (1);
 }
 

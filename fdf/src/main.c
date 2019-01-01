@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 16:04:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 22:12:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,12 @@
 
 int			clean_fdf(t_fdf *fdf)
 {
-	int	index;
-
 	if (fdf->lib.win_ptr != NULL)
 		mlx_destroy_window(fdf->lib.mlx_ptr, fdf->lib.win_ptr);
 	if (fdf->lib.img_ptr != NULL)
 		mlx_destroy_image(fdf->lib.mlx_ptr, fdf->lib.img_ptr);
-	if (fdf->palette != NULL)
-		ft_lstfree(&(fdf->palette));
-	if (fdf->pos != NULL)
-	{
-		index = 0;
-		while ((fdf->pos)[index] != NULL)
-		{
-			free((fdf->pos)[index]);
-			index++;
-		}
-		ft_memdel((void *)&(fdf->pos));
-	}
+	ft_lstfree(&(fdf->palette));
+	ft_memdel((void *)&(fdf->pos));
 	ft_memdel((void *)&(fdf->z_buffer));
 	return (0);
 }
@@ -73,15 +61,13 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 		return (0);
 	ft_memset(&(fdf->cam), 0, sizeof(t_cam));
 	ft_memset(&(fdf->move), 0, sizeof(t_move));
-	fdf->scale = 30;
-	fdf->depth = 10;
-	fdf->angle = 45;
-	fdf->angle_sin = sin(fdf->angle * M_PI / 180.0);
-	fdf->angle_cos = cos(fdf->angle * M_PI / 180.0);
+	fdf->cam.scale = 30;
+	fdf->cam.depth = 1;
+	fdf->cam.angle = 0;
+	fdf->cam.angle_sin = 0;
+	fdf->cam.angle_cos = 1;
 	fdf->proj = ISO;
 	fdf->f_proj = &iso;
-	fdf->offset_x = 0;
-	fdf->offset_y = 0;
 	return (1);
 }
 

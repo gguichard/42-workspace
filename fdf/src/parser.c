@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 17:13:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 21:15:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,17 @@ static int		parse_line(t_fdf *fdf, char *line, t_list **lst)
 	return (pos.x == fdf->cols);
 }
 
-static t_pos	**tab_from_list(t_fdf *fdf, t_list *lst)
+static t_pos	*tab_from_list(t_fdf *fdf, t_list *lst)
 {
-	size_t	size;
-	t_pos	**tab;
+	t_pos	*tab;
 	t_pos	*pos;
 
-	size = fdf->rows * fdf->cols;
-	if (!(tab = (t_pos **)malloc((size + 1) * sizeof(t_pos *))))
+	if (!(tab = (t_pos *)malloc(fdf->rows * fdf->cols * sizeof(t_pos))))
 		return (NULL);
-	tab[size] = NULL;
 	while (lst != NULL)
 	{
 		pos = (t_pos *)lst->content;
-		tab[pos->y * fdf->cols + pos->x] = pos;
+		ft_memcpy(&(tab[pos->y * fdf->cols + pos->x]), pos, sizeof(t_pos));
 		lst = lst->next;
 	}
 	return (tab);
@@ -99,6 +96,6 @@ int				read_file(const char *name, t_fdf *fdf)
 		ret = 0;
 	if (ret && !(fdf->pos = tab_from_list(fdf, lst)))
 		ret = 0;
-	ft_lstdel(&lst, NULL);
+	ft_lstfree(&lst);
 	return (ret);
 }

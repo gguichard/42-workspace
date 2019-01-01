@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 16:56:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 21:57:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,8 @@ int	expose_hook(t_fdf *fdf)
 			, fdf->lib.win_ptr
 			, fdf->lib.img_ptr
 			, 0, 0);
-	ft_asprintf(&str
-			, "%s: %d | %s: %d | %s: %ddeg | %s: %s | Press %c to change"
-			, "Scale", fdf->scale
-			, "Depth", fdf->depth
-			, "Angle", fdf->angle
-			, "Projection", fdf->proj == ISO ? "Isometric" : "Parallel"
+	ft_asprintf(&str, "Projection: %s | Press %c to change"
+			, fdf->proj == ISO ? "Isometric" : "Parallel"
 			, fdf->proj == ISO ? 'P' : 'I');
 	if (str != NULL)
 	{
@@ -58,8 +54,9 @@ int	keypress_hook(int keycode, t_fdf *fdf)
 		fdf->move.y = (keycode == 1) ? -10 : 10;
 	else if (keycode == 24 || keycode == 27)
 		fdf->move.scale = (keycode == 27) ? -1 : 1;
-	else if (keycode == 116 || keycode == 121)
-		fdf->move.depth = (keycode == 121) ? -1 : 1;
+	else if (keycode == 6 || keycode == 7
+			|| keycode == 116 || keycode == 121)
+		fdf->move.depth = (keycode == 121 || keycode == 6) ? -1 : 1;
 	else if (keycode == 123 || keycode == 124)
 		fdf->move.angle = (keycode == 123) ? -5 : 5;
 	return (0);
@@ -75,7 +72,8 @@ int	keyrelease_hook(int keycode, t_fdf *fdf)
 		fdf->move.y = 0;
 	else if (keycode == 24 || keycode == 27)
 		fdf->move.scale = 0;
-	else if (keycode == 116 || keycode == 121)
+	else if (keycode == 6 || keycode == 7 
+			|| keycode == 116 || keycode == 121)
 		fdf->move.depth = 0;
 	else if (keycode == 123 || keycode == 124)
 		fdf->move.angle = 0;
