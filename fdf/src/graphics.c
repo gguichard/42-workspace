@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 22:24:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 22:42:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,10 @@ static void	rasterize(t_fdf *fdf, t_pos pos, t_pos edge)
 
 static void	draw_edges(t_fdf *fdf, t_pos pos)
 {
-	t_pos	edge;
-
 	if (pos.x + 1 < fdf->cols)
-	{
-		edge = (fdf->pos)[pos.y * fdf->cols + pos.x + 1];
-		rasterize(fdf, pos, edge);
-	}
+		rasterize(fdf, pos, (fdf->pos)[pos.y * fdf->cols + pos.x + 1]);
 	if (pos.y + 1 < fdf->rows)
-	{
-		edge = (fdf->pos)[(pos.y + 1) * fdf->cols + pos.x];
-		rasterize(fdf, pos, edge);
-	}
+		rasterize(fdf, pos, (fdf->pos)[(pos.y + 1) * fdf->cols + pos.x]);
 }
 
 static void	clear_window(t_fdf *fdf)
