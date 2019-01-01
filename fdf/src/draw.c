@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 21:25:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 22:30:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ void		draw_pixel(t_fdf *fdf, t_line line)
 	double	percent;
 	int		index;
 
-	if (line.x < 0 || line.y < 0
-			|| line.x >= fdf->width || line.y >= fdf->height)
-		return ;
 	if (line.dx > line.dy)
 		percent = pcnt(line.x0, line.x1, line.x);
 	else
@@ -69,7 +66,9 @@ void		draw_line(t_fdf *fdf, t_pos start, t_pos end)
 	line.err = line.dx + line.dy;
 	while (line.x != line.x1 || line.y != line.y1)
 	{
-		draw_pixel(fdf, line);
+		if (line.x >= 0 && line.y >= 0
+				&& line.x < fdf->width && line.y < fdf->height)
+			draw_pixel(fdf, line);
 		step_line(&line);
 	}
 }
