@@ -6,13 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 22:12:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 23:59:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <mlx.h>
-#include <math.h>
+#include <stdlib.h>
 #include "libft.h"
 #include "fdf.h"
 
