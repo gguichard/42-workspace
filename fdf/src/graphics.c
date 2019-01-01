@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 17:13:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/01 17:28:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	compute_offsets(t_fdf *fdf)
 	max = (fdf->pos)[fdf->rows * fdf->cols - 1];
 	fdf->f_proj(fdf, min);
 	fdf->f_proj(fdf, max);
-	delta.x = (max->proj_x - min->proj_x); 
+	delta.x = (max->proj_x - min->proj_x);
 	delta.y = (max->proj_y - min->proj_y);
 	fdf->offset_x = delta.x * .5 - fdf->cam.x;
 	fdf->offset_y = delta.y * .5 - fdf->cam.y;
