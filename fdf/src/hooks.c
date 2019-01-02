@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 21:57:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/02 16:26:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	keyrelease_hook(int keycode, t_fdf *fdf)
 		fdf->move.y = 0;
 	else if (keycode == 24 || keycode == 27)
 		fdf->move.scale = 0;
-	else if (keycode == 6 || keycode == 7 
+	else if (keycode == 6 || keycode == 7
 			|| keycode == 116 || keycode == 121)
 		fdf->move.depth = 0;
 	else if (keycode == 123 || keycode == 124)
