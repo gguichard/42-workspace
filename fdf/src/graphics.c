@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 23:53:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/02 09:47:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ static void	proj_pos(t_fdf *fdf, t_pos *pos)
 	data.y = y * fdf->cam.angle_cos + x * fdf->cam.angle_sin;
 	data.z = pos->z * fdf->cam.depth;
 	fdf->f_proj(data, &(pos->proj_x), &(pos->proj_y));
-	pos->proj_x += (fdf->width / 2) + fdf->cam.x;
-	pos->proj_y += (fdf->height / 2) + fdf->cam.y;
+	pos->proj_x += fdf->width / 2;
+	pos->proj_y += fdf->height / 2;
+	pos->proj_x += fdf->cam.x * fdf->cam.scale;
+	pos->proj_y += fdf->cam.y * fdf->cam.scale;
 }
 
 static void	rasterize(t_fdf *fdf, t_pos pos, t_pos edge)
