@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/02 00:15:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/03 19:38:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct		s_move
 	int				x;
 	int				y;
 	int				scale;
-	int				depth;
+	double			depth;
 	int				angle;
 }					t_move;
 
@@ -65,7 +65,7 @@ typedef struct		s_cam
 	int				x;
 	int				y;
 	int				scale;
-	int				depth;
+	double			depth;
 	int				angle;
 	double			angle_cos;
 	double			angle_sin;

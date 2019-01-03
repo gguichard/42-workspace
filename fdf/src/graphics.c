@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/02 09:47:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/03 19:37:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	proj_pos(t_fdf *fdf, t_pos *pos)
 	y *= fdf->cam.scale;
 	data.x = x * fdf->cam.angle_cos - y * fdf->cam.angle_sin;
 	data.y = y * fdf->cam.angle_cos + x * fdf->cam.angle_sin;
-	data.z = pos->z * fdf->cam.depth;
+	data.z = pos->z * fdf->cam.scale * fdf->cam.depth;
 	fdf->f_proj(data, &(pos->proj_x), &(pos->proj_y));
 	pos->proj_x += fdf->width / 2;
 	pos->proj_y += fdf->height / 2;
