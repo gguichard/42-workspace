@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 10:02:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 17:13:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/03 10:54:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ static void		exec_cmd(char *path, char **argv, t_list **env)
 		waitpid(g_child_pid, NULL, 0);
 		g_child_pid = 0;
 	}
-	else if (g_child_pid == 0 && !(execve(path, argv, env_as_str(env))))
+	else if (g_child_pid == 0)
 	{
+		execve(path, argv, env_as_str(env));
 		ft_dprintf(2, "minishell: Error when executing %s.\n", path);
 		exit(1);
 	}
