@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 12:06:53 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/03 11:26:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/03 15:03:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	check_dirs_exec(char *path)
 	while ((tmp = ft_strchr(offset, '/')) != NULL)
 	{
 		*tmp = '\0';
-		ft_dprintf(2, "Path: %s\n", path);
 		if (access(path, X_OK) < 0)
 			return (0);
 		*tmp = '/';
