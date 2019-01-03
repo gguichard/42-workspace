@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/10 10:35:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2018/12/19 17:14:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,8 @@ void			*ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 
 void			*ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 
+void			*ft_lstfree(t_list **alst);
+
 void			ft_lstadd(t_list **alst, t_list *new);
 
 void			ft_lstpush(t_list **alst, t_list *new);
@@ -205,6 +207,8 @@ int				ft_min(int a, int b);
 int				ft_max(int a, int b);
 
 int				ft_abs(int n);
+
+int				ft_pow(int n, int pow);
 
 size_t			ft_llsize(long long l);
 

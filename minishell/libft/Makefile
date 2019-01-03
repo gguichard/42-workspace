@@ -6,13 +6,11 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2018/12/10 14:09:49 by gguichar         ###   ########.fr        #
+#    Updated: 2018/12/20 21:33:25 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	libft.a
-
-PRINTF	=	printf/printf.a
 
 SRC		=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c \
 			ft_memmove.c ft_memchr.c ft_memcmp.c ft_strlen.c \
@@ -32,26 +30,34 @@ SRC		=	ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c \
 			ft_ulltoa.c ft_ulltoa_base.c ft_putchar.c ft_putchar_fd.c \
 			ft_putstr.c ft_putstr_fd.c ft_putendl.c ft_putendl_fd.c \
 			ft_putnbr.c ft_putnbr_fd.c ft_lstnew.c ft_lstdelone.c \
-			ft_lstdel.c ft_lstadd.c ft_lstpush.c ft_lstpop.c ft_lstpeek.c \
-			ft_lstsize.c ft_lstempty.c ft_lstiter.c ft_lstmap.c \
-			ft_min.c ft_max.c ft_abs.c ft_llsize.c ft_strtab_free.c \
+			ft_lstdel.c ft_lstfree.c ft_lstadd.c ft_lstpush.c ft_lstpop.c \
+			ft_lstpeek.c ft_lstsize.c ft_lstempty.c ft_lstiter.c ft_lstmap.c \
+			ft_min.c ft_max.c ft_abs.c ft_pow.c ft_llsize.c ft_strtab_free.c \
 			ft_levenshtein.c ft_wcharlen.c ft_wstrlen.c get_next_line.c
 SRC_DIR	=	src
 
 OBJ		=	$(SRC:.c=.o)
 OBJ_DIR	=	.obj
 
+PF_DIR	=	printf
+PF_LIB	=	$(PF_DIR)/printf.a
+
+OPT_DIR	=	options
+OPT_LIB	=	$(OPT_DIR)/options.a
+
 CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror -I includes
 
 all: $(NAME)
 
-$(NAME): $(PRINTF) $(addprefix $(OBJ_DIR)/,$(OBJ))
-	ar rcs $@ $^
+$(NAME): $(PF_LIB) $(OPT_LIB) $(addprefix $(OBJ_DIR)/,$(OBJ))
+	libtool -static -o $(NAME) $^
 
-$(PRINTF):
-	$(MAKE) -C printf
-	/bin/cp $@ $(NAME)
+$(PF_LIB):
+	$(MAKE) -C $(PF_DIR)
+
+$(OPT_LIB):
+	$(MAKE) -C $(OPT_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -o $@ -c $<
@@ -60,11 +66,13 @@ $(OBJ_DIR):
 	/bin/mkdir $@
 
 clean:
-	$(MAKE) -C printf clean
+	$(MAKE) -C $(PF_DIR) clean
+	$(MAKE) -C $(OPT_DIR) clean
 	/bin/rm -rf $(OBJ_DIR)
 
 fclean: clean
-	$(MAKE) -C printf fclean
+	$(MAKE) -C $(PF_DIR) fclean
+	$(MAKE) -C $(OPT_DIR) fclean
 	/bin/rm -f $(NAME)
 
 re: fclean all
