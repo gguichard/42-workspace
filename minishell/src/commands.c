@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 10:02:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/03 11:16:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/03 15:23:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_cmd			g_builtin[] =
 
 static void		exec_cmd(char *path, char **argv, t_list **env)
 {
+	char	**tmp;
+
 	g_child_pid = fork();
 	if (g_child_pid < 0)
 		ft_dprintf(2, "%s: Unable to fork.", path);
@@ -40,7 +42,9 @@ static void		exec_cmd(char *path, char **argv, t_list **env)
 	}
 	else if (g_child_pid == 0)
 	{
-		execve(path, argv, env_as_str(env));
+		tmp = env_as_str(env);
+		execve(path, argv, tmp);
+		ft_strtab_free(tmp);
 		ft_dprintf(2, "minishell: Error when executing %s.\n", path);
 		exit(1);
 	}
