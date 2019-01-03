@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/30 12:06:53 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/03 15:03:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/03 15:10:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ static int	check_dirs_exec(char *path)
 	{
 		*tmp = '\0';
 		if (access(path, X_OK) < 0)
+		{
+			*tmp = '/';
 			return (0);
+		}
 		*tmp = '/';
 		offset = tmp + 1;
 	}
