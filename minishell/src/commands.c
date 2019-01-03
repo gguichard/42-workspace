@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/01 10:02:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/03 10:54:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/03 11:16:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void		interpret_cmd(int argc, char **argv, t_list **env)
 	else
 	{
 		path = ft_strdup(argv[0]);
-		res = is_binary_exec(path);
+		res = is_binary_exec(path, 1);
 	}
 	if (path == NULL)
 		ft_dprintf(2, "%s: Command not found.\n", argv[0]);
