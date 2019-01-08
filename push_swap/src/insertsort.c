@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/26 02:06:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/28 15:04:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/08 09:39:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void		insertsort(int n, t_ps *ps)
 	int	index;
 	int	j;
 
-	if (!(tab = (int *)malloc(n * sizeof(int))))
+	if (!(tab = (int *)ft_memalloc(n * sizeof(int))))
 		return ;
 	left = ft_min(3, n);
 	setup_tab_list(n, left, ps, tab);
