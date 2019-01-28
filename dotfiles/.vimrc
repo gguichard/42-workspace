@@ -17,6 +17,11 @@ let g:hybrid_custom_term_colors=1
 let g:hybrid_reduced_contrast=1
 highlight LineNr ctermfg=grey
 
+" Color spaces/tabs
+highlight ExtraWhitespace ctermbg=darkblue guibg=darkblue
+match ExtraWhitespace /\s\+$/
+autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/
+
 " 42 Header
 let g:hdr42user="gguichar"
 let g:hdr42mail="gguichar@student.42.fr"
