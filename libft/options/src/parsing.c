@@ -6,59 +6,64 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 20:41:11 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 21:42:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/31 10:57:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 #include "options.h"
 
-static int	parse_cur_arg(t_opt *opt, char **argv)
+static int	parse_cur_arg(t_opts *opts, char **argv)
 {
 	int	index;
 	int	offset;
 
 	index = 1;
-	while (argv[opt->index][index] != '\0')
+	while (argv[opts->index][index] != '\0')
 	{
-		offset = find_opt_offset(opt->optstring, argv[opt->index][index]);
+		offset = find_opt_offset(opts->optstring, argv[opts->index][index]);
 		if (offset < 0)
 		{
-			opt->error = argv[opt->index][index];
+			opts->error = argv[opts->index][index];
 			return (0);
 		}
-		opt->value |= (1 << offset);
-		if (*(ft_strchr(opt->optstring, argv[opt->index][index++]) + 1) == ':')
+		opts->value |= (1 << offset);
+		if (*(ft_strchr(opts->optstring
+						, argv[opts->index][index++]) + 1) == ':')
 		{
-			if (argv[opt->index][index] == '\0')
-				(opt->args)[offset] = argv[++opt->index];
+			if (argv[opts->index][index] == '\0')
+				(opts->args)[offset] = argv[++opts->index];
 			else
-				(opt->args)[offset] = &(argv[opt->index][index]);
+				(opts->args)[offset] = &(argv[opts->index][index]);
 			return (1);
 		}
 	}
 	return (index != 1);
 }
 
-t_opt		*parse_opts(int argc, char **argv, const char *optstring)
+t_opts		*parse_opts(int argc, char **argv, const char *optstring)
 {
-	static t_opt	opt;
+	t_opts	*opts;
 
 	check_optstring(optstring);
-	opt.value = 0;
-	opt.index = 1;
-	opt.error = 0;
-	opt.optstring = optstring;
-	while (opt.index < argc)
+	opts = (t_opts *)malloc(sizeof(t_opts));
+	if (opts == NULL)
+		return (opts);
+	opts->value = 0;
+	opts->index = 1;
+	opts->error = 0;
+	opts->optstring = optstring;
+	while (opts->index < argc)
 	{
-		if (ft_strequ(argv[opt.index], "--"))
+		if (ft_strequ(argv[opts->index], "--"))
 		{
-			(opt.index)++;
+			(opts->index)++;
 			break ;
 		}
-		if (argv[opt.index][0] != '-' || !parse_cur_arg(&opt, argv))
+		if (argv[opts->index][0] != '-' || !parse_cur_arg(opts, argv))
 			break ;
-		(opt.index)++;
+		(opts->index)++;
 	}
-	return (&opt);
+	return (opts);
 }

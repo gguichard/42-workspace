@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 20:43:08 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 21:13:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/01/31 10:54:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,20 @@ int			find_opt_offset(const char *optstring, char option)
 	return (-1);
 }
 
-int			has_opt(t_opt *opt, char option)
+int			has_opt(t_opts *opts, char option)
 {
 	int	offset;
 
-	offset = find_opt_offset(opt->optstring, option);
-	if (opt->value & (1 << offset))
+	offset = find_opt_offset(opts->optstring, option);
+	if (opts->value & (1 << offset))
 		return (1);
 	return (0);
 }
 
-const char	*get_optarg(t_opt *opt, char option)
+const char	*get_optarg(t_opts *opts, char option)
 {
 	int	offset;
 
-	offset = find_opt_offset(opt->optstring, option);
-	return ((opt->args)[offset]);
+	offset = find_opt_offset(opts->optstring, option);
+	return ((opts->args)[offset]);
 }
