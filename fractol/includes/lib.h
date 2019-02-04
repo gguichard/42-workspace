@@ -1,37 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   lib.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/02 11:57:39 by gguichar         ###   ########.fr       */
+/*   Created: 2019/01/31 10:49:18 by gguichar          #+#    #+#             */
+/*   Updated: 2019/01/31 11:52:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef LIB_H
+# define LIB_H
 
-# include "lib.h"
 # include "winsize.h"
-# include "options.h"
 
-enum				e_fract
+typedef struct		s_mlx
 {
-	FRACT_JULIA,
-	FRACT_MANDELBROT
-};
-
-typedef struct		s_data
-{
-	t_mlx			lib;
-	t_opts			*opts;
-	t_winsize		winsize;
-	enum e_fract	fractal;
-}					t_data;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	void			*img_ptr;
+	unsigned int	*img_data;
+	int				bits_per_pixel;
+	int				size_line;
+	int				endian;
+}					t_mlx;
 
 int					init_mlx(t_mlx *lib, t_winsize *ws);
-int					exit_lib(t_data *data);
+void				destroy_mlx(t_mlx *lib);
 
 #endif

@@ -6,13 +6,14 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/01/31 10:46:51 by gguichar         ###   ########.fr        #
+#    Updated: 2019/02/02 11:56:26 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fractol
 
-SRC		=	src/main.c
+SRC		=	src/main.c \
+			src/lib.c src/lib_hooks.c
 OBJ		=	$(SRC:.c=.o)
 
 CC		=	gcc

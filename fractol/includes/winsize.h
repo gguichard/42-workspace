@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   winsize.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/02 11:57:39 by gguichar         ###   ########.fr       */
+/*   Created: 2019/01/31 11:13:38 by gguichar          #+#    #+#             */
+/*   Updated: 2019/01/31 11:14:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef WINSIZE_H
+# define WINSIZE_H
 
-# include "lib.h"
-# include "winsize.h"
-# include "options.h"
+# define WIN_WIDTH 1640
+# define WIN_HEIGHT 1280
 
-enum				e_fract
+typedef struct	s_winsize
 {
-	FRACT_JULIA,
-	FRACT_MANDELBROT
-};
-
-typedef struct		s_data
-{
-	t_mlx			lib;
-	t_opts			*opts;
-	t_winsize		winsize;
-	enum e_fract	fractal;
-}					t_data;
-
-int					init_mlx(t_mlx *lib, t_winsize *ws);
-int					exit_lib(t_data *data);
+	int			width;
+	int			height;
+}				t_winsize;
 
 #endif

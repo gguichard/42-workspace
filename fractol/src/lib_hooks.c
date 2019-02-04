@@ -1,37 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   lib_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/02 11:57:39 by gguichar         ###   ########.fr       */
+/*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
+/*   Updated: 2019/02/02 11:58:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#include <stdlib.h>
+#include "fractol.h"
 
-# include "lib.h"
-# include "winsize.h"
-# include "options.h"
-
-enum				e_fract
+int	exit_lib(t_data *data)
 {
-	FRACT_JULIA,
-	FRACT_MANDELBROT
-};
-
-typedef struct		s_data
-{
-	t_mlx			lib;
-	t_opts			*opts;
-	t_winsize		winsize;
-	enum e_fract	fractal;
-}					t_data;
-
-int					init_mlx(t_mlx *lib, t_winsize *ws);
-int					exit_lib(t_data *data);
-
-#endif
+	destroy_mlx(&(data->lib));
+	exit(0);
+	return (0);
+}
