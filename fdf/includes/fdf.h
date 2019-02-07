@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/03 19:38:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/07 05:47:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,8 @@ void				parallel(t_pos pos, double *x, double *y);
 void				fill_window_image(t_fdf *fdf);
 
 typedef struct		s_line
-{	int				x0;
+{
+	int				x0;
 	int				y0;
 	int				z0;
 	int				c0;
