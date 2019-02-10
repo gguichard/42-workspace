@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 04:31:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/10 07:19:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	expose_hook(t_data *data)
 			, data->lib.img_ptr
 			, 0, 0);
 	str = NULL;
-	ft_asprintf(&str, "Iterations : %d", data->max_iters);
+	ft_asprintf(&str, "Iterations : %d | Scale %d/100", data->max_iters
+			, (int)(data->cam.scale * 100));
 	if (str != NULL)
 	{
 		mlx_string_put(data->lib.mlx_ptr
@@ -65,6 +66,21 @@ int	keyrelease_hook(int keycode, t_data *data)
 {
 	if (keycode == KEY_PLUS || keycode == KEY_MINUS)
 		data->keys.iters = 0;
+	return (0);
+}
+
+int	mouse_hook(int button, int x, int y, t_data *data)
+{
+	(void)x;
+	(void)y;
+	if (button == KEY_MOUSELEFT)
+		data->motion.record = !data->motion.record;
+	else if (button == KEY_SCROLLUP || button == KEY_SCROLLDOWN)
+	{
+		data->cam.scale *= (button == KEY_SCROLLUP) ? 1.1 : (1 / 1.1);
+		draw_fractal(data);
+		expose_hook(data);
+	}
 	return (0);
 }
 
