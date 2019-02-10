@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 19:02:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/10 22:36:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,29 @@
 #include "winsize.h"
 #include "fractol.h"
 
+static void	init_thread_values(t_data *data)
+{
+	int			idx;
+	int			cols_per_thread;
+	t_thread	*thread;
+
+	idx = 0;
+	cols_per_thread = data->winsize.width / FRACT_MAX_THREADS;
+	while (idx < FRACT_MAX_THREADS)
+	{
+		thread = &data->threads[idx];
+		thread->data = data;
+		thread->x = cols_per_thread * idx;
+		thread->y = 0;
+		if (idx + 1 == FRACT_MAX_THREADS)
+			thread->width = data->winsize.width;
+		else
+			thread->width = thread->x + cols_per_thread;
+		thread->height = data->winsize.height;
+		idx++;
+	}
+}
+
 static int	init_fractol(t_data *data, int argc, char **argv)
 {
 	data->opts = parse_opts(argc, argv, "w:h:");
@@ -25,14 +48,15 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 	data->winsize.width = WIN_WIDTH;
 	data->winsize.height = WIN_HEIGHT;
 	data->max_iters = 50;
-	data->motion.record = 0;
-	data->fract_fn = mandelbrot;
+	data->motion.record = 1;
+	data->fract_fn = julia;
 	data->cam.x_min = -2.0;
 	data->cam.y_min = -2.0;
 	data->cam.x_max = 2.0;
 	data->cam.y_max = 2.0;
 	if (!init_mlx(&(data->lib), &(data->winsize)))
 		return (0);
+	init_thread_values(data);
 	return (1);
 }
 

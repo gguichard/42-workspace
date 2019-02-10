@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:47:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 08:47:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/10 22:38:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <pthread.h>
 #include "libft.h"
 #include "fractol.h"
 
@@ -37,7 +38,7 @@ static int	get_fract_color(int iters)
 	return (colors[iters % 16]);
 }
 
-void		draw_fractal(t_data *data)
+static void	*threaded_draw(t_thread *thread)
 {
 	int		x;
 	int		y;
@@ -45,22 +46,43 @@ void		draw_fractal(t_data *data)
 	double	im;
 	int		iters;
 
-	ft_memset(data->lib.img_data, 0, data->lib.size_line * data->winsize.height);
-	x = 0;
-	while (x < data->winsize.width)
+	x = thread->x;
+	while (x < thread->width)
 	{
-		y = 0;
-		while (y < data->winsize.height)
+		y = thread->y;
+		while (y < thread->height)
 		{
-			re = x * (data->cam.x_max - data->cam.x_min)
-				/ data->winsize.width + data->cam.x_min;
-			im = -y * (data->cam.y_max - data->cam.y_min)
-				/ data->winsize.height - data->cam.y_min;
-			iters = data->fract_fn(&data->motion, re, im, data->max_iters);
-			data->lib.img_data[y * data->winsize.width + x] =
-				iters < data->max_iters ? get_fract_color(iters) : 0;
+			re = x * (thread->data->cam.x_max - thread->data->cam.x_min)
+				/ thread->data->winsize.width + thread->data->cam.x_min;
+			im = -y * (thread->data->cam.y_max - thread->data->cam.y_min)
+				/ thread->data->winsize.height - thread->data->cam.y_min;
+			iters = thread->data->fract_fn(&thread->data->motion, re, im
+					, thread->data->max_iters);
+			thread->data->lib.img_data[y * thread->data->winsize.width + x] =
+				iters < thread->data->max_iters ? get_fract_color(iters) : 0;
 			y++;
 		}
 		x++;
+	}
+	return (NULL);
+}
+
+void		draw_fractal(t_data *data)
+{
+	int			idx;
+	t_thread	*thread;
+
+	idx = 0;
+	while (idx < FRACT_MAX_THREADS)
+	{
+		thread = &data->threads[idx];
+		pthread_create(&thread->id, NULL, (void *)threaded_draw, thread);
+		idx++;
+	}
+	idx = 0;
+	while (idx < FRACT_MAX_THREADS)
+	{
+		pthread_join(data->threads[idx].id, NULL);
+		idx++;
 	}
 }
