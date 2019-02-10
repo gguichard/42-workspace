@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 04:33:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/10 06:22:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 enum				e_fract
 {
 	FRACT_JULIA,
-	FRACT_MANDELBROT
+	FRACT_MANDELBROT,
+	FRACT_MANDELBAR
 };
 
 typedef struct		s_data
@@ -31,7 +32,7 @@ typedef struct		s_data
 	t_mlx			lib;
 	t_opts			*opts;
 	t_winsize		winsize;
-	t_camera		camera;
+	t_camera		cam;
 	enum e_fract	fractal;
 	int				(*fract_fn)(t_motion *motion, double, double, int);
 	int				max_iters;
@@ -47,11 +48,14 @@ int					keypress_hook(int keycode, t_data *data);
 int					keyrelease_hook(int keycode, t_data *data);
 int					motion_hook(int x, int y, t_data *data);
 int					expose_hook(t_data *data);
+int					mouse_hook(int button, int x, int y, t_data *data);
 
 void				draw_fractal(t_data *data);
 int					julia(t_motion *motion, double re, double im
 		, int max_iters);
 int					mandelbrot(t_motion *motion, double re, double im
+		, int max_iters);
+int					mandelbar(t_motion *motion, double re, double im
 		, int max_iters);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 07:19:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/10 09:05:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ int	mouse_hook(int button, int x, int y, t_data *data)
 	else if (button == KEY_SCROLLUP || button == KEY_SCROLLDOWN)
 	{
 		data->cam.scale *= (button == KEY_SCROLLUP) ? 1.1 : (1 / 1.1);
+		data->cam.x_min += -data->cam.x_min * (x / (double)data->winsize.width);
+		data->cam.y_min += -data->cam.y_min * (y / (double)data->winsize.height);
+		data->cam.x_max -= data->cam.x_max * ((data->winsize.width - x) / (double)data->winsize.width);
+		data->cam.y_max -= data->cam.y_max * ((data->winsize.height - y) / (double)data->winsize.height);
 		draw_fractal(data);
 		expose_hook(data);
 	}
