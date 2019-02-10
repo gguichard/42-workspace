@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   winsize.h                                          :+:      :+:    :+:   */
+/*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 11:13:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 04:36:53 by gguichar         ###   ########.fr       */
+/*   Created: 2019/02/10 02:24:52 by gguichar          #+#    #+#             */
+/*   Updated: 2019/02/10 02:25:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WINSIZE_H
-# define WINSIZE_H
+#ifndef CAMERA_H
+# define CAMERA_H
 
-# define WIN_WIDTH 1200
-# define WIN_HEIGHT 960
-
-typedef struct	s_winsize
+typedef struct	s_camera
 {
-	int			width;
-	int			height;
-}				t_winsize;
+	int			off_x;
+	int			off_y;
+	int			scale;
+}				t_camera;
 
 #endif

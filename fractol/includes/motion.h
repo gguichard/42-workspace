@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   winsize.h                                          :+:      :+:    :+:   */
+/*   motion.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 11:13:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 04:36:53 by gguichar         ###   ########.fr       */
+/*   Created: 2019/02/10 04:26:21 by gguichar          #+#    #+#             */
+/*   Updated: 2019/02/10 04:29:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WINSIZE_H
-# define WINSIZE_H
+#ifndef MOTION_H
+# define MOTION_H
 
-# define WIN_WIDTH 1200
-# define WIN_HEIGHT 960
-
-typedef struct	s_winsize
+typedef struct	s_motion
 {
-	int			width;
-	int			height;
-}				t_winsize;
+	int			record;
+	double		x;
+	double		y;
+}				t_motion;
 
 #endif

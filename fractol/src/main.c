@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/02 11:57:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/10 04:36:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 		return (0);
 	data->winsize.width = WIN_WIDTH;
 	data->winsize.height = WIN_HEIGHT;
+	data->max_iters = 50;
+	data->motion.record = 0;
+	data->fract_fn = mandelbrot;
 	if (!init_mlx(&(data->lib), &(data->winsize)))
 		return (0);
 	return (1);
@@ -37,10 +40,16 @@ int			main(int argc, char **argv)
 	ft_memset(&data, 0, sizeof(t_data));
 	ret = init_fractol(&data, argc, argv);
 	if (!ret)
-		ft_dprintf(2, "%s: Unexpected error\n", argv[0]);
+		ft_dprintf(2, "fdf: Unexpected error\n");
 	else
 	{
-		mlx_hook(data.lib.win_ptr, 17, (1L << 17), &exit_lib, &data);
+		draw_fractal(&data);
+		mlx_expose_hook(data.lib.win_ptr, expose_hook, &data);
+		mlx_loop_hook(data.lib.mlx_ptr, loop_hook, &data);
+		mlx_hook(data.lib.win_ptr, 2, (1L << 0), keypress_hook, &data);
+		mlx_hook(data.lib.win_ptr, 3, (1L << 1), keyrelease_hook, &data);
+		mlx_hook(data.lib.win_ptr, 6, 0, motion_hook, &data);
+		mlx_hook(data.lib.win_ptr, 17, (1L << 17), exit_lib, &data);
 		mlx_loop(data.lib.mlx_ptr);
 	}
 	return (!ret);

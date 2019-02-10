@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 11:27:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/31 11:54:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/10 01:01:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		init_mlx(t_mlx *lib, t_winsize *ws)
 	if ((lib->mlx_ptr = mlx_init()) == NULL)
 		return (0);
 	lib->win_ptr = mlx_new_window(lib->mlx_ptr, ws->width, ws->height
-			, "Frac'ol");
+			, "Fract'ol");
 	if (lib->win_ptr == NULL)
 		return (0);
 	lib->img_ptr = mlx_new_image(lib->mlx_ptr, ws->width, ws->height);
