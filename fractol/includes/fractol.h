@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 05:34:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 07:38:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,6 @@
 typedef struct s_data	t_data;
 typedef struct s_thread	t_thread;
 
-enum	e_fract
-{
-	FRACT_JULIA,
-	FRACT_MANDELBROT,
-	FRACT_MANDELBAR
-};
-
 struct	s_thread
 {
 	pthread_t	id;
@@ -49,7 +42,6 @@ struct	s_data
 	t_opts			*opts;
 	t_winsize		winsize;
 	t_camera		cam;
-	enum e_fract	fractal;
 	int				(*fract_fn)(t_motion *, double, double, int);
 	void			(*draw_fn)(t_data *);
 	int				max_iters;

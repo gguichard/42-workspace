@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 07:11:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 07:37:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 #include <fcntl.h>
 #include <OpenCL/opencl.h>
 #include "fractol.h"
+
+static char	*get_kernel_name(t_data *data)
+{
+	if (data->fract_fn == mandelbrot)
+		return ("mandelbrot");
+	else
+		return ("julia");
+}
 
 static char	*read_sourcecode(void)
 {
@@ -53,7 +61,7 @@ void		draw_gpu(t_data *data)
 	queue = clCreateCommandQueue(context, device, 0, NULL);
 	program = clCreateProgramWithSource(context, 1, &source, NULL, NULL);
 	clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-	kernel = clCreateKernel(program, "julia", NULL);
+	kernel = clCreateKernel(program, get_kernel_name(data), NULL);
 	buffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY
 			, sizeof(int) * (data->winsize.width * data->winsize.height)
 			, NULL, NULL);
