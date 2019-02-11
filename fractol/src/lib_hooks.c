@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 01:40:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 05:39:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	loop_hook(t_data *data)
 			data->max_iters = 0;
 		else if (data->max_iters > 300)
 			data->max_iters = 300;
-		draw_fractal(data);
+		data->draw_fn(data);
 		expose_hook(data);
 	}
 	return (0);
@@ -86,7 +86,7 @@ int	mouse_hook(int button, int x, int y, t_data *data)
 		data->cam.x_max = real_x - (real_x - data->cam.x_max) * data->cam.scale;
 		data->cam.y_min = real_y - (real_y - data->cam.y_min) * data->cam.scale;
 		data->cam.y_max = real_y - (real_y - data->cam.y_max) * data->cam.scale;
-		draw_fractal(data);
+		data->draw_fn(data);
 		expose_hook(data);
 	}
 	return (0);
@@ -96,11 +96,11 @@ int	motion_hook(int x, int y, t_data *data)
 {
 	if (data->motion.record)
 	{
-		data->motion.x = (x - data->winsize.width / 2.0) * 4.0
-			/ data->winsize.width;
-		data->motion.y = (y - data->winsize.height / 2.0) * 4.0
-			/ data->winsize.height;
-		draw_fractal(data);
+		data->motion.x = x * (data->cam.x_max - data->cam.x_min)
+			/ data->winsize.width + data->cam.x_min;
+		data->motion.y = -y * (data->cam.y_max - data->cam.y_min)
+			/ data->winsize.height - data->cam.y_min;
+		data->draw_fn(data);
 		expose_hook(data);
 	}
 	return (0);

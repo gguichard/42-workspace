@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:47:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 22:38:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 05:34:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	*threaded_draw(t_thread *thread)
 	return (NULL);
 }
 
-void		draw_fractal(t_data *data)
+void		draw_threads(t_data *data)
 {
 	int			idx;
 	t_thread	*thread;

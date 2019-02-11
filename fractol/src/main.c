@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 00:25:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 05:36:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,9 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 	data->winsize.width = WIN_WIDTH;
 	data->winsize.height = WIN_HEIGHT;
 	data->max_iters = 50;
-	data->motion.record = 1;
-	data->fract_fn = julia;
+	data->motion.record = 0;
+	data->fract_fn = mandelbrot;
+	data->draw_fn = draw_gpu;
 	data->cam.scale = 1.0;
 	data->cam.x_min = -2.0;
 	data->cam.y_min = -2.0;
@@ -72,7 +73,7 @@ int			main(int argc, char **argv)
 		ft_dprintf(2, "fract'ol: Unexpected error\n");
 	else
 	{
-		draw_fractal(&data);
+		data.draw_fn(&data);
 		mlx_expose_hook(data.lib.win_ptr, expose_hook, &data);
 		mlx_loop_hook(data.lib.mlx_ptr, loop_hook, &data);
 		mlx_mouse_hook(data.lib.win_ptr, mouse_hook, &data);

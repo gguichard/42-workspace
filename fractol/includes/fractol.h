@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 22:38:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 05:34:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ struct	s_data
 	t_winsize		winsize;
 	t_camera		cam;
 	enum e_fract	fractal;
-	int				(*fract_fn)(t_motion *motion, double, double, int);
+	int				(*fract_fn)(t_motion *, double, double, int);
+	void			(*draw_fn)(t_data *);
 	int				max_iters;
 	t_keys			keys;
 	t_motion		motion;
@@ -67,7 +68,9 @@ int		motion_hook(int x, int y, t_data *data);
 int		expose_hook(t_data *data);
 int		mouse_hook(int button, int x, int y, t_data *data);
 
-void	draw_fractal(t_data *data);
+void	draw_gpu(t_data *data);
+void	draw_threads(t_data *data);
+
 int		julia(t_motion *motion, double re, double im, int max_iters);
 int		mandelbrot(t_motion *motion, double re, double im, int max_iters);
 int		mandelbar(t_motion *motion, double re, double im, int max_iters);
