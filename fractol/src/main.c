@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 22:36:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 00:25:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 	data->max_iters = 50;
 	data->motion.record = 1;
 	data->fract_fn = julia;
+	data->cam.scale = 1.0;
 	data->cam.x_min = -2.0;
 	data->cam.y_min = -2.0;
 	data->cam.x_max = 2.0;

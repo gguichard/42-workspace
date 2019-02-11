@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/02/10 22:27:20 by gguichar         ###   ########.fr        #
+#    Updated: 2019/02/10 22:49:19 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SRC		=	src/main.c \
 OBJ		=	$(SRC:.c=.o)
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -Ofast
 LIBS	=	-L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
 
 LIBFT	=	libft/libft.a
