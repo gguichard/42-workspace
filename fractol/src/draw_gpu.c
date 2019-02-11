@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 06:00:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 07:11:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,8 @@ void		draw_gpu(t_data *data)
 			, sizeof(int) * (data->winsize.width * data->winsize.height)
 			, data->lib.img_data, 0, NULL, NULL);
 	clFinish(queue);
+	clReleaseKernel(kernel);
+	clReleaseMemObject(buffer);
+	clReleaseCommandQueue(queue);
+	clReleaseContext(context);
 }

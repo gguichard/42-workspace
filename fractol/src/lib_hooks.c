@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 05:39:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 07:15:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	loop_hook(t_data *data)
 		data->max_iters += data->keys.iters;
 		if (data->max_iters < 0)
 			data->max_iters = 0;
-		else if (data->max_iters > 300)
-			data->max_iters = 300;
+		else if (data->max_iters > 1000)
+			data->max_iters = 1000;
 		data->draw_fn(data);
 		expose_hook(data);
 	}
