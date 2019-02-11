@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 05:36:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 06:00:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 	data->winsize.width = WIN_WIDTH;
 	data->winsize.height = WIN_HEIGHT;
 	data->max_iters = 50;
-	data->motion.record = 0;
+	data->motion.record = 1;
 	data->fract_fn = mandelbrot;
 	data->draw_fn = draw_gpu;
 	data->cam.scale = 1.0;

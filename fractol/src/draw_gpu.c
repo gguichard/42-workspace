@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 05:39:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/11 06:00:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ static char	*read_sourcecode(void)
 	fd = open("src/kernel.cl", O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-	source = (char *)malloc(sizeof(char) * (2048 + 1));
+	source = (char *)malloc(sizeof(char) * (4096 + 1));
 	if (source == NULL)
 		return (NULL);
-	ret = read(fd, source, 2048);
+	ret = read(fd, source, 4096);
 	if (ret >= 0)
 		source[ret] = '\0';
 	close(fd);
@@ -53,7 +53,7 @@ void		draw_gpu(t_data *data)
 	queue = clCreateCommandQueue(context, device, 0, NULL);
 	program = clCreateProgramWithSource(context, 1, &source, NULL, NULL);
 	clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-	kernel = clCreateKernel(program, "mandelbrot", NULL);
+	kernel = clCreateKernel(program, "julia", NULL);
 	buffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY
 			, sizeof(int) * (data->winsize.width * data->winsize.height)
 			, NULL, NULL);
@@ -65,6 +65,8 @@ void		draw_gpu(t_data *data)
 	clSetKernelArg(kernel, 5, sizeof(int), &(data->winsize.width));
 	clSetKernelArg(kernel, 6, sizeof(int), &(data->winsize.height));
 	clSetKernelArg(kernel, 7, sizeof(int), &(data->max_iters));
+	clSetKernelArg(kernel, 8, sizeof(double), &(data->motion.x));
+	clSetKernelArg(kernel, 9, sizeof(double), &(data->motion.y));
 	work_size = data->winsize.width * data->winsize.height;
 	clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &work_size, NULL, 0, NULL, NULL);
 	clEnqueueReadBuffer(queue, buffer, CL_FALSE, 0

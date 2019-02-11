@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/02/11 05:32:59 by gguichar         ###   ########.fr        #
+#    Updated: 2019/02/11 05:43:22 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ DEP		=	$(OBJ:.o=.d)
 INC_DIR	=	includes
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror -I libft/includes -I $(INC_DIR)
 LIBS	=	-L /usr/local/lib -lmlx -framework OpenCL -framework OpenGL -framework AppKit
 
 LIBFT	=	libft/libft.a
@@ -43,7 +43,7 @@ $(LIBFT):
 -include $(addprefix $(OBJ_DIR)/,$(DEP))
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I libft/includes -I includes -o $@ -c $<
+	$(CC) $(CFLAGS) -MMD -o $@ -c $<
 
 $(OBJ_DIR):
 	/bin/mkdir $@
