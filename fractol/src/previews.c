@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 07:38:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 11:04:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 11:06:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	draw_selected_preview(t_data *data)
 	{
 		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x, y, 0xFF0000);
 		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr
-				, x + FRACT_PREVIEWS_WIDTH, y, 0xFF0000);
+				, x + FRACT_PREVIEWS_WIDTH - 1, y, 0xFF0000);
 		y++;
 	}
 }
