@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 10:38:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/13 00:35:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define FRACT_PREVIEWS_MAXITERS 50
 # define FRACT_PREVIEWS_WIDTH 256
 # define FRACT_PREVIEWS_HEIGHT 158
+# define FRACT_PREVIEWS_COLOR 0xFFFFFF
 
 typedef struct s_data	t_data;
 typedef struct s_thread	t_thread;

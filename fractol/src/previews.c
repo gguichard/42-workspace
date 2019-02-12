@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 07:38:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 11:06:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/13 00:37:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,20 @@ void	draw_selected_preview(t_data *data)
 	while (x < data->winsize.width)
 	{
 		if (y > 0)
-			mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x, y, 0xFF0000);
+			mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x, y
+					, FRACT_PREVIEWS_COLOR);
 		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x
-				, y + FRACT_PREVIEWS_HEIGHT, 0xFF0000);
+				, y + FRACT_PREVIEWS_HEIGHT, FRACT_PREVIEWS_COLOR);
 		x++;
 	}
 	x = data->winsize.width - FRACT_PREVIEWS_WIDTH;
 	y = data->preview_idx * FRACT_PREVIEWS_HEIGHT - 1;
 	while (y < (data->preview_idx + 1) * FRACT_PREVIEWS_HEIGHT)
 	{
-		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x, y, 0xFF0000);
+		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x, y
+				, FRACT_PREVIEWS_COLOR);
 		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr
-				, x + FRACT_PREVIEWS_WIDTH - 1, y, 0xFF0000);
+				, x + FRACT_PREVIEWS_WIDTH - 1, y, FRACT_PREVIEWS_COLOR);
 		y++;
 	}
 }
@@ -67,7 +69,7 @@ void	draw_preview(t_data *data, t_mlximg *img
 		while (++y < img->size.height)
 		{
 			if (x == 0 || (y + 1) == img->size.height)
-				color = 0xD3D3D3;
+				color = 0x606060;
 			else
 			{
 				iters = fract_fn(&data->motion
@@ -75,9 +77,9 @@ void	draw_preview(t_data *data, t_mlximg *img
 						, y * 4.0 / img->size.height - 2.0
 						, FRACT_PREVIEWS_MAXITERS);
 				color = (iters < FRACT_PREVIEWS_MAXITERS)
-					? get_fract_color(iters) : 0;
+					? 0xA0000000 : 0x80FFFFFF;
 			}
-			img->data[y * img->size.width + x] = color | 0x20000000;
+			img->data[y * img->size.width + x] = color;
 		}
 	}
 }

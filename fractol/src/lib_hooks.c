@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 10:34:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/13 00:20:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ int			expose_hook(t_data *data)
 			, 0, 0);
 	if (data->keys.show_hud)
 		draw_previews(data);
+	else
+		mlx_string_put(data->lib.mlx_ptr, data->lib.win_ptr
+				, data->winsize.width - FRACT_PREVIEWS_WIDTH + 20, 25, 0xFFFFFF
+				, "Press TAB to open HUD");
 	ft_asprintf(&str, "Iterations: %d", data->max_iters);
 	if (str != NULL)
 	{
