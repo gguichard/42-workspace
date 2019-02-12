@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:47:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 05:53:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 04:34:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,30 @@ static int	get_fract_color(int iters)
 	return (colors[iters % 16]);
 }
 
+void		init_thread_values(t_data *data)
+{
+	int			idx;
+	int			cols_per_thread;
+	t_thread	*thread;
+
+	idx = 0;
+	cols_per_thread = data->winsize.width / FRACT_MAX_THREADS;
+	while (idx < FRACT_MAX_THREADS)
+	{
+		thread = &data->threads[idx];
+		thread->data = data;
+		thread->x = cols_per_thread * idx;
+		thread->y = 0;
+		if (idx + 1 == FRACT_MAX_THREADS)
+			thread->width = data->winsize.width;
+		else
+			thread->width = thread->x + cols_per_thread;
+		thread->height = data->winsize.height;
+		idx++;
+	}
+	data->draw_fn = draw_threads;
+}
+
 static void	*threaded_draw(t_thread *thread)
 {
 	int		x;
@@ -42,8 +66,8 @@ static void	*threaded_draw(t_thread *thread)
 		{
 			re = x * (thread->data->cam.x_max - thread->data->cam.x_min)
 				/ thread->data->winsize.width + thread->data->cam.x_min;
-			im = -y * (thread->data->cam.y_max - thread->data->cam.y_min)
-				/ thread->data->winsize.height - thread->data->cam.y_min;
+			im = y * (thread->data->cam.y_max - thread->data->cam.y_min)
+				/ thread->data->winsize.height + thread->data->cam.y_min;
 			iters = thread->data->fract_fn(&thread->data->motion, re, im
 					, thread->data->max_iters);
 			thread->data->lib.img_data[y * thread->data->winsize.width + x] =

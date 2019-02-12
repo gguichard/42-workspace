@@ -6,19 +6,22 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/02/11 05:43:22 by gguichar         ###   ########.fr        #
+#    Updated: 2019/02/12 04:18:39 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fractol
 
 SRC_DIR	=	src
-SRC		=	main.c \
-lib.c \
-lib_hooks.c \
-draw.c \
-draw_gpu.c \
-fractals.c
+SRC		=	\
+main.c		\
+lib.c		\
+lib_hooks.c	\
+key_hooks.c	\
+draw.c		\
+draw_gpu.c	\
+fractals.c	\
+fract_bailouts.c
 
 OBJ_DIR	=	.obj
 OBJ		=	$(SRC:.c=.o)
@@ -27,7 +30,7 @@ DEP		=	$(OBJ:.o=.d)
 INC_DIR	=	includes
 
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -I libft/includes -I $(INC_DIR)
+CFLAGS	=	-Wall -Wextra -Werror -O2 -I libft/includes -I $(INC_DIR)
 LIBS	=	-L /usr/local/lib -lmlx -framework OpenCL -framework OpenGL -framework AppKit
 
 LIBFT	=	libft/libft.a

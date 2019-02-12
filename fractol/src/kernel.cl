@@ -27,7 +27,7 @@ __kernel void julia(__global int *data, double x_min, double x_max
 {
 	int id = get_global_id(0);
 	double x = (id % width) * (x_max - x_min) / width + x_min;
-	double y = -(id / width) * (y_max - y_min) / height - y_min;
+	double y = (id / width) * (y_max - y_min) / height + y_min;
 	double x_tmp = 0.0;
 	double x2 = x * x;
 	double y2 = y * y;
@@ -50,7 +50,7 @@ __kernel void mandelbrot(__global int *data, double x_min, double x_max
 {
 	int id = get_global_id(0);
 	double re = (id % width) * (x_max - x_min) / width + x_min;
-	double im = -(id / width) * (y_max - y_min) / height - y_min;
+	double im = (id / width) * (y_max - y_min) / height + y_min;
 	double x = 0.0;
 	double y = 0.0;
 	double x_tmp = 0.0;
@@ -77,7 +77,7 @@ __kernel void mandelbar(__global int *data, double x_min, double x_max
 {
 	int id = get_global_id(0);
 	double re = (id % width) * (x_max - x_min) / width + x_min;
-	double im = -(id / width) * (y_max - y_min) / height - y_min;
+	double im = (id / width) * (y_max - y_min) / height + y_min;
 	double x = 0.0;
 	double y = 0.0;
 	double x_tmp = 0.0;
@@ -93,6 +93,33 @@ __kernel void mandelbar(__global int *data, double x_min, double x_max
 		x_tmp = x;
 		x = x2 - y2 + re;
 		y = -2 * x_tmp * y + im;
+		iters++;
+	}
+	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
+}
+
+__kernel void burning_ship(__global int *data, double x_min, double x_max
+		, double y_min, double y_max, int width, int height, int max_iters
+		, double motion_x, double motion_y)
+{
+	int id = get_global_id(0);
+	double re = (id % width) * (x_max - x_min) / width + x_min;
+	double im = (id / width) * (y_max - y_min) / height + y_min;
+	double x = 0.0;
+	double y = 0.0;
+	double x_tmp = 0.0;
+	double x2 = 0.0;
+	double y2 = 0.0;
+	int	iters = 0;
+	while (iters < max_iters)
+	{
+		x2 = x * x;
+		y2 = y * y;
+		if (x2 + y2 >= 4)
+			break;
+		x_tmp = x;
+		x = fabs(x2 - y2 + re);
+		y = fabs(2 * x_tmp * y) + im;
 		iters++;
 	}
 	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 02:19:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 04:39:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,63 +17,52 @@
 #include "winsize.h"
 #include "fractol.h"
 
-static void	init_thread_values(t_data *data)
-{
-	int			idx;
-	int			cols_per_thread;
-	t_thread	*thread;
-
-	idx = 0;
-	cols_per_thread = data->winsize.width / FRACT_MAX_THREADS;
-	while (idx < FRACT_MAX_THREADS)
-	{
-		thread = &data->threads[idx];
-		thread->data = data;
-		thread->x = cols_per_thread * idx;
-		thread->y = 0;
-		if (idx + 1 == FRACT_MAX_THREADS)
-			thread->width = data->winsize.width;
-		else
-			thread->width = thread->x + cols_per_thread;
-		thread->height = data->winsize.height;
-		idx++;
-	}
-}
-
 static void	show_help(t_opts *opts, char **argv)
 {
 	if (opts->error != 0)
 		ft_dprintf(2, "%s: illegal option -- %c\n", argv[0], opts->error);
 	ft_printf("USAGE: fractol [options] <fractal>\n");
-	ft_printf("<fractal> can be any type of Julia, Mandelbrot\n\n");
+	ft_printf("<fractal> can be any type of %s\n\n"
+			, "Julia, Mandelbrot, Tricorn, BurningShip");
 	ft_printf("OPTIONS:\n");
 	ft_printf("  -g\tEnable GPU rendering\n");
 	ft_printf("  -h\tShow this help\n");
+}
+
+static int	setup_fractal_fn(t_data *data, int argc, char **argv)
+{
+	if (data->opts->index < argc)
+	{
+		if (ft_strequ("Mandelbrot", argv[data->opts->index]))
+			data->fract_fn = mandelbrot;
+		else if (ft_strequ("Tricorn", argv[data->opts->index]))
+			data->fract_fn = mandelbar;
+		else if (ft_strequ("BurningShip", argv[data->opts->index]))
+			data->fract_fn = burning_ship;
+		else if (ft_strequ("Julia", argv[data->opts->index]))
+		{
+			data->fract_fn = julia;
+			data->motion.record = 1;
+		}
+	}
+	return (data->fract_fn != NULL);
 }
 
 static int	setup_opts(t_data *data, int argc, char **argv)
 {
 	if (data->opts->error != 0)
 		return (0);
-	if (data->opts->index >= argc)
-		return (0);
 	data->winsize.width = WIN_WIDTH;
 	data->winsize.height = WIN_HEIGHT;
-	if (ft_strequ("Mandelbrot", argv[data->opts->index]))
-		data->fract_fn = mandelbrot;
-	else if (ft_strequ("Mandelbar", argv[data->opts->index]))
-		data->fract_fn = mandelbar;
-	else if (ft_strequ("Julia", argv[data->opts->index]))
-	{
-		data->fract_fn = julia;
-		data->motion.record = 1;
-	}
-	else
+	if (!setup_fractal_fn(data, argc, argv))
 	{
 		ft_dprintf(2, "%s: Bad fractal name\n\n", argv[0]);
 		return (0);
 	}
-	data->draw_fn = (has_opt(data->opts, 'g') ? draw_gpu : draw_threads);
+	if (!has_opt(data->opts, 'g'))
+		init_thread_values(data);
+	else
+		setup_opencl(data);
 	return (1);
 }
 
@@ -101,7 +90,6 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 		ft_dprintf(2, "fract'ol: MLX error\n");
 		return (0);
 	}
-	init_thread_values(data);
 	return (1);
 }
 

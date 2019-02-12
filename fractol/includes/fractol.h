@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 07:38:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 04:34:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "camera.h"
 # include "keys.h"
 # include "motion.h"
+# include "opencl.h"
 
 # define FRACT_MAX_THREADS 4
 
@@ -48,6 +49,8 @@ struct	s_data
 	t_keys			keys;
 	t_motion		motion;
 	t_thread		threads[FRACT_MAX_THREADS];
+	int				use_opencl;
+	t_cl			cl;
 };
 
 int		init_mlx(t_mlx *lib, t_winsize *ws);
@@ -60,11 +63,23 @@ int		motion_hook(int x, int y, t_data *data);
 int		expose_hook(t_data *data);
 int		mouse_hook(int button, int x, int y, t_data *data);
 
+void	init_thread_values(t_data *data);
+void	setup_opencl(t_data *data);
+void	release_opencl(t_data *data);
+
 void	draw_gpu(t_data *data);
 void	draw_threads(t_data *data);
+
+int		fract_bailout(double x, double y, double re, double im
+		, int max_iters);
+int		fract_bailout_2(double x, double y, double re, double im
+		, int max_iters);
+int		fract_invert_bailout(double x, double y, double re, double im
+		, int max_iters);
 
 int		julia(t_motion *motion, double re, double im, int max_iters);
 int		mandelbrot(t_motion *motion, double re, double im, int max_iters);
 int		mandelbar(t_motion *motion, double re, double im, int max_iters);
+int		burning_ship(t_motion *motion, double re, double im, int max_iters);
 
 #endif
