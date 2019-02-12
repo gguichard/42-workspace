@@ -6,21 +6,23 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/02/12 04:18:39 by gguichar         ###   ########.fr        #
+#    Updated: 2019/02/12 09:02:38 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	fractol
 
 SRC_DIR	=	src
-SRC		=	\
-main.c		\
-lib.c		\
-lib_hooks.c	\
-key_hooks.c	\
-draw.c		\
-draw_gpu.c	\
-fractals.c	\
+SRC		=		\
+main.c			\
+lib.c			\
+lib_hooks.c		\
+previews.c		\
+key_hooks.c		\
+hooks_utils.c	\
+draw.c			\
+draw_gpu.c		\
+fractals.c		\
 fract_bailouts.c
 
 OBJ_DIR	=	.obj

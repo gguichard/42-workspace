@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 11:27:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 01:01:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 07:58:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,19 @@ int		init_mlx(t_mlx *lib, t_winsize *ws)
 	lib->img_data = (unsigned int *)mlx_get_data_addr(lib->img_ptr
 			, &(lib->bits_per_pixel), &(lib->size_line), &(lib->endian));
 	if (lib->img_data == NULL)
+		return (0);
+	return (1);
+}
+
+int		create_mlximage(t_mlx *lib, t_winsize size, t_mlximg *img)
+{
+	img->size = size;
+	img->ptr = mlx_new_image(lib->mlx_ptr, size.width, size.height);
+	if (img->ptr == NULL)
+		return (0);
+	img->data = (unsigned int *)mlx_get_data_addr(img->ptr
+			, &(img->bits_per_pixel), &(img->size_line), &(img->endian));
+	if (img->data == NULL)
 		return (0);
 	return (1);
 }

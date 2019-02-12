@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:47:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 04:34:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 07:27:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "fractol.h"
 
-static int	get_fract_color(int iters)
+int			get_fract_color(int iters)
 {
 	static int	colors[] = {
 		0x421e0f, 0x19071a, 0x09012f, 0x040449,

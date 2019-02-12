@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 05:56:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 09:02:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@
 # include "opencl.h"
 
 # define FRACT_MAX_THREADS 4
+# define FRACT_PREVIEWS 4
+# define FRACT_PREVIEWS_ITERS 50
+# define FRACT_PREVIEWS_WIDTH 256
+# define FRACT_PREVIEWS_HEIGHT 158
 
 typedef struct s_data	t_data;
 typedef struct s_thread	t_thread;
@@ -49,6 +53,7 @@ struct	s_data
 	int				max_iters;
 	t_keys			keys;
 	t_motion		motion;
+	t_mlximg		previews[FRACT_PREVIEWS];
 	t_thread		threads[FRACT_MAX_THREADS];
 	int				use_opencl;
 	t_cl			cl;
@@ -61,6 +66,15 @@ struct	s_point
 };
 
 int		init_mlx(t_mlx *lib, t_winsize *ws);
+
+void	*get_preview_draw_fn(int idx);
+void	draw_preview(t_data *data, t_mlximg *img
+		, int (*fract_fn)(t_motion *, double, double, int));
+void	destroy_previews(t_data *data);
+int		init_previews(t_data *data);
+
+void	reset_draw(t_data *data);
+void	change_fract_type(t_data *data, int idx);
 
 int		exit_lib(t_data *data);
 int		loop_hook(t_data *data);
@@ -85,5 +99,7 @@ int		julia(t_motion *motion, double re, double im, int max_iters);
 int		mandelbrot(t_motion *motion, double re, double im, int max_iters);
 int		mandelbar(t_motion *motion, double re, double im, int max_iters);
 int		burning_ship(t_motion *motion, double re, double im, int max_iters);
+
+int		get_fract_color(int iters);
 
 #endif
