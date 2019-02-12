@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 09:02:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 09:58:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # define FRACT_MAX_THREADS 4
 # define FRACT_PREVIEWS 4
-# define FRACT_PREVIEWS_ITERS 50
+# define FRACT_PREVIEWS_MAXITERS 50
 # define FRACT_PREVIEWS_WIDTH 256
 # define FRACT_PREVIEWS_HEIGHT 158
 
@@ -73,6 +73,7 @@ void	draw_preview(t_data *data, t_mlximg *img
 void	destroy_previews(t_data *data);
 int		init_previews(t_data *data);
 
+void	redraw_all(t_data *data);
 void	reset_draw(t_data *data);
 void	change_fract_type(t_data *data, int idx);
 

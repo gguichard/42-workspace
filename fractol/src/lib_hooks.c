@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 09:04:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 10:02:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int			expose_hook(t_data *data)
 			, data->lib.win_ptr
 			, data->lib.img_ptr
 			, 0, 0);
-	draw_previews(data);
+	if (data->keys.show_hud)
+		draw_previews(data);
 	ft_asprintf(&str, "Iterations: %d", data->max_iters);
 	if (str != NULL)
 	{

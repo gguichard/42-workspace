@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 03:29:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 09:05:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 10:04:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "fractol.h"
 
 int			keypress_hook(int keycode, t_data *data)
@@ -20,6 +21,11 @@ int			keypress_hook(int keycode, t_data *data)
 		data->keys.iters = (keycode == KEY_PLUS) ? 5 : -5;
 	else if (keycode == KEY_R)
 		reset_draw(data);
+	else if (keycode == KEY_TAB)
+	{
+		data->keys.show_hud = !data->keys.show_hud;
+		redraw_all(data);
+	}
 	return (0);
 }
 
@@ -34,7 +40,8 @@ static void	handle_mouse_left(t_data *data, int x, int y)
 {
 	if (x >= data->winsize.width - FRACT_PREVIEWS_WIDTH
 			&& y <= FRACT_PREVIEWS * FRACT_PREVIEWS_HEIGHT)
-		change_fract_type(data, y / FRACT_PREVIEWS_HEIGHT);
+		change_fract_type(data
+				, (int)ceil(y / (double)FRACT_PREVIEWS_HEIGHT) - 1);
 	else
 		data->motion.record = !data->motion.record;
 }
@@ -57,8 +64,7 @@ int			mouse_hook(int button, int x, int y, t_data *data)
 		data->cam.x_max = real_x - (real_x - data->cam.x_max) * data->cam.scale;
 		data->cam.y_min = real_y - (real_y - data->cam.y_min) * data->cam.scale;
 		data->cam.y_max = real_y - (real_y - data->cam.y_max) * data->cam.scale;
-		data->draw_fn(data);
-		expose_hook(data);
+		redraw_all(data);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 07:38:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 08:52:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 10:07:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,27 @@ void	draw_preview(t_data *data, t_mlximg *img
 	int	x;
 	int	y;
 	int	iters;
+	int	color;
 
-	x = 0;
-	while (x < img->size.width)
+	x = -1;
+	while (++x < img->size.width)
 	{
-		y = 0;
-		while (y < img->size.height)
+		y = -1;
+		while (++y < img->size.height)
 		{
-			iters = fract_fn(&data->motion
-					, x * 4.0 / img->size.width - 2.0
-					, y * 4.0 / img->size.height - 2.0
-					, FRACT_PREVIEWS_ITERS);
-			img->data[y * img->size.width + x] =
-				iters < FRACT_PREVIEWS_ITERS ? get_fract_color(iters) : 0;
-			y++;
+			if (x == 0 || (y + 1) == img->size.height)
+				color = 0xD3D3D3;
+			else
+			{
+				iters = fract_fn(&data->motion
+						, x * 4.0 / img->size.width - 2.0
+						, y * 4.0 / img->size.height - 2.0
+						, FRACT_PREVIEWS_MAXITERS);
+				color = (iters < FRACT_PREVIEWS_MAXITERS)
+					? get_fract_color(iters) : 0;
+			}
+			img->data[y * img->size.width + x] = color | 0x20000000;
 		}
-		x++;
 	}
 }
 

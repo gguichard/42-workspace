@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 08:02:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 09:53:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 		show_help(data->opts, argv);
 		return (0);
 	}
+	data->keys.show_hud = 1;
 	data->max_iters = 100;
 	data->cam.scale = 1.0;
 	data->cam.x_min = -2.0;
