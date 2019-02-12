@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 05:58:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 06:22:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ int			setup_opencl(t_data *data)
 	cl->program = clCreateProgramWithSource(cl->context, 1
 			, (const char **)&cl->source, NULL, NULL);
 	clBuildProgram(cl->program, 0, NULL, NULL, NULL, NULL);
-	cl->kernel = clCreateKernel(cl->program, get_kernel_name(data)
-			, NULL);
+	cl->kernel = clCreateKernel(cl->program, get_kernel_name(data), NULL);
 	cl->buffer = clCreateBuffer(cl->context, CL_MEM_WRITE_ONLY
 			, sizeof(int) * (data->winsize.width * data->winsize.height), NULL
 			, NULL);
