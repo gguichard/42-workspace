@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 04:39:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 04:50:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 	data->cam.y_max = 2.0;
 	if (!init_mlx(&(data->lib), &(data->winsize)))
 	{
-		ft_dprintf(2, "fract'ol: MLX error\n");
+		ft_dprintf(2, "%s: MLX error\n", argv[0]);
 		return (0);
 	}
 	return (1);
