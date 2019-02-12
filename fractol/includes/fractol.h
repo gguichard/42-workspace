@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 05:21:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 05:56:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int		expose_hook(t_data *data);
 int		mouse_hook(int button, int x, int y, t_data *data);
 
 void	init_thread_values(t_data *data);
-void	setup_opencl(t_data *data);
+int		setup_opencl(t_data *data);
 void	release_opencl(t_data *data);
 
 void	draw_gpu(t_data *data);

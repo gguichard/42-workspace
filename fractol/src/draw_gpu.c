@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 04:51:56 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 05:58:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,24 @@ static char	*read_sourcecode(void)
 	ret = read(fd, source, 4096);
 	if (ret >= 0)
 		source[ret] = '\0';
+	else
+		ft_strdel(&source);
 	close(fd);
 	return (source);
 }
 
-void		setup_opencl(t_data *data)
+int			setup_opencl(t_data *data)
 {
 	t_cl	*cl;
 
 	cl = &data->cl;
 	cl->source = read_sourcecode();
+	if (cl->source == NULL)
+		return (0);
+	cl->work_size = data->winsize.width * data->winsize.height;
 	clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &cl->device, NULL);
-	cl->context = clCreateContext(NULL, 1, &cl->device, NULL, NULL
-			, NULL);
-	cl->queue = clCreateCommandQueue(cl->context, cl->device
-			, 0, NULL);
+	cl->context = clCreateContext(NULL, 1, &cl->device, NULL, NULL, NULL);
+	cl->queue = clCreateCommandQueue(cl->context, cl->device, 0, NULL);
 	cl->program = clCreateProgramWithSource(cl->context, 1
 			, (const char **)&cl->source, NULL, NULL);
 	clBuildProgram(cl->program, 0, NULL, NULL, NULL, NULL);
@@ -68,9 +71,9 @@ void		setup_opencl(t_data *data)
 	cl->buffer = clCreateBuffer(cl->context, CL_MEM_WRITE_ONLY
 			, sizeof(int) * (data->winsize.width * data->winsize.height), NULL
 			, NULL);
-	cl->work_size = data->winsize.width * data->winsize.height;
 	data->use_opencl = 1;
 	data->draw_fn = draw_gpu;
+	return (1);
 }
 
 void		release_opencl(t_data *data)
@@ -100,8 +103,8 @@ void		draw_gpu(t_data *data)
 	clSetKernelArg(cl->kernel, 7, sizeof(int), &(data->max_iters));
 	clSetKernelArg(cl->kernel, 8, sizeof(double), &(data->motion.x));
 	clSetKernelArg(cl->kernel, 9, sizeof(double), &(data->motion.y));
-	clEnqueueNDRangeKernel(cl->queue, cl->kernel, 1, NULL
-			, &cl->work_size, NULL, 0, NULL, NULL);
+	clEnqueueNDRangeKernel(cl->queue, cl->kernel, 1, NULL, &cl->work_size, NULL
+			, 0, NULL, NULL);
 	clEnqueueReadBuffer(cl->queue, cl->buffer, CL_FALSE, 0
 			, sizeof(int) * (data->winsize.width * data->winsize.height)
 			, data->lib.img_data, 0, NULL, NULL);

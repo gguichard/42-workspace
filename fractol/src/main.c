@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 04:50:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 05:57:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,8 @@ static int	setup_opts(t_data *data, int argc, char **argv)
 		ft_dprintf(2, "%s: Bad fractal name\n\n", argv[0]);
 		return (0);
 	}
-	if (!has_opt(data->opts, 'g'))
+	if (!has_opt(data->opts, 'g') || !setup_opencl(data))
 		init_thread_values(data);
-	else
-		setup_opencl(data);
 	return (1);
 }
 
