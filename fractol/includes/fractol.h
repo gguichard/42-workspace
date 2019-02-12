@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 09:58:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 10:38:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ struct	s_data
 	int				max_iters;
 	t_keys			keys;
 	t_motion		motion;
+	int				preview_idx;
 	t_mlximg		previews[FRACT_PREVIEWS];
 	t_thread		threads[FRACT_MAX_THREADS];
 	int				use_opencl;
@@ -68,6 +69,7 @@ struct	s_point
 int		init_mlx(t_mlx *lib, t_winsize *ws);
 
 void	*get_preview_draw_fn(int idx);
+void	draw_selected_preview(t_data *data);
 void	draw_preview(t_data *data, t_mlximg *img
 		, int (*fract_fn)(t_motion *, double, double, int));
 void	destroy_previews(t_data *data);

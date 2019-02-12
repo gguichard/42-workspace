@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 07:38:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 10:07:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 11:04:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,32 @@ void	*get_preview_draw_fn(int idx)
 	};
 
 	return (previews_fn[idx]);
+}
+
+void	draw_selected_preview(t_data *data)
+{
+	int	x;
+	int	y;
+
+	x = data->winsize.width - FRACT_PREVIEWS_WIDTH;
+	y = data->preview_idx * FRACT_PREVIEWS_HEIGHT - 1;
+	while (x < data->winsize.width)
+	{
+		if (y > 0)
+			mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x, y, 0xFF0000);
+		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x
+				, y + FRACT_PREVIEWS_HEIGHT, 0xFF0000);
+		x++;
+	}
+	x = data->winsize.width - FRACT_PREVIEWS_WIDTH;
+	y = data->preview_idx * FRACT_PREVIEWS_HEIGHT - 1;
+	while (y < (data->preview_idx + 1) * FRACT_PREVIEWS_HEIGHT)
+	{
+		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr, x, y, 0xFF0000);
+		mlx_pixel_put(data->lib.mlx_ptr, data->lib.win_ptr
+				, x + FRACT_PREVIEWS_WIDTH, y, 0xFF0000);
+		y++;
+	}
 }
 
 void	draw_preview(t_data *data, t_mlximg *img
@@ -78,6 +104,7 @@ int		init_previews(t_data *data)
 {
 	int			idx;
 	t_winsize	size;
+	void		*fract_fn;
 
 	idx = 0;
 	size.width = FRACT_PREVIEWS_WIDTH;
@@ -89,7 +116,10 @@ int		init_previews(t_data *data)
 			destroy_previews(data);
 			return (0);
 		}
-		draw_preview(data, &data->previews[idx], get_preview_draw_fn(idx));
+		fract_fn = get_preview_draw_fn(idx);
+		if (fract_fn == data->fract_fn)
+			data->preview_idx = idx;
+		draw_preview(data, &data->previews[idx], fract_fn);
 		idx++;
 	}
 	return (1);

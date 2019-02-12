@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 10:02:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 10:34:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static void	draw_previews(t_data *data)
 		preview_hoff += preview->size.height;
 		idx++;
 	}
+	draw_selected_preview(data);
 }
 
 int			expose_hook(t_data *data)

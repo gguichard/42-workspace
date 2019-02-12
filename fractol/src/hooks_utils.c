@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 09:01:12 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 09:58:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 10:40:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ void	change_fract_type(t_data *data, int idx)
 		release_opencl(data);
 		setup_opencl(data);
 	}
+	data->preview_idx = idx;
 	reset_draw(data);
 }
