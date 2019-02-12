@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 07:38:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 02:19:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static int	setup_opts(t_data *data, int argc, char **argv)
 	data->winsize.height = WIN_HEIGHT;
 	if (ft_strequ("Mandelbrot", argv[data->opts->index]))
 		data->fract_fn = mandelbrot;
+	else if (ft_strequ("Mandelbar", argv[data->opts->index]))
+		data->fract_fn = mandelbar;
 	else if (ft_strequ("Julia", argv[data->opts->index]))
 	{
 		data->fract_fn = julia;

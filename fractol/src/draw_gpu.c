@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 07:37:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 02:24:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static char	*get_kernel_name(t_data *data)
 {
 	if (data->fract_fn == mandelbrot)
 		return ("mandelbrot");
+	else if (data->fract_fn == mandelbar)
+		return ("mandelbar");
 	else
 		return ("julia");
 }
