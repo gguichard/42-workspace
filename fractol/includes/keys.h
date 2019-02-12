@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 02:37:50 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 06:57:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 05:24:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define KEY_MOUSELEFT 1
 # define KEY_SCROLLUP 4
 # define KEY_SCROLLDOWN 5
+# define KEY_R 15
 
 typedef struct	s_keys
 {

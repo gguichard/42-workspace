@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 03:29:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 03:30:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 05:26:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,19 @@ int	keypress_hook(int keycode, t_data *data)
 {
 	if (keycode == KEY_ESC)
 		exit_lib(data);
-	if (keycode == KEY_PLUS || keycode == KEY_MINUS)
+	else if (keycode == KEY_PLUS || keycode == KEY_MINUS)
 		data->keys.iters = (keycode == KEY_PLUS) ? 5 : -5;
+	else if (keycode == KEY_R)
+	{
+		data->cam.x_min = -2.0;
+		data->cam.x_max = 2.0;
+		data->cam.y_min = -2.0;
+		data->cam.y_max = 2.0;
+		data->cam.scale = 1.0;
+		data->max_iters = 100;
+		data->draw_fn(data);
+		expose_hook(data);
+	}
 	return (0);
 }
 
