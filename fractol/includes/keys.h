@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 02:37:50 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 10:03:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 22:57:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # define KEY_SCROLLDOWN 5
 # define KEY_R 15
 # define KEY_TAB 48
+# define KEY_ARROWUP 126
+# define KEY_ARROWDOWN 125
 
 typedef struct	s_keys
 {

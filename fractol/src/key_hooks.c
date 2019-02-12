@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 03:29:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 10:04:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 22:59:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ int			keypress_hook(int keycode, t_data *data)
 		data->keys.iters = (keycode == KEY_PLUS) ? 5 : -5;
 	else if (keycode == KEY_R)
 		reset_draw(data);
+	else if (keycode == KEY_ARROWUP)
+		change_fract_type(data, data->preview_idx - 1);
+	else if (keycode == KEY_ARROWDOWN)
+		change_fract_type(data, data->preview_idx + 1);
 	else if (keycode == KEY_TAB)
 	{
 		data->keys.show_hud = !data->keys.show_hud;
