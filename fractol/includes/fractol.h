@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 04:34:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/12 05:21:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 
 typedef struct s_data	t_data;
 typedef struct s_thread	t_thread;
+typedef struct s_point	t_point;
 
 struct	s_thread
 {
@@ -53,6 +54,12 @@ struct	s_data
 	t_cl			cl;
 };
 
+struct	s_point
+{
+	double	x;
+	double	y;
+};
+
 int		init_mlx(t_mlx *lib, t_winsize *ws);
 
 int		exit_lib(t_data *data);
@@ -70,12 +77,9 @@ void	release_opencl(t_data *data);
 void	draw_gpu(t_data *data);
 void	draw_threads(t_data *data);
 
-int		fract_bailout(double x, double y, double re, double im
-		, int max_iters);
-int		fract_bailout_2(double x, double y, double re, double im
-		, int max_iters);
-int		fract_invert_bailout(double x, double y, double re, double im
-		, int max_iters);
+int		fract_bailout(t_point point, double re, double im, int max_iters);
+int		fract_bailout_2(t_point point, double re, double im, int max_iters);
+int		fract_inv_bailout(t_point point, double re, double im, int max_iters);
 
 int		julia(t_motion *motion, double re, double im, int max_iters);
 int		mandelbrot(t_motion *motion, double re, double im, int max_iters);
