@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 09:01:12 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 23:01:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/21 22:56:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	redraw_all(t_data *data)
 
 void	reset_draw(t_data *data)
 {
+	data->cam.x_off = 0;
+	data->cam.y_off = 0;
 	data->cam.x_min = -2.0;
 	data->cam.x_max = 2.0;
 	data->cam.y_min = -2.0;

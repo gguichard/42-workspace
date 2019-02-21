@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 02:24:52 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/10 23:59:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/21 22:49:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 typedef struct	s_camera
 {
-	int			off_x;
-	int			off_y;
+	int			x_off;
+	int			y_off;
 	double		scale;
 	double		x_min;
 	double		y_min;

@@ -21,13 +21,14 @@ int get_fract_color(int iters)
 	return (colors[iters % 16]);
 }
 
-__kernel void julia(__global int *data, double x_min, double x_max
-		, double y_min, double y_max, int width, int height, int max_iters
+__kernel void julia(__global int *data, int x_off, int y_off
+		, double x_min, double x_max, double y_min, double y_max
+		, int width, int height, int max_iters
 		, double motion_x, double motion_y)
 {
 	int id = get_global_id(0);
-	double x = (id % width) * (x_max - x_min) / width + x_min;
-	double y = (id / width) * (y_max - y_min) / height + y_min;
+	double x = (id % width + x_off) * (x_max - x_min) / width + x_min;
+	double y = (id / width + y_off) * (y_max - y_min) / height + y_min;
 	double x_tmp = 0.0;
 	double x2 = x * x;
 	double y2 = y * y;
@@ -44,13 +45,14 @@ __kernel void julia(__global int *data, double x_min, double x_max
 	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
 }
 
-__kernel void mandelbrot(__global int *data, double x_min, double x_max
-		, double y_min, double y_max, int width, int height, int max_iters
+__kernel void mandelbrot(__global int *data, int x_off, int y_off
+		, double x_min, double x_max, double y_min, double y_max
+		, int width, int height, int max_iters
 		, double motion_x, double motion_y)
 {
 	int id = get_global_id(0);
-	double re = (id % width) * (x_max - x_min) / width + x_min;
-	double im = (id / width) * (y_max - y_min) / height + y_min;
+	double re = (id % width + x_off) * (x_max - x_min) / width + x_min;
+	double im = (id / width + y_off) * (y_max - y_min) / height + y_min;
 	double x = 0.0;
 	double y = 0.0;
 	double x_tmp = 0.0;
@@ -71,13 +73,14 @@ __kernel void mandelbrot(__global int *data, double x_min, double x_max
 	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
 }
 
-__kernel void mandelbar(__global int *data, double x_min, double x_max
-		, double y_min, double y_max, int width, int height, int max_iters
+__kernel void mandelbar(__global int *data, int x_off, int y_off
+		, double x_min, double x_max, double y_min, double y_max
+		, int width, int height, int max_iters
 		, double motion_x, double motion_y)
 {
 	int id = get_global_id(0);
-	double re = (id % width) * (x_max - x_min) / width + x_min;
-	double im = (id / width) * (y_max - y_min) / height + y_min;
+	double re = (id % width + x_off) * (x_max - x_min) / width + x_min;
+	double im = (id / width + y_off) * (y_max - y_min) / height + y_min;
 	double x = 0.0;
 	double y = 0.0;
 	double x_tmp = 0.0;
@@ -98,13 +101,14 @@ __kernel void mandelbar(__global int *data, double x_min, double x_max
 	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
 }
 
-__kernel void burning_ship(__global int *data, double x_min, double x_max
-		, double y_min, double y_max, int width, int height, int max_iters
+__kernel void burning_ship(__global int *data, int x_off, int y_off
+		, double x_min, double x_max, double y_min, double y_max
+		, int width, int height, int max_iters
 		, double motion_x, double motion_y)
 {
 	int id = get_global_id(0);
-	double re = (id % width) * (x_max - x_min) / width + x_min;
-	double im = (id / width) * (y_max - y_min) / height + y_min;
+	double re = (id % width + x_off) * (x_max - x_min) / width + x_min;
+	double im = (id / width + y_off) * (y_max - y_min) / height + y_min;
 	double x = 0.0;
 	double y = 0.0;
 	double x_tmp = 0.0;

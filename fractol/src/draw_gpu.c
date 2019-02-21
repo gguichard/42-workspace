@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 06:22:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/21 22:49:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,17 @@ void		draw_gpu(t_data *data)
 
 	cl = &data->cl;
 	clSetKernelArg(cl->kernel, 0, sizeof(cl->buffer), &cl->buffer);
-	clSetKernelArg(cl->kernel, 1, sizeof(double), &(data->cam.x_min));
-	clSetKernelArg(cl->kernel, 2, sizeof(double), &(data->cam.x_max));
-	clSetKernelArg(cl->kernel, 3, sizeof(double), &(data->cam.y_min));
-	clSetKernelArg(cl->kernel, 4, sizeof(double), &(data->cam.y_max));
-	clSetKernelArg(cl->kernel, 5, sizeof(int), &(data->winsize.width));
-	clSetKernelArg(cl->kernel, 6, sizeof(int), &(data->winsize.height));
-	clSetKernelArg(cl->kernel, 7, sizeof(int), &(data->max_iters));
-	clSetKernelArg(cl->kernel, 8, sizeof(double), &(data->motion.x));
-	clSetKernelArg(cl->kernel, 9, sizeof(double), &(data->motion.y));
+	clSetKernelArg(cl->kernel, 1, sizeof(double), &(data->cam.x_off));
+	clSetKernelArg(cl->kernel, 2, sizeof(double), &(data->cam.y_off));
+	clSetKernelArg(cl->kernel, 3, sizeof(double), &(data->cam.x_min));
+	clSetKernelArg(cl->kernel, 4, sizeof(double), &(data->cam.x_max));
+	clSetKernelArg(cl->kernel, 5, sizeof(double), &(data->cam.y_min));
+	clSetKernelArg(cl->kernel, 6, sizeof(double), &(data->cam.y_max));
+	clSetKernelArg(cl->kernel, 7, sizeof(int), &(data->winsize.width));
+	clSetKernelArg(cl->kernel, 8, sizeof(int), &(data->winsize.height));
+	clSetKernelArg(cl->kernel, 9, sizeof(int), &(data->max_iters));
+	clSetKernelArg(cl->kernel, 10, sizeof(double), &(data->motion.x));
+	clSetKernelArg(cl->kernel, 11, sizeof(double), &(data->motion.y));
 	clEnqueueNDRangeKernel(cl->queue, cl->kernel, 1, NULL, &cl->work_size, NULL
 			, 0, NULL, NULL);
 	clEnqueueReadBuffer(cl->queue, cl->buffer, CL_FALSE, 0

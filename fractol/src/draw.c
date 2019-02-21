@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:47:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 07:27:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/21 23:00:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,23 +58,23 @@ static void	*threaded_draw(t_thread *thread)
 	double	im;
 	int		iters;
 
-	x = thread->x;
-	while (x < thread->width)
+	x = thread->x - 1;
+	while (++x < thread->width)
 	{
-		y = thread->y;
-		while (y < thread->height)
+		y = thread->y - 1;
+		while (++y < thread->height)
 		{
-			re = x * (thread->data->cam.x_max - thread->data->cam.x_min)
+			re = (x + thread->data->cam.x_off)
+				* (thread->data->cam.x_max - thread->data->cam.x_min)
 				/ thread->data->winsize.width + thread->data->cam.x_min;
-			im = y * (thread->data->cam.y_max - thread->data->cam.y_min)
+			im = (y + thread->data->cam.y_off)
+				* (thread->data->cam.y_max - thread->data->cam.y_min)
 				/ thread->data->winsize.height + thread->data->cam.y_min;
 			iters = thread->data->fract_fn(&thread->data->motion, re, im
 					, thread->data->max_iters);
 			thread->data->lib.img_data[y * thread->data->winsize.width + x] =
 				iters < thread->data->max_iters ? get_fract_color(iters) : 0;
-			y++;
 		}
-		x++;
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 03:29:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/12 22:59:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/21 22:58:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ int			keypress_hook(int keycode, t_data *data)
 		data->keys.iters = (keycode == KEY_PLUS) ? 5 : -5;
 	else if (keycode == KEY_R)
 		reset_draw(data);
-	else if (keycode == KEY_ARROWUP)
+	else if (keycode == KEY_PAGEUP)
 		change_fract_type(data, data->preview_idx - 1);
-	else if (keycode == KEY_ARROWDOWN)
+	else if (keycode == KEY_PAGEDOWN)
 		change_fract_type(data, data->preview_idx + 1);
+	else if (keycode == KEY_ARROWLEFT || keycode == KEY_ARROWRIGHT)
+		data->keys.x_move = (keycode == KEY_ARROWRIGHT) ? 10 : -10;
+	else if (keycode == KEY_ARROWUP || keycode == KEY_ARROWDOWN)
+		data->keys.y_move = (keycode == KEY_ARROWUP) ? -10 : 10;
 	else if (keycode == KEY_TAB)
 	{
 		data->keys.show_hud = !data->keys.show_hud;
@@ -37,6 +41,10 @@ int			keyrelease_hook(int keycode, t_data *data)
 {
 	if (keycode == KEY_PLUS || keycode == KEY_MINUS)
 		data->keys.iters = 0;
+	else if (keycode == KEY_ARROWLEFT || keycode == KEY_ARROWRIGHT)
+		data->keys.x_move = 0;
+	else if (keycode == KEY_ARROWUP || keycode == KEY_ARROWDOWN)
+		data->keys.y_move = 0;
 	return (0);
 }
 
@@ -60,9 +68,9 @@ int			mouse_hook(int button, int x, int y, t_data *data)
 	else if (button == KEY_SCROLLUP || button == KEY_SCROLLDOWN)
 	{
 		data->cam.scale = (button == KEY_SCROLLUP) ? (1 / 1.1) : 1.1;
-		real_x = x * (data->cam.x_max - data->cam.x_min)
+		real_x = (x + data->cam.x_off) * (data->cam.x_max - data->cam.x_min)
 			/ data->winsize.width + data->cam.x_min;
-		real_y = y * (data->cam.y_max - data->cam.y_min)
+		real_y = (y + data->cam.y_off) * (data->cam.y_max - data->cam.y_min)
 			/ data->winsize.height + data->cam.y_min;
 		data->cam.x_min = real_x - (real_x - data->cam.x_min) * data->cam.scale;
 		data->cam.x_max = real_x - (real_x - data->cam.x_max) * data->cam.scale;
@@ -77,9 +85,11 @@ int			motion_hook(int x, int y, t_data *data)
 {
 	if (data->motion.record)
 	{
-		data->motion.x = x * (data->cam.x_max - data->cam.x_min)
+		data->motion.x = (x + data->cam.x_off)
+			* (data->cam.x_max - data->cam.x_min)
 			/ data->winsize.width + data->cam.x_min;
-		data->motion.y = y * (data->cam.y_max - data->cam.y_min)
+		data->motion.y = (y + data->cam.y_off)
+			* (data->cam.y_max - data->cam.y_min)
 			/ data->winsize.height + data->cam.y_min;
 		if (data->fract_fn == julia)
 			data->draw_fn(data);
