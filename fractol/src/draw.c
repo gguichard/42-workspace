@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:47:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/21 23:00:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/26 12:12:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ void		init_thread_values(t_data *data)
 	data->draw_fn = draw_threads;
 }
 
+static void	draw_pixel(t_thread *thread, int x, int y, int iters)
+{
+	thread->data->lib.img_data[y * thread->data->winsize.width + x] = iters
+		< thread->data->max_iters ? get_fract_color(iters)
+		* thread->data->color_mul : 0;
+}
+
 static void	*threaded_draw(t_thread *thread)
 {
 	int		x;
@@ -72,8 +79,7 @@ static void	*threaded_draw(t_thread *thread)
 				/ thread->data->winsize.height + thread->data->cam.y_min;
 			iters = thread->data->fract_fn(&thread->data->motion, re, im
 					, thread->data->max_iters);
-			thread->data->lib.img_data[y * thread->data->winsize.width + x] =
-				iters < thread->data->max_iters ? get_fract_color(iters) : 0;
+			draw_pixel(thread, x, y, iters);
 		}
 	}
 	return (NULL);

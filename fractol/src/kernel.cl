@@ -21,7 +21,7 @@ int get_fract_color(int iters)
 	return (colors[iters % 16]);
 }
 
-__kernel void julia(__global int *data, int x_off, int y_off
+__kernel void julia(__global int *data, int color_mul, int x_off, int y_off
 		, double x_min, double x_max, double y_min, double y_max
 		, int width, int height, int max_iters
 		, double motion_x, double motion_y)
@@ -42,10 +42,10 @@ __kernel void julia(__global int *data, int x_off, int y_off
 		y2 = y * y;
 		iters++;
 	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
+	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters) * color_mul;
 }
 
-__kernel void mandelbrot(__global int *data, int x_off, int y_off
+__kernel void mandelbrot(__global int *data, int color_mul, int x_off, int y_off
 		, double x_min, double x_max, double y_min, double y_max
 		, int width, int height, int max_iters
 		, double motion_x, double motion_y)
@@ -70,10 +70,10 @@ __kernel void mandelbrot(__global int *data, int x_off, int y_off
 		y = 2 * x_tmp * y + im;
 		iters++;
 	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
+	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters) * color_mul;
 }
 
-__kernel void mandelbar(__global int *data, int x_off, int y_off
+__kernel void mandelbar(__global int *data, int color_mul, int x_off, int y_off
 		, double x_min, double x_max, double y_min, double y_max
 		, int width, int height, int max_iters
 		, double motion_x, double motion_y)
@@ -98,10 +98,11 @@ __kernel void mandelbar(__global int *data, int x_off, int y_off
 		y = -2 * x_tmp * y + im;
 		iters++;
 	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
+	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters) * color_mul;
 }
 
-__kernel void burning_ship(__global int *data, int x_off, int y_off
+__kernel void burning_ship(__global int *data, int color_mul
+		, int x_off, int y_off
 		, double x_min, double x_max, double y_min, double y_max
 		, int width, int height, int max_iters
 		, double motion_x, double motion_y)
@@ -126,5 +127,5 @@ __kernel void burning_ship(__global int *data, int x_off, int y_off
 		y = fabs(2 * x_tmp * y) + im;
 		iters++;
 	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
+	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters) * color_mul;
 }

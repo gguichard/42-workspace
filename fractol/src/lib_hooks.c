@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/21 22:51:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/26 11:58:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,9 @@ int			loop_hook(t_data *data)
 		data->cam.x_off += data->keys.x_move;
 	if (data->keys.y_move != 0)
 		data->cam.y_off += data->keys.y_move;
+	if (data->not_epileptic
+			&& (data->keys.x_move != 0 || data->keys.y_move != 0))
+		data->color_mul += 2;
 	if (data->keys.y_move != 0 || data->keys.x_move != 0)
 		redraw_all(data);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 03:29:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/21 22:58:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/26 12:03:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int			keypress_hook(int keycode, t_data *data)
 		data->keys.x_move = (keycode == KEY_ARROWRIGHT) ? 10 : -10;
 	else if (keycode == KEY_ARROWUP || keycode == KEY_ARROWDOWN)
 		data->keys.y_move = (keycode == KEY_ARROWUP) ? -10 : 10;
+	else if (keycode == KEY_SHIFT)
+		data->not_epileptic = !data->not_epileptic;
 	else if (keycode == KEY_TAB)
 	{
 		data->keys.show_hud = !data->keys.show_hud;
@@ -76,6 +78,8 @@ int			mouse_hook(int button, int x, int y, t_data *data)
 		data->cam.x_max = real_x - (real_x - data->cam.x_max) * data->cam.scale;
 		data->cam.y_min = real_y - (real_y - data->cam.y_min) * data->cam.scale;
 		data->cam.y_max = real_y - (real_y - data->cam.y_max) * data->cam.scale;
+		if (data->not_epileptic)
+			data->color_mul += 2;
 		redraw_all(data);
 	}
 	return (0);
