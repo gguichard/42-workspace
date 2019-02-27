@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/26 12:07:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/27 15:35:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@
 #include "opencl.h"
 #include "fractol.h"
 
-static char	*get_kernel_name(t_data *data)
+static int	get_fract_type(t_data *data)
 {
 	if (data->fract_fn == mandelbrot)
-		return ("mandelbrot");
+		return (1);
 	else if (data->fract_fn == mandelbar)
-		return ("mandelbar");
+		return (2);
 	else if (data->fract_fn == burning_ship)
-		return ("burning_ship");
+		return (3);
 	else
-		return ("julia");
+		return (0);
 }
 
 static char	*read_sourcecode(void)
@@ -39,10 +39,10 @@ static char	*read_sourcecode(void)
 	fd = open("src/kernel.cl", O_RDONLY);
 	if (fd < 0)
 		return (NULL);
-	source = (char *)malloc(sizeof(char) * (4096 + 1));
+	source = (char *)malloc(sizeof(char) * (8192 + 1));
 	if (source == NULL)
 		return (NULL);
-	ret = read(fd, source, 4096);
+	ret = read(fd, source, 8192);
 	if (ret >= 0)
 		source[ret] = '\0';
 	else
@@ -66,7 +66,7 @@ int			setup_opencl(t_data *data)
 	cl->program = clCreateProgramWithSource(cl->context, 1
 			, (const char **)&cl->source, NULL, NULL);
 	clBuildProgram(cl->program, 0, NULL, NULL, NULL, NULL);
-	cl->kernel = clCreateKernel(cl->program, get_kernel_name(data), NULL);
+	cl->kernel = clCreateKernel(cl->program, "draw_fractal", NULL);
 	cl->buffer = clCreateBuffer(cl->context, CL_MEM_WRITE_ONLY
 			, sizeof(int) * (data->winsize.width * data->winsize.height), NULL
 			, NULL);
@@ -90,21 +90,25 @@ void		release_opencl(t_data *data)
 void		draw_gpu(t_data *data)
 {
 	t_cl	*cl;
+	int		fract_type;
 
 	cl = &data->cl;
+	fract_type = get_fract_type(data);
 	clSetKernelArg(cl->kernel, 0, sizeof(cl->buffer), &cl->buffer);
-	clSetKernelArg(cl->kernel, 1, sizeof(int), &(data->color_mul));
-	clSetKernelArg(cl->kernel, 2, sizeof(int), &(data->cam.x_off));
-	clSetKernelArg(cl->kernel, 3, sizeof(int), &(data->cam.y_off));
-	clSetKernelArg(cl->kernel, 4, sizeof(double), &(data->cam.x_min));
-	clSetKernelArg(cl->kernel, 5, sizeof(double), &(data->cam.x_max));
-	clSetKernelArg(cl->kernel, 6, sizeof(double), &(data->cam.y_min));
-	clSetKernelArg(cl->kernel, 7, sizeof(double), &(data->cam.y_max));
-	clSetKernelArg(cl->kernel, 8, sizeof(int), &(data->winsize.width));
-	clSetKernelArg(cl->kernel, 9, sizeof(int), &(data->winsize.height));
-	clSetKernelArg(cl->kernel, 10, sizeof(int), &(data->max_iters));
-	clSetKernelArg(cl->kernel, 11, sizeof(double), &(data->motion.x));
-	clSetKernelArg(cl->kernel, 12, sizeof(double), &(data->motion.y));
+	clSetKernelArg(cl->kernel, 1, sizeof(int), &fract_type);
+	clSetKernelArg(cl->kernel, 2, sizeof(int), &(data->winsize.width));
+	clSetKernelArg(cl->kernel, 3, sizeof(int), &(data->winsize.height));
+	clSetKernelArg(cl->kernel, 4, sizeof(int), &(data->cam.x_off));
+	clSetKernelArg(cl->kernel, 5, sizeof(int), &(data->cam.y_off));
+	clSetKernelArg(cl->kernel, 6, sizeof(double), &(data->cam.x_min));
+	clSetKernelArg(cl->kernel, 7, sizeof(double), &(data->cam.x_max));
+	clSetKernelArg(cl->kernel, 8, sizeof(double), &(data->cam.y_min));
+	clSetKernelArg(cl->kernel, 9, sizeof(double), &(data->cam.y_max));
+	clSetKernelArg(cl->kernel, 10, sizeof(double), &(data->motion.x));
+	clSetKernelArg(cl->kernel, 11, sizeof(double), &(data->motion.y));
+	clSetKernelArg(cl->kernel, 12, sizeof(int), &(data->max_iters));
+	clSetKernelArg(cl->kernel, 13, sizeof(int), &(data->sampling));
+	clSetKernelArg(cl->kernel, 14, sizeof(int), &(data->color_mul));
 	clEnqueueNDRangeKernel(cl->queue, cl->kernel, 1, NULL, &cl->work_size, NULL
 			, 0, NULL, NULL);
 	clEnqueueReadBuffer(cl->queue, cl->buffer, CL_FALSE, 0

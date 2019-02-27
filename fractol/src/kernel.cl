@@ -10,7 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int get_fract_color(int iters)
+#define JULIA 0
+#define MANDELBROT 1
+#define MANDELBAR 2
+#define BURNING_SHIP 3
+
+int	get_fract_color(int iters)
 {
 	int colors[] = {
 		0x421e0f, 0x19071a, 0x09012f, 0x040449,
@@ -21,111 +26,128 @@ int get_fract_color(int iters)
 	return (colors[iters % 16]);
 }
 
-__kernel void julia(__global int *data, int color_mul, int x_off, int y_off
-		, double x_min, double x_max, double y_min, double y_max
-		, int width, int height, int max_iters
-		, double motion_x, double motion_y)
+int	fract_bailout(double x, double y, double re, double im, int max_iters)
 {
-	int id = get_global_id(0);
-	double x = (id % width + x_off) * (x_max - x_min) / width + x_min;
-	double y = (id / width + y_off) * (y_max - y_min) / height + y_min;
-	double x_tmp = 0.0;
-	double x2 = x * x;
-	double y2 = y * y;
-	int	iters = 0;
-	while (iters < max_iters && (x2 + y2) < 4)
-	{
-		x_tmp = x;
-		x = x2 - y2 + motion_x;
-		y = 2 * x_tmp * y + motion_y;
-		x2 = x * x;
-		y2 = y * y;
-		iters++;
-	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters) * color_mul;
-}
+	int		iters;
+	double	x2;
+	double	y2;
+	double	x_tmp = 0.0;
 
-__kernel void mandelbrot(__global int *data, int color_mul, int x_off, int y_off
-		, double x_min, double x_max, double y_min, double y_max
-		, int width, int height, int max_iters
-		, double motion_x, double motion_y)
-{
-	int id = get_global_id(0);
-	double re = (id % width + x_off) * (x_max - x_min) / width + x_min;
-	double im = (id / width + y_off) * (y_max - y_min) / height + y_min;
-	double x = 0.0;
-	double y = 0.0;
-	double x_tmp = 0.0;
-	double x2 = 0.0;
-	double y2 = 0.0;
-	int	iters = 0;
+	iters = 0;
 	while (iters < max_iters)
 	{
 		x2 = x * x;
 		y2 = y * y;
 		if (x2 + y2 >= 4)
-			break;
+			break ;
 		x_tmp = x;
 		x = x2 - y2 + re;
 		y = 2 * x_tmp * y + im;
 		iters++;
 	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters) * color_mul;
+	return (iters);
 }
 
-__kernel void mandelbar(__global int *data, int color_mul, int x_off, int y_off
-		, double x_min, double x_max, double y_min, double y_max
-		, int width, int height, int max_iters
-		, double motion_x, double motion_y)
+int	fract_bailout_2(double x, double y, double re, double im, int max_iters)
 {
-	int id = get_global_id(0);
-	double re = (id % width + x_off) * (x_max - x_min) / width + x_min;
-	double im = (id / width + y_off) * (y_max - y_min) / height + y_min;
-	double x = 0.0;
-	double y = 0.0;
-	double x_tmp = 0.0;
-	double x2 = 0.0;
-	double y2 = 0.0;
-	int	iters = 0;
+	int		iters;
+	double	x2;
+	double	y2;
+	double	x_tmp = 0.0;
+
+	iters = 0;
 	while (iters < max_iters)
 	{
 		x2 = x * x;
 		y2 = y * y;
 		if (x2 + y2 >= 4)
-			break;
-		x_tmp = x;
-		x = x2 - y2 + re;
-		y = -2 * x_tmp * y + im;
-		iters++;
-	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters) * color_mul;
-}
-
-__kernel void burning_ship(__global int *data, int color_mul
-		, int x_off, int y_off
-		, double x_min, double x_max, double y_min, double y_max
-		, int width, int height, int max_iters
-		, double motion_x, double motion_y)
-{
-	int id = get_global_id(0);
-	double re = (id % width + x_off) * (x_max - x_min) / width + x_min;
-	double im = (id / width + y_off) * (y_max - y_min) / height + y_min;
-	double x = 0.0;
-	double y = 0.0;
-	double x_tmp = 0.0;
-	double x2 = 0.0;
-	double y2 = 0.0;
-	int	iters = 0;
-	while (iters < max_iters)
-	{
-		x2 = x * x;
-		y2 = y * y;
-		if (x2 + y2 >= 4)
-			break;
+			break ;
 		x_tmp = x;
 		x = fabs(x2 - y2 + re);
 		y = fabs(2 * x_tmp * y) + im;
 		iters++;
 	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters) * color_mul;
+	return (iters);
+}
+
+int	fract_inv_bailout(double x, double y, double re, double im, int max_iters)
+{
+	int		iters;
+	double	x2;
+	double	y2;
+	double	x_tmp = 0.0;
+
+	iters = 0;
+	while (iters < max_iters)
+	{
+		x2 = x * x;
+		y2 = y * y;
+		if (x2 + y2 >= 4)
+			break ;
+		x_tmp = x;
+		x = x2 - y2 + re;
+		y = -2 * x_tmp * y + im;
+		iters++;
+	}
+	return (iters);
+}
+
+int	compute_ssaa(int global_id, int type, int width, int height
+		, int x_off, int y_off , double x_min, double x_max, double y_min, double y_max
+		, double motion_x, double motion_y, int max_iters, int sampling)
+{
+	int		idx;
+	double	re;
+	double	im;
+	int		color;
+	int		r_total;
+	int		g_total;
+	int		b_total;
+	int		iters;
+
+	idx = 0;
+	r_total = 0;
+	g_total = 0;
+	b_total = 0;
+	while (idx < sampling * sampling)
+	{
+		re = ((global_id % width) * sampling + (idx % sampling) + x_off) * (x_max - x_min) / (width * sampling) + x_min;
+		im = ((global_id / width) * sampling + (idx / sampling) + y_off) * (y_max - y_min) / (height * sampling) + y_min;
+		switch (type)
+		{
+			case JULIA:
+				iters = fract_bailout(re, im, motion_x, motion_y, max_iters);
+				break ;
+			case MANDELBROT:
+				iters = fract_bailout(0, 0, re, im, max_iters);
+				break ;
+			case MANDELBAR:
+				iters = fract_inv_bailout(0, 0, re, im, max_iters);
+				break ;
+			case BURNING_SHIP:
+				iters = fract_bailout_2(0, 0, re, im, max_iters);
+				break ;
+		}
+		color = (iters == max_iters) ? 0 : get_fract_color(iters);
+		r_total += (color >> 16) & 0xFF;
+		g_total += (color >> 8) & 0xFF;
+		b_total += color & 0xFF;
+		idx++;
+	}
+	r_total /= idx;
+	g_total /= idx;
+	b_total /= idx;
+	return ((r_total << 16) | (g_total << 8) | b_total);
+}
+
+__kernel void draw_fractal(__global int *data, int type, int width, int height
+		, int x_off, int y_off, double x_min, double x_max, double y_min, double y_max
+		, double motion_x, double motion_y, int max_iters, int sampling, int color_mul)
+{
+	int	id;
+
+	id = get_global_id(0);
+	data[id] = compute_ssaa(id, type, width, height, x_off, y_off
+			, x_min, x_max, y_min, y_max, motion_x, motion_y
+			, max_iters, sampling) * color_mul;
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/26 11:58:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/27 15:13:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ struct	s_data
 	int				max_iters;
 	t_keys			keys;
 	t_motion		motion;
+	int				sampling;
 	int				preview_idx;
 	t_mlximg		previews[FRACT_PREVIEWS];
 	t_thread		threads[FRACT_MAX_THREADS];
