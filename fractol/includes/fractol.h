@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 09:48:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:44:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,9 @@ void	init_thread_values(t_data *data);
 int		setup_opencl(t_data *data);
 void	release_opencl(t_data *data);
 
-void	draw_gpu(t_data *data);
 void	draw_threads(t_data *data);
+void	draw_gpu(t_data *data);
+void	draw_network(t_data *data);
 
 int		fract_bailout(t_point point, double re, double im, int max_iters);
 int		fract_bailout_2(t_point point, double re, double im, int max_iters);

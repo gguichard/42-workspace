@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:43:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:32:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 17:04:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 int	init_server(t_server *srv)
 {
-	srv->fd = socket(PF_INET, SOCK_STREAM, 0);
+	srv->fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (srv->fd < 0)
 		return (-1);
 	ft_printf("Socket created with fd %d\n", srv->fd);
@@ -43,5 +43,5 @@ int	accept_client(t_server *srv)
 	if (socket < 0)
 		return (-1);
 	ft_printf("Client connected\n");
-	return (0);
+	return (socket);
 }

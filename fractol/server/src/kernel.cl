@@ -15,6 +15,17 @@
 #define MANDELBAR 2
 #define BURNING_SHIP 3
 
+int	get_fract_color(int iters)
+{
+	int colors[] = {
+		0x421e0f, 0x19071a, 0x09012f, 0x040449,
+		0x000764, 0x022c8a, 0x1852b1, 0x397dd1,
+		0x86b5e5, 0xd3ecf8, 0xf1e9bf, 0xf8c95f,
+		0xffaa00, 0xcc8000, 0x995700, 0x6a3403
+	};
+	return (colors[iters % 16]);
+}
+
 int	fract_bailout(double x, double y, double re, double im, int max_iters)
 {
 	int		iters;
@@ -108,5 +119,5 @@ __kernel void draw_fractal(__global int *data, int type, int width, int height
 			iters = fract_bailout_2(0, 0, re, im, max_iters);
 			break ;
 	}
-	return ((iters == max_iters) ? 0 : get_fract_color(iters));
+	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
 }

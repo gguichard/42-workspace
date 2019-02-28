@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 09:49:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:44:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int			main(int argc, char **argv)
 	ret = init_fractol(&data, argc, argv);
 	if (ret)
 	{
+		data.draw_fn = draw_network;// TODO: remove
 		data.draw_fn(&data);
 		mlx_expose_hook(data.lib.win_ptr, expose_hook, &data);
 		mlx_loop_hook(data.lib.mlx_ptr, loop_hook, &data);

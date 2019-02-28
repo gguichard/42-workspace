@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:26:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:38:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 17:26:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,24 @@ static char	*read_sourcecode(void)
 	return (source);
 }
 
+static void	write_in_chunks(int client, t_data *data
+		, const unsigned char *buffer)
+{
+	int	size;
+	int	offset;
+	int	len;
+
+	size = data->width * data->height * sizeof(int);
+	offset = 0;
+	while (size > 0)
+	{
+		len = ft_min(4096, size);
+		write(client, buffer + offset, len);
+		size -= len;
+		offset += len;
+	}
+}
+
 static void	client_loop(int client, const char *source)
 {
 	t_data	data;
@@ -62,9 +80,8 @@ static void	client_loop(int client, const char *source)
 			break ;
 		}
 		compute_fractal(&data, source, buffer);
-		if (send(client, buffer, data.width * data.height * sizeof(int)
-					, MSG_DONTWAIT) < 0)
-			ft_dprintf(2, "error: %s\n", strerror(errno));
+		write_in_chunks(client, &data, (unsigned char *)buffer);
+		ft_printf("Data sent!\n");
 		free(buffer);
 	}
 	close(client);

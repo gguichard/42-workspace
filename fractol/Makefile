@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/02/12 09:02:38 by gguichar         ###   ########.fr        #
+#    Updated: 2019/02/28 16:05:20 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ key_hooks.c		\
 hooks_utils.c	\
 draw.c			\
 draw_gpu.c		\
+draw_network.c	\
 fractals.c		\
 fract_bailouts.c
 
