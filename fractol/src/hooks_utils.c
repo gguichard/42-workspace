@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 09:01:12 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 09:47:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 12:01:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	redraw_all(t_data *data)
 void	reset_draw(t_data *data)
 {
 	data->not_epileptic = 0;
+	data->sampling = 1;
 	data->color_mul = 1;
 	data->cam.x_off = 0;
 	data->cam.y_off = 0;
