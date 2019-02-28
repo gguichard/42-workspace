@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:58:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 23:24:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ struct	s_data
 	int		max_iters;
 };
 
+char	*read_sourcecode(void);
 void	compute_fractal(t_data *data, const char *source, int *buffer);
 
 #endif

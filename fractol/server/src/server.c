@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:43:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 17:04:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 23:25:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ int	accept_client(t_server *srv)
 	socket = accept(srv->fd, (struct sockaddr *)&addr, (socklen_t *)&socklen);
 	if (socket < 0)
 		return (-1);
-	ft_printf("Client connected\n");
+	ft_printf("New client connected\n");
 	return (socket);
 }

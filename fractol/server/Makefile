@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/02/28 15:25:21 by gguichar         ###   ########.fr        #
+#    Updated: 2019/02/28 23:25:10 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ SRC_DIR	=	src
 SRC		=		\
 main.c			\
 server.c		\
-compute.c
+compute.c		\
+utils.c
 
 OBJ_DIR	=	.obj
 OBJ		=	$(SRC:.c=.o)
