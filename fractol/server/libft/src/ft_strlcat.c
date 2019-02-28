@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:37:21 by gguichar         ###   ########.fr       */
+/*   Created: 2018/08/07 03:38:20 by gguichar          #+#    #+#             */
+/*   Updated: 2018/08/07 16:31:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#include "libft.h"
 
-# define OPENCL_SOURCE 8192
-
-typedef struct s_data	t_data;
-
-struct	s_data
+size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {
-	int		type;
-	int		width;
-	int		height;
-	int		x_off;
-	int		y_off;
-	double	x_min;
-	double	x_max;
-	double	y_min;
-	double	y_max;
-	double	motion_x;
-	double	motion_y;
-	int		max_iters;
-	int		sampling;
-};
+	size_t	d_len;
+	size_t	s_len;
 
-void	compute_fractal(t_data *data, const char *source, int *buffer);
-
-#endif
+	d_len = ft_strlen(dest);
+	s_len = ft_strlen(src);
+	if (d_len >= size)
+		return (s_len + size);
+	size = ft_min(s_len, size - d_len - 1);
+	if (size > 0)
+		ft_memcpy(dest + d_len, src, size);
+	dest[d_len + size] = '\0';
+	return (s_len + d_len);
+}

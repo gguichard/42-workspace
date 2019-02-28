@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:37:21 by gguichar         ###   ########.fr       */
+/*   Created: 2019/02/28 15:25:49 by gguichar          #+#    #+#             */
+/*   Updated: 2019/02/28 16:37:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef SERVER_H
+# define SERVER_H
 
-# define OPENCL_SOURCE 8192
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <netinet/ip.h>
+# include "fractol.h"
 
-typedef struct s_data	t_data;
+# define SERVER_PORT 1103
 
-struct	s_data
+typedef struct s_server	t_server;
+
+struct s_server
 {
-	int		type;
-	int		width;
-	int		height;
-	int		x_off;
-	int		y_off;
-	double	x_min;
-	double	x_max;
-	double	y_min;
-	double	y_max;
-	double	motion_x;
-	double	motion_y;
-	int		max_iters;
-	int		sampling;
+	int					fd;
+	struct sockaddr_in	addr;
 };
 
-void	compute_fractal(t_data *data, const char *source, int *buffer);
+int	init_server(t_server *srv);
+int	accept_client(t_server *srv);
 
 #endif

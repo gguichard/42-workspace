@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:04:16 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 14:41:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:39:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ static void	run_kernel(t_data *data, t_cl *cl, int *buffer)
 	clEnqueueNDRangeKernel(cl->queue, cl->kernel, 1, NULL, &cl->work_size, NULL
 			, 0, NULL, NULL);
 	clEnqueueReadBuffer(cl->queue, cl->buffer, CL_FALSE, 0
-			, sizeof(int) * (data->width * data->height), buffer, 0, NULL
+			, sizeof(int) * data->width * data->height, buffer, 0, NULL
 			, NULL);
 	clFinish(cl->queue);
 }
 
-void		compute_fractal(t_data *data, char *source, int *buffer)
+void		compute_fractal(t_data *data, const char *source, int *buffer)
 {
 	t_cl	cl;
 
@@ -50,7 +50,7 @@ void		compute_fractal(t_data *data, char *source, int *buffer)
 	clBuildProgram(cl.program, 0, NULL, NULL, NULL, NULL);
 	cl.kernel = clCreateKernel(cl.program, "draw_fractal", NULL);
 	cl.buffer = clCreateBuffer(cl.context, CL_MEM_WRITE_ONLY
-			, sizeof(int) * (data->width * data->height), NULL
+			, sizeof(int) * data->width * data->height, NULL
 			, NULL);
 	run_kernel(data, &cl, buffer);
 	clReleaseKernel(cl.kernel);

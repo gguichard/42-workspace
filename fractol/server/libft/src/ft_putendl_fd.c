@@ -1,39 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:37:21 by gguichar         ###   ########.fr       */
+/*   Created: 2018/08/10 03:44:29 by gguichar          #+#    #+#             */
+/*   Updated: 2018/09/03 17:29:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#include <unistd.h>
+#include "libft.h"
 
-# define OPENCL_SOURCE 8192
-
-typedef struct s_data	t_data;
-
-struct	s_data
+void	ft_putendl_fd(char const *s, int fd)
 {
-	int		type;
-	int		width;
-	int		height;
-	int		x_off;
-	int		y_off;
-	double	x_min;
-	double	x_max;
-	double	y_min;
-	double	y_max;
-	double	motion_x;
-	double	motion_y;
-	int		max_iters;
-	int		sampling;
-};
-
-void	compute_fractal(t_data *data, const char *source, int *buffer);
-
-#endif
+	if (s != NULL)
+		write(fd, s, ft_strlen(s));
+	write(fd, "\n", 1);
+}

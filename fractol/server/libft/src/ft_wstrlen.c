@@ -1,39 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   ft_wstrlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:37:21 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/10 10:32:24 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/10 10:34:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#include "libft.h"
 
-# define OPENCL_SOURCE 8192
-
-typedef struct s_data	t_data;
-
-struct	s_data
+size_t	ft_wstrlen(wchar_t *str)
 {
-	int		type;
-	int		width;
-	int		height;
-	int		x_off;
-	int		y_off;
-	double	x_min;
-	double	x_max;
-	double	y_min;
-	double	y_max;
-	double	motion_x;
-	double	motion_y;
-	int		max_iters;
-	int		sampling;
-};
+	size_t	len;
 
-void	compute_fractal(t_data *data, const char *source, int *buffer);
-
-#endif
+	len = 0;
+	while (*str != L'\0')
+	{
+		len += ft_wcharlen(*str);
+		str++;
+	}
+	return (len);
+}

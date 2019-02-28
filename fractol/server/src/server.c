@@ -6,36 +6,42 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:43:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 14:57:28 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 16:32:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netinet/ip.h>
-#include <errno.h>
+#include <unistd.h>
 #include "libft.h"
+#include "fractol.h"
+#include "server.h"
 
-int	init_server()
+int	init_server(t_server *srv)
 {
-	int					fd;
-	struct sockaddr_in	addr;
+	srv->fd = socket(PF_INET, SOCK_STREAM, 0);
+	if (srv->fd < 0)
+		return (-1);
+	ft_printf("Socket created with fd %d\n", srv->fd);
+	srv->addr.sin_family = AF_INET;
+	srv->addr.sin_addr.s_addr = htonl(INADDR_ANY);
+	srv->addr.sin_port = htons(SERVER_PORT);
+	if (bind(srv->fd, (struct sockaddr *)&srv->addr, sizeof(srv->addr)) < 0)
+		return (-1);
+	ft_printf("Server binded on port %d\n", SERVER_PORT);
+	if (listen(srv->fd, 1))
+		return (-1);
+	ft_printf("Waiting for connections...\n");
+	return (0);
+}
 
-	fd = socket(PF_INET, SOCK_STREAM, 0);
-	if (fd < 0)
-	{
-		ft_dprintf(2, "fractol: socket: %s\n", strerror(errno));
-		return (0);
-	}
-	ft_memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	addr.sin_port = htons(PORT);
-	if (bind(fd, &addr, sizeof(addr)) < 0)
-	{
-		close(fd);
-		ft_dprintf(2, "fractol: bind: %s\n", strerror(errno));
-		return (0);
-	}
-	return (1);
+int	accept_client(t_server *srv)
+{
+	int					socket;
+	struct sockaddr_in	addr;
+	int					socklen;
+
+	socket = accept(srv->fd, (struct sockaddr *)&addr, (socklen_t *)&socklen);
+	if (socket < 0)
+		return (-1);
+	ft_printf("Client connected\n");
+	return (0);
 }

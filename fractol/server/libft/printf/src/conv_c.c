@@ -1,39 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   conv_c.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:37:21 by gguichar         ###   ########.fr       */
+/*   Created: 2018/12/09 10:26:35 by gguichar          #+#    #+#             */
+/*   Updated: 2018/12/10 10:15:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#include "printf.h"
 
-# define OPENCL_SOURCE 8192
-
-typedef struct s_data	t_data;
-
-struct	s_data
+void	pf_conv_c(t_pf *pf)
 {
-	int		type;
-	int		width;
-	int		height;
-	int		x_off;
-	int		y_off;
-	double	x_min;
-	double	x_max;
-	double	y_min;
-	double	y_max;
-	double	motion_x;
-	double	motion_y;
-	int		max_iters;
-	int		sampling;
-};
-
-void	compute_fractal(t_data *data, const char *source, int *buffer);
-
-#endif
+	pf->w_field -= 1;
+	if (pf->w_field > 0 && !(pf->flags & MINUS_FLAG))
+		buf_pad(pf);
+	if (!(pf->flags & L_MODIFIER))
+		buf_char(pf, (char)va_arg(pf->ap, int), 1);
+	else
+		pf_write_utf8(pf, va_arg(pf->ap, wint_t));
+	if (pf->w_field > 0 && pf->flags & MINUS_FLAG)
+		buf_pad(pf);
+}

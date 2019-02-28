@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:37:21 by gguichar         ###   ########.fr       */
+/*   Created: 2018/08/09 20:52:09 by gguichar          #+#    #+#             */
+/*   Updated: 2018/08/15 21:49:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#include <stdlib.h>
+#include "libft.h"
 
-# define OPENCL_SOURCE 8192
-
-typedef struct s_data	t_data;
-
-struct	s_data
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	int		type;
-	int		width;
-	int		height;
-	int		x_off;
-	int		y_off;
-	double	x_min;
-	double	x_max;
-	double	y_min;
-	double	y_max;
-	double	motion_x;
-	double	motion_y;
-	int		max_iters;
-	int		sampling;
-};
+	char	*str;
+	size_t	i;
 
-void	compute_fractal(t_data *data, const char *source, int *buffer);
-
-#endif
+	if (s == NULL || !(str = (char *)malloc(sizeof(*str) * (len + 1))))
+		return (NULL);
+	str[len] = '\0';
+	i = 0;
+	s += start;
+	while (i < len)
+	{
+		str[i] = *s++;
+		i++;
+	}
+	return (str);
+}

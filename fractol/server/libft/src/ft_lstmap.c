@@ -1,39 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:37:21 by gguichar         ###   ########.fr       */
+/*   Created: 2018/08/10 13:44:54 by gguichar          #+#    #+#             */
+/*   Updated: 2018/11/29 17:09:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#include "libft.h"
 
-# define OPENCL_SOURCE 8192
-
-typedef struct s_data	t_data;
-
-struct	s_data
+t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	int		type;
-	int		width;
-	int		height;
-	int		x_off;
-	int		y_off;
-	double	x_min;
-	double	x_max;
-	double	y_min;
-	double	y_max;
-	double	motion_x;
-	double	motion_y;
-	int		max_iters;
-	int		sampling;
-};
+	t_list	*new;
+	t_list	*offset;
 
-void	compute_fractal(t_data *data, const char *source, int *buffer);
-
-#endif
+	if (lst == NULL || f == NULL)
+		return (NULL);
+	new = f(lst);
+	if (new == NULL)
+		return (NULL);
+	offset = new;
+	while (lst->next != NULL)
+	{
+		lst = lst->next;
+		offset->next = f(lst);
+		if (offset->next != NULL)
+			offset = offset->next;
+	}
+	return (new);
+}

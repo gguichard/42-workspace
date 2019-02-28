@@ -5,53 +5,37 @@
 #                                                     +:+ +:+         +:+      #
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/02/28 15:25:21 by gguichar         ###   ########.fr        #
+#    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
+#    Updated: 2018/12/20 21:14:39 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	fractol_server
+NAME	= 	options.a
 
-SRC_DIR	=	src
-SRC		=		\
-main.c			\
-server.c		\
-compute.c
+SRC		= 	parsing.c utils.c
+SRC_DIR	= 	src
 
-OBJ_DIR	=	.obj
-OBJ		=	$(SRC:.c=.o)
-DEP		=	$(OBJ:.o=.d)
+OBJ		= 	$(SRC:.c=.o)
+OBJ_DIR	= 	.obj
 
-INC_DIR	=	includes
-
-CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -O2 -I libft/includes -I $(INC_DIR)
-LIBS	=	-L /usr/local/lib -framework OpenCL
-
-LIBFT	=	libft/libft.a
+CC		= 	gcc
+CFLAGS	= 	-Wall -Wextra -Werror -O2 -I ../includes
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(addprefix $(OBJ_DIR)/,$(OBJ))
-	$(CC) $(LIBS) -o $@ $^
+$(NAME): $(addprefix $(OBJ_DIR)/,$(OBJ))
+	ar rcs $@ $^
 
-$(LIBFT):
-	$(MAKE) -C libft
-
--include $(addprefix $(OBJ_DIR)/,$(DEP))
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -MMD -o $@ -c $<
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c includes/options.h  | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	/bin/mkdir $@
 
 clean:
-	$(MAKE) -C libft clean
 	/bin/rm -rf $(OBJ_DIR)
 
 fclean: clean
-	$(MAKE) -C libft fclean
 	/bin/rm -f $(NAME)
 
 re: fclean all
