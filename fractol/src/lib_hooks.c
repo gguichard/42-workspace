@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/02 11:53:46 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/26 11:58:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 09:54:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,30 @@ static void	draw_previews(t_data *data)
 	draw_selected_preview(data);
 }
 
-int			expose_hook(t_data *data)
+static void	draw_info(t_data *data)
 {
 	char	*str;
 
+	ft_asprintf(&str, "SSAAx%d", data->sampling);
+	if (str != NULL)
+	{
+		mlx_string_put(data->lib.mlx_ptr, data->lib.win_ptr
+				, 50, data->winsize.height - 80, 0xFFFFFF
+				, str);
+		free(str);
+	}
+	ft_asprintf(&str, "Iterations: %d", data->max_iters);
+	if (str != NULL)
+	{
+		mlx_string_put(data->lib.mlx_ptr, data->lib.win_ptr
+				, 50, data->winsize.height - 50, 0xFFFFFF
+				, str);
+		free(str);
+	}
+}
+
+int			expose_hook(t_data *data)
+{
 	mlx_put_image_to_window(data->lib.mlx_ptr
 			, data->lib.win_ptr
 			, data->lib.img_ptr
@@ -50,14 +70,7 @@ int			expose_hook(t_data *data)
 		mlx_string_put(data->lib.mlx_ptr, data->lib.win_ptr
 				, data->winsize.width - FRACT_PREVIEWS_WIDTH + 20, 25, 0xFFFFFF
 				, "Press TAB to open HUD");
-	ft_asprintf(&str, "Iterations: %d", data->max_iters);
-	if (str != NULL)
-	{
-		mlx_string_put(data->lib.mlx_ptr, data->lib.win_ptr
-				, 50, data->winsize.height - 50, 0xFFFFFF
-				, str);
-		free(str);
-	}
+	draw_info(data);
 	return (0);
 }
 

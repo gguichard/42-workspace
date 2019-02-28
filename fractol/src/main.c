@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/27 15:30:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 09:49:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ static int	setup_opts(t_data *data, int argc, char **argv)
 
 static int	init_fractol(t_data *data, int argc, char **argv)
 {
-	data->opts = parse_opts(argc, argv, "gw:h:");
-	if (data->opts == NULL)
+	if ((data->opts = parse_opts(argc, argv, "g")) == NULL)
 	{
 		ft_dprintf(2, "%s: Unexpected error\n", argv[0]);
 		return (0);
@@ -77,7 +76,7 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 		show_help(data->opts, argv);
 		return (0);
 	}
-	data->sampling = 2;
+	data->sampling = 1;
 	data->color_mul = 1;
 	data->keys.show_hud = 1;
 	data->max_iters = 100;

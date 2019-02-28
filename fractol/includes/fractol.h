@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/27 15:13:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 09:48:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int		init_previews(t_data *data);
 void	redraw_all(t_data *data);
 void	reset_draw(t_data *data);
 void	change_fract_type(t_data *data, int idx);
+void	increase_sampling(t_data *data);
 
 int		exit_lib(t_data *data);
 int		loop_hook(t_data *data);

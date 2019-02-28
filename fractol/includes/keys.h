@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 02:37:50 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/26 12:03:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 09:38:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define KEY_PAGEUP 116
 # define KEY_PAGEDOWN 121
 # define KEY_SHIFT 257
+# define KEY_A 0
 
 typedef struct	s_keys
 {

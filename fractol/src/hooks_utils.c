@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 09:01:12 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/26 12:00:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 09:47:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,12 @@ void	change_fract_type(t_data *data, int idx)
 	}
 	data->preview_idx = idx;
 	reset_draw(data);
+}
+
+void	increase_sampling(t_data *data)
+{
+	data->sampling *= 2;
+	if (data->sampling > 4)
+		data->sampling = 1;
+	redraw_all(data);
 }

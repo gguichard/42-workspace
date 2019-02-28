@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 03:29:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/26 12:03:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 09:48:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int			keypress_hook(int keycode, t_data *data)
 		data->keys.y_move = (keycode == KEY_ARROWUP) ? -10 : 10;
 	else if (keycode == KEY_SHIFT)
 		data->not_epileptic = !data->not_epileptic;
+	else if (keycode == KEY_A)
+		increase_sampling(data);
 	else if (keycode == KEY_TAB)
 	{
 		data->keys.show_hud = !data->keys.show_hud;

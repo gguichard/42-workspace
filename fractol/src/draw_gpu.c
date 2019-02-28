@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/27 15:35:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/02/28 09:54:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,30 +89,29 @@ void		release_opencl(t_data *data)
 
 void		draw_gpu(t_data *data)
 {
-	t_cl	*cl;
 	int		fract_type;
 
-	cl = &data->cl;
 	fract_type = get_fract_type(data);
-	clSetKernelArg(cl->kernel, 0, sizeof(cl->buffer), &cl->buffer);
-	clSetKernelArg(cl->kernel, 1, sizeof(int), &fract_type);
-	clSetKernelArg(cl->kernel, 2, sizeof(int), &(data->winsize.width));
-	clSetKernelArg(cl->kernel, 3, sizeof(int), &(data->winsize.height));
-	clSetKernelArg(cl->kernel, 4, sizeof(int), &(data->cam.x_off));
-	clSetKernelArg(cl->kernel, 5, sizeof(int), &(data->cam.y_off));
-	clSetKernelArg(cl->kernel, 6, sizeof(double), &(data->cam.x_min));
-	clSetKernelArg(cl->kernel, 7, sizeof(double), &(data->cam.x_max));
-	clSetKernelArg(cl->kernel, 8, sizeof(double), &(data->cam.y_min));
-	clSetKernelArg(cl->kernel, 9, sizeof(double), &(data->cam.y_max));
-	clSetKernelArg(cl->kernel, 10, sizeof(double), &(data->motion.x));
-	clSetKernelArg(cl->kernel, 11, sizeof(double), &(data->motion.y));
-	clSetKernelArg(cl->kernel, 12, sizeof(int), &(data->max_iters));
-	clSetKernelArg(cl->kernel, 13, sizeof(int), &(data->sampling));
-	clSetKernelArg(cl->kernel, 14, sizeof(int), &(data->color_mul));
-	clEnqueueNDRangeKernel(cl->queue, cl->kernel, 1, NULL, &cl->work_size, NULL
-			, 0, NULL, NULL);
-	clEnqueueReadBuffer(cl->queue, cl->buffer, CL_FALSE, 0
+	clSetKernelArg(data->cl.kernel, 0, sizeof(data->cl.buffer)
+			, &data->cl.buffer);
+	clSetKernelArg(data->cl.kernel, 1, sizeof(int), &fract_type);
+	clSetKernelArg(data->cl.kernel, 2, sizeof(int), &(data->winsize.width));
+	clSetKernelArg(data->cl.kernel, 3, sizeof(int), &(data->winsize.height));
+	clSetKernelArg(data->cl.kernel, 4, sizeof(int), &(data->cam.x_off));
+	clSetKernelArg(data->cl.kernel, 5, sizeof(int), &(data->cam.y_off));
+	clSetKernelArg(data->cl.kernel, 6, sizeof(double), &(data->cam.x_min));
+	clSetKernelArg(data->cl.kernel, 7, sizeof(double), &(data->cam.x_max));
+	clSetKernelArg(data->cl.kernel, 8, sizeof(double), &(data->cam.y_min));
+	clSetKernelArg(data->cl.kernel, 9, sizeof(double), &(data->cam.y_max));
+	clSetKernelArg(data->cl.kernel, 10, sizeof(double), &(data->motion.x));
+	clSetKernelArg(data->cl.kernel, 11, sizeof(double), &(data->motion.y));
+	clSetKernelArg(data->cl.kernel, 12, sizeof(int), &(data->max_iters));
+	clSetKernelArg(data->cl.kernel, 13, sizeof(int), &(data->sampling));
+	clSetKernelArg(data->cl.kernel, 14, sizeof(int), &(data->color_mul));
+	clEnqueueNDRangeKernel(data->cl.queue, data->cl.kernel, 1, NULL
+			, &data->cl.work_size, NULL, 0, NULL, NULL);
+	clEnqueueReadBuffer(data->cl.queue, data->cl.buffer, CL_FALSE, 0
 			, sizeof(int) * (data->winsize.width * data->winsize.height)
 			, data->lib.img_data, 0, NULL, NULL);
-	clFinish(cl->queue);
+	clFinish(data->cl.queue);
 }
