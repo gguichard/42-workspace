@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/02/28 23:25:10 by gguichar         ###   ########.fr        #
+#    Updated: 2019/03/01 22:32:48 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC		=		\
 main.c			\
 server.c		\
 compute.c		\
+compress.c		\
 utils.c
 
 OBJ_DIR	=	.obj

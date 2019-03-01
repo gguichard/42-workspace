@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:26:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 23:31:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/01 22:56:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,11 @@
 #include "fractol.h"
 #include "server.h"
 
-static void	write_in_chunks(int client, t_data *data
-		, const unsigned char *buffer)
+static void	write_in_chunks(int client, const unsigned char *buffer, int size)
 {
-	int	size;
 	int	offset;
 	int	len;
 
-	size = data->width * data->height * sizeof(int);
 	offset = 0;
 	while (size > 0)
 	{
@@ -33,6 +30,26 @@ static void	write_in_chunks(int client, t_data *data
 		size -= len;
 		offset += len;
 	}
+}
+
+static void	compute_n_compress(const char *source, int client, t_data *data
+		, int *buffer)
+{
+	int	*new_buffer;
+	int	new_size;
+
+	compute_fractal(data, source, buffer);
+	new_buffer = rle_compress(buffer, data->width * data->height, &new_size);
+	if (new_buffer == NULL)
+	{
+		ft_dprintf(2, "error: Unable to compress data\n");
+		return ;
+	}
+	write(client, &new_size, sizeof(int));
+	write_in_chunks(client, (unsigned char *)new_buffer
+			, new_size * sizeof(int));
+	free(new_buffer);
+	ft_printf("Data sent (size = %d bytes)!\n", new_size * sizeof(int));
 }
 
 static void	client_loop(int client, const char *source)
@@ -54,9 +71,7 @@ static void	client_loop(int client, const char *source)
 			ft_dprintf(2, "error: Unexpected error\n");
 			break ;
 		}
-		compute_fractal(&data, source, buffer);
-		write_in_chunks(client, &data, (unsigned char *)buffer);
-		ft_printf("Data sent!\n");
+		compute_n_compress(source, client, &data, buffer);
 		free(buffer);
 	}
 	ft_printf("Client connection closed\n");

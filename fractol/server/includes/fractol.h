@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 23:24:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/01 22:40:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ struct	s_data
 
 char	*read_sourcecode(void);
 void	compute_fractal(t_data *data, const char *source, int *buffer);
+int		*rle_compress(int *buffer, int size, int *new_size);
 
 #endif
