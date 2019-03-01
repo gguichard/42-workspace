@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 23:33:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/01 22:56:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,26 @@
 #include "fractol.h"
 #include "network.h"
 
-static int	get_fract_type(t_data *data)
+static void	init_netdata(t_data *data, t_netdata *netdata)
 {
+	netdata->type = 0;
 	if (data->fract_fn == mandelbrot)
-		return (1);
+		netdata->type = 1;
 	else if (data->fract_fn == mandelbar)
-		return (2);
+		netdata->type = 2;
 	else if (data->fract_fn == burning_ship)
-		return (3);
-	else
-		return (0);
+		netdata->type = 3;
+	netdata->width = data->winsize.width;
+	netdata->height = data->winsize.height;
+	netdata->x_off = data->cam.x_off;
+	netdata->y_off = data->cam.y_off;
+	netdata->x_min = data->cam.x_min;
+	netdata->x_max = data->cam.x_max;
+	netdata->y_min = data->cam.y_min;
+	netdata->y_max = data->cam.y_max;
+	netdata->motion_x = data->motion.x;
+	netdata->motion_y = data->motion.y;
+	netdata->max_iters = data->max_iters;
 }
 
 static void	read_chunks(int sock, unsigned char *buff, size_t expected)
@@ -44,20 +54,30 @@ static void	read_chunks(int sock, unsigned char *buff, size_t expected)
 	}
 }
 
-static void	init_netdata(t_data *data, t_netdata *netdata)
+static void	read_response(t_data *data, int sock)
 {
-	netdata->type = get_fract_type(data);
-	netdata->width = data->winsize.width;
-	netdata->height = data->winsize.height;
-	netdata->x_off = data->cam.x_off;
-	netdata->y_off = data->cam.y_off;
-	netdata->x_min = data->cam.x_min;
-	netdata->x_max = data->cam.x_max;
-	netdata->y_min = data->cam.y_min;
-	netdata->y_max = data->cam.y_max;
-	netdata->motion_x = data->motion.x;
-	netdata->motion_y = data->motion.y;
-	netdata->max_iters = data->max_iters;
+	int	size;
+	int	*buff;
+	int	index;
+	int	buff_index;
+
+	if (recv(sock, &size, sizeof(int), 0) > 0)
+	{
+		buff = (int *)malloc(size * sizeof(int));
+		read_chunks(sock, (unsigned char *)buff, size * sizeof(int));
+		index = 0;
+		buff_index = 0;
+		while (buff_index < size)
+		{
+			while (buff[buff_index] > 0)
+			{
+				data->lib.img_data[index] = buff[buff_index + 1];
+				buff[buff_index] -= 1;
+				index++;
+			}
+			buff_index += 2;
+		}
+	}
 }
 
 void		draw_network(t_data *data)
@@ -79,6 +99,5 @@ void		draw_network(t_data *data)
 	}
 	init_netdata(data, &netdata);
 	write(sock, &netdata, sizeof(t_netdata));
-	read_chunks(sock, (unsigned char *)data->lib.img_data
-			, sizeof(int) * netdata.width * netdata.height);
+	read_response(data, sock);
 }
