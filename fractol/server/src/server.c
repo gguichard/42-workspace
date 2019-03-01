@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:43:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 23:25:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/01 23:59:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	accept_client(t_server *srv)
 	struct sockaddr_in	addr;
 	int					socklen;
 
+	socklen = sizeof(addr);
 	socket = accept(srv->fd, (struct sockaddr *)&addr, (socklen_t *)&socklen);
 	if (socket < 0)
 		return (-1);
