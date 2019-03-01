@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/01 22:56:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/01 23:00:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static void	read_response(t_data *data, int sock)
 	if (recv(sock, &size, sizeof(int), 0) > 0)
 	{
 		buff = (int *)malloc(size * sizeof(int));
+		if (buff == NULL)
+			return ;
 		read_chunks(sock, (unsigned char *)buff, size * sizeof(int));
 		index = 0;
 		buff_index = 0;
@@ -77,6 +79,7 @@ static void	read_response(t_data *data, int sock)
 			}
 			buff_index += 2;
 		}
+		free(buff);
 	}
 }
 
