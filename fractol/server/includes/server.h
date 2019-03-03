@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 15:25:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:37:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 16:07:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@
 
 typedef struct s_server	t_server;
 
-struct s_server
+struct	s_server
 {
 	int					fd;
 	struct sockaddr_in	addr;
 };
 
-int	init_server(t_server *srv);
-int	accept_client(t_server *srv);
+int		init_server(t_server *srv);
+int		accept_client(t_server *srv);
 
 #endif
