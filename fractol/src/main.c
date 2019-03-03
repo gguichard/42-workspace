@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 19:18:56 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 19:40:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,35 +28,6 @@ static void	show_help(t_opts *opts, char **argv)
 	ft_printf("  -g\tEnable GPU rendering\n");
 	ft_printf("  -n\tNetwork computing\n");
 	ft_printf("  -h\tShow this help\n");
-}
-
-static int	setup_fractal_type(t_data *data, int argc, char **argv)
-{
-	if (data->opts->index < argc)
-	{
-		if (ft_strequ("Mandelbrot", argv[data->opts->index]))
-		{
-			data->fract_fn = mandelbrot;
-			data->fract_type = MANDELBROT;
-		}
-		else if (ft_strequ("Tricorn", argv[data->opts->index]))
-		{
-			data->fract_fn = mandelbar;
-			data->fract_type = MANDELBAR;
-		}
-		else if (ft_strequ("BurningShip", argv[data->opts->index]))
-		{
-			data->fract_fn = burning_ship;
-			data->fract_type = BURNING_SHIP;
-		}
-		else if (ft_strequ("Julia", argv[data->opts->index]))
-		{
-			data->fract_fn = julia;
-			data->fract_type = JULIA;
-			data->motion.record = 1;
-		}
-	}
-	return (data->fract_type != NO_FRACT);
 }
 
 static int	setup_opts(t_data *data, int argc, char **argv)
@@ -110,8 +81,8 @@ static int	init_fractol(t_data *data, int argc, char **argv)
 
 int			main(int argc, char **argv)
 {
-	t_data		data;
-	int			ret;
+	t_data	data;
+	int		ret;
 
 	ft_memset(&data, 0, sizeof(t_data));
 	ret = init_fractol(&data, argc, argv);

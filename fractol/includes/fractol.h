@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 19:21:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 19:40:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ struct	s_point
 };
 
 int		init_mlx(t_mlx *lib, t_winsize *ws);
+int		setup_fractal_type(t_data *data, int argc, char **argv);
 
 void	*get_preview_draw_fn(int idx);
 void	draw_selected_preview(t_data *data);
