@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 17:42:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 17:46:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,19 @@ static void	read_chunks(int sock, unsigned char *buff, size_t expected)
 	}
 }
 
-static void	read_response(t_data *data, int sock)
+static void	read_response(t_data *data)
 {
 	int	size;
 	int	*buff;
 	int	index;
 	int	buff_index;
 
-	if (recv(sock, &size, sizeof(int), 0) > 0)
+	if (recv(data->network_sock, &size, sizeof(int), 0) > 0)
 	{
-		buff = (int *)malloc(size * sizeof(int));
-		if (buff == NULL)
+		if ((buff = (int *)malloc(size * sizeof(int))) == NULL)
 			return ;
-		read_chunks(sock, (unsigned char *)buff, size * sizeof(int));
+		read_chunks(data->network_sock, (unsigned char *)buff
+				, size * sizeof(int));
 		index = 0;
 		buff_index = 0;
 		while (buff_index < size)
@@ -105,5 +105,5 @@ void		draw_network(t_data *data)
 
 	init_netdata(data, &netdata);
 	write(data->network_sock, &netdata, sizeof(t_netdata));
-	read_response(data, data->network_sock);
+	read_response(data);
 }
