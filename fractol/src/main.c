@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 17:39:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 19:18:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,33 @@ static void	show_help(t_opts *opts, char **argv)
 	ft_printf("  -h\tShow this help\n");
 }
 
-static int	setup_fractal_fn(t_data *data, int argc, char **argv)
+static int	setup_fractal_type(t_data *data, int argc, char **argv)
 {
 	if (data->opts->index < argc)
 	{
 		if (ft_strequ("Mandelbrot", argv[data->opts->index]))
+		{
 			data->fract_fn = mandelbrot;
+			data->fract_type = MANDELBROT;
+		}
 		else if (ft_strequ("Tricorn", argv[data->opts->index]))
+		{
 			data->fract_fn = mandelbar;
+			data->fract_type = MANDELBAR;
+		}
 		else if (ft_strequ("BurningShip", argv[data->opts->index]))
+		{
 			data->fract_fn = burning_ship;
+			data->fract_type = BURNING_SHIP;
+		}
 		else if (ft_strequ("Julia", argv[data->opts->index]))
 		{
 			data->fract_fn = julia;
+			data->fract_type = JULIA;
 			data->motion.record = 1;
 		}
 	}
-	return (data->fract_fn != NULL);
+	return (data->fract_type != NO_FRACT);
 }
 
 static int	setup_opts(t_data *data, int argc, char **argv)
@@ -55,7 +65,7 @@ static int	setup_opts(t_data *data, int argc, char **argv)
 		return (0);
 	data->winsize.width = WIN_WIDTH;
 	data->winsize.height = WIN_HEIGHT;
-	if (!setup_fractal_fn(data, argc, argv))
+	if (!setup_fractal_type(data, argc, argv))
 	{
 		ft_dprintf(2, "%s: Bad fractal name\n\n", argv[0]);
 		return (0);

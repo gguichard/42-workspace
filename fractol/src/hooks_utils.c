@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 09:01:12 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 12:01:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 19:20:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ void	change_fract_type(t_data *data, int idx)
 		idx = 0;
 	old_fract_fn = data->fract_fn;
 	data->fract_fn = get_preview_draw_fn(idx);
+	if (data->fract_fn == julia)
+		data->fract_type = JULIA;
+	else if (data->fract_fn == mandelbrot)
+		data->fract_type = MANDELBROT;
+	else if (data->fract_fn == mandelbar)
+		data->fract_type = MANDELBAR;
+	else if (data->fract_fn == burning_ship)
+		data->fract_type = BURNING_SHIP;
 	if (data->use_opencl && old_fract_fn != data->fract_fn)
 	{
 		release_opencl(data);

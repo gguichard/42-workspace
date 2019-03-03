@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 17:46:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 19:22:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,7 @@
 
 static void	init_netdata(t_data *data, t_netdata *netdata)
 {
-	netdata->type = 0;
-	if (data->fract_fn == mandelbrot)
-		netdata->type = 1;
-	else if (data->fract_fn == mandelbar)
-		netdata->type = 2;
-	else if (data->fract_fn == burning_ship)
-		netdata->type = 3;
+	netdata->type = (int)data->fract_type;
 	netdata->width = data->winsize.width;
 	netdata->height = data->winsize.height;
 	netdata->x_off = data->cam.x_off;

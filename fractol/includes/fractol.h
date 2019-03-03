@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 17:42:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 19:21:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,21 @@
 # define FRACT_PREVIEWS_HEIGHT 158
 # define FRACT_PREVIEWS_COLOR 0xFFFFFF
 
+typedef enum e_type		t_type;
 typedef struct s_data	t_data;
 typedef struct s_thread	t_thread;
 typedef struct s_point	t_point;
+
+enum	e_type
+{
+	NO_FRACT = 0,
+	JULIA,
+	JULIA3,
+	MANDELBROT,
+	MANDELBROT3,
+	MANDELBAR,
+	BURNING_SHIP
+};
 
 struct	s_thread
 {
@@ -49,6 +61,7 @@ struct	s_data
 	t_opts			*opts;
 	t_winsize		winsize;
 	t_camera		cam;
+	t_type			fract_type;
 	int				(*fract_fn)(t_motion *, double, double, int);
 	void			(*draw_fn)(t_data *);
 	int				not_epileptic;

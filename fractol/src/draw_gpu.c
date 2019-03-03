@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 17:38:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 19:13:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,6 @@
 #include "libft.h"
 #include "opencl.h"
 #include "fractol.h"
-
-static int	get_fract_type(t_data *data)
-{
-	if (data->fract_fn == mandelbrot)
-		return (1);
-	else if (data->fract_fn == mandelbar)
-		return (2);
-	else if (data->fract_fn == burning_ship)
-		return (3);
-	else
-		return (0);
-}
 
 static char	*read_sourcecode(void)
 {
@@ -90,7 +78,7 @@ void		draw_gpu(t_data *data)
 {
 	int		fract_type;
 
-	fract_type = get_fract_type(data);
+	fract_type = (int)data->fract_type;
 	clSetKernelArg(data->cl.kernel, 0, sizeof(data->cl.buffer)
 			, &data->cl.buffer);
 	clSetKernelArg(data->cl.kernel, 1, sizeof(int), &fract_type);
