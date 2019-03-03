@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:44:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 17:39:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	show_help(t_opts *opts, char **argv)
 			, "Julia, Mandelbrot, Tricorn, BurningShip");
 	ft_printf("OPTIONS:\n");
 	ft_printf("  -g\tEnable GPU rendering\n");
+	ft_printf("  -n\tNetwork computing\n");
 	ft_printf("  -h\tShow this help\n");
 }
 
@@ -59,14 +60,18 @@ static int	setup_opts(t_data *data, int argc, char **argv)
 		ft_dprintf(2, "%s: Bad fractal name\n\n", argv[0]);
 		return (0);
 	}
-	if (!has_opt(data->opts, 'g') || !setup_opencl(data))
+	if (has_opt(data->opts, 'n') && setup_network(data))
+		data->draw_fn = draw_network;
+	else if (has_opt(data->opts, 'g') && setup_opencl(data))
+		data->draw_fn = draw_gpu;
+	if (data->draw_fn == NULL)
 		init_thread_values(data);
 	return (1);
 }
 
 static int	init_fractol(t_data *data, int argc, char **argv)
 {
-	if ((data->opts = parse_opts(argc, argv, "g")) == NULL)
+	if ((data->opts = parse_opts(argc, argv, "gn")) == NULL)
 	{
 		ft_dprintf(2, "%s: Unexpected error\n", argv[0]);
 		return (0);
@@ -102,7 +107,6 @@ int			main(int argc, char **argv)
 	ret = init_fractol(&data, argc, argv);
 	if (ret)
 	{
-		data.draw_fn = draw_network;// TODO: remove
 		data.draw_fn(&data);
 		mlx_expose_hook(data.lib.win_ptr, expose_hook, &data);
 		mlx_loop_hook(data.lib.mlx_ptr, loop_hook, &data);

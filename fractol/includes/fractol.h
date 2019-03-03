@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 16:44:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 17:42:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ struct	s_data
 	int				preview_idx;
 	t_mlximg		previews[FRACT_PREVIEWS];
 	t_thread		threads[FRACT_MAX_THREADS];
+	int				network_sock;
 	int				use_opencl;
 	t_cl			cl;
 };
@@ -95,6 +96,7 @@ int		mouse_hook(int button, int x, int y, t_data *data);
 void	init_thread_values(t_data *data);
 int		setup_opencl(t_data *data);
 void	release_opencl(t_data *data);
+int		setup_network(t_data *data);
 
 void	draw_threads(t_data *data);
 void	draw_gpu(t_data *data);

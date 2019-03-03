@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/01 23:00:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 17:42:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,24 +83,27 @@ static void	read_response(t_data *data, int sock)
 	}
 }
 
+int			setup_network(t_data *data)
+{
+	struct sockaddr_in	srv;
+
+	data->network_sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (data->network_sock < 0)
+		return (0);
+	srv.sin_addr.s_addr = inet_addr("127.0.0.1");
+	srv.sin_family = AF_INET;
+	srv.sin_port = htons(1103);
+	if (connect(data->network_sock, (struct sockaddr *)&srv, sizeof(srv)) < 0)
+		return (0);
+	else
+		return (1);
+}
+
 void		draw_network(t_data *data)
 {
-	static int			sock = -1;
-	struct sockaddr_in	srv;
-	t_netdata			netdata;
+	t_netdata	netdata;
 
-	if (sock == -1)
-	{
-		sock = socket(AF_INET, SOCK_STREAM, 0);
-		if (sock < 0)
-			return ;
-		srv.sin_addr.s_addr = inet_addr("127.0.0.1");
-		srv.sin_family = AF_INET;
-		srv.sin_port = htons(1103);
-		if (connect(sock, (struct sockaddr *)&srv, sizeof(srv)) < 0)
-			return ;
-	}
 	init_netdata(data, &netdata);
-	write(sock, &netdata, sizeof(t_netdata));
-	read_response(data, sock);
+	write(data->network_sock, &netdata, sizeof(t_netdata));
+	read_response(data, data->network_sock);
 }

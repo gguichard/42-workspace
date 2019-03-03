@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 09:54:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/03 17:38:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int			setup_opencl(t_data *data)
 			, sizeof(int) * (data->winsize.width * data->winsize.height), NULL
 			, NULL);
 	data->use_opencl = 1;
-	data->draw_fn = draw_gpu;
 	return (1);
 }
 
