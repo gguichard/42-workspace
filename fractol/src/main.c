@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 15:26:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:34:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static void	show_help(t_opts *opts, char **argv)
 		ft_dprintf(2, "%s: illegal option -- %c\n", argv[0], opts->error);
 	ft_printf("USAGE: fractol [options] <fractal>\n");
 	ft_printf("<fractal> can be any type of %s\n\n"
-			, "Julia, Mandelbrot, Tricorn, BurningShip");
+			, "Julia, Mandelbrot, Tricorn, BurningShip,\n"
+			"\t\t\tJulia3, Mandelbrot3, Custombrot, Custombrot2");
 	ft_printf("OPTIONS:\n");
 	ft_printf("  -g\t\tEnable GPU rendering\n");
 	ft_printf("  -n <ip>\tNetwork computing\n");
