@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/03 19:36:27 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 14:45:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:08:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,11 @@ static void	setup_fract3_types(t_data *data, const char *name)
 	int	ret3;
 
 	ret3 = 0;
-	if (ft_strequ("Custombrot", name))
+	if (ft_strequ("Custombrot", name)
+			|| (ret3 = ft_strequ("Custombrot2", name)))
 	{
 		data->fract_fn = mandelbrot;
-		data->fract_type = CUSTOMBROT;
-	}
-	else if (ft_strequ("Custombrot2", name))
-	{
-		data->fract_fn = mandelbrot;
-		data->fract_type = CUSTOMBROT2;
+		data->fract_type = ret3 ? CUSTOMBROT2 : CUSTOMBROT;
 	}
 	else if (ft_strequ("Mandelbrot", name)
 			|| (ret3 = ft_strequ("Mandelbrot3", name)))
