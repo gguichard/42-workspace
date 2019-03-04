@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 19:40:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:09:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ static int	setup_opts(t_data *data, int argc, char **argv)
 	else if (has_opt(data->opts, 'g') && setup_opencl(data))
 		data->draw_fn = draw_gpu;
 	if (data->draw_fn == NULL)
+	{
+		if (has_opt(data->opts, 'n') || has_opt(data->opts, 'g'))
+			ft_printf("Falling back to multi-threaded version\n");
 		init_thread_values(data);
+	}
 	return (1);
 }
 
