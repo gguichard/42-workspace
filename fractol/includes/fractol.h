@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 13:05:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 14:44:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ enum	e_type
 	MANDELBROT3,
 	MANDELBAR,
 	BURNING_SHIP,
-	CUSTOMBROT
+	CUSTOMBROT,
+	CUSTOMBROT2
 };
 
 struct	s_thread
