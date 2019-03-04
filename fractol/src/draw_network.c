@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 15:26:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:36:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	read_chunks(int sock, unsigned char *buff, size_t expected)
 	size_t	total;
 
 	total = 0;
-	while (total < expected && (ret = recv(sock, buff, 4096, 0)) > 0)
+	while (total < expected && (ret = read(sock, buff, 4096)) > 0)
 	{
 		buff += ret;
 		total += ret;
