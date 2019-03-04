@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 15:36:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:41:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	read_response(t_data *data)
 	int	idx;
 	int	buff_idx;
 
-	if (recv(data->network_sock, &size, sizeof(int), 0) > 0)
+	if (recv(data->network_sock, &size, sizeof(int), MSG_WAITALL) > 0)
 	{
 		if ((buff = (int *)malloc(size * sizeof(int))) == NULL)
 			return ;
