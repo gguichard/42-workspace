@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 15:41:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:44:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	init_netdata(t_data *data, t_netdata *netdata)
 	netdata->motion_x = data->motion.x;
 	netdata->motion_y = data->motion.y;
 	netdata->max_iters = data->max_iters;
+	netdata->sampling = data->sampling;
 }
 
 static void	read_chunks(int sock, unsigned char *buff, size_t expected)

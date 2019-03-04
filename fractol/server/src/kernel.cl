@@ -153,42 +153,63 @@ int	fract_inv_bailout(double x, double y, double re, double im, int max_iters)
 
 __kernel void draw_fractal(__global int *data, int type, int width, int height
 		, int x_off, int y_off, double x_min, double x_max, double y_min, double y_max
-		, double motion_x, double motion_y, int max_iters)
+		, double motion_x, double motion_y, int max_iters, int sampling)
 {
-	int		id;
+	int		global_id;
+	int		idx;
 	double	re;
 	double	im;
+	int		color;
+	int		r_total;
+	int		g_total;
+	int		b_total;
 	int		iters;
 
-	id = get_global_id(0);
-	re = (id % width + x_off) * (x_max - x_min) / width + x_min;
-	im = (id / width + y_off) * (y_max - y_min) / height + y_min;
-	switch (type)
+	global_id = get_global_id(0);
+	idx = 0;
+	r_total = 0;
+	g_total = 0;
+	b_total = 0;
+	while (idx < sampling * sampling)
 	{
-		case JULIA:
-			iters = fract_bailout(re, im, motion_x, motion_y, max_iters);
-			break ;
-		case JULIA3:
-			iters = fract_bailout_pow3(re, im, motion_x, motion_y, max_iters);
-			break ;
-		case MANDELBROT:
-			iters = fract_bailout(0, 0, re, im, max_iters);
-			break ;
-		case MANDELBROT3:
-			iters = fract_bailout_pow3(0, 0, re, im, max_iters);
-			break ;
-		case CUSTOMBROT:
-			iters = fract_bailout_custom(0, 0, re, im, max_iters);
-			break ;
-		case CUSTOMBROT2:
-			iters = fract_bailout_custom_2(0, 0, re, im, max_iters);
-			break ;
-		case MANDELBAR:
-			iters = fract_inv_bailout(0, 0, re, im, max_iters);
-			break ;
-		case BURNING_SHIP:
-			iters = fract_bailout_2(0, 0, re, im, max_iters);
-			break ;
+		iters = 0;
+		re = ((global_id % width) * sampling + (idx % sampling) + x_off) * (x_max - x_min) / (width * sampling) + x_min;
+		im = ((global_id / width) * sampling + (idx / sampling) + y_off) * (y_max - y_min) / (height * sampling) + y_min;
+		switch (type)
+		{
+			case JULIA:
+				iters = fract_bailout(re, im, motion_x, motion_y, max_iters);
+				break ;
+			case JULIA3:
+				iters = fract_bailout_pow3(re, im, motion_x, motion_y, max_iters);
+				break ;
+			case MANDELBROT:
+				iters = fract_bailout(0, 0, re, im, max_iters);
+				break ;
+			case CUSTOMBROT:
+				iters = fract_bailout_custom(0, 0, re, im, max_iters);
+				break ;
+			case CUSTOMBROT2:
+				iters = fract_bailout_custom_2(0, 0, re, im, max_iters);
+				break ;
+			case MANDELBROT3:
+				iters = fract_bailout_pow3(0, 0, re, im, max_iters);
+				break ;
+			case MANDELBAR:
+				iters = fract_inv_bailout(0, 0, re, im, max_iters);
+				break ;
+			case BURNING_SHIP:
+				iters = fract_bailout_2(0, 0, re, im, max_iters);
+				break ;
+		}
+		color = (iters == max_iters) ? 0 : get_fract_color(iters);
+		r_total += (color >> 16) & 0xFF;
+		g_total += (color >> 8) & 0xFF;
+		b_total += color & 0xFF;
+		idx++;
 	}
-	data[id] = (iters == max_iters) ? 0 : get_fract_color(iters);
+	r_total /= idx;
+	g_total /= idx;
+	b_total /= idx;
+	data[global_id] = ((r_total << 16) | (g_total << 8) | b_total);
 }

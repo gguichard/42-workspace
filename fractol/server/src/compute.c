@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:04:16 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 15:14:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:45:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	run_kernel(t_data *data, t_cl *cl, int *buffer)
 	clSetKernelArg(cl->kernel, 10, sizeof(double), &(data->motion_x));
 	clSetKernelArg(cl->kernel, 11, sizeof(double), &(data->motion_y));
 	clSetKernelArg(cl->kernel, 12, sizeof(int), &(data->max_iters));
+	clSetKernelArg(cl->kernel, 13, sizeof(int), &(data->sampling));
 	clEnqueueNDRangeKernel(cl->queue, cl->kernel, 1, NULL, &cl->work_size, NULL
 			, 0, NULL, NULL);
 	clEnqueueReadBuffer(cl->queue, cl->buffer, CL_FALSE, 0
