@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 14:04:16 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 23:37:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:14:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ void		compute_fractal(t_data *data, const char *source, int *buffer)
 	t_cl	cl;
 
 	cl.work_size = data->width * data->height;
-	clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &cl.device, NULL);
+	if (clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &cl.device, NULL) == -1)
+		return ;
 	cl.context = clCreateContext(NULL, 1, &cl.device, NULL, NULL, NULL);
 	cl.queue = clCreateCommandQueue(cl.context, cl.device, 0, NULL);
 	cl.program = clCreateProgramWithSource(cl.context, 1, (const char **)&source
