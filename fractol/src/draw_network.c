@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 13:11:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:26:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include "libft.h"
+#include "options.h"
 #include "fractol.h"
 #include "network.h"
 
@@ -84,7 +85,7 @@ int			setup_network(t_data *data)
 	data->network_sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (data->network_sock < 0)
 		return (0);
-	srv.sin_addr.s_addr = inet_addr("127.0.0.1");
+	srv.sin_addr.s_addr = inet_addr(get_optarg(data->opts, 'n'));
 	srv.sin_family = AF_INET;
 	srv.sin_port = htons(1103);
 	if (connect(data->network_sock, (struct sockaddr *)&srv, sizeof(srv)) < 0)

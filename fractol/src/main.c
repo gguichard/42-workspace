@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 15:09:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:26:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static void	show_help(t_opts *opts, char **argv)
 	ft_printf("<fractal> can be any type of %s\n\n"
 			, "Julia, Mandelbrot, Tricorn, BurningShip");
 	ft_printf("OPTIONS:\n");
-	ft_printf("  -g\tEnable GPU rendering\n");
-	ft_printf("  -n\tNetwork computing\n");
-	ft_printf("  -h\tShow this help\n");
+	ft_printf("  -g\t\tEnable GPU rendering\n");
+	ft_printf("  -n <ip>\tNetwork computing\n");
+	ft_printf("  -h\t\tShow this help\n");
 }
 
 static int	setup_opts(t_data *data, int argc, char **argv)
@@ -56,7 +56,7 @@ static int	setup_opts(t_data *data, int argc, char **argv)
 
 static int	init_fractol(t_data *data, int argc, char **argv)
 {
-	if ((data->opts = parse_opts(argc, argv, "gn")) == NULL)
+	if ((data->opts = parse_opts(argc, argv, "gn:")) == NULL)
 	{
 		ft_dprintf(2, "%s: Unexpected error\n", argv[0]);
 		return (0);
