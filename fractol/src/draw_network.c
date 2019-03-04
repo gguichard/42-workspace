@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 19:22:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 13:11:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ static void	read_response(t_data *data)
 {
 	int	size;
 	int	*buff;
-	int	index;
-	int	buff_index;
+	int	idx;
+	int	buff_idx;
 
 	if (recv(data->network_sock, &size, sizeof(int), 0) > 0)
 	{
@@ -61,17 +61,17 @@ static void	read_response(t_data *data)
 			return ;
 		read_chunks(data->network_sock, (unsigned char *)buff
 				, size * sizeof(int));
-		index = 0;
-		buff_index = 0;
-		while (buff_index < size)
+		idx = 0;
+		buff_idx = 0;
+		while (buff_idx < size)
 		{
-			while (buff[buff_index] > 0)
+			while (buff[buff_idx] > 0)
 			{
-				data->lib.img_data[index] = buff[buff_index + 1];
-				buff[buff_index] -= 1;
-				index++;
+				data->lib.img_data[idx] = buff[buff_idx + 1] * data->color_mul;
+				buff[buff_idx] -= 1;
+				idx++;
 			}
-			buff_index += 2;
+			buff_idx += 2;
 		}
 		free(buff);
 	}

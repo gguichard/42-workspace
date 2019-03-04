@@ -16,6 +16,7 @@
 #define MANDELBROT3 4
 #define MANDELBAR 5
 #define BURNING_SHIP 6
+#define CUSTOMBROT 7
 
 int	get_fract_color(int iters)
 {
@@ -45,6 +46,28 @@ int	fract_bailout(double x, double y, double re, double im, int max_iters)
 		x_tmp = x;
 		x = x2 - y2 + re;
 		y = 2 * x_tmp * y + im;
+		iters++;
+	}
+	return (iters);
+}
+
+int	fract_bailout_custom(double x, double y, double re, double im, int max_iters)
+{
+	int		iters;
+	double	re2, im2;
+	double	a, b;
+
+	iters = 0;
+	re2 = re * re;
+	im2 = im * im;
+	while (iters < max_iters)
+	{
+		if (x * x + y * y >= 2500)
+			break ;
+		a = (x * re + y * im) / (re2 + im2);
+		b = (y * re - x * im) / (re2 + im2);
+		x = cos(a) * cosh(b);
+		y = -sin(a) * sinh(b);
 		iters++;
 	}
 	return (iters);
@@ -143,6 +166,9 @@ __kernel void draw_fractal(__global int *data, int type, int width, int height
 			break ;
 		case MANDELBROT3:
 			iters = fract_bailout_pow3(0, 0, re, im, max_iters);
+			break ;
+		case CUSTOMBROT:
+			iters = fract_bailout_custom(0, 0, re, im, max_iters);
 			break ;
 		case MANDELBAR:
 			iters = fract_inv_bailout(0, 0, re, im, max_iters);
