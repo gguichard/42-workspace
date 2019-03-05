@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 19:14:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/05 18:14:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/05 18:26:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include <stdint.h>
 #include "printf.h"
 
