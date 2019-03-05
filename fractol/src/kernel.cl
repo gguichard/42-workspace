@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   kernel.cl                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/11 04:37:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/11 04:37:20 by gguichar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #define JULIA 1
 #define JULIA3 2
 #define MANDELBROT 3
@@ -17,6 +5,7 @@
 #define MANDELBAR 5
 #define BURNING_SHIP 6
 #define CUSTOMBROT 7
+#define CUSTOMBROT2 8
 
 int	get_fract_color(int iters)
 {
@@ -69,6 +58,27 @@ int	fract_bailout_custom(double x, double y, double re, double im, int max_iters
 		b = (y * re - x * im) / (re2 + im2);
 		x = cos(a) * cosh(b);
 		y = -sin(a) * sinh(b);
+		iters++;
+	}
+	return (iters);
+}
+
+int	fract_bailout_custom_2(double x, double y, double re, double im, int max_iters)
+{
+	int		iters;
+	double	re2, im2;
+	double	x_tmp;
+
+	iters = 0;
+	re2 = re * re;
+	im2 = im * im;
+	while (iters < max_iters)
+	{
+		if (x * x + y * y >= 75)
+			break ;
+		x_tmp = x;
+		x = re / (re2 + im2) + cos(x) * cosh(y);
+		y = -sin(x_tmp) * sinh(y) + im / (re2 + im2);
 		iters++;
 	}
 	return (iters);
@@ -161,6 +171,7 @@ int	compute_ssaa(int global_id, int type, int width, int height
 	b_total = 0;
 	while (idx < sampling * sampling)
 	{
+		iters = 0;
 		re = ((global_id % width) * sampling + (idx % sampling) + x_off) * (x_max - x_min) / (width * sampling) + x_min;
 		im = ((global_id / width) * sampling + (idx / sampling) + y_off) * (y_max - y_min) / (height * sampling) + y_min;
 		switch (type)
@@ -176,6 +187,9 @@ int	compute_ssaa(int global_id, int type, int width, int height
 				break ;
 			case CUSTOMBROT:
 				iters = fract_bailout_custom(0, 0, re, im, max_iters);
+				break ;
+			case CUSTOMBROT2:
+				iters = fract_bailout_custom_2(0, 0, re, im, max_iters);
 				break ;
 			case MANDELBROT3:
 				iters = fract_bailout_pow3(0, 0, re, im, max_iters);

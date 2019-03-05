@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 16:04:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 13:11:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:44:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include "libft.h"
+#include "options.h"
 #include "fractol.h"
 #include "network.h"
 
@@ -33,6 +34,7 @@ static void	init_netdata(t_data *data, t_netdata *netdata)
 	netdata->motion_x = data->motion.x;
 	netdata->motion_y = data->motion.y;
 	netdata->max_iters = data->max_iters;
+	netdata->sampling = data->sampling;
 }
 
 static void	read_chunks(int sock, unsigned char *buff, size_t expected)
@@ -41,7 +43,7 @@ static void	read_chunks(int sock, unsigned char *buff, size_t expected)
 	size_t	total;
 
 	total = 0;
-	while (total < expected && (ret = recv(sock, buff, 4096, 0)) > 0)
+	while (total < expected && (ret = read(sock, buff, 4096)) > 0)
 	{
 		buff += ret;
 		total += ret;
@@ -55,7 +57,7 @@ static void	read_response(t_data *data)
 	int	idx;
 	int	buff_idx;
 
-	if (recv(data->network_sock, &size, sizeof(int), 0) > 0)
+	if (recv(data->network_sock, &size, sizeof(int), MSG_WAITALL) > 0)
 	{
 		if ((buff = (int *)malloc(size * sizeof(int))) == NULL)
 			return ;
@@ -84,7 +86,7 @@ int			setup_network(t_data *data)
 	data->network_sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (data->network_sock < 0)
 		return (0);
-	srv.sin_addr.s_addr = inet_addr("127.0.0.1");
+	srv.sin_addr.s_addr = inet_addr(get_optarg(data->opts, 'n'));
 	srv.sin_family = AF_INET;
 	srv.sin_port = htons(1103);
 	if (connect(data->network_sock, (struct sockaddr *)&srv, sizeof(srv)) < 0)

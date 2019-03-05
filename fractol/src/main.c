@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:44:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/03 19:40:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:34:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ static void	show_help(t_opts *opts, char **argv)
 		ft_dprintf(2, "%s: illegal option -- %c\n", argv[0], opts->error);
 	ft_printf("USAGE: fractol [options] <fractal>\n");
 	ft_printf("<fractal> can be any type of %s\n\n"
-			, "Julia, Mandelbrot, Tricorn, BurningShip");
+			, "Julia, Mandelbrot, Tricorn, BurningShip,\n"
+			"\t\t\tJulia3, Mandelbrot3, Custombrot, Custombrot2");
 	ft_printf("OPTIONS:\n");
-	ft_printf("  -g\tEnable GPU rendering\n");
-	ft_printf("  -n\tNetwork computing\n");
-	ft_printf("  -h\tShow this help\n");
+	ft_printf("  -g\t\tEnable GPU rendering\n");
+	ft_printf("  -n <ip>\tNetwork computing\n");
+	ft_printf("  -h\t\tShow this help\n");
 }
 
 static int	setup_opts(t_data *data, int argc, char **argv)
@@ -46,13 +47,17 @@ static int	setup_opts(t_data *data, int argc, char **argv)
 	else if (has_opt(data->opts, 'g') && setup_opencl(data))
 		data->draw_fn = draw_gpu;
 	if (data->draw_fn == NULL)
+	{
+		if (has_opt(data->opts, 'n') || has_opt(data->opts, 'g'))
+			ft_printf("Falling back to multi-threaded version\n");
 		init_thread_values(data);
+	}
 	return (1);
 }
 
 static int	init_fractol(t_data *data, int argc, char **argv)
 {
-	if ((data->opts = parse_opts(argc, argv, "gn")) == NULL)
+	if ((data->opts = parse_opts(argc, argv, "gn:")) == NULL)
 	{
 		ft_dprintf(2, "%s: Unexpected error\n", argv[0]);
 		return (0);

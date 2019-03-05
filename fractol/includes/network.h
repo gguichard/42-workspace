@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/28 23:26:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/28 23:27:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:44:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ struct	s_netdata
 	double	motion_x;
 	double	motion_y;
 	int		max_iters;
+	int		sampling;
 };
 
 #endif

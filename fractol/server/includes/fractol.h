@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/31 10:46:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/01 22:40:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/04 15:45:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ struct	s_data
 	double	motion_x;
 	double	motion_y;
 	int		max_iters;
+	int		sampling;
 };
 
 char	*read_sourcecode(void);
