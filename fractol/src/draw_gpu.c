@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/11 05:05:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/04 15:13:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/16 20:18:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			setup_opencl(t_data *data)
 	if (cl->source == NULL)
 		return (0);
 	cl->work_size = data->winsize.width * data->winsize.height;
-	if (clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &cl->device, NULL) == -1)
+	if (clGetDeviceIDs(NULL, CL_DEVICE_TYPE_GPU, 1, &cl->device, NULL) < 0)
 	{
 		ft_strdel(&cl->source);
 		return (0);
@@ -75,6 +75,7 @@ void		release_opencl(t_data *data)
 	clReleaseMemObject(cl->buffer);
 	clReleaseCommandQueue(cl->queue);
 	clReleaseContext(cl->context);
+	clReleaseProgram(cl->program);
 	ft_strdel(&cl->source);
 }
 
