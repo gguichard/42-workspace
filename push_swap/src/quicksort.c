@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/23 23:32:50 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/28 13:43:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/18 16:26:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void		quicksort(int n, t_ps *ps)
 		return ;
 	value = find_median_pivot(n, ps->lst);
 	pivot = partition(n, ps, value);
-	if (!is_sorted(n, ps->lst))
+	if (!is_sorted(n - pivot, ps->lst))
 		quicksort(n - pivot, ps);
 	index = 0;
 	while (index < pivot)
