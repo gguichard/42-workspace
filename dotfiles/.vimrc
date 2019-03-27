@@ -22,6 +22,10 @@ highlight ExtraWhitespace ctermbg=darkblue guibg=darkblue
 match ExtraWhitespace /\s\+$/
 autocmd Syntax * syn match ExtraWhitespace /\s\+$\| \+\ze\t/
 
+" Includes for completion
+set path+=includes/,include/,../includes/,../include/
+set path+=libft/includes/,libft/include/,../libft/includes/,../libft/include/,libft/,../libft/
+
 " 42 Header
 let g:hdr42user="gguichar"
 let g:hdr42mail="gguichar@student.42.fr"
