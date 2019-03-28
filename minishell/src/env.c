@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 17:25:22 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/01 16:05:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/28 11:35:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int			unset_env(t_list **lst, const char *name)
 	t_list	*prev;
 
 	elem = *lst;
+	prev = NULL;
 	while (elem != NULL)
 	{
 		if (ft_strequ(name, ((t_env *)(elem->content))->name))
