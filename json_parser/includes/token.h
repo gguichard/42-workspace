@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 15:41:41 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/15 17:59:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/15 18:41:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define SEPARATOR_CHARS ",:"
 # define NUMBER_CHARS "-0123456789"
 # define PRIMITIVE_CHARS "ftn"
+# define BACKSLASH_CHARS "\"\\/bfnrt"
 
 # define TRUE_PRIMITIVE "true"
 # define FALSE_PRIMITIVE "false"
