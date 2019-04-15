@@ -4,6 +4,7 @@ set number
 set mouse=a
 set background=dark
 set colorcolumn=80
+set hlsearch
 
 " Tabs
 set autoindent
