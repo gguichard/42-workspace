@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 15:41:41 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/15 16:43:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/15 17:59:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,13 @@
 # define TK_UNKNOWN 9
 
 # define BRACKET_CHARS "{}[]"
-# define SEPARATOR_CHARS ","
+# define SEPARATOR_CHARS ",:"
+# define NUMBER_CHARS "-0123456789"
+# define PRIMITIVE_CHARS "ftn"
+
+# define TRUE_PRIMITIVE "true"
+# define FALSE_PRIMITIVE "false"
+# define NULL_PRIMITIVE "null"
 
 typedef struct	s_token
 {
