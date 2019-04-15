@@ -6,12 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 15:41:41 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/15 18:41:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/15 22:37:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TOKEN_H
 # define TOKEN_H
+
+# include "libft.h"
 
 # define TK_STRING 1
 # define TK_OPEN_OBJECT 2
@@ -33,12 +35,13 @@
 # define FALSE_PRIMITIVE "false"
 # define NULL_PRIMITIVE "null"
 
-typedef struct	s_token
+typedef struct	s_json_lexeme
 {
 	int			type;
 	char		*value;
-}				t_token;
+}				t_json_lexeme;
 
-t_list			*split_str_into_tokens(const char *str);
+t_list			*split_str_into_json_lexemes(const char *str);
+void			del_json_lexeme(void *content, size_t content_size);
 
 #endif

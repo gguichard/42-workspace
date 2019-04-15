@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/15 15:22:16 by gguichar          #+#    #+#              #
-#    Updated: 2019/04/15 16:17:02 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/15 23:42:01 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ LDLIBS	=	-lft
 SRC_DIR	=	src
 SRC 	=	\
 main.c		\
-token.c
+token.c		\
+parser.c	\
+debug.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)

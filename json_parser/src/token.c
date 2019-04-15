@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 16:01:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/15 19:03:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/15 22:40:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,45 @@
 #include "libft.h"
 #include "token.h"
 
-static void		del_token(void *content, size_t content_size)
+void			del_json_lexeme(void *content, size_t content_size)
 {
 	(void)content_size;
-	free(((t_token *)content)->value);
+	free(((t_json_lexeme *)content)->value);
 	free(content);
 }
 
-static t_token	*create_token_with_type(t_list **lst, int type, const char *str
-		, size_t len)
+static t_json_lexeme	*create_lexeme_with_type(t_list **lst, int type
+		, const char *str, size_t len)
 {
-	t_token	token;
-	t_list	*elem;
+	t_json_lexeme	lexeme;
+	t_list			*elem;
 
-	token.type = type;
-	token.value = (str == NULL ? NULL : ft_strsub(str, 0, len));
-	if (token.value == NULL && str != NULL)
+	lexeme.type = type;
+	lexeme.value = (str == NULL ? NULL : ft_strsub(str, 0, len));
+	if (lexeme.value == NULL && str != NULL)
 		return (NULL);
-	elem = ft_lstnew(&token, sizeof(t_token));
+	elem = ft_lstnew(&lexeme, sizeof(t_json_lexeme));
 	if (elem == NULL)
 	{
-		free(token.value);
+		free(lexeme.value);
 		return (NULL);
 	}
 	ft_lstpush(lst, elem);
-	return ((t_token *)elem->content);
+	return ((t_json_lexeme *)elem->content);
 }
 
-static size_t	create_bracket_token(t_list **lst, char bracket_char)
+static size_t	create_bracket_lexeme(t_list **lst, char bracket_char)
 {
 	int	ret;
 
 	if (bracket_char == '{')
-		ret = create_token_with_type(lst, TK_OPEN_OBJECT, "{", 1) != NULL;
+		ret = create_lexeme_with_type(lst, TK_OPEN_OBJECT, "{", 1) != NULL;
 	else if (bracket_char == '}')
-		ret = create_token_with_type(lst, TK_CLOSE_OBJECT, "}", 1) != NULL;
+		ret = create_lexeme_with_type(lst, TK_CLOSE_OBJECT, "}", 1) != NULL;
 	else if (bracket_char == '[')
-		ret = create_token_with_type(lst, TK_OPEN_ARRAY, "[", 1) != NULL;
+		ret = create_lexeme_with_type(lst, TK_OPEN_ARRAY, "[", 1) != NULL;
 	else if (bracket_char == ']')
-		ret = create_token_with_type(lst, TK_CLOSE_ARRAY, "]", 1) != NULL;
+		ret = create_lexeme_with_type(lst, TK_CLOSE_ARRAY, "]", 1) != NULL;
 	else
 		ret = 0;
 	return (ret);
@@ -64,7 +64,7 @@ static void		skip_digits(const char *str, size_t *offset)
 		*offset += 1;
 }
 
-static size_t	create_number_token(t_list **lst, const char *str)
+static size_t	create_number_lexeme(t_list **lst, const char *str)
 {
 	size_t	offset;
 
@@ -85,12 +85,12 @@ static size_t	create_number_token(t_list **lst, const char *str)
 		skip_digits(str, &offset);
 	}
 	// TODO: gerer forme exponentielle
-	if (create_token_with_type(lst, TK_NUMBER, str, offset) == NULL)
+	if (create_lexeme_with_type(lst, TK_NUMBER, str, offset) == NULL)
 		return (0);
 	return (offset);
 }
 
-static size_t	create_primitive_token(t_list **lst, const char *str)
+static size_t	create_primitive_lexeme(t_list **lst, const char *str)
 {
 	size_t	offset;
 
@@ -105,16 +105,16 @@ static size_t	create_primitive_token(t_list **lst, const char *str)
 			&& ft_strnequ(str, NULL_PRIMITIVE, ft_strlen(NULL_PRIMITIVE)))
 		offset = ft_strlen(NULL_PRIMITIVE);
 	if (offset > 0
-			&& create_token_with_type(lst, TK_PRIMITIVE, str, offset) == NULL)
+			&& create_lexeme_with_type(lst, TK_PRIMITIVE, str, offset) == NULL)
 		return (0);
 	return (offset);
 }
 
-static void		escape_characters_in_value(t_token *token)
+static void		escape_characters_in_value(t_json_lexeme *lexeme)
 {
 	char	*offset;
 
-	offset = token->value;
+	offset = lexeme->value;
 	while (1)
 	{
 		offset = ft_strchr(offset, '\\');
@@ -126,10 +126,10 @@ static void		escape_characters_in_value(t_token *token)
 	}
 }
 
-static size_t	create_string_token(t_list **lst, const char *str)
+static size_t	create_string_lexeme(t_list **lst, const char *str)
 {
-	size_t	offset;
-	t_token	*tok;
+	size_t			offset;
+	t_json_lexeme	*tok;
 
 	offset = 1;
 	// TODO: gerer les points unicode avec \u
@@ -145,14 +145,14 @@ static size_t	create_string_token(t_list **lst, const char *str)
 	if (str[offset] != '\"')
 		return (0);
 	offset++;
-	tok = create_token_with_type(lst, TK_STRING, str + 1, offset - 2);
+	tok = create_lexeme_with_type(lst, TK_STRING, str + 1, offset - 2);
 	if (tok == NULL)
 		return (0);
 	escape_characters_in_value(tok);
 	return (offset);
 }
 
-t_list			*split_str_into_tokens(const char *str)
+t_list			*split_str_into_json_lexemes(const char *str)
 {
 	t_list	*lst;
 	size_t	idx;
@@ -166,19 +166,19 @@ t_list			*split_str_into_tokens(const char *str)
 		if (ft_isspace(str[idx]))
 			ret = 1;
 		else if (ft_strchr(BRACKET_CHARS, str[idx]) != NULL)
-			ret = create_bracket_token(&lst, str[idx]);
+			ret = create_bracket_lexeme(&lst, str[idx]);
 		else if (ft_strchr(SEPARATOR_CHARS, str[idx]) != NULL)
-			ret = create_token_with_type(&lst, TK_SEPARATOR, str + idx, 1)
+			ret = create_lexeme_with_type(&lst, TK_SEPARATOR, str + idx, 1)
 				!= NULL;
 		else if (ft_strchr(NUMBER_CHARS, str[idx]) != NULL)
-			ret = create_number_token(&lst, str + idx);
+			ret = create_number_lexeme(&lst, str + idx);
 		else if (ft_strchr(PRIMITIVE_CHARS, str[idx]))
-			ret = create_primitive_token(&lst, str + idx);
+			ret = create_primitive_lexeme(&lst, str + idx);
 		else if (str[idx] == '\"')
-			ret = create_string_token(&lst, str + idx);
-		if (ret == 0 && create_token_with_type(&lst, TK_UNKNOWN, str + idx
+			ret = create_string_lexeme(&lst, str + idx);
+		if (ret == 0 && create_lexeme_with_type(&lst, TK_UNKNOWN, str + idx
 					, ft_strlen(str + idx)) == NULL)
-			ft_lstdel(&lst, del_token);
+			ft_lstdel(&lst, del_json_lexeme);
 		if (ret == 0)
 			break ;
 		idx += ret;
