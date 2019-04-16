@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2019/03/20 20:20:02 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/16 14:00:14 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRC		=				\
 ft_abs.c				\
 ft_atoi.c				\
 ft_atoi_base.c			\
+ft_bad_atof.c			\
 ft_bzero.c				\
 ft_isalnum.c			\
 ft_isalpha.c			\
