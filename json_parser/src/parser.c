@@ -6,13 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 22:09:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:09:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 12:58:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
-#include "token.h"
+#include "lexer.h"
 #include "parser.h"
 
 t_json_token	*read_json_key_pair(t_list **lst, int depth_level)

@@ -6,13 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:03:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:22:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 12:40:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
-#include "token.h"
+#include "lexer.h"
 #include "parser.h"
 
 static void		read_json_string(t_json_lexeme *lexeme, t_json_token *token)

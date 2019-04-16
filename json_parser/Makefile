@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/15 15:22:16 by gguichar          #+#    #+#              #
-#    Updated: 2019/04/16 12:08:05 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/16 12:55:36 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ GREEN	=	\x1b[32m
 
 INC_DIR	=	includes
 
-CC		=	gcc -g -fsanitize=address
+CC		=	gcc -g
 CFLAGS 	=	-Wall -Werror -Wextra -I libft/includes -I $(INC_DIR)
 LDFLAGS	=	-Llibft
 LDLIBS	=	-lft
@@ -25,7 +25,7 @@ LDLIBS	=	-lft
 SRC_DIR	=	src
 SRC 	=		\
 main.c			\
-token.c			\
+lexer.c			\
 parser.c		\
 parser_utils.c	\
 parser_types.c	\

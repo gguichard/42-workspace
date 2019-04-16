@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 15:24:04 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 10:49:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 12:53:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int argc, char **argv)
 	{
 		ft_printf("PARSING DONE\n");
 		debug_tokens(root, 0);
+		del_json_token(root);
 	}
 	return (0);
 }

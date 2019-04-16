@@ -6,13 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:23:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 12:40:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
-#include "token.h"
+#include "lexer.h"
 #include "parser.h"
 
 int		check_for_unknown_lexeme_type(t_list *lst)

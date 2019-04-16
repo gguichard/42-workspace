@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 16:01:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 10:58:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 12:40:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
-#include "token.h"
+#include "lexer.h"
 
 void					del_json_lexeme(void *content, size_t content_size)
 {

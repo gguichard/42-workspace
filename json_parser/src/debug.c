@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 22:43:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:17:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 12:41:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "libft.h"
-#include "token.h"
+#include "lexer.h"
 #include "parser.h"
 
 static const char	*get_tk_type(int type)
