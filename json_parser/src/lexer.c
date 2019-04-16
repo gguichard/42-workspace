@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 16:01:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 13:13:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:05:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,17 @@ void			escape_characters_in_lexeme(t_json_lexeme *lexeme)
 		offset = ft_strchr(offset, '\\');
 		if (offset == NULL)
 			break ;
-		if (offset[1] == '\\' || offset[1] == '\"' || offset[1] == '/')
-			ft_memmove(offset, offset + 1, ft_strlen(offset));
+		ft_memmove(offset, offset + 1, ft_strlen(offset));
+		if (*offset == 'b')
+			*offset = '\b';
+		else if (*offset == 'f')
+			*offset = '\f';
+		else if (*offset == 'n')
+			*offset = '\n';
+		else if (*offset == 'r')
+			*offset = '\r';
+		else if (*offset == 't')
+			*offset = '\t';
 		offset += 1;
 	}
 }

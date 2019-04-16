@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:03:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 15:51:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 18:08:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 #include "lexer.h"
 #include "parser.h"
 
-static void		read_json_string(t_json_lexeme *lexeme, t_json_token *token)
+void			read_json_string(t_json_lexeme *lexeme, t_json_token *token)
 {
 	token->value.str = ft_strdup(lexeme->value);
 	if (token->value.str != NULL)
 		token->type = JSON_STRING;
 }
 
-static void		read_json_number(t_json_lexeme *lexeme, t_json_token *token)
+void			read_json_number(t_json_lexeme *lexeme, t_json_token *token)
 {
 	if (ft_strchr(lexeme->value, '.') != NULL)
 	{
@@ -36,7 +36,7 @@ static void		read_json_number(t_json_lexeme *lexeme, t_json_token *token)
 	}
 }
 
-static void		read_json_primitive(t_json_lexeme *lexeme, t_json_token *token)
+void			read_json_primitive(t_json_lexeme *lexeme, t_json_token *token)
 {
 	if (lexeme->value[0] == 'n')
 		token->type = JSON_NULL;
@@ -47,7 +47,7 @@ static void		read_json_primitive(t_json_lexeme *lexeme, t_json_token *token)
 	}
 }
 
-static int		read_json_object_or_array(t_list **lst, int depth_level
+int				read_json_object_or_array(t_list **lst, int depth_level
 		, t_json_token *token, int is_object)
 {
 	t_json_token	*child;
@@ -70,31 +70,24 @@ static int		read_json_object_or_array(t_list **lst, int depth_level
 	return (0);
 }
 
-t_json_token	*eat_json_lexemes(t_list **lst, int depth_level)
+t_json_token	*read_json_key_pair(t_list **lst, int depth_level)
 {
+	char			*key;
 	t_json_token	*token;
-	t_json_lexeme	*lexeme;
 
-	if (depth_level > JSON_MAX_DEPTH
-			|| !(token = (t_json_token *)ft_memalloc(sizeof(t_json_token))))
+	if (((t_json_lexeme *)(*lst)->content)->type != TK_STRING)
 		return (NULL);
-	lexeme = (t_json_lexeme *)(*lst)->content;
-	if (lexeme->type == TK_STRING)
-		read_json_string(lexeme, token);
-	else if (lexeme->type == TK_NUMBER)
-		read_json_number(lexeme, token);
-	else if (lexeme->type == TK_PRIMITIVE)
-		read_json_primitive(lexeme, token);
-	else if (lexeme->type == TK_OPEN_OBJECT || lexeme->type == TK_OPEN_ARRAY)
+	key = ft_strdup(((t_json_lexeme *)(*lst)->content)->value);
+	if (key != NULL && (*lst = (*lst)->next) != NULL
+			&& expect_json_sep(lst, ":"))
 	{
-		*lst = (*lst)->next;
-		if (read_json_object_or_array(lst, depth_level + 1, token
-					, lexeme->type == TK_OPEN_OBJECT))
-			token->type = (lexeme->type == TK_OPEN_OBJECT
-					? JSON_OBJECT : JSON_ARRAY);
+		token = eat_json_lexemes(lst, depth_level);
+		if (token != NULL)
+		{
+			token->key = key;
+			return (token);
+		}
 	}
-	if (token->type == JSON_UNKNOWN)
-		return (del_json_token(token));
-	*lst = (*lst)->next;
-	return (token);
+	free(key);
+	return (NULL);
 }
