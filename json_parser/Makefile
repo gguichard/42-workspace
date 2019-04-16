@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/15 15:22:16 by gguichar          #+#    #+#              #
-#    Updated: 2019/04/16 12:55:36 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/16 13:08:24 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC_DIR	=	src
 SRC 	=		\
 main.c			\
 lexer.c			\
+lexer_types.c	\
 parser.c		\
 parser_utils.c	\
 parser_types.c	\

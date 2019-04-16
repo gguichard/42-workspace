@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 15:41:41 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:40:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:09:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,16 @@ typedef struct	s_json_lexeme
 	char		*value;
 }				t_json_lexeme;
 
-t_list			*split_str_into_json_lexemes(const char *str);
+t_json_lexeme	*create_lexeme_with_type(t_list **lst, int type, const char *str
+		, size_t len);
+size_t			create_bracket_lexeme(t_list **lst, char bracket_char);
+size_t			create_string_lexeme(t_list **lst, const char *str);
+size_t			create_number_lexeme(t_list **lst, const char *str);
+size_t			create_primitive_lexeme(t_list **lst, const char *str);
+
+void			skip_json_number_digits(const char *str, size_t *offset);
+void			escape_characters_in_lexeme(t_json_lexeme *lexeme);
 void			del_json_lexeme(void *content, size_t content_size);
+t_list			*split_str_into_json_lexemes(const char *str);
 
 #endif
