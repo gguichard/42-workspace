@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 13:37:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:02:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,22 @@ int		expect_json_sep(t_list **lst, const char *sep)
 		return (*lst != NULL);
 	}
 	return (0);
+}
+
+void	push_json_token_child(t_json_token *token, t_json_token *child)
+{
+	t_json_token	*curr;
+
+	curr = token->value.child;
+	if (curr == NULL)
+		token->value.child = child;
+	else
+	{
+		while (curr->next != NULL)
+			curr = curr->next;
+		child->prev = curr;
+		curr->next = child;
+	}
 }
 
 void	*del_json_token(t_json_token *token)

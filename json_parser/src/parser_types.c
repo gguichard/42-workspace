@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:03:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 14:00:28 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:03:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ static int		read_json_object_or_array(t_list **lst, int depth_level
 			: eat_json_lexemes(lst, depth_level);
 		if (child == NULL)
 			break ;
-		child->next = token->value.child;
-		token->value.child = child;
-		if (child->next != NULL)
-			child->next->prev = child;
+		push_json_token_child(token, child);
 	}
 	del_json_token_childs(token);
 	return (0);
