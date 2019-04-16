@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 16:01:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/15 22:40:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 10:56:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 #include "token.h"
 
-void			del_json_lexeme(void *content, size_t content_size)
+void					del_json_lexeme(void *content, size_t content_size)
 {
 	(void)content_size;
 	free(((t_json_lexeme *)content)->value);
@@ -28,6 +28,7 @@ static t_json_lexeme	*create_lexeme_with_type(t_list **lst, int type
 	t_list			*elem;
 
 	lexeme.type = type;
+	ft_printf("lexeme: %s %zu\n", str, len);
 	lexeme.value = (str == NULL ? NULL : ft_strsub(str, 0, len));
 	if (lexeme.value == NULL && str != NULL)
 		return (NULL);
@@ -41,7 +42,7 @@ static t_json_lexeme	*create_lexeme_with_type(t_list **lst, int type
 	return ((t_json_lexeme *)elem->content);
 }
 
-static size_t	create_bracket_lexeme(t_list **lst, char bracket_char)
+static size_t			create_bracket_lexeme(t_list **lst, char bracket_char)
 {
 	int	ret;
 
@@ -58,13 +59,13 @@ static size_t	create_bracket_lexeme(t_list **lst, char bracket_char)
 	return (ret);
 }
 
-static void		skip_digits(const char *str, size_t *offset)
+static void				skip_digits(const char *str, size_t *offset)
 {
 	while (ft_isdigit(str[*offset]))
 		*offset += 1;
 }
 
-static size_t	create_number_lexeme(t_list **lst, const char *str)
+static size_t			create_number_lexeme(t_list **lst, const char *str)
 {
 	size_t	offset;
 
@@ -90,11 +91,11 @@ static size_t	create_number_lexeme(t_list **lst, const char *str)
 	return (offset);
 }
 
-static size_t	create_primitive_lexeme(t_list **lst, const char *str)
+static size_t			create_primitive_lexeme(t_list **lst, const char *str)
 {
 	size_t	offset;
 
-	offset = -1;
+	offset = 0;
 	if (*str == 't'
 			&& ft_strnequ(str, TRUE_PRIMITIVE, ft_strlen(TRUE_PRIMITIVE)))
 		offset = ft_strlen(TRUE_PRIMITIVE);
@@ -110,7 +111,7 @@ static size_t	create_primitive_lexeme(t_list **lst, const char *str)
 	return (offset);
 }
 
-static void		escape_characters_in_value(t_json_lexeme *lexeme)
+static void				escape_characters_in_value(t_json_lexeme *lexeme)
 {
 	char	*offset;
 
@@ -126,7 +127,7 @@ static void		escape_characters_in_value(t_json_lexeme *lexeme)
 	}
 }
 
-static size_t	create_string_lexeme(t_list **lst, const char *str)
+static size_t			create_string_lexeme(t_list **lst, const char *str)
 {
 	size_t			offset;
 	t_json_lexeme	*tok;
@@ -152,7 +153,7 @@ static size_t	create_string_lexeme(t_list **lst, const char *str)
 	return (offset);
 }
 
-t_list			*split_str_into_json_lexemes(const char *str)
+t_list					*split_str_into_json_lexemes(const char *str)
 {
 	t_list	*lst;
 	size_t	idx;

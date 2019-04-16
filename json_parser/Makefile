@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/15 15:22:16 by gguichar          #+#    #+#              #
-#    Updated: 2019/04/15 23:42:01 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/16 10:53:44 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ GREEN	=	\x1b[32m
 
 INC_DIR	=	includes
 
-CC		=	gcc
+CC		=	gcc -g -fsanitize=address
 CFLAGS 	=	-Wall -Werror -Wextra -I libft/includes -I $(INC_DIR)
 LDFLAGS	=	-Llibft
 LDLIBS	=	-lft

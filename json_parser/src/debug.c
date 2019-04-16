@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 22:43:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/15 22:44:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 10:50:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include "libft.h"
 #include "token.h"
+#include "parser.h"
 
 static const char	*get_tk_type(int type)
 {
@@ -52,4 +53,41 @@ void				debug_lexemes(t_list *lst)
 				, tok->value);
 		curr = curr->next;
 	}
+}
+
+void				debug_tokens(t_json_token *token, int tab)
+{
+	int	i;
+
+	if (token == NULL)
+		return ;
+	i = 0;
+	while (i < tab)
+	{
+		ft_putchar(' ');
+		i++;
+	}
+	ft_printf("\"%s\": ", token->key);
+	if (token->type == JSON_OBJECT)
+	{
+		ft_printf("{\n", token->key);
+		debug_tokens(token->value.child, tab + 4);
+		i = 0;
+		while (i < tab)
+		{
+			ft_putchar(' ');
+			i++;
+		}
+		ft_printf("}");
+	}
+	else if (token->type == JSON_STRING)
+		ft_printf("\"%s\"", token->value.str);
+	else if (token->type == JSON_BOOLEAN)
+		ft_printf("%s", token->value.i ? "true" : "false");
+	else if (token->type == JSON_INTEGER)
+		ft_printf("%d", token->value.i);
+	else if (token->type == JSON_NULL)
+		ft_printf("null");
+	ft_printf("%s", (token->next != NULL ? ",\n" : "\n"));
+	debug_tokens(token->next, tab);
 }

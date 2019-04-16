@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 22:11:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 00:16:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 10:45:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ struct			s_json_token
 };
 
 void			debug_lexemes(t_list *lst);
+void			debug_tokens(t_json_token *token, int tab);
 
-t_json_token	*read_json_object(t_list **lst, int depth_level);
+int				read_json_object(t_list **lst, int depth_level
+		, t_json_token *token);
 
 t_json_token	*parse_json(const char *data);
 
