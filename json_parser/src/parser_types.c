@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:03:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 15:03:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:51:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int		read_json_object_or_array(t_list **lst, int depth_level
 {
 	t_json_token	*child;
 
-	while (*lst != NULL && (*lst = (*lst)->next) != NULL)
+	while (*lst != NULL)
 	{
 		if (((t_json_lexeme *)(*lst)->content)->type
 				== (is_object ? TK_CLOSE_OBJECT : TK_CLOSE_ARRAY))
@@ -75,11 +75,9 @@ t_json_token	*eat_json_lexemes(t_list **lst, int depth_level)
 	t_json_token	*token;
 	t_json_lexeme	*lexeme;
 
-	if (depth_level > JSON_MAX_DEPTH)
+	if (depth_level > JSON_MAX_DEPTH
+			|| !(token = (t_json_token *)ft_memalloc(sizeof(t_json_token))))
 		return (NULL);
-	if ((token = (t_json_token *)ft_memalloc(sizeof(t_json_token))) == NULL)
-		return (NULL);
-	token->type = JSON_UNKNOWN;
 	lexeme = (t_json_lexeme *)(*lst)->content;
 	if (lexeme->type == TK_STRING)
 		read_json_string(lexeme, token);
@@ -89,6 +87,7 @@ t_json_token	*eat_json_lexemes(t_list **lst, int depth_level)
 		read_json_primitive(lexeme, token);
 	else if (lexeme->type == TK_OPEN_OBJECT || lexeme->type == TK_OPEN_ARRAY)
 	{
+		*lst = (*lst)->next;
 		if (read_json_object_or_array(lst, depth_level + 1, token
 					, lexeme->type == TK_OPEN_OBJECT))
 			token->type = (lexeme->type == TK_OPEN_OBJECT
@@ -96,5 +95,6 @@ t_json_token	*eat_json_lexemes(t_list **lst, int depth_level)
 	}
 	if (token->type == JSON_UNKNOWN)
 		return (del_json_token(token));
+	*lst = (*lst)->next;
 	return (token);
 }

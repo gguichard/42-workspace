@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 22:09:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:58:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 15:46:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ t_json_token	*parse_json(const char *data)
 	{
 		curr = lst;
 		root = eat_json_lexemes(&curr, 1);
+		if (root != NULL && curr != NULL)
+			root = del_json_token(root);
 	}
 	ft_lstdel(&lst, del_json_lexeme);
 	return (root);
