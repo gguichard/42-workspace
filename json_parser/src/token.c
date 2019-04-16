@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 16:01:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 10:56:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 10:58:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static t_json_lexeme	*create_lexeme_with_type(t_list **lst, int type
 	t_list			*elem;
 
 	lexeme.type = type;
-	ft_printf("lexeme: %s %zu\n", str, len);
 	lexeme.value = (str == NULL ? NULL : ft_strsub(str, 0, len));
 	if (lexeme.value == NULL && str != NULL)
 		return (NULL);
