@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:40:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:37:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,26 @@ int		expect_json_sep(t_list **lst, const char *sep)
 
 void	*del_json_token(t_json_token *token)
 {
-	t_json_token	*curr;
-	t_json_token	*next;
-
 	free(token->key);
 	if (token->type == JSON_STRING)
 		free(token->value.str);
 	else if (token->type == JSON_ARRAY || token->type == JSON_OBJECT)
-	{
-		curr = token->value.child;
-		while (curr != NULL)
-		{
-			next = curr->next;
-			del_json_token(curr);
-			curr = next;
-		}
-	}
+		del_json_token_childs(token);
 	free(token);
 	return (NULL);
+}
+
+void	del_json_token_childs(t_json_token *token)
+{
+	t_json_token	*curr;
+	t_json_token	*next;
+
+	curr = token->value.child;
+	while (curr != NULL)
+	{
+		next = curr->next;
+		del_json_token(curr);
+		curr = next;
+	}
+	token->value.child = NULL;
 }

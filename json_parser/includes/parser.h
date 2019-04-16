@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 22:11:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:34:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:38:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void			debug_tokens(t_json_token *token, int tab);
 int				check_for_unknown_lexeme_type(t_list *lst);
 int				expect_json_sep(t_list **lst, const char *sep);
 void			*del_json_token(t_json_token *token);
+void			del_json_token_childs(t_json_token *token);
 t_json_token	*eat_json_lexemes(t_list **lst, int depth_level);
 t_json_token	*read_json_key_pair(t_list **lst, int depth_level);
 

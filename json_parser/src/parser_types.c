@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/16 12:03:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 12:40:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/16 13:38:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static int		read_json_object_or_array(t_list **lst, int depth_level
 		if (token->value.child != NULL && !expect_json_sep(lst, ","))
 			break ;
 		child = is_object
-			? read_json_key_pair(lst, depth_level + 1)
-			: eat_json_lexemes(lst, depth_level + 1);
+			? read_json_key_pair(lst, depth_level)
+			: eat_json_lexemes(lst, depth_level);
 		if (child == NULL)
 			break ;
 		child->next = token->value.child;
@@ -70,6 +70,7 @@ static int		read_json_object_or_array(t_list **lst, int depth_level
 		if (child->next != NULL)
 			child->next->prev = child;
 	}
+	del_json_token_childs(token);
 	return (0);
 }
 
@@ -92,7 +93,7 @@ t_json_token	*eat_json_lexemes(t_list **lst, int depth_level)
 		read_json_primitive(lexeme, token);
 	else if (lexeme->type == TK_OPEN_OBJECT || lexeme->type == TK_OPEN_ARRAY)
 	{
-		if (read_json_object_or_array(lst, depth_level, token
+		if (read_json_object_or_array(lst, depth_level + 1, token
 					, lexeme->type == TK_OPEN_OBJECT))
 			token->type = (lexeme->type == TK_OPEN_OBJECT
 					? JSON_OBJECT : JSON_ARRAY);
