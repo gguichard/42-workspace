@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/15 15:22:16 by gguichar          #+#    #+#              #
-#    Updated: 2019/04/16 10:53:44 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/16 12:08:05 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,12 @@ LDFLAGS	=	-Llibft
 LDLIBS	=	-lft
 
 SRC_DIR	=	src
-SRC 	=	\
-main.c		\
-token.c		\
-parser.c	\
+SRC 	=		\
+main.c			\
+token.c			\
+parser.c		\
+parser_utils.c	\
+parser_types.c	\
 debug.c
 
 OBJ_DIR		=	.obj
