@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/15 22:11:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/16 18:09:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/17 14:43:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_json_token	t_json_token;
 **
 ** *child est utilise pour pointer vers le premier element d'un tableau/objet
 ** en cas de token JSON_OBJECT ou JSON_ARRAY.
-**/
+*/
 
 union			u_json_value
 {
