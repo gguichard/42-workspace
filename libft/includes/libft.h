@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/03/20 20:11:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/17 15:00:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ char			*ft_strtoupper(char *s);
 char			*ft_strtolower(char *s);
 
 void			*ft_memalloc(size_t size);
-void			ft_memdel(void **ap);
+void			*ft_memdel(void **ap);
 
 char			*ft_strnew(size_t size);
-void			ft_strdel(char **as);
+void			*ft_strdel(char **as);
 void			ft_strclr(char *s);
 void			ft_striter(char *s, void (*f)(char *));
 void			ft_striteri(char *s, void (*f)(unsigned int, char *));
