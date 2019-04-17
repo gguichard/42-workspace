@@ -6,13 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2019/03/20 20:20:02 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/17 14:31:32 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	libft.a
+NAME		=	libft.a
 
-SRC		=				\
+SRC			=			\
 ft_abs.c				\
 ft_atoi.c				\
 ft_atoi_base.c			\
@@ -109,19 +109,20 @@ ft_ulltoa_base.c		\
 ft_wcharlen.c			\
 ft_wstrlen.c			\
 get_next_line.c
-SRC_DIR	=	src
+SRC_DIR		=	src
 
-OBJ		=	$(SRC:.c=.o)
-OBJ_DIR	=	.obj
+OBJ			=	$(SRC:.c=.o)
+OBJ_DIR		=	.obj
 
-PF_DIR	=	printf
-PF_LIB	=	$(PF_DIR)/printf.a
+PF_DIR		=	printf
+PF_LIB		=	$(PF_DIR)/printf.a
 
-OPT_DIR	=	options
-OPT_LIB	=	$(OPT_DIR)/options.a
+OPT_DIR		=	options
+OPT_LIB		=	$(OPT_DIR)/options.a
 
-CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -I includes
+CC			=	gcc
+CFLAGS		=	-Wall -Wextra -Werror
+CPPFLAGS	=	-Iincludes
 
 all: $(NAME)
 
@@ -134,8 +135,8 @@ $(PF_LIB):
 $(OPT_LIB):
 	$(MAKE) -C $(OPT_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -o $@ -c $<
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c includes/libft.h | $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<
 
 $(OBJ_DIR):
 	/bin/mkdir $@
@@ -150,6 +151,8 @@ fclean: clean
 	$(MAKE) -C $(OPT_DIR) fclean
 	/bin/rm -f $(NAME)
 
-re: fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
 .PHONY: all clean fclean re

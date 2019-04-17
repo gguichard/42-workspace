@@ -6,13 +6,13 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/12 09:21:09 by gguichar          #+#    #+#              #
-#    Updated: 2019/03/20 20:18:46 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/17 14:28:13 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	printf.a
+NAME		=	printf.a
 
-SRC		=		\
+SRC			=	\
 ft_printf.c		\
 parse_tok.c		\
 parser.c		\
@@ -26,13 +26,14 @@ conv_o.c		\
 conv_p.c		\
 conv_misc.c		\
 conv_utils.c
-SRC_DIR	=	src
+SRC_DIR		=	src
 
-OBJ		=	$(SRC:.c=.o)
-OBJ_DIR	=	.obj
+OBJ			=	$(SRC:.c=.o)
+OBJ_DIR		=	.obj
 
-CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -O2 -I ../includes
+CC			=	gcc
+CFLAGS		=	-Wall -Wextra -Werror -O2
+CPPFLAGS	=	-I../includes
 
 all: $(NAME)
 
@@ -40,7 +41,7 @@ $(NAME): $(addprefix $(OBJ_DIR)/,$(OBJ))
 	ar rcs $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c includes/printf.h  | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
 	/bin/mkdir $@
@@ -51,6 +52,8 @@ clean:
 fclean: clean
 	/bin/rm -f $(NAME)
 
-re: fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
 .PHONY: all clean fclean re
