@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/17 15:00:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/24 16:31:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@ typedef struct	s_list
 	size_t			content_size;
 	struct s_list	*next;
 }				t_list;
+
+typedef struct	s_vector
+{
+	void		**data;
+	size_t		capacity;
+	size_t		size;
+}				t_vector;
 
 void			*ft_memset(void *s, int c, size_t n);
 void			*ft_memcpy(void *dest, const void *src, size_t n);
@@ -126,6 +133,11 @@ size_t			ft_lstsize(t_list *lst);
 int				ft_lstempty(t_list *lst);
 void			ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+
+int				ft_vecpush(t_vector *vector, void *elem);
+void			ft_veciter(t_vector *vector, void (*f)(size_t, void *));
+void			ft_vecdel(t_vector **vector, void (*f)(void *));
+void			ft_vecfree(t_vector **vector);
 
 int				ft_min(int a, int b);
 int				ft_max(int a, int b);

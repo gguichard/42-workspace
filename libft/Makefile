@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2019/04/17 14:31:32 by gguichar         ###   ########.fr        #
+#    Updated: 2019/04/24 16:32:51 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,6 +106,10 @@ ft_tolower.c			\
 ft_toupper.c			\
 ft_ulltoa.c				\
 ft_ulltoa_base.c		\
+ft_vecdel.c				\
+ft_vecfree.c			\
+ft_veciter.c			\
+ft_vecpush.c			\
 ft_wcharlen.c			\
 ft_wstrlen.c			\
 get_next_line.c
