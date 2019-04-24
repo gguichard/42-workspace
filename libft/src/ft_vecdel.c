@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 16:27:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/24 16:43:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/04/24 22:23:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void	ft_vecdel(t_vector *vector, void (*f)(void *))
 			f(vector->data[index]);
 			index++;
 		}
+		ft_memset(vector, 0, sizeof(t_vector));
 	}
 }
