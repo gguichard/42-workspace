@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/08 01:54:05 by gguichar          #+#    #+#             */
-/*   Updated: 2018/08/08 03:17:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:33:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 char	*ft_strchr(const char *s, int c)
 {
 	if (c == 0)
-		return (char *)(s + ft_strlen(s));
+		return ((char *)s + ft_strlen(s));
 	while (*s != '\0')
 	{
 		if (*s == (char)c)
-			return (char *)(s);
+			return ((char *)s);
 		s++;
 	}
 	return (NULL);

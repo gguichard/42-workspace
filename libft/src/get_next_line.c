@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/27 20:13:17 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/20 21:06:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:44:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int			get_next_line(const int fd, char **line)
 		return (-1);
 	eol = NULL;
 	if ((!(elem->offset) || !(eol = ft_strchr(elem->offset, '\n')))
-			&& (result = read_line_fd(fd, elem, &eol)) <= 0)
+		&& (result = read_line_fd(fd, elem, &eol)) <= 0)
 	{
 		clean_fd_info(fd, &files);
 		return (result);
