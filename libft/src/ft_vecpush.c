@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 16:19:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/01 16:43:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/05 02:23:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,11 @@ int	ft_vecpush(t_vector *vector, void *elem)
 		if (new_data == NULL)
 			return (0);
 		if (vector->data != NULL)
+		{
 			ft_memcpy(new_data, vector->data
 				, sizeof(void *) * vector->capacity);
+			free(vector->data);
+		}
 		vector->data = new_data;
 		vector->capacity = new_capacity;
 	}
