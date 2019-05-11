@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/24 16:19:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/05 02:23:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/11 21:05:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_vecpush(t_vector *vector, void *elem)
 		return (0);
 	else if (vector->size == vector->capacity)
 	{
-		new_capacity = vector->capacity + 1024;
+		new_capacity = (vector->capacity == 0 ? 1024 : vector->capacity * 2);
 		new_data = (void **)malloc(sizeof(void *) * new_capacity);
 		if (new_data == NULL)
 			return (0);
