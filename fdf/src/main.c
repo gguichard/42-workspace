@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 19:46:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 21:10:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 	if (!fdf->z_buffer)
 		return (0);
 	ft_memset(&(fdf->cam), 0, sizeof(t_cam));
-	fdf->cam.scale = 30;
+	fdf->cam.scale = 1.;
 	fdf->cam.depth = 1;
 	fdf->cam.angle = 0;
 	fdf->cam.angle_sin = 0;

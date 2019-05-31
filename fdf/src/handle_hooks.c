@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 19:35:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 20:57:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,18 @@ int	handle_move(t_fdf *fdf)
 
 int	handle_scale(t_fdf *fdf)
 {
-	int	tmp;
+	double	scale;
 
-	tmp = fdf->cam.scale;
+	scale = fdf->cam.scale;
 	if (fdf->keys & SCALE_OUT)
-		tmp -= 1;
+		scale *= 1.1;
 	if (fdf->keys & SCALE_IN)
-		tmp += 1;
-	if (tmp == fdf->cam.scale || tmp <= 0)
+		scale /= 1.1;
+	if (scale > 1.)
+		scale = 1.;
+	if (scale == fdf->cam.scale)
 		return (0);
-	fdf->cam.scale = tmp;
+	fdf->cam.scale = scale;
 	return (1);
 }
 

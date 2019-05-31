@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 21:15:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 20:16:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int		parse_pos(t_fdf *fdf, t_pos *pos, char **line)
 	else
 	{
 		(*line)++;
-		pos->color = ft_strtol(*line, line, 16);
+		pos->color = ft_strtol(*line, line, 0);
 	}
 	if ((*line)[0] != ' ' && (*line)[0] != '\0')
 		return (0);

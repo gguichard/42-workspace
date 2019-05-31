@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 19:34:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 20:43:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct		s_cam
 {
 	int				x;
 	int				y;
-	int				scale;
+	double			scale;
 	double			depth;
 	int				angle;
 	double			angle_cos;

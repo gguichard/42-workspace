@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 19:40:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 19:59:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,22 @@ int			expose_hook(t_fdf *fdf)
 
 int			loop_hook(t_fdf *fdf)
 {
-	int	ret;
-
-	ret = 0;
-	if (handle_move(fdf))
-		ret = 1;
-	if (handle_scale(fdf))
-		ret = 1;
-	if (handle_depth(fdf))
-		ret = 1;
-	if (handle_angle(fdf))
-		ret = 1;
-	if (ret)
+	if (handle_move(fdf) | handle_scale(fdf)
+		| handle_depth(fdf) | handle_angle(fdf))
 	{
 		fill_window_image(fdf);
 		expose_hook(fdf);
 	}
 	return (0);
+}
+
+static void	keypress_hook_proj(int keycode, t_fdf *fdf)
+{
+	if (handle_proj(fdf, keycode))
+	{
+		fill_window_image(fdf);
+		expose_hook(fdf);
+	}
 }
 
 int			keypress_hook(int keycode, t_fdf *fdf)
@@ -79,16 +78,9 @@ int			keypress_hook(int keycode, t_fdf *fdf)
 		fdf->keys |= ROTATE_LEFT;
 	else if (keycode == KEY_RIGHT_ARROW)
 		fdf->keys |= ROTATE_RIGHT;
+	else if (keycode == KEY_I || keycode == KEY_P)
+		keypress_hook_proj(keycode, fdf);
 	return (0);
-}
-
-static void	keyrelease_hook_proj(int keycode, t_fdf *fdf)
-{
-	if (handle_proj(fdf, keycode))
-	{
-		fill_window_image(fdf);
-		expose_hook(fdf);
-	}
 }
 
 int			keyrelease_hook(int keycode, t_fdf *fdf)
@@ -115,7 +107,5 @@ int			keyrelease_hook(int keycode, t_fdf *fdf)
 		fdf->keys &= ~ROTATE_LEFT;
 	else if (keycode == KEY_RIGHT_ARROW)
 		fdf->keys &= ~ROTATE_RIGHT;
-	else if (keycode == KEY_I || keycode == KEY_P)
-		keyrelease_hook_proj(keycode, fdf);
 	return (0);
 }
