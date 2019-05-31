@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 23:19:42 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/10 19:39:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:36:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 static int	pf_ptok(t_pf *pf, const char **tok)
 {
 	if (**tok == '#' || **tok == '0' || **tok == '-'
-			|| **tok == ' ' || **tok == '+')
+		|| **tok == ' ' || **tok == '+')
 		return (pf_flag(pf, tok));
 	else if (**tok == 'L' || **tok == 'j' || **tok == 'z'
-			|| **tok == 'h' || **tok == 'l')
+		|| **tok == 'h' || **tok == 'l')
 		return (pf_modifier(pf, tok));
 	else if (**tok == '.')
 		return (pf_precision(pf, tok));
@@ -31,7 +31,7 @@ static int	pf_ptok(t_pf *pf, const char **tok)
 static void	pf_conv_type(t_pf *pf)
 {
 	if (pf->type == 'S' || pf->type == 'C'
-			|| pf->type == 'D' || pf->type == 'O' || pf->type == 'U')
+		|| pf->type == 'D' || pf->type == 'O' || pf->type == 'U')
 	{
 		pf->type = ft_tolower(pf->type);
 		pf->flags &= ~(LUP_MODIFIER | J_MODIFIER | Z_MODIFIER

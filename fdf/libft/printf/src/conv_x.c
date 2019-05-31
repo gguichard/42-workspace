@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 18:33:52 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/09 19:54:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:35:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void		pf_conv_x(t_pf *pf)
 	pf_x_prepend(pf, value, size);
 	if (size > 0)
 		pf_ulltoa(pf, value
-				, (pf->type == 'X' ? "0123456789ABCDEF" : "0123456789abcdef"));
+			, (pf->type == 'X' ? "0123456789ABCDEF" : "0123456789abcdef"));
 	if (pf->w_field > 0 && pf->flags & MINUS_FLAG)
 		buf_pad(pf);
 }

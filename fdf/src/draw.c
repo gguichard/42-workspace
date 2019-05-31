@@ -6,14 +6,15 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/02 00:15:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 19:02:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "fdf.h"
+#include "bresenham.h"
 
-void		draw_pixel(t_fdf *fdf, t_line line)
+static inline void	draw_pixel(t_fdf *fdf, t_line line)
 {
 	double	percent;
 	int		index;
@@ -23,14 +24,14 @@ void		draw_pixel(t_fdf *fdf, t_line line)
 	else
 		percent = pcnt(line.y0, line.y1, line.y);
 	line.z = lint(line.z0, line.z1, percent);
-	index = line.y * fdf->width + line.x;
+	index = line.y * fdf->winsize.width + line.x;
 	if ((fdf->z_buffer)[index] >= line.z)
 		return ;
 	(fdf->z_buffer)[index] = line.z;
 	fdf->lib.img_data[index] = get_color(line.c0, line.c1, percent);
 }
 
-static void	step_line(t_line *line)
+static void			step_line(t_line *line)
 {
 	int	tmp;
 
@@ -47,7 +48,7 @@ static void	step_line(t_line *line)
 	}
 }
 
-void		draw_line(t_fdf *fdf, t_pos start, t_pos end)
+void				draw_line(t_fdf *fdf, t_pos start, t_pos end)
 {
 	t_line	line;
 
@@ -69,7 +70,7 @@ void		draw_line(t_fdf *fdf, t_pos start, t_pos end)
 	while (line.x != line.x1 || line.y != line.y1)
 	{
 		if (line.x >= 0 && line.y >= 0
-				&& line.x < fdf->width && line.y < fdf->height)
+			&& line.x < fdf->winsize.width && line.y < fdf->winsize.height)
 			draw_pixel(fdf, line);
 		step_line(&line);
 	}

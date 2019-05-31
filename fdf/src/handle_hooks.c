@@ -6,30 +6,40 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 20:40:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 19:35:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "fdf.h"
+#include "keys.h"
 
 int	handle_move(t_fdf *fdf)
 {
-	if (fdf->move.x != 0)
-		fdf->cam.x += fdf->move.x;
-	if (fdf->move.y != 0)
-		fdf->cam.y += fdf->move.y;
-	return (fdf->move.x != 0 || fdf->move.y != 0);
+	t_cam	cam;
+
+	cam = fdf->cam;
+	if (fdf->keys & TRANSLATE_X_LEFT)
+		fdf->cam.x += 10;
+	if (fdf->keys & TRANSLATE_X_RIGHT)
+		fdf->cam.x -= 10;
+	if (fdf->keys & TRANSLATE_Y_UP)
+		fdf->cam.y += 10;
+	if (fdf->keys & TRANSLATE_Y_DOWN)
+		fdf->cam.y -= 10;
+	return (fdf->cam.x != cam.x || fdf->cam.y != cam.y);
 }
 
 int	handle_scale(t_fdf *fdf)
 {
 	int	tmp;
 
-	if (fdf->move.scale == 0)
-		return (0);
-	tmp = fdf->cam.scale + fdf->move.scale;
-	if (tmp <= 0)
+	tmp = fdf->cam.scale;
+	if (fdf->keys & SCALE_OUT)
+		tmp -= 1;
+	if (fdf->keys & SCALE_IN)
+		tmp += 1;
+	if (tmp == fdf->cam.scale || tmp <= 0)
 		return (0);
 	fdf->cam.scale = tmp;
 	return (1);
@@ -37,20 +47,32 @@ int	handle_scale(t_fdf *fdf)
 
 int	handle_depth(t_fdf *fdf)
 {
-	if (fdf->move.depth == 0)
+	double	tmp;
+
+	tmp = fdf->cam.depth;
+	if (fdf->keys & DEPTH_DECREASE)
+		tmp -= .1;
+	if (fdf->keys & DEPTH_INCREASE)
+		tmp += .1;
+	if (tmp == fdf->cam.depth)
 		return (0);
-	fdf->cam.depth += fdf->move.depth;
+	fdf->cam.depth = tmp;
 	return (1);
 }
 
 int	handle_angle(t_fdf *fdf)
 {
+	int		angle;
 	double	rad;
 
-	if (fdf->move.angle == 0)
+	angle = fdf->cam.angle;
+	if (fdf->keys & ROTATE_LEFT)
+		angle -= 5;
+	if (fdf->keys & ROTATE_RIGHT)
+		angle += 5;
+	if (angle == fdf->cam.angle)
 		return (0);
-	fdf->cam.angle += fdf->move.angle;
-	fdf->cam.angle %= 360;
+	fdf->cam.angle = angle % 360;
 	rad = fdf->cam.angle * M_PI / 180.0;
 	fdf->cam.angle_sin = sin(rad);
 	fdf->cam.angle_cos = cos(rad);
@@ -59,15 +81,15 @@ int	handle_angle(t_fdf *fdf)
 
 int	handle_proj(t_fdf *fdf, int keycode)
 {
-	if (keycode == 34)
+	if (keycode == KEY_I)
 	{
 		fdf->proj = ISO;
-		fdf->f_proj = &iso;
+		fdf->fn_proj = &iso;
 	}
-	else if (keycode == 35)
+	else if (keycode == KEY_P)
 	{
 		fdf->proj = PARALLEL;
-		fdf->f_proj = &parallel;
+		fdf->fn_proj = &parallel;
 	}
 	return (1);
 }

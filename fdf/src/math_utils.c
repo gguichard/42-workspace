@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/01 03:44:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 21:11:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 18:44:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ double	pcnt(int start, int end, int current)
 
 	dist = end - start;
 	if (dist == 0)
-		return (1.0);
+		return (1.);
 	return ((current - start) / dist);
 }
 
@@ -33,9 +33,9 @@ int		get_color(int start, int end, double percent)
 	int		g;
 	int		b;
 
-	if (percent == 0 || start == end)
+	if (percent == 0. || start == end)
 		return (start);
-	if (percent == 1)
+	if (percent == 1.)
 		return (end);
 	r = lint((start >> 16) & 0xFF, (end >> 16) & 0xFF, percent);
 	g = lint((start >> 8) & 0xFF, (end >> 8) & 0xFF, percent);

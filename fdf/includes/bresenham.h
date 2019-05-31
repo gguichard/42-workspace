@@ -1,26 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   bresenham.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/08 01:54:05 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/01 16:33:40 by gguichar         ###   ########.fr       */
+/*   Created: 2019/05/31 18:58:56 by gguichar          #+#    #+#             */
+/*   Updated: 2019/05/31 18:59:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef BRESENHAM_H
+# define BRESENHAM_H
 
-char	*ft_strchr(const char *s, int c)
+# include "fdf.h"
+
+typedef struct	s_line
 {
-	if (c == 0)
-		return ((char *)s + ft_strlen(s));
-	while (*s != '\0')
-	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
-	}
-	return (NULL);
-}
+	int			x0;
+	int			y0;
+	int			z0;
+	int			c0;
+	int			x1;
+	int			y1;
+	int			z1;
+	int			c1;
+	int			dx;
+	int			dy;
+	int			sx;
+	int			sy;
+	int			x;
+	int			y;
+	int			z;
+	int			err;
+}				t_line;
+
+void			draw_line(t_fdf *fdf, t_pos start, t_pos end);
+
+#endif

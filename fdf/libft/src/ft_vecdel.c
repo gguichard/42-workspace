@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_vecdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/08 01:54:05 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/01 16:33:40 by gguichar         ###   ########.fr       */
+/*   Created: 2019/04/24 16:27:18 by gguichar          #+#    #+#             */
+/*   Updated: 2019/05/05 00:57:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+void	ft_vecdel(t_vector *vector, void (*f)(void *))
 {
-	if (c == 0)
-		return ((char *)s + ft_strlen(s));
-	while (*s != '\0')
+	size_t	index;
+
+	if (vector != NULL)
 	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
+		if (f != NULL)
+		{
+			index = 0;
+			while (index < vector->size)
+			{
+				f(vector->data[index]);
+				index++;
+			}
+		}
+		free(vector->data);
+		ft_memset(vector, 0, sizeof(t_vector));
 	}
-	return (NULL);
 }

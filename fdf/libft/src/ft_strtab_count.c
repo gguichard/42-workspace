@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strtab_count.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/08 01:54:05 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/01 16:33:40 by gguichar         ###   ########.fr       */
+/*   Created: 2019/03/20 20:03:07 by gguichar          #+#    #+#             */
+/*   Updated: 2019/03/20 20:03:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+size_t	ft_strtab_count(char **tab)
 {
-	if (c == 0)
-		return ((char *)s + ft_strlen(s));
-	while (*s != '\0')
-	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
-	}
-	return (NULL);
+	size_t	idx;
+
+	idx = 0;
+	while (tab[idx] != NULL)
+		idx++;
+	return (idx);
 }

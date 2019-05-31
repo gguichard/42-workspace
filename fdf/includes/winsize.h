@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   winsize.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/08 01:54:05 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/01 16:33:40 by gguichar         ###   ########.fr       */
+/*   Created: 2019/05/31 19:00:32 by gguichar          #+#    #+#             */
+/*   Updated: 2019/05/31 19:03:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef WINSIZE_H
+# define WINSIZE_H
 
-char	*ft_strchr(const char *s, int c)
+# define WIN_WIDTH 1640
+# define WIN_HEIGHT 1280
+
+typedef struct	s_winsize
 {
-	if (c == 0)
-		return ((char *)s + ft_strlen(s));
-	while (*s != '\0')
-	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
-	}
-	return (NULL);
-}
+	int			width;
+	int			height;
+}				t_winsize;
+
+#endif

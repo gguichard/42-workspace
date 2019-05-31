@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/02/07 05:47:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 19:34:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 
 # include "libft.h"
 # include "options.h"
-
-# define WIN_WIDTH 1640
-# define WIN_HEIGHT 1280
+# include "winsize.h"
 
 typedef enum		e_proj
 {
@@ -51,15 +49,6 @@ typedef struct		s_pos
 	int				color;
 }					t_pos;
 
-typedef struct		s_move
-{
-	int				x;
-	int				y;
-	int				scale;
-	double			depth;
-	int				angle;
-}					t_move;
-
 typedef struct		s_cam
 {
 	int				x;
@@ -74,20 +63,19 @@ typedef struct		s_cam
 typedef struct		s_fdf
 {
 	t_mlx			lib;
-	t_opt			*opt;
+	t_opts			opts;
 	int				argc;
 	char			**argv;
-	int				width;
-	int				height;
+	t_winsize		winsize;
 	int				rows;
 	int				cols;
 	t_list			*palette;
 	t_pos			*pos;
 	int				*z_buffer;
 	t_cam			cam;
-	t_move			move;
+	int				keys;
 	t_proj			proj;
-	void			(*f_proj)(t_pos, double *, double *);
+	void			(*fn_proj)(t_pos, double *, double *);
 }					t_fdf;
 
 int					clean_fdf(t_fdf *fdf);
@@ -124,29 +112,6 @@ void				iso(t_pos pos, double *x, double *y);
 void				parallel(t_pos pos, double *x, double *y);
 
 void				fill_window_image(t_fdf *fdf);
-
-typedef struct		s_line
-{
-	int				x0;
-	int				y0;
-	int				z0;
-	int				c0;
-	int				x1;
-	int				y1;
-	int				z1;
-	int				c1;
-	int				dx;
-	int				dy;
-	int				sx;
-	int				sy;
-	int				x;
-	int				y;
-	int				z;
-	int				err;
-}					t_line;
-
-void				draw_pixel(t_fdf *fdf, t_line line);
-void				draw_line(t_fdf *fdf, t_pos start, t_pos end);
 
 /*
 ** HOOKS.

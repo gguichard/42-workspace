@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/03 19:44:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/31 19:46:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,12 @@ static int	init_mlx(t_fdf *fdf)
 	if (!(fdf->lib.mlx_ptr = mlx_init()))
 		return (0);
 	fdf->lib.win_ptr = mlx_new_window(fdf->lib.mlx_ptr
-			, fdf->width, fdf->height
+			, fdf->winsize.width, fdf->winsize.height
 			, "FDF");
 	if (!(fdf->lib.win_ptr))
 		return (0);
-	fdf->lib.img_ptr = mlx_new_image(fdf->lib.mlx_ptr, fdf->width, fdf->height);
+	fdf->lib.img_ptr = mlx_new_image(fdf->lib.mlx_ptr
+			, fdf->winsize.width, fdf->winsize.height);
 	if (!(fdf->lib.img_ptr))
 		return (0);
 	fdf->lib.img_data = (unsigned int *)mlx_get_data_addr(fdf->lib.img_ptr
@@ -50,23 +51,23 @@ static int	init_mlx(t_fdf *fdf)
 
 static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 {
-	fdf->opt = parse_opts(argc, argv, "w:h:p:");
-	fdf->argc = argc - fdf->opt->index;
-	fdf->argv = argv + fdf->opt->index;
+	parse_opts(&fdf->opts, argv, "w:h:p:");
+	fdf->argc = argc - fdf->opts.index;
+	fdf->argv = argv + fdf->opts.index;
 	if (!check_options(fdf))
 		return (0);
-	fdf->z_buffer = (int *)malloc(fdf->width * fdf->height * sizeof(int));
+	fdf->z_buffer = (int *)malloc(fdf->winsize.width * fdf->winsize.height
+			* sizeof(int));
 	if (!fdf->z_buffer)
 		return (0);
 	ft_memset(&(fdf->cam), 0, sizeof(t_cam));
-	ft_memset(&(fdf->move), 0, sizeof(t_move));
 	fdf->cam.scale = 30;
 	fdf->cam.depth = 1;
 	fdf->cam.angle = 0;
 	fdf->cam.angle_sin = 0;
 	fdf->cam.angle_cos = 1;
 	fdf->proj = ISO;
-	fdf->f_proj = &iso;
+	fdf->fn_proj = &iso;
 	return (1);
 }
 
@@ -74,7 +75,7 @@ static int	init(t_fdf *fdf, int argc, char **argv)
 {
 	if (!init_fdf(fdf, argc, argv))
 		return (0);
-	if (fdf->opt->error != 0 || fdf->argc <= 0)
+	if (fdf->opts.error != 0 || fdf->argc <= 0)
 		return (print_usage(fdf));
 	if (!read_file((fdf->argv)[0], fdf))
 	{

@@ -5,44 +5,66 @@
 #                                                     +:+ +:+         +:+      #
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/12/02 09:43:55 by gguichar          #+#    #+#              #
-#    Updated: 2019/01/01 03:46:09 by gguichar         ###   ########.fr        #
+#    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
+#    Updated: 2019/05/31 19:44:30 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	fdf
+NAME		=	fdf
 
-SRC		=	src/main.c src/palette.c src/parser.c \
-			src/hooks.c src/handle_hooks.c \
-			src/draw.c src/proj.c src/graphics.c \
-			src/math_utils.c src/utils.c
-OBJ		=	$(SRC:.c=.o)
+END			=	\x1b[0m
+GREEN		=	\x1b[32m
 
-CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror
-LIBS	=	-L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
+INC_DIR		=	includes
 
-LIBFT	=	libft/libft.a
+CC			=	gcc -O2
+CPPFLAGS	=	-Ilibft/includes -I$(INC_DIR)
+CFLAGS 		=	-Wall -Werror -Wextra
+LDFLAGS		=	-Llibft -lft -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+
+SRC_DIR		=	src
+SRC 		=	\
+draw.c			\
+graphics.c		\
+handle_hooks.c	\
+hooks.c			\
+main.c			\
+math_utils.c	\
+palette.c		\
+parser.c		\
+proj.c			\
+utils.c
+
+OBJ_DIR		=	.obj
+OBJ			=	$(SRC:.c=.o)
+DEP			=	$(OBJ:.o=.d)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(LIBS) -o $@ $^
-
-$(LIBFT):
+$(NAME): $(addprefix $(OBJ_DIR)/,$(OBJ))
 	$(MAKE) -C libft
+	$(CC) $(LDFLAGS) -o $@ $^
+	@echo "\n$(NAME):\t\t\t$(GREEN)[READY]\n\t\t¯\_(ツ)_/¯$(END)"
 
-%.o: %.c includes/fdf.h
-	$(CC) $(CFLAGS) -I libft/includes -I includes -o $@ -c $<
+-include $(addprefix $(OBJ_DIR)/,$(DEP))
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(SDL_IMG_BUILD)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -MMD -o $@ -c $<
+
+$(OBJ_DIR):
+	@mkdir $@ 2> /dev/null || true
 
 clean:
 	$(MAKE) -C libft clean
-	/bin/rm -f $(OBJ)
+	$(RM) -r $(OBJ_DIR)
 
 fclean: clean
 	$(MAKE) -C libft fclean
-	/bin/rm -f $(NAME)
+	$(RM) $(NAME)
+	@echo "$(NAME):\t\t\t$(GREEN)[CLEAN]$(END)"
 
-re: fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean

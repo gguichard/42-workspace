@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 20:32:03 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/20 21:42:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/03/20 20:16:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,26 @@
 
 # define MAX_OPTS 32
 
-typedef struct	s_opt
+typedef struct	s_opts
 {
 	int			value;
 	int			index;
 	char		error;
 	const char	*args[MAX_OPTS];
 	const char	*optstring;
-}				t_opt;
+}				t_opts;
 
 /*
 ** PARSING.
 */
-t_opt			*parse_opts(int argc, char **argv, const char *optstring);
+void			parse_opts(t_opts *opts, char **argv, const char *optstring);
 
 /*
 ** UTILS.
 */
 void			check_optstring(const char *optstring);
 int				find_opt_offset(const char *optstring, char option);
-int				has_opt(t_opt *opt, char option);
-const char		*get_optarg(t_opt *opt, char option);
+int				has_opt(t_opts *opts, char option);
+const char		*get_optarg(t_opts *opts, char option);
 
 #endif

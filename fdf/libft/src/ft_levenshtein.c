@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/05 10:00:43 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/05 10:47:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:41:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int				ft_levenshtein(const char *s1, const char *s2)
 		y = 0;
 		while (++y <= len[0])
 			matrix[x][y] = ft_min3(matrix[x - 1][y] + 1, matrix[x][y - 1] + 1
-					, matrix[x - 1][y - 1] + (s1[y - 1] == s2[x - 1] ? 0 : 1));
+				, matrix[x - 1][y - 1] + (s1[y - 1] == s2[x - 1] ? 0 : 1));
 	}
 	return (ft_matrix_valfree(matrix, len[0], len[1]));
 }

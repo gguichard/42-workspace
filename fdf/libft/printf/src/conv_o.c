@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/09 18:33:52 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/09 21:05:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/05/01 16:37:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		pf_conv_o(t_pf *pf)
 	size = pf_ullsize(pf, value);
 	pf->precision = ft_max(size, pf->precision);
 	if (pf->flags & HASH_FLAG && pf->precision <= size
-			&& (value != 0 || size == 0))
+		&& (value != 0 || size == 0))
 		pf->precision += 1;
 	pf->w_field -= pf->precision;
 	if (pf->flags & ZERO_FLAG)

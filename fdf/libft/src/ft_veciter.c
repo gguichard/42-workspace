@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_veciter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/08/08 01:54:05 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/01 16:33:40 by gguichar         ###   ########.fr       */
+/*   Created: 2019/04/24 16:24:47 by gguichar          #+#    #+#             */
+/*   Updated: 2019/04/24 16:26:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strchr(const char *s, int c)
+void	ft_veciter(t_vector *vector, void (*f)(size_t, void *))
 {
-	if (c == 0)
-		return ((char *)s + ft_strlen(s));
-	while (*s != '\0')
+	size_t	index;
+
+	index = 0;
+	while (index < vector->size)
 	{
-		if (*s == (char)c)
-			return ((char *)s);
-		s++;
+		f(index, vector->data[index]);
+		index++;
 	}
-	return (NULL);
 }
