@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 20:43:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/01 20:16:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@
 # include "libft.h"
 # include "options.h"
 # include "winsize.h"
+# include "vectors.h"
 
 typedef enum		e_proj
 {
-	ISO, PARALLEL
+	e_iso,
+	e_parallel
 }					t_proj;
 
 typedef struct		s_color
 {
 	int				max;
-	int				value;
+	unsigned int	value;
 }					t_color;
 
 typedef struct		s_mlx
@@ -44,15 +46,13 @@ typedef struct		s_pos
 	int				x;
 	int				y;
 	int				z;
-	double			proj_x;
-	double			proj_y;
+	t_vec2d			proj;
 	int				color;
 }					t_pos;
 
 typedef struct		s_cam
 {
-	int				x;
-	int				y;
+	t_vec2d			origin;
 	double			scale;
 	double			depth;
 	int				angle;
@@ -75,7 +75,7 @@ typedef struct		s_fdf
 	t_cam			cam;
 	int				keys;
 	t_proj			proj;
-	void			(*fn_proj)(t_pos, double *, double *);
+	double			matrix[4][4];
 }					t_fdf;
 
 int					clean_fdf(t_fdf *fdf);
@@ -92,7 +92,8 @@ int					exit_fdf(t_fdf *fdf);
 */
 int					lint(int start, int end, double percent);
 double				pcnt(int start, int end, int current);
-int					get_color(int start, int end, double percent);
+unsigned int		get_color(unsigned int start, unsigned int end
+	, double percent);
 
 /*
 ** COLORS parsing.
@@ -108,9 +109,6 @@ int					read_file(const char *name, t_fdf *fdf);
 /*
 ** GRAPHICS.
 */
-void				iso(t_pos pos, double *x, double *y);
-void				parallel(t_pos pos, double *x, double *y);
-
 void				fill_window_image(t_fdf *fdf);
 
 /*

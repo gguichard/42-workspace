@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/05/31 19:44:30 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/01 19:21:11 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,11 @@ handle_hooks.c	\
 hooks.c			\
 main.c			\
 math_utils.c	\
+matrix44.c		\
 palette.c		\
 parser.c		\
-proj.c			\
-utils.c
+utils.c			\
+vectors.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)

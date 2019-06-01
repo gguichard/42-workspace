@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 21:10:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/01 20:02:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include "libft.h"
 #include "fdf.h"
+#include "matrix44.h"
 
 int			clean_fdf(t_fdf *fdf)
 {
@@ -60,14 +61,12 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 			* sizeof(int));
 	if (!fdf->z_buffer)
 		return (0);
-	ft_memset(&(fdf->cam), 0, sizeof(t_cam));
-	fdf->cam.scale = 1.;
+	mat44_identity(fdf->matrix);
 	fdf->cam.depth = 1;
 	fdf->cam.angle = 0;
 	fdf->cam.angle_sin = 0;
 	fdf->cam.angle_cos = 1;
-	fdf->proj = ISO;
-	fdf->fn_proj = &iso;
+	fdf->proj = e_iso;
 	return (1);
 }
 
@@ -95,10 +94,7 @@ int			main(int argc, char **argv)
 {
 	t_fdf	fdf;
 
-	ft_memset(&(fdf.lib), 0, sizeof(t_mlx));
-	fdf.palette = NULL;
-	fdf.pos = NULL;
-	fdf.z_buffer = NULL;
+	ft_memset(&fdf, 0, sizeof(t_fdf));
 	if (!init(&fdf, argc, argv))
 	{
 		clean_fdf(&fdf);

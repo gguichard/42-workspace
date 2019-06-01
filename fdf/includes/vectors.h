@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   proj.c                                             :+:      :+:    :+:   */
+/*   vectors.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/30 00:35:52 by gguichar          #+#    #+#             */
-/*   Updated: 2019/01/01 22:20:48 by gguichar         ###   ########.fr       */
+/*   Created: 2019/06/01 16:32:31 by gguichar          #+#    #+#             */
+/*   Updated: 2019/06/01 18:53:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
-#include "fdf.h"
+#ifndef VECTORS_H
+# define VECTORS_H
 
-void	iso(t_pos pos, double *x, double *y)
+typedef struct	s_vec2d
 {
-	*x = (pos.x - pos.y) * cos(0.523599);
-	*y = -(pos.z) + (pos.x + pos.y) * sin(0.523599);
-}
+	double		x;
+	double		y;
+}				t_vec2d;
 
-void	parallel(t_pos pos, double *x, double *y)
+typedef struct	s_vec3d
 {
-	*x = pos.x - pos.z * cos(0.785398);
-	*y = pos.y - pos.z * sin(0.785398);
-}
+	double		x;
+	double		y;
+	double		z;
+}				t_vec3d;
+
+t_vec2d			vec2d(double x, double y);
+
+t_vec3d			vec3d(double x, double y, double z);
+t_vec3d			vec3d_scalar(t_vec3d vector, double scalar);
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 19:59:12 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/01 17:01:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int			expose_hook(t_fdf *fdf)
 		, fdf->lib.img_ptr
 		, 0, 0);
 	ft_asprintf(&str, "Projection: %s | Press %c to change"
-		, fdf->proj == ISO ? "Isometric" : "Parallel"
-		, fdf->proj == ISO ? 'P' : 'I');
+		, fdf->proj == e_iso ? "Isometric" : "Parallel"
+		, fdf->proj == e_iso ? 'P' : 'I');
 	if (str != NULL)
 	{
 		mlx_string_put(fdf->lib.mlx_ptr

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 13:08:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/01 16:42:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ void				draw_line(t_fdf *fdf, t_pos start, t_pos end)
 {
 	t_line	line;
 
-	line.x0 = (int)start.proj_x;
-	line.y0 = (int)start.proj_y;
+	line.x0 = (int)start.proj.x;
+	line.y0 = (int)start.proj.y;
 	line.z0 = start.z;
 	line.c0 = start.color;
-	line.x1 = (int)end.proj_x;
-	line.y1 = (int)end.proj_y;
+	line.x1 = (int)end.proj.x;
+	line.y1 = (int)end.proj.y;
 	line.z1 = end.z;
 	line.c1 = end.color;
 	line.dx = ft_abs(line.x1 - line.x0);
