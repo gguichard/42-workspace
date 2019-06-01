@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 20:16:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/01 13:08:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ static void			step_line(t_line *line)
 	int	tmp;
 
 	tmp = 2 * line->err;
-	if (tmp >= line->dy)
+	if (tmp >= -line->dy)
 	{
-		line->err += line->dy;
+		line->err -= line->dy;
 		line->x += line->sx;
 	}
 	if (tmp <= line->dx)
@@ -61,12 +61,12 @@ void				draw_line(t_fdf *fdf, t_pos start, t_pos end)
 	line.z1 = end.z;
 	line.c1 = end.color;
 	line.dx = ft_abs(line.x1 - line.x0);
-	line.dy = -ft_abs(line.y1 - line.y0);
+	line.dy = ft_abs(line.y1 - line.y0);
 	line.sx = line.x0 < line.x1 ? 1 : -1;
 	line.sy = line.y0 < line.y1 ? 1 : -1;
 	line.x = line.x0;
 	line.y = line.y0;
-	line.err = line.dx + line.dy;
+	line.err = line.dx - line.dy;
 	while (line.x != line.x1 || line.y != line.y1)
 	{
 		if (line.x >= 0 && line.y >= 0
