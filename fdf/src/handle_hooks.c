@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 21:25:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 21:38:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	handle_scale(t_fdf *fdf)
 		scale = 1.1;
 	if (scale == .0)
 		return (0);
-	mat44_scale(fdf->matrix, scale, scale, scale);
+	mat44_scale(fdf->matrix, vec3d(scale, scale, scale));
 	return (1);
 }
 
@@ -56,7 +56,7 @@ int	handle_depth(t_fdf *fdf)
 		depth = 1.1;
 	if (depth == .0)
 		return (0);
-	mat44_scale(fdf->matrix, 1, 1, depth);
+	mat44_scale(fdf->matrix, vec3d(1, 1, depth));
 	return (1);
 }
 

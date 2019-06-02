@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/01 16:01:53 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 20:19:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 21:39:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,15 +94,15 @@ void	mat44_rotation(double rot_mat[4][4], double angle, char axis)
 	}
 }
 
-void	mat44_scale(double mat[4][4], double x, double y, double z)
+void	mat44_scale(double mat[4][4], t_vec3d v)
 {
 	double	scale_mat[4][4];
 	double	result[4][4];
 
 	mat44_identity(scale_mat);
-	scale_mat[0][0] = x;
-	scale_mat[1][1] = y;
-	scale_mat[2][2] = z;
+	scale_mat[0][0] = v.x;
+	scale_mat[1][1] = v.y;
+	scale_mat[2][2] = v.z;
 	mat44_mul(scale_mat, mat, result);
 	ft_memcpy(mat, result, sizeof(result));
 }
