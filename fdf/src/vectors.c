@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/01 16:41:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 18:53:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 13:56:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ t_vec3d	vec3d(double x, double y, double z)
 
 t_vec3d	vec3d_scalar(t_vec3d vector, double scalar)
 {
-	return vec3d(vector.x * scalar, vector.y * scalar, vector.z * scalar);
+	return (vec3d(vector.x * scalar, vector.y * scalar, vector.z * scalar));
 }

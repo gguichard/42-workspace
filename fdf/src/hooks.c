@@ -6,33 +6,23 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 13:05:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 13:50:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include <mlx.h>
-#include <stdlib.h>
-#include "printf.h"
 #include "fdf.h"
 #include "keys.h"
+#include "vectors.h"
+#include "matrix44.h"
 
 int			expose_hook(t_fdf *fdf)
 {
-	char	*str;
-
 	mlx_put_image_to_window(fdf->lib.mlx_ptr
 		, fdf->lib.win_ptr
 		, fdf->lib.img_ptr
 		, 0, 0);
-	ft_asprintf(&str, "Projection: %s | Press %c to change"
-		, fdf->proj == e_iso ? "Isometric" : "Parallel"
-		, fdf->proj == e_iso ? 'P' : 'I');
-	if (str != NULL)
-	{
-		mlx_string_put(fdf->lib.mlx_ptr
-			, fdf->lib.win_ptr, 50, fdf->winsize.height - 50, 0xFFFFFF, str);
-		free(str);
-	}
 	return (0);
 }
 
@@ -45,15 +35,6 @@ int			loop_hook(t_fdf *fdf)
 		expose_hook(fdf);
 	}
 	return (0);
-}
-
-static void	keypress_hook_proj(int keycode, t_fdf *fdf)
-{
-	if (handle_proj(fdf, keycode))
-	{
-		fill_window_image(fdf);
-		expose_hook(fdf);
-	}
 }
 
 int			keypress_hook(int keycode, t_fdf *fdf)
@@ -78,8 +59,6 @@ int			keypress_hook(int keycode, t_fdf *fdf)
 		fdf->keys |= ROTATE_LEFT;
 	else if (keycode == KEY_ARROW_RIGHT)
 		fdf->keys |= ROTATE_RIGHT;
-	else if (keycode == KEY_I || keycode == KEY_P)
-		keypress_hook_proj(keycode, fdf);
 	return (0);
 }
 
@@ -107,5 +86,48 @@ int			keyrelease_hook(int keycode, t_fdf *fdf)
 		fdf->keys &= ~ROTATE_LEFT;
 	else if (keycode == KEY_ARROW_RIGHT)
 		fdf->keys &= ~ROTATE_RIGHT;
+	return (0);
+}
+
+int			button_hook(int button, int x, int y, t_fdf *fdf)
+{
+	if (button == KEY_MOUSE_LEFT)
+	{
+		fdf->drag = !fdf->drag;
+		fdf->prev_cursor = vec2d(x, y);
+	}
+	return (0);
+}
+
+void		rotate_with_mat(t_fdf *fdf, int delta, char axis)
+{
+	double	angle;
+	double	rot_mat[4][4];
+	double	final_mat[4][4];
+
+	angle = delta / 180. * M_PI;
+	mat44_rotation(rot_mat, angle, axis);
+	mat44_mul(fdf->matrix, rot_mat, final_mat);
+	ft_memcpy(fdf->matrix, final_mat, sizeof(final_mat));
+}
+
+int			motion_hook(int x, int y, t_fdf *fdf)
+{
+	t_vec2d	delta;
+
+	if (fdf->drag)
+	{
+		delta = vec2d(x - fdf->prev_cursor.x, y - fdf->prev_cursor.y);
+		if (delta.x != 0)
+			rotate_with_mat(fdf, -delta.x, 'y');
+		if (delta.y != 0)
+			rotate_with_mat(fdf, delta.y, 'x');
+		if (delta.x != 0 || delta.y != 0)
+		{
+			fill_window_image(fdf);
+			expose_hook(fdf);
+		}
+		fdf->prev_cursor = vec2d(x, y);
+	}
 	return (0);
 }

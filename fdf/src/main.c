@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 12:51:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 13:34:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 	if (!fdf->z_buffer)
 		return (0);
 	mat44_identity(fdf->matrix);
-	fdf->proj = e_iso;
 	return (1);
 }
 
@@ -97,11 +96,14 @@ int			main(int argc, char **argv)
 		return (1);
 	}
 	fill_window_image(&fdf);
-	mlx_loop_hook(fdf.lib.mlx_ptr, &loop_hook, &fdf);
-	mlx_expose_hook(fdf.lib.win_ptr, &expose_hook, &fdf);
-	mlx_hook(fdf.lib.win_ptr, 17, (1L << 17), &exit_fdf, &fdf);
-	mlx_hook(fdf.lib.win_ptr, 2, (1L << 0), &keypress_hook, &fdf);
-	mlx_hook(fdf.lib.win_ptr, 3, (1L << 1), &keyrelease_hook, &fdf);
+	mlx_loop_hook(fdf.lib.mlx_ptr, loop_hook, &fdf);
+	mlx_expose_hook(fdf.lib.win_ptr, expose_hook, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 17, (1L << 17), exit_fdf, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 2, (1L << 0), keypress_hook, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 3, (1L << 1), keyrelease_hook, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 4, (1L << 2), button_hook, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 5, (1L << 3), button_hook, &fdf);
+	mlx_hook(fdf.lib.win_ptr, 6, (1L << 13), motion_hook, &fdf);
 	mlx_loop(fdf.lib.mlx_ptr);
 	return (0);
 }

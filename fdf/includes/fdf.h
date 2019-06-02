@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 12:51:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 13:44:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,6 @@
 # include "options.h"
 # include "winsize.h"
 # include "vectors.h"
-
-typedef enum		e_proj
-{
-	e_iso,
-	e_parallel
-}					t_proj;
 
 typedef struct		s_color
 {
@@ -69,8 +63,9 @@ typedef struct		s_fdf
 	int				*z_buffer;
 	t_cam			cam;
 	int				keys;
-	t_proj			proj;
 	double			matrix[4][4];
+	int				drag;
+	t_vec2d			prev_cursor;
 }					t_fdf;
 
 int					clean_fdf(t_fdf *fdf);
@@ -113,11 +108,13 @@ int					loop_hook(t_fdf *fdf);
 int					keypress_hook(int keycode, t_fdf *fdf);
 int					keyrelease_hook(int keycode, t_fdf *fdf);
 int					expose_hook(t_fdf *fdf);
+int					button_hook(int button, int x, int y, t_fdf *fdf);
+int					motion_hook(int x, int y, t_fdf *fdf);
 
 int					handle_move(t_fdf *fdf);
 int					handle_scale(t_fdf *fdf);
 int					handle_depth(t_fdf *fdf);
 int					handle_rotation(t_fdf *fdf, char axis);
-int					handle_proj(t_fdf *fdf, int keycode);
+void				rotate_with_mat(t_fdf *fdf, int delta, char axis);
 
 #endif

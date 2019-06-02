@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 19:05:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 12:48:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 13:35:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # define KEY_S 1
 # define KEY_D 2
 # define KEY_W 13
-# define KEY_I 34
-# define KEY_P 35
 
 # define KEY_PLUS 24
 # define KEY_MINUS 27
@@ -32,6 +30,8 @@
 # define KEY_ARROW_RIGHT 124
 # define KEY_ARROW_UP 126
 # define KEY_ARROW_DOWN 125
+
+# define KEY_MOUSE_LEFT 1
 
 # define TRANSLATE_X_LEFT (1 << 0)
 # define TRANSLATE_X_RIGHT (1 << 1)
