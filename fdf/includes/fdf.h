@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 16:03:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 21:24:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,7 @@ typedef struct		s_fdf
 	int				*z_buffer;
 	int				keys;
 	double			matrix[4][4];
-	double			scale;
-	double			depth;
+	double			matrix_translate[4][4];
 	int				drag;
 	t_vec2d			prev_cursor;
 }					t_fdf;

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/01 19:21:11 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/02 21:33:06 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ draw.c			\
 graphics.c		\
 handle_hooks.c	\
 hooks.c			\
+key_hooks.c		\
 main.c			\
 math_utils.c	\
 matrix44.c		\

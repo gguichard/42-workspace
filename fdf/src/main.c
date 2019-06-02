@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 16:03:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 21:24:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,7 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 	if (!fdf->z_buffer)
 		return (0);
 	mat44_identity(fdf->matrix);
-	fdf->scale = 1.;
-	fdf->depth = 1.;
+	mat44_identity(fdf->matrix_translate);
 	return (1);
 }
 

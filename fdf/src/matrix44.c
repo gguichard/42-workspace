@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/01 16:01:53 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 14:20:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 20:19:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,17 @@ void	mat44_rotation(double rot_mat[4][4], double angle, char axis)
 		rot_mat[0][1] = sin(angle);
 		rot_mat[1][0] = -rot_mat[0][1];
 	}
+}
+
+void	mat44_scale(double mat[4][4], double x, double y, double z)
+{
+	double	scale_mat[4][4];
+	double	result[4][4];
+
+	mat44_identity(scale_mat);
+	scale_mat[0][0] = x;
+	scale_mat[1][1] = y;
+	scale_mat[2][2] = z;
+	mat44_mul(scale_mat, mat, result);
+	ft_memcpy(mat, result, sizeof(result));
 }
