@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 19:05:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 19:20:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 12:48:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@
 # define KEY_PAGE_UP 116
 # define KEY_PAGE_DOWN 121
 
-# define KEY_LEFT_ARROW 123
-# define KEY_RIGHT_ARROW 124
+# define KEY_ARROW_LEFT 123
+# define KEY_ARROW_RIGHT 124
+# define KEY_ARROW_UP 126
+# define KEY_ARROW_DOWN 125
 
 # define TRANSLATE_X_LEFT (1 << 0)
 # define TRANSLATE_X_RIGHT (1 << 1)

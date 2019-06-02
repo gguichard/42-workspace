@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 17:01:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 13:05:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			expose_hook(t_fdf *fdf)
 int			loop_hook(t_fdf *fdf)
 {
 	if (handle_move(fdf) | handle_scale(fdf)
-		| handle_depth(fdf) | handle_angle(fdf))
+		| handle_depth(fdf) | handle_rotation(fdf, 'z'))
 	{
 		fill_window_image(fdf);
 		expose_hook(fdf);
@@ -70,13 +70,13 @@ int			keypress_hook(int keycode, t_fdf *fdf)
 		fdf->keys |= SCALE_OUT;
 	else if (keycode == KEY_PLUS)
 		fdf->keys |= SCALE_IN;
-	else if (keycode == KEY_PAGE_UP)
+	else if (keycode == KEY_PAGE_UP || keycode == KEY_ARROW_UP)
 		fdf->keys |= DEPTH_INCREASE;
-	else if (keycode == KEY_PAGE_DOWN)
+	else if (keycode == KEY_PAGE_DOWN || keycode == KEY_ARROW_DOWN)
 		fdf->keys |= DEPTH_DECREASE;
-	else if (keycode == KEY_LEFT_ARROW)
+	else if (keycode == KEY_ARROW_LEFT)
 		fdf->keys |= ROTATE_LEFT;
-	else if (keycode == KEY_RIGHT_ARROW)
+	else if (keycode == KEY_ARROW_RIGHT)
 		fdf->keys |= ROTATE_RIGHT;
 	else if (keycode == KEY_I || keycode == KEY_P)
 		keypress_hook_proj(keycode, fdf);
@@ -99,13 +99,13 @@ int			keyrelease_hook(int keycode, t_fdf *fdf)
 		fdf->keys &= ~SCALE_OUT;
 	else if (keycode == KEY_PLUS)
 		fdf->keys &= ~SCALE_IN;
-	else if (keycode == KEY_PAGE_UP)
+	else if (keycode == KEY_PAGE_UP || keycode == KEY_ARROW_UP)
 		fdf->keys &= ~DEPTH_INCREASE;
-	else if (keycode == KEY_PAGE_DOWN)
+	else if (keycode == KEY_PAGE_DOWN || keycode == KEY_ARROW_DOWN)
 		fdf->keys &= ~DEPTH_DECREASE;
-	else if (keycode == KEY_LEFT_ARROW)
+	else if (keycode == KEY_ARROW_LEFT)
 		fdf->keys &= ~ROTATE_LEFT;
-	else if (keycode == KEY_RIGHT_ARROW)
+	else if (keycode == KEY_ARROW_RIGHT)
 		fdf->keys &= ~ROTATE_RIGHT;
 	return (0);
 }

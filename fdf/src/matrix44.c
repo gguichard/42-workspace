@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/01 16:01:53 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 20:00:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 12:41:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "libft.h"
 #include "vectors.h"
 
@@ -65,4 +66,30 @@ t_vec3d	mat44_apply(double mat[4][4], t_vec3d v)
 		return (vec3d_scalar(v2, 1 / w));
 	else
 		return (v2);
+}
+
+void	mat44_rotation(double rot_mat[4][4], double angle, char axis)
+{
+	mat44_identity(rot_mat);
+	if (axis == 'x')
+	{
+		rot_mat[1][1] = cos(angle);
+		rot_mat[2][2] = rot_mat[1][1];
+		rot_mat[2][1] = sin(angle);
+		rot_mat[1][2] = -rot_mat[2][1];
+	}
+	else if (axis == 'y')
+	{
+		rot_mat[0][0] = cos(angle);
+		rot_mat[2][2] = rot_mat[0][0];
+		rot_mat[0][2] = sin(angle);
+		rot_mat[2][0] = -rot_mat[0][2];
+	}
+	else if (axis == 'z')
+	{
+		rot_mat[0][0] = cos(angle);
+		rot_mat[1][1] = rot_mat[0][0];
+		rot_mat[1][0] = sin(angle);
+		rot_mat[0][1] = -rot_mat[1][0];
+	}
 }

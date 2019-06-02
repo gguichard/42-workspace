@@ -6,13 +6,15 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 20:16:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 12:51:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
+#include "libft.h"
 #include "fdf.h"
 #include "keys.h"
+#include "matrix44.h"
 
 int	handle_move(t_fdf *fdf)
 {
@@ -35,50 +37,53 @@ int	handle_scale(t_fdf *fdf)
 {
 	double	scale;
 
-	scale = fdf->cam.scale;
+	scale = fdf->matrix[3][3];
 	if (fdf->keys & SCALE_OUT)
 		scale *= 1.1;
 	if (fdf->keys & SCALE_IN)
 		scale /= 1.1;
 	if (scale > 1.)
 		scale = 1.;
-	if (scale == fdf->cam.scale)
+	if (scale == fdf->matrix[3][3])
 		return (0);
-	fdf->cam.scale = scale;
+	fdf->matrix[3][3] = scale;
 	return (1);
 }
 
 int	handle_depth(t_fdf *fdf)
 {
-	double	tmp;
+	double	depth;
 
-	tmp = fdf->cam.depth;
+	depth = fdf->matrix[2][2];
 	if (fdf->keys & DEPTH_DECREASE)
-		tmp -= .1;
+		depth *= 1.1;
 	if (fdf->keys & DEPTH_INCREASE)
-		tmp += .1;
-	if (tmp == fdf->cam.depth)
+		depth /= 1.1;
+	if (depth > 1.)
+		depth = 1.;
+	if (depth != fdf->matrix[2][2])
 		return (0);
-	fdf->cam.depth = tmp;
+	fdf->matrix[2][2] = depth;
 	return (1);
 }
 
-int	handle_angle(t_fdf *fdf)
+int	handle_rotation(t_fdf *fdf, char axis)
 {
-	int		angle;
-	double	rad;
+	double	angle;
+	double	rot_mat[4][4];
+	double	final_mat[4][4];
 
-	angle = fdf->cam.angle;
+	angle = .0;
 	if (fdf->keys & ROTATE_LEFT)
-		angle -= 5;
-	if (fdf->keys & ROTATE_RIGHT)
 		angle += 5;
-	if (angle == fdf->cam.angle)
+	if (fdf->keys & ROTATE_RIGHT)
+		angle -= 5;
+	if (angle == .0)
 		return (0);
-	fdf->cam.angle = angle % 360;
-	rad = fdf->cam.angle * M_PI / 180.0;
-	fdf->cam.angle_sin = sin(rad);
-	fdf->cam.angle_cos = cos(rad);
+	angle = angle / 180 * M_PI;
+	mat44_rotation(rot_mat, angle, axis);
+	mat44_mul(fdf->matrix, rot_mat, final_mat);
+	ft_memcpy(fdf->matrix, final_mat, sizeof(final_mat));
 	return (1);
 }
 

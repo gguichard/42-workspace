@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 20:02:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 12:51:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,6 @@ static int	init_fdf(t_fdf *fdf, int argc, char **argv)
 	if (!fdf->z_buffer)
 		return (0);
 	mat44_identity(fdf->matrix);
-	fdf->cam.depth = 1;
-	fdf->cam.angle = 0;
-	fdf->cam.angle_sin = 0;
-	fdf->cam.angle_cos = 1;
 	fdf->proj = e_iso;
 	return (1);
 }

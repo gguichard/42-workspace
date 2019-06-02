@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 19:23:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 12:52:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static void	proj_pos(t_fdf *fdf, t_pos *pos)
 {
 	t_vec3d	vec;
 
-	vec.x = pos->x;
-	vec.y = pos->y;
+	vec.x = pos->x - fdf->cols / 2.;
+	vec.y = pos->y - fdf->rows / 2.;
 	vec.z = pos->z;
 	vec = mat44_apply(fdf->matrix, vec);
 	pos->proj.x = vec.x + fdf->winsize.width / 2.;
