@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 14:29:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 16:19:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,18 @@ int	handle_scale(t_fdf *fdf)
 {
 	double	scale;
 
-	scale = fdf->matrix[3][3];
+	scale = fdf->scale;
 	if (fdf->keys & SCALE_OUT)
 		scale *= 1.1;
 	if (fdf->keys & SCALE_IN)
 		scale /= 1.1;
 	scale = clamp(scale, 0, 1);
-	if (scale == fdf->matrix[3][3])
+	if (scale == fdf->scale)
 		return (0);
-	fdf->matrix[3][3] = scale;
+	fdf->matrix[0][0] = 1 / scale;
+	fdf->matrix[1][1] = fdf->matrix[0][0];
+	fdf->matrix[2][2] = fdf->matrix[0][0];
+	fdf->scale = scale;
 	return (1);
 }
 
@@ -50,15 +53,14 @@ int	handle_depth(t_fdf *fdf)
 {
 	double	depth;
 
-	depth = fdf->matrix[2][2];
+	depth = fdf->depth;
 	if (fdf->keys & DEPTH_DECREASE)
-		depth *= 1.1;
-	if (fdf->keys & DEPTH_INCREASE)
 		depth /= 1.1;
-	depth = clamp(depth, 0, 1);
-	if (depth == fdf->matrix[2][2])
+	if (fdf->keys & DEPTH_INCREASE)
+		depth *= 1.1;
+	if (depth == fdf->depth)
 		return (0);
-	fdf->matrix[2][2] = depth;
+	fdf->depth = depth;
 	return (1);
 }
 
