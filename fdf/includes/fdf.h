@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 14:14:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 14:29:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int					exit_fdf(t_fdf *fdf);
 /*
 ** MATHS UTILS.
 */
+double				clamp(double value, double lo, double hi);
 int					lint(int start, int end, double percent);
 double				pcnt(int start, int end, int current);
 unsigned int		get_color(unsigned int start, unsigned int end

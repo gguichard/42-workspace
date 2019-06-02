@@ -6,11 +6,21 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/01 03:44:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 16:16:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 14:28:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+double			clamp(double value, double lo, double hi)
+{
+	if (value < lo)
+		return (lo);
+	else if (value > hi)
+		return (hi);
+	else
+		return (value);
+}
 
 int				lint(int start, int end, double percent)
 {
