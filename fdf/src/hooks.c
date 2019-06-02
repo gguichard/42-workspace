@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 04:05:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 13:50:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 14:21:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,9 @@ int			motion_hook(int x, int y, t_fdf *fdf)
 	{
 		delta = vec2d(x - fdf->prev_cursor.x, y - fdf->prev_cursor.y);
 		if (delta.x != 0)
-			rotate_with_mat(fdf, -delta.x, 'y');
+			rotate_with_mat(fdf, delta.x, 'y');
 		if (delta.y != 0)
-			rotate_with_mat(fdf, delta.y, 'x');
+			rotate_with_mat(fdf, -delta.y, 'x');
 		if (delta.x != 0 || delta.y != 0)
 		{
 			fill_window_image(fdf);

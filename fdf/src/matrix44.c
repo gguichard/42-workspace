@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/01 16:01:53 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 12:41:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 14:20:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,21 @@ void	mat44_rotation(double rot_mat[4][4], double angle, char axis)
 	{
 		rot_mat[1][1] = cos(angle);
 		rot_mat[2][2] = rot_mat[1][1];
-		rot_mat[2][1] = sin(angle);
-		rot_mat[1][2] = -rot_mat[2][1];
+		rot_mat[1][2] = sin(angle);
+		rot_mat[2][1] = -rot_mat[1][2];
 	}
 	else if (axis == 'y')
 	{
 		rot_mat[0][0] = cos(angle);
 		rot_mat[2][2] = rot_mat[0][0];
-		rot_mat[0][2] = sin(angle);
-		rot_mat[2][0] = -rot_mat[0][2];
+		rot_mat[2][0] = sin(angle);
+		rot_mat[0][2] = -rot_mat[2][0];
 	}
 	else if (axis == 'z')
 	{
 		rot_mat[0][0] = cos(angle);
 		rot_mat[1][1] = rot_mat[0][0];
-		rot_mat[1][0] = sin(angle);
-		rot_mat[0][1] = -rot_mat[1][0];
+		rot_mat[0][1] = sin(angle);
+		rot_mat[1][0] = -rot_mat[0][1];
 	}
 }

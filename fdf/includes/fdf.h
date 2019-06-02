@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 13:44:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 14:14:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@ typedef struct		s_pos
 	int				color;
 }					t_pos;
 
-typedef struct		s_cam
-{
-	t_vec2d			origin;
-}					t_cam;
-
 typedef struct		s_fdf
 {
 	t_mlx			lib;
@@ -61,7 +56,6 @@ typedef struct		s_fdf
 	t_list			*palette;
 	t_pos			*pos;
 	int				*z_buffer;
-	t_cam			cam;
 	int				keys;
 	double			matrix[4][4];
 	int				drag;

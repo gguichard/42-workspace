@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 20:56:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 13:52:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/02 14:25:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,16 @@
 
 int	handle_move(t_fdf *fdf)
 {
-	t_cam	cam;
-
-	cam = fdf->cam;
 	if (fdf->keys & TRANSLATE_X_LEFT)
-		fdf->cam.origin.x += 10;
+		fdf->matrix[3][0] += 8;
 	if (fdf->keys & TRANSLATE_X_RIGHT)
-		fdf->cam.origin.x -= 10;
+		fdf->matrix[3][0] -= 8;
 	if (fdf->keys & TRANSLATE_Y_UP)
-		fdf->cam.origin.y += 10;
+		fdf->matrix[3][1] += 8;
 	if (fdf->keys & TRANSLATE_Y_DOWN)
-		fdf->cam.origin.y -= 10;
-	return (fdf->cam.origin.x != cam.origin.x
-		|| fdf->cam.origin.y != cam.origin.y);
+		fdf->matrix[3][1] -= 8;
+	return (fdf->keys & TRANSLATE_X_LEFT || fdf->keys & TRANSLATE_X_RIGHT
+		|| fdf->keys & TRANSLATE_Y_UP || fdf->keys & TRANSLATE_Y_DOWN);
 }
 
 int	handle_scale(t_fdf *fdf)
