@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 20:16:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/03 12:13:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ static int		parse_pos(t_fdf *fdf, t_pos *pos, char **line)
 	return (1);
 }
 
-static int		parse_line(t_fdf *fdf, char *line, t_list **lst)
+static int		parse_line(t_fdf *fdf, char *line, t_vector *points)
 {
 	t_pos	pos;
-	t_list	*elem;
+	t_pos	*ptr;
 
 	pos.x = 0;
 	pos.y = fdf->rows;
@@ -45,9 +45,15 @@ static int		parse_line(t_fdf *fdf, char *line, t_list **lst)
 	{
 		if (!parse_pos(fdf, &pos, &line))
 			return (0);
-		if (!(elem = ft_lstnew(&pos, sizeof(t_pos))))
+		ptr = (t_pos *)malloc(sizeof(t_pos));
+		if (ptr == NULL)
 			return (0);
-		ft_lstadd(lst, elem);
+		ft_memcpy(ptr, &pos, sizeof(t_pos));
+		if (!ft_vecpush(points, ptr))
+		{
+			free(ptr);
+			return (0);
+		}
 		(pos.x)++;
 	}
 	if (fdf->cols == 0)
@@ -55,47 +61,30 @@ static int		parse_line(t_fdf *fdf, char *line, t_list **lst)
 	return (pos.x == fdf->cols);
 }
 
-static t_pos	*tab_from_list(t_fdf *fdf, t_list *lst)
+t_vector		read_file(const char *name, t_fdf *fdf)
 {
-	t_pos	*tab;
-	t_pos	*pos;
+	t_vector	points;
+	int			fd;
+	int			ret;
+	char		*line;
 
-	if (!(tab = (t_pos *)malloc(fdf->rows * fdf->cols * sizeof(t_pos))))
-		return (NULL);
-	while (lst != NULL)
-	{
-		pos = (t_pos *)lst->content;
-		ft_memcpy(&(tab[pos->y * fdf->cols + pos->x]), pos, sizeof(t_pos));
-		lst = lst->next;
-	}
-	return (tab);
-}
-
-int				read_file(const char *name, t_fdf *fdf)
-{
-	int		fd;
-	int		ret;
-	char	*line;
-	t_list	*lst;
-
+	ft_memset(&points, 0, sizeof(t_vector));
 	fd = open(name, O_RDONLY);
-	if (fd < 0)
-		return (0);
+	if (fd == -1)
+		return (points);
 	ret = 1;
-	lst = NULL;
 	fdf->cols = 0;
 	fdf->rows = 0;
 	while (ret && get_next_line(fd, &line) > 0)
 	{
-		ret = parse_line(fdf, line, &lst);
+		ret = parse_line(fdf, line, &points);
 		free(line);
 		(fdf->rows)++;
 	}
 	close(fd);
 	if (fdf->rows == 0 || fdf->cols == 0)
 		ret = 0;
-	if (ret && !(fdf->pos = tab_from_list(fdf, lst)))
-		ret = 0;
-	ft_lstfree(&lst);
-	return (ret);
+	if (!ret)
+		ft_vecfree(&points);
+	return (points);
 }

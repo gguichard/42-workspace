@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 21:24:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/03 12:10:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int			clean_fdf(t_fdf *fdf)
 	if (fdf->lib.img_ptr != NULL)
 		mlx_destroy_image(fdf->lib.mlx_ptr, fdf->lib.img_ptr);
 	ft_lstfree(&(fdf->palette));
-	ft_memdel((void *)&(fdf->pos));
+	ft_vecfree(&(fdf->pos));
 	ft_memdel((void *)&(fdf->z_buffer));
 	return (0);
 }
@@ -72,7 +72,8 @@ static int	init(t_fdf *fdf, int argc, char **argv)
 		return (0);
 	if (fdf->opts.error != 0 || fdf->argc <= 0)
 		return (print_usage(fdf));
-	if (!read_file((fdf->argv)[0], fdf))
+	fdf->pos = read_file((fdf->argv)[0], fdf);
+	if (fdf->pos.size == 0)
 	{
 		ft_dprintf(2, "fdf: unable to parse map file\n");
 		return (0);

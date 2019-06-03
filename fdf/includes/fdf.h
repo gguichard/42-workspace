@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 21:24:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/03 12:09:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct		s_fdf
 	int				rows;
 	int				cols;
 	t_list			*palette;
-	t_pos			*pos;
+	t_vector		pos;
 	int				*z_buffer;
 	int				keys;
 	double			matrix[4][4];
@@ -90,7 +90,7 @@ int					get_palette_color(t_fdf *fdf, int z);
 /*
 ** PARSING.
 */
-int					read_file(const char *name, t_fdf *fdf);
+t_vector			read_file(const char *name, t_fdf *fdf);
 
 /*
 ** GRAPHICS.

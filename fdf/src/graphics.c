@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 21:29:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/03 12:12:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,11 @@ static void	rasterize(t_fdf *fdf, t_pos pos, t_pos edge)
 static void	draw_edges(t_fdf *fdf, t_pos pos)
 {
 	if (pos.x + 1 < fdf->cols)
-		rasterize(fdf, pos, (fdf->pos)[pos.y * fdf->cols + pos.x + 1]);
+		rasterize(fdf, pos
+			, *(t_pos *)(fdf->pos.data)[pos.y * fdf->cols + pos.x + 1]);
 	if (pos.y + 1 < fdf->rows)
-		rasterize(fdf, pos, (fdf->pos)[(pos.y + 1) * fdf->cols + pos.x]);
+		rasterize(fdf, pos
+			, *(t_pos *)(fdf->pos.data)[(pos.y + 1) * fdf->cols + pos.x]);
 }
 
 static void	clear_window(t_fdf *fdf)
@@ -71,17 +73,17 @@ void		fill_window_image(t_fdf *fdf)
 	int	total;
 
 	clear_window(fdf);
-	total = fdf->rows * fdf->cols;
+	total = fdf->pos.size;
 	index = 0;
 	while (index < total)
 	{
-		proj_pos(fdf, &((fdf->pos)[index]));
+		proj_pos(fdf, (t_pos *)(fdf->pos.data)[index]);
 		index++;
 	}
 	index = 0;
 	while (index < total)
 	{
-		draw_edges(fdf, (fdf->pos)[index]);
+		draw_edges(fdf, *(t_pos *)(fdf->pos.data)[index]);
 		index++;
 	}
 }
