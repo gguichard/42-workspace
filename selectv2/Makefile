@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/03 16:03:26 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/03 22:34:27 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,12 @@ LDFLAGS		=	-Llibft -lft -ltermcap
 
 SRC_DIR		=	src
 SRC 		=	\
+format.c		\
 items.c			\
 main.c			\
-term.c
+select.c		\
+term.c			\
+utils.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)

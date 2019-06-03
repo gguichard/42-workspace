@@ -6,12 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 15:19:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/03 15:45:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/03 23:08:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITEMS_H
 # define ITEMS_H
+
+# include <sys/stat.h>
 
 # define DISPLAY_FLAG (1)
 # define SELECTED_FLAG (1 << 1)
@@ -21,7 +23,7 @@
 typedef struct		s_item
 {
 	int				flags;
-	int				file_mode;
+	mode_t			file_mode;
 	const char		*content;
 	struct s_item	*prev;
 	struct s_item	*next;

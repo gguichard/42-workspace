@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 15:19:25 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/03 15:47:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/03 22:09:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,11 @@ void		chain_items(t_item *items, int count)
 	while (idx < count)
 	{
 		current = items + idx;
+		current->next = NULL;
+		current->prev = NULL;
 		next_index = get_next_item_index(items, count, idx + 1);
 		if (next_index == -1)
-		{
-			items->prev = current;
-			current->next = items;
 			break ;
-		}
 		next = items + next_index;
 		current->next = next;
 		next->prev = current;
