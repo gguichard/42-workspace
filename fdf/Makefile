@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/02 21:33:06 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/03 13:55:25 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ $(NAME): $(addprefix $(OBJ_DIR)/,$(OBJ))
 
 -include $(addprefix $(OBJ_DIR)/,$(DEP))
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR) $(SDL_IMG_BUILD)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -MMD -o $@ -c $<
 
 $(OBJ_DIR):
