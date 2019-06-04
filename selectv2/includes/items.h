@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 15:19:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/03 23:08:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/04 15:19:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 
 # include <sys/stat.h>
 
-# define DISPLAY_FLAG (1)
-# define SELECTED_FLAG (1 << 1)
-# define CURSOR_FLAG (1 << 2)
-# define DELETED_FLAG (1 << 3)
+# define SELECTED_FLAG (1)
+# define DELETED_FLAG (1 << 1)
 
 typedef struct		s_item
 {

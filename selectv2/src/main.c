@@ -6,21 +6,71 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 13:56:03 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/03 22:48:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/04 16:55:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <term.h>
+#include <signal.h>
 #include "select.h"
 #include "items.h"
+#include "hotkeys.h"
+
+t_select	*g_select = NULL;
 
 static int	error(char *arg, char *message)
 {
 	ft_dprintf(STDERR_FILENO, "%s: %s\n", arg, message);
+	return (0);
+}
+
+static int	init_select(int argc, char **argv, t_select *select)
+{
+	select->tty_fd = open("/dev/tty", O_WRONLY);
+	if (select->tty_fd == -1)
+		return (error(argv[0], "unable to open tty"));
+	else if (tgetent(NULL, getenv("TERM")) == -1)
+		return (error(argv[0], "unable to init termcaps"));
+	else if (!setup_term(select))
+		return (error(argv[0], "unable to init term"));
+	update_winsize(select);
+	select->def_items = create_items(argc - 1, argv + 1);
+	if (select->def_items == NULL)
+	{
+		reset_term(select);
+		return (error(argv[0], "memory allocation error"));
+	}
 	return (1);
+}
+
+static void	setup_signals(void)
+{
+	signal(SIGTSTP, handle_signal);
+	signal(SIGCONT, handle_signal);
+	signal(SIGWINCH, handle_signal);
+}
+
+static void	add_default_hotkeys(t_select *select)
+{
+	add_hotkey(&select->hotkeys, HOTKEY_ESC, "\033", hotkey_exit_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_ENTER, "\012", hotkey_exit_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_SPACE, "\040", hotkey_select_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_ARROW_LEFT, tgetstr("kl", NULL)
+		, hotkey_nav_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_ARROW_RIGHT, tgetstr("kr", NULL)
+		, hotkey_nav_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_ARROW_UP, tgetstr("ku", NULL)
+		, hotkey_nav_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_ARROW_DOWN, tgetstr("kd", NULL)
+		, hotkey_nav_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_BACKSPACE, tgetstr("kb", NULL)
+		, hotkey_del_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_DELETE, tgetstr("kD", NULL)
+		, hotkey_del_hook);
 }
 
 int			main(int argc, char **argv)
@@ -28,27 +78,19 @@ int			main(int argc, char **argv)
 	t_select	select;
 
 	if (argc < 2)
-		return (error(argv[0], "please specify at least one choice"));
+		return (!error(argv[0], "please specify at least one choice"));
 	ft_memset(&select, 0, sizeof(t_select));
-	if (setup_term(&select) == -1)
-		return (error(argv[0], "unable to init term"));
-	if (tgetent(NULL, getenv("TERM")) == -1)
-	{
-		apply_termios(&select.def_term);
-		return (error(argv[0], "unable to init termcaps"));
-	}
-	update_winsize(&select);
-	select.def_items = create_items(argc - 1, argv + 1);
-	if (select.def_items == NULL)
-	{
-		apply_termios(&select.def_term);
-		return (error(argv[0], "memory allocation error"));
-	}
+	g_select = &select;
+	if (!init_select(argc, argv, &select))
+		return (1);
+	setup_signals();
 	select.cur_items = select.def_items;
-	tputs(tgetstr("ti", NULL), 1, t_putchar);
+	select.cursor_item = select.def_items;
+	add_default_hotkeys(&select);
 	select_loop(&select);
-	tputs(tgetstr("te", NULL), 1, t_putchar);
-	apply_termios(&select.def_term);
+	reset_term(&select);
+	close(select.tty_fd);
+	ft_lstfree(&select.hotkeys);
 	free(select.def_items);
 	return (0);
 }

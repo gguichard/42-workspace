@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/03 22:34:27 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/04 16:50:43 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ GREEN		=	\x1b[32m
 
 INC_DIR		=	includes
 
-CC			=	gcc -O2
+CC			=	gcc -g
 CPPFLAGS	=	-Ilibft/includes -I$(INC_DIR)
 CFLAGS 		=	-Wall -Werror -Wextra
 LDFLAGS		=	-Llibft -lft -ltermcap
@@ -25,9 +25,12 @@ LDFLAGS		=	-Llibft -lft -ltermcap
 SRC_DIR		=	src
 SRC 		=	\
 format.c		\
+hooks.c			\
+hotkeys.c		\
 items.c			\
 main.c			\
 select.c		\
+signals.c		\
 term.c			\
 utils.c
 

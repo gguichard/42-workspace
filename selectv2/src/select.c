@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 22:27:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/03 23:27:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/04 16:23:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <sys/stat.h>
 #include "libft.h"
 #include "select.h"
+#include "items.h"
+#include "hotkeys.h"
 
 static t_item	**get_item_cols(t_select_format fmt, t_item *begin_lst)
 {
@@ -41,11 +43,17 @@ static t_item	**get_item_cols(t_select_format fmt, t_item *begin_lst)
 	return (cols);
 }
 
-static void		print_single_item(t_select_format fmt, t_item *item)
+static void		print_single_item(int fd, t_select_format fmt, t_item *item
+	, int is_cursor)
 {
 	const char	*color;
 	int			diff;
 
+	write(fd, "[", 1);
+	if (item->flags & SELECTED_FLAG)
+		tputs(tgetstr("mr", NULL), 1, t_putchar);
+	if (is_cursor)
+		tputs(tgetstr("us", NULL), 1, t_putchar);
 	color = "";
 	if (S_ISDIR(item->file_mode))
 		color = "\033[01;34m";
@@ -56,11 +64,16 @@ static void		print_single_item(t_select_format fmt, t_item *item)
 	else if (S_ISBLK(item->file_mode) || S_ISCHR(item->file_mode))
 		color = "\033[40;33;01m";
 	diff = fmt.col_width - ft_strlen(item->content);
-	ft_printf("[%s%*s%s%*s\033[m]", color, diff / 2 + diff % 2 - 1, ""
+	ft_dprintf(fd, "%s%*s%s%*s\033[m", color, diff / 2 + diff % 2 - 1, ""
 		, item->content, diff / 2 - 1, "");
+	if (is_cursor)
+		tputs(tgetstr("ue", NULL), 1, t_putchar);
+	if (item->flags & SELECTED_FLAG)
+		tputs(tgetstr("me", NULL), 1, t_putchar);
+	write(fd, "]", 1);
 }
 
-static void		print_items(t_select *select)
+void			print_items(t_select *select)
 {
 	t_select_format	fmt;
 	t_item			*current;
@@ -73,17 +86,19 @@ static void		print_items(t_select *select)
 	if (fmt.max_col == 0 || fmt.max_row == 0
 		|| (cols = get_item_cols(fmt, current)) == NULL)
 		return ;
+	tputs(tgetstr("cl", NULL), 1, t_putchar);
 	row = 0;
 	while (row < fmt.max_row)
 	{
 		col = 0;
 		while (col < fmt.max_col && cols[col] != NULL)
 		{
-			print_single_item(fmt, cols[col]);
+			print_single_item(select->tty_fd, fmt, cols[col]
+				, (select->cursor_item == cols[col]));
 			cols[col] = cols[col]->next;
 			col++;
 		}
-		write(STDOUT_FILENO, "\n", 1);
+		write(select->tty_fd, "\n", 1);
 		row++;
 	}
 	free(cols);
@@ -91,19 +106,23 @@ static void		print_items(t_select *select)
 
 void			select_loop(t_select *select)
 {
-	ssize_t	read_size;
-	char	buf;
+	ssize_t	size_read;
+	char	buf[8];
+	int		hotkey;
 
-	while (1)
+	while (select->cur_items != NULL)
 	{
 		print_items(select);
-		read_size = read(STDIN_FILENO, &buf, 1);
-		if (read_size <= 0)
+		size_read = read(STDIN_FILENO, buf, sizeof(buf));
+		if (size_read < 0)
 		{
 			ft_dprintf(STDERR_FILENO, "ft_select: unable to read from stdin\n");
 			break ;
 		}
-		if (buf == '\033' || buf == '\n')
+		ft_memcpy(select->hotkeys_buf, buf, size_read);
+		select->hotkeys_buf[size_read] = '\0';
+		hotkey = hotkey_match(select->hotkeys, select->hotkeys_buf);
+		if (hotkey == HOTKEY_ESC || hotkey == HOTKEY_ENTER)
 			break ;
 	}
 }
