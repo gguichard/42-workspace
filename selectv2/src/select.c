@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 22:27:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 23:59:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 01:20:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,40 @@ static char	*get_item_color(t_item *item)
 	return (color);
 }
 
+static void	print_single_item_content(t_select *select, t_item *item
+	, int is_cursor)
+{
+	int		diff;
+	size_t	precision;
+
+	if (select->format.col_width <= select->winsize.ws_col)
+	{
+		diff = select->format.col_width - ft_strlen(item->content) - 2;
+		ft_dprintf(select->tty_fd, "%s%*s%s%s%*s\033[m", get_item_color(item)
+			, diff / 2, "", item->content, (is_cursor ? "*" : "")
+			, diff / 2 + diff % 2 - is_cursor, "");
+	}
+	else
+	{
+		diff = select->winsize.ws_col - ft_strlen(item->content) - 2;
+		if (diff >= 0)
+			precision = ft_strlen(item->content);
+		else
+		{
+			precision = (select->winsize.ws_col - 5);
+			diff = 0;
+		}
+		ft_dprintf(select->tty_fd, "%s%*s%.*s%s%*s\033[m", get_item_color(item)
+			, diff / 2, "", precision, item->content
+			, (precision < ft_strlen(item->content) ? "..." : "")
+			, diff / 2 + diff % 2, "");
+	}
+}
+
 void		print_single_item(t_select *select, t_item *item)
 {
 	static char	*cm_tcap = NULL;
 	int			is_cursor;
-	int			diff;
 
 	if (cm_tcap == NULL)
 		cm_tcap = tgetstr("cm", NULL);
@@ -48,13 +77,10 @@ void		print_single_item(t_select *select, t_item *item)
 	write(select->tty_fd, "[", 1);
 	if (item->flags & SELECTED_FLAG)
 		tputs(tgetstr("mr", NULL), 1, t_putchar);
-	if (select->cursor_item == item)
-		tputs(tgetstr("us", NULL), 1, t_putchar);
-	diff = select->format.col_width - ft_strlen(item->content) - 2;
 	is_cursor = (select->cursor_item == item);
-	ft_dprintf(select->tty_fd, "%s%*s%s%s%*s\033[m", get_item_color(item)
-		, diff / 2, "", item->content, (is_cursor ? "*" : "")
-		, diff / 2 + diff % 2 - is_cursor, "");
+	if (is_cursor)
+		tputs(tgetstr("us", NULL), 1, t_putchar);
+	print_single_item_content(select, item, is_cursor);
 	if (is_cursor)
 		tputs(tgetstr("ue", NULL), 1, t_putchar);
 	if (item->flags & SELECTED_FLAG)

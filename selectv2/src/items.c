@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 15:19:25 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/04 15:30:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 01:00:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,21 @@
 #include "libft.h"
 #include "items.h"
 
-static int	get_next_item_index(t_item *items, int count, int offset)
-{
-	int	idx;
-
-	idx = offset;
-	while (idx < count)
-	{
-		if (!(items[idx].flags & DELETED_FLAG))
-			return (idx);
-		idx++;
-	}
-	return (-1);
-}
-
-void		chain_items(t_item *items, int count)
+static void	chain_items(t_item *items, int count)
 {
 	int		idx;
 	t_item	*current;
-	int		next_index;
-	t_item	*next;
 
 	idx = 0;
 	while (idx < count)
 	{
 		current = items + idx;
-		current->next = NULL;
-		next_index = get_next_item_index(items, count, idx + 1);
-		if (next_index == -1)
-			break ;
-		next = items + next_index;
-		current->next = next;
-		next->prev = current;
-		idx = next_index;
+		if (idx + 1 < count)
+		{
+			current->next = items + idx + 1;
+			current->next->prev = current;
+		}
+		idx++;
 	}
 }
 

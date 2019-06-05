@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 15:19:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 10:28:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 01:00:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct		s_item
 	struct s_item	*next;
 }					t_item;
 
-void				chain_items(t_item *items, int count);
 t_item				*create_items(int count, char **choices);
 
 #endif
