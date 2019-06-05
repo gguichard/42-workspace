@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 12:58:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/04 15:39:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/05 13:02:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ void			hotkey_nav_hook(int type)
 	if (cursor == NULL)
 		return ;
 	new_cursor = NULL;
-	if (type == HOTKEY_ARROW_UP)
+	if (type == HOTKEY_ARROW_LEFT)
 		new_cursor = cursor->prev;
-	else if (type == HOTKEY_ARROW_DOWN)
+	else if (type == HOTKEY_ARROW_RIGHT)
 		new_cursor = cursor->next;
 	if (new_cursor == NULL)
 	{
 		new_cursor = g_select->cur_items;
-		if (type == HOTKEY_ARROW_UP || type == HOTKEY_ARROW_LEFT)
+		if (type == HOTKEY_ARROW_LEFT)
 		{
 			while (new_cursor->next != NULL)
 				new_cursor = new_cursor->next;
@@ -62,6 +62,7 @@ void			hotkey_del_hook(int type)
 			cursor->next->prev = cursor->prev;
 		cursor->flags &= ~SELECTED_FLAG;
 		cursor->flags |= DELETED_FLAG;
+		print_select_items(g_select);
 	}
 }
 

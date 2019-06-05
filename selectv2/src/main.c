@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 13:56:03 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/04 16:55:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/05 14:41:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,17 @@ static int	init_select(int argc, char **argv, t_select *select)
 
 static void	setup_signals(void)
 {
-	signal(SIGTSTP, handle_signal);
-	signal(SIGCONT, handle_signal);
-	signal(SIGWINCH, handle_signal);
+	int	sig;
+
+	sig = 1;
+	while (sig <= 31)
+	{
+		signal(sig, handle_common_signal);
+		sig++;
+	}
+	signal(SIGWINCH, handle_resize_signal);
+	signal(SIGTSTP, handle_job_signals);
+	signal(SIGCONT, handle_job_signals);
 }
 
 static void	add_default_hotkeys(t_select *select)
@@ -62,10 +70,6 @@ static void	add_default_hotkeys(t_select *select)
 	add_hotkey(&select->hotkeys, HOTKEY_ARROW_LEFT, tgetstr("kl", NULL)
 		, hotkey_nav_hook);
 	add_hotkey(&select->hotkeys, HOTKEY_ARROW_RIGHT, tgetstr("kr", NULL)
-		, hotkey_nav_hook);
-	add_hotkey(&select->hotkeys, HOTKEY_ARROW_UP, tgetstr("ku", NULL)
-		, hotkey_nav_hook);
-	add_hotkey(&select->hotkeys, HOTKEY_ARROW_DOWN, tgetstr("kd", NULL)
 		, hotkey_nav_hook);
 	add_hotkey(&select->hotkeys, HOTKEY_BACKSPACE, tgetstr("kb", NULL)
 		, hotkey_del_hook);
@@ -86,6 +90,7 @@ int			main(int argc, char **argv)
 	setup_signals();
 	select.cur_items = select.def_items;
 	select.cursor_item = select.def_items;
+	select.format = get_columns_format(&select);
 	add_default_hotkeys(&select);
 	select_loop(&select);
 	reset_term(&select);

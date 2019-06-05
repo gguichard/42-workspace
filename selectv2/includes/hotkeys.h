@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 11:50:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/04 14:33:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/05 13:02:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,8 @@
 # define HOTKEY_SPACE 3
 # define HOTKEY_ARROW_LEFT 4
 # define HOTKEY_ARROW_RIGHT 5
-# define HOTKEY_ARROW_UP 6
-# define HOTKEY_ARROW_DOWN 7
-# define HOTKEY_BACKSPACE 8
-# define HOTKEY_DELETE 9
+# define HOTKEY_BACKSPACE 6
+# define HOTKEY_DELETE 7
 
 typedef struct		s_hotkey
 {
