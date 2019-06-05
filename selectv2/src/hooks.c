@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 12:58:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 13:02:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/05 20:36:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,22 @@ void			hotkey_del_hook(int type)
 	t_item	*cursor;
 	t_item	*new_cursor;
 
-	if (type == HOTKEY_DELETE || type == HOTKEY_BACKSPACE)
-	{
-		cursor = g_select->cursor_item;
-		if (cursor == NULL)
-			return ;
-		if (g_select->cur_items == cursor)
-			g_select->cur_items = cursor->next;
-		new_cursor = (cursor->next != NULL ? cursor->next : cursor->prev);
-		g_select->cursor_item = new_cursor;
-		if (cursor->prev != NULL)
-			cursor->prev->next = cursor->next;
-		if (cursor->next != NULL)
-			cursor->next->prev = cursor->prev;
-		cursor->flags &= ~SELECTED_FLAG;
-		cursor->flags |= DELETED_FLAG;
-		print_select_items(g_select);
-	}
+	if (type == HOTKEY_BACKSPACE && del_search_char(g_select))
+		return ;
+	cursor = g_select->cursor_item;
+	if (cursor == NULL)
+		return ;
+	if (g_select->cur_items == cursor)
+		g_select->cur_items = cursor->next;
+	new_cursor = (cursor->next != NULL ? cursor->next : cursor->prev);
+	g_select->cursor_item = new_cursor;
+	if (cursor->prev != NULL)
+		cursor->prev->next = cursor->next;
+	if (cursor->next != NULL)
+		cursor->next->prev = cursor->prev;
+	cursor->flags &= ~SELECTED_FLAG;
+	cursor->flags |= DELETED_FLAG;
+	print_select_items(g_select);
 }
 
 void			hotkey_exit_hook(int type)
@@ -91,6 +90,7 @@ void			hotkey_select_hook(int type)
 
 	if (type == HOTKEY_SPACE)
 	{
+		del_whole_search(g_select);
 		cursor = g_select->cursor_item;
 		if (cursor == NULL)
 			return ;

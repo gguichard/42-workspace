@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 22:09:35 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 12:02:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/05 22:38:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@ t_select_format	get_columns_format(t_select *select)
 	current = select->cur_items;
 	while (current != NULL)
 	{
+		fmt.elems += 1;
 		fmt.col_width = ft_max(fmt.col_width, ft_strlen(current->content));
 		current = current->next;
 	}
-	fmt.col_width += 4;
+	fmt.col_width += 5;
 	return (fmt);
 }

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/04 16:50:43 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/05 14:55:19 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ hooks.c			\
 hotkeys.c		\
 items.c			\
 main.c			\
+search.c		\
 select.c		\
 signals.c		\
 term.c			\
