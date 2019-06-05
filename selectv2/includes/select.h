@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 14:05:23 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 22:48:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 01:29:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void				do_search(t_select *select, char c);
 int					del_search_char(t_select *select);
 int					del_whole_search(t_select *select);
 
-void				handle_job_signals(int sig);
-void				handle_resize_signal(int sig);
-void				handle_common_signal(int sig);
+void				handle_job_signals(int signo);
+void				handle_resize_signal(int signo);
+void				handle_common_signal(int signo);
 
 int					t_putchar(int c);
 

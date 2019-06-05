@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 15:49:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 14:42:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 01:29:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@
 
 extern t_select	*g_select;
 
-void			handle_job_signals(int sig)
+void			handle_job_signals(int signo)
 {
 	t_select	*select;
 
 	select = g_select;
-	if (sig == SIGCONT)
+	if (signo == SIGCONT)
 	{
 		signal(SIGTSTP, handle_job_signals);
 		setup_term(select);
 		print_select_items(select);
 	}
-	else if (sig == SIGTSTP)
+	else if (signo == SIGTSTP)
 	{
 		signal(SIGTSTP, SIG_DFL);
 		reset_term(select);
@@ -36,19 +36,19 @@ void			handle_job_signals(int sig)
 	}
 }
 
-void			handle_resize_signal(int sig)
+void			handle_resize_signal(int signo)
 {
 	t_select	*select;
 
 	select = g_select;
-	if (sig == SIGWINCH)
+	if (signo == SIGWINCH)
 	{
 		update_winsize(select);
 		print_select_items(select);
 	}
 }
 
-void			handle_common_signal(int sig)
+void			handle_common_signal(int signo)
 {
 	t_select	*select;
 
@@ -57,5 +57,5 @@ void			handle_common_signal(int sig)
 	close(select->tty_fd);
 	ft_lstfree(&select->hotkeys);
 	free(select->def_items);
-	exit(sig);
+	exit(signo);
 }
