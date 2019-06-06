@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 12:58:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 20:36:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 20:31:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,58 @@ void			hotkey_select_hook(int type)
 			g_select->cursor_item = cursor->next;
 		else
 			g_select->cursor_item = g_select->cur_items;
+	}
+}
+
+static int		should_unselect_all(t_select *select)
+{
+	t_item	*item;
+
+	item = select->cur_items;
+	while (item != NULL)
+	{
+		if (!(item->flags & SELECTED_FLAG))
+			return (0);
+		item = item->next;
+	}
+	return (1);
+}
+
+void			hotkey_select_all_hook(int type)
+{
+	t_item	*item;
+	int		unselect;
+	int		prev;
+
+	if (type == HOTKEY_CTRL_A)
+	{
+		item = g_select->cur_items;
+		unselect = should_unselect_all(g_select);
+		while (item != NULL)
+		{
+			prev = item->flags;
+			if (unselect)
+				item->flags &= ~SELECTED_FLAG;
+			else
+				item->flags |= SELECTED_FLAG;
+			if (item->flags != prev)
+				print_single_item(g_select, item);
+			item = item->next;
+		}
+	}
+}
+
+void			hotkey_home_end_hook(int type)
+{
+	t_item	*item;
+
+	if (type == HOTKEY_HOME)
+		g_select->cursor_item = g_select->cur_items;
+	else if (type == HOTKEY_END)
+	{
+		item = g_select->cursor_item;
+		while (item != NULL && item->next != NULL)
+			item = item->next;
+		g_select->cursor_item = item;
 	}
 }

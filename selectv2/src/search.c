@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 14:52:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 23:46:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 20:28:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void		do_search(t_select *select, char c)
 {
 	size_t	len;
 
+	if (!ft_isprint(c))
+		return ;
 	len = ft_strlen(select->search_query);
 	if (len + 1 >= sizeof(select->search_query))
 		return ;
@@ -73,8 +75,11 @@ int			del_search_char(t_select *select)
 	len = ft_strlen(select->search_query);
 	if (len == 0)
 		return (0);
-	select->search_query[len - 1] = '\0';
-	update_search(select);
+	select->search_query[--len] = '\0';
+	if (len == 0)
+		print_select_items(select);
+	else
+		update_search(select);
 	return (1);
 }
 
@@ -85,4 +90,17 @@ int			del_whole_search(t_select *select)
 	ft_memset(select->search_query, '\0', sizeof(select->search_query));
 	print_select_items(select);
 	return (1);
+}
+
+void		print_search_query(t_select *select, size_t row)
+{
+	static char	*cm_tcap = NULL;
+
+	if (cm_tcap == NULL)
+		cm_tcap = tgetstr("cm", NULL);
+	if (row < select->winsize.ws_row && select->search_query[0] != '\0')
+	{
+		tputs(tgoto(cm_tcap, 0, row), 1, t_putchar);
+		ft_dprintf(select->tty_fd, "Recherche : %s\n", select->search_query);
+	}
 }

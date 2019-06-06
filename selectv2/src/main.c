@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 13:56:03 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/05 16:29:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 20:37:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ static void	add_default_hotkeys(t_select *select)
 	add_hotkey(&select->hotkeys, HOTKEY_BACKSPACE, "\177", hotkey_del_hook);
 	add_hotkey(&select->hotkeys, HOTKEY_DELETE, tgetstr("kD", NULL)
 		, hotkey_del_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_CTRL_A, "\001"
+		, hotkey_select_all_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_HOME, tgetstr("kh", NULL)
+		, hotkey_home_end_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_END, tgetstr("@7", NULL)
+		, hotkey_home_end_hook);
 }
 
 int			main(int argc, char **argv)

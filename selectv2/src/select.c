@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 22:27:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/06 01:20:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/06 20:23:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,12 @@ void		print_single_item(t_select *select, t_item *item)
 void		print_select_items(t_select *select)
 {
 	static char	*cl_tcap = NULL;
-	static char	*cm_tcap = NULL;
 	size_t		cols;
 	size_t		idx;
 	t_item		*current;
 
 	if (cl_tcap == NULL)
 		cl_tcap = tgetstr("cl", NULL);
-	if (cm_tcap == NULL)
-		cm_tcap = tgetstr("cm", NULL);
 	tputs(cl_tcap, 1, t_putchar);
 	cols = ft_max(select->winsize.ws_col / select->format.col_width, 1);
 	idx = 0;
@@ -112,11 +109,7 @@ void		print_select_items(t_select *select)
 		current = current->next;
 		idx++;
 	}
-	if (select->search_query[0] != '\0')
-	{
-		tputs(tgoto(cm_tcap, 0, (idx - 1) / cols + 1), 1, t_putchar);
-		ft_dprintf(select->tty_fd, "Recherche : %s\n", select->search_query);
-	}
+	print_search_query(select, (idx - 1) / cols + 1);
 }
 
 void		select_loop(t_select *select)
