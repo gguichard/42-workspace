@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/05 14:55:19 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/07 13:01:12 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC_DIR		=	src
 SRC 		=	\
 format.c		\
 hooks.c			\
+hooks_nav.c		\
 hotkeys.c		\
 items.c			\
 main.c			\

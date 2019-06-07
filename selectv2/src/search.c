@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/05 14:52:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/06 20:28:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/07 10:53:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,6 @@
 #include <stdlib.h>
 #include <term.h>
 #include "select.h"
-
-static void	swap_list_nodes(t_select *select, t_item *left, t_item *right)
-{
-	right->prev = left->prev;
-	if (right->prev == NULL)
-		select->cur_items = right;
-	else
-		right->prev->next = right;
-	if (right->next != NULL)
-		right->next->prev = left;
-	left->prev = right;
-	left->next = right->next;
-	right->next = left;
-}
 
 static void	update_search(t_select *select)
 {

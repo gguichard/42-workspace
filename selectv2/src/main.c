@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 13:56:03 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/06 20:37:56 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:51:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int			main(int argc, char **argv)
 
 	if (argc < 2)
 		return (!error(argv[0], "please specify at least one choice"));
+	else if (!isatty(STDIN_FILENO))
+		return (!error(argv[0], "standard input is not a tty"));
 	ft_memset(&select, 0, sizeof(t_select));
 	g_select = &select;
 	if (!init_select(argc, argv, &select))

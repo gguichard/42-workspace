@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 14:05:23 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/06 20:30:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/07 12:58:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 
 typedef struct		s_select_format
 {
-	size_t			elems;
 	size_t			col_width;
 	unsigned int	max_col;
 	unsigned int	max_row;
@@ -70,5 +69,7 @@ void				handle_resize_signal(int signo);
 void				handle_common_signal(int signo);
 
 int					t_putchar(int c);
+void				swap_list_nodes(t_select *select, t_item *left
+	, t_item *right);
 
 #endif
