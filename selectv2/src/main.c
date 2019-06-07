@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 13:56:03 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/07 12:51:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/07 15:01:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ static void	add_default_hotkeys(t_select *select)
 		, hotkey_nav_hook);
 	add_hotkey(&select->hotkeys, HOTKEY_ARROW_RIGHT, tgetstr("kr", NULL)
 		, hotkey_nav_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_ARROW_UP, tgetstr("ku", NULL)
+		, hotkey_nav_updown_hook);
+	add_hotkey(&select->hotkeys, HOTKEY_ARROW_DOWN, tgetstr("kd", NULL)
+		, hotkey_nav_updown_hook);
 	add_hotkey(&select->hotkeys, HOTKEY_BACKSPACE, "\177", hotkey_del_hook);
 	add_hotkey(&select->hotkeys, HOTKEY_DELETE, tgetstr("kD", NULL)
 		, hotkey_del_hook);

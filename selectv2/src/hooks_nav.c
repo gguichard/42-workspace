@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/07 12:59:00 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/07 13:00:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/07 15:51:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,41 @@ void			hotkey_nav_hook(int type)
 		}
 	}
 	g_select->cursor_item = new_cursor;
+}
+
+static t_item	*get_item_at_pos(t_select *select, size_t row, size_t col)
+{
+	t_item	*item;
+
+	item = select->cur_items;
+	while (item != NULL
+		&& (item->row != row || item->col != col))
+		item = item->next;
+	return (item);
+}
+
+void			hotkey_nav_updown_hook(int type)
+{
+	t_select	*select;
+	t_item		*cursor;
+	ssize_t		row;
+	ssize_t		col;
+
+	select = g_select;
+	cursor = select->cursor_item;
+	if (cursor == NULL)
+		return ;
+	row = cursor->row;
+	col = cursor->col;
+	if (type == HOTKEY_ARROW_UP)
+		row -= 1;
+	else if (type == HOTKEY_ARROW_DOWN)
+		row += 1;
+	if (row < 0 || row > select->format.max_row)
+		return ;
+	cursor = get_item_at_pos(select, row, col);
+	if (cursor != NULL)
+		g_select->cursor_item = cursor;
 }
 
 void			hotkey_home_end_hook(int type)

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 22:27:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/06 20:23:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/07 15:53:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void		print_select_items(t_select *select)
 		current->row = idx / cols;
 		current->col = idx % cols;
 		print_single_item(select, current);
+		select->format.max_row = current->row;
 		current = current->next;
 		idx++;
 	}
