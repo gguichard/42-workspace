@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/07 13:01:12 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/07 16:11:10 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ GREEN		=	\x1b[32m
 
 INC_DIR		=	includes
 
-CC			=	gcc -g
+CC			=	gcc
 CPPFLAGS	=	-Ilibft/includes -I$(INC_DIR)
 CFLAGS 		=	-Wall -Werror -Wextra
 LDFLAGS		=	-Llibft -lft -ltermcap
