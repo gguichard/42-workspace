@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/03 13:56:03 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/07 15:01:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/07 16:00:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,17 @@ static int	error(char *arg, char *message)
 
 static int	init_select(int argc, char **argv, t_select *select)
 {
-	select->tty_fd = open("/dev/tty", O_WRONLY);
-	if (select->tty_fd == -1)
-		return (error(argv[0], "unable to open tty"));
-	else if (tgetent(NULL, getenv("TERM")) == -1)
+	if (tgetent(NULL, getenv("TERM")) == -1)
 		return (error(argv[0], "unable to init termcaps"));
 	else if (!setup_term(select))
 		return (error(argv[0], "unable to init term"));
 	update_winsize(select);
+	select->tty_fd = open("/dev/tty", O_WRONLY);
+	if (select->tty_fd == -1)
+	{
+		reset_term(select);
+		return (error(argv[0], "unable to open tty"));
+	}
 	select->def_items = create_items(argc - 1, argv + 1);
 	if (select->def_items == NULL)
 	{
@@ -107,6 +110,6 @@ int			main(int argc, char **argv)
 	reset_term(&select);
 	close(select.tty_fd);
 	ft_lstfree(&select.hotkeys);
-	free(select.def_items);
+	ft_memdel((void **)&select.def_items);
 	return (0);
 }

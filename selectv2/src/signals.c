@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/04 15:49:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/06 01:29:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/07 16:00:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ void			handle_common_signal(int signo)
 	reset_term(select);
 	close(select->tty_fd);
 	ft_lstfree(&select->hotkeys);
-	free(select->def_items);
+	ft_memdel((void **)&select->def_items);
 	exit(signo);
 }
