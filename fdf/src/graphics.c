@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/03 12:12:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/09 18:49:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,13 @@ static void	draw_edges(t_fdf *fdf, t_pos pos)
 			, *(t_pos *)(fdf->pos.data)[(pos.y + 1) * fdf->cols + pos.x]);
 }
 
+static void	draw_triangle(t_fdf *fdf, t_pos pos_1, t_pos pos_2, t_pos pos_3)
+{
+	rasterize(fdf, pos_1, pos_2);
+	rasterize(fdf, pos_1, pos_3);
+	rasterize(fdf, pos_3, pos_2);
+}
+
 static void	clear_window(t_fdf *fdf)
 {
 	int	index;
@@ -69,8 +76,8 @@ static void	clear_window(t_fdf *fdf)
 
 void		fill_window_image(t_fdf *fdf)
 {
-	int	index;
-	int	total;
+	int			index;
+	int			total;
 
 	clear_window(fdf);
 	total = fdf->pos.size;
@@ -81,9 +88,22 @@ void		fill_window_image(t_fdf *fdf)
 		index++;
 	}
 	index = 0;
-	while (index < total)
+	if (!fdf->use_obj_render)
 	{
-		draw_edges(fdf, *(t_pos *)(fdf->pos.data)[index]);
-		index++;
+		while (index < total)
+		{
+			draw_edges(fdf, *(t_pos *)(fdf->pos.data)[index]);
+			index++;
+		}
+	}
+	else
+	{
+		while ((index + 3) < total)
+		{
+			draw_triangle(fdf, *(t_pos *)(fdf->pos.data)[index]
+				, *(t_pos *)(fdf->pos.data)[index + 1]
+				, *(t_pos *)(fdf->pos.data)[index + 2]);
+			index += 3;
+		}
 	}
 }

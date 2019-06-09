@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/03 12:09:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/09 18:49:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "options.h"
 # include "winsize.h"
 # include "vectors.h"
+# include "wf_obj_parser.h"
 
 typedef struct		s_color
 {
@@ -61,6 +62,8 @@ typedef struct		s_fdf
 	double			matrix_translate[4][4];
 	int				drag;
 	t_vec2d			prev_cursor;
+	int				use_obj_render;
+	t_wf_obj		objfile;
 }					t_fdf;
 
 int					clean_fdf(t_fdf *fdf);

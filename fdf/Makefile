@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/03 13:55:25 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/09 18:44:03 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,23 +19,25 @@ INC_DIR		=	includes
 
 CC			=	gcc -O2
 CPPFLAGS	=	-Ilibft/includes -I$(INC_DIR)
-CFLAGS 		=	-Wall -Werror -Wextra
+CFLAGS 		=	#-Wall -Werror -Wextra
 LDFLAGS		=	-Llibft -lft -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
 
 SRC_DIR		=	src
-SRC 		=	\
-draw.c			\
-graphics.c		\
-handle_hooks.c	\
-hooks.c			\
-key_hooks.c		\
-main.c			\
-math_utils.c	\
-matrix44.c		\
-palette.c		\
-parser.c		\
-utils.c			\
-vectors.c
+SRC 		=			\
+draw.c					\
+graphics.c				\
+handle_hooks.c			\
+hooks.c					\
+key_hooks.c				\
+main.c					\
+math_utils.c			\
+matrix44.c				\
+palette.c				\
+parser.c				\
+utils.c					\
+vectors.c				\
+wf_obj_parser.c			\
+wf_obj_parser_helper.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)

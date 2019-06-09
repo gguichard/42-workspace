@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 05:08:55 by gguichar          #+#    #+#             */
-/*   Updated: 2019/05/31 19:03:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/09 18:50:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int			print_usage(t_fdf *fdf)
 	ft_printf("  -w <size>\tSpecify width for window size\n");
 	ft_printf("  -h <size>\tSpecify height for window size\n");
 	ft_printf("  -p <file>\tUse file as color palette\n");
+	ft_printf("  -o\t\tLoad a wavefront obj file instead of a map\n");
 	return (0);
 }
 
