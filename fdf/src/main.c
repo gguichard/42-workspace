@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/09 18:49:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/09 23:11:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,29 +94,33 @@ static int	init_obj_file(t_fdf *fdf)
 	return (1);
 }
 
-static int	init(t_fdf *fdf, int argc, char **argv)
+static int	init_points(t_fdf *fdf)
 {
-	if (!init_fdf(fdf, argc, argv))
-		return (0);
-	if (fdf->opts.error != 0 || fdf->argc <= 0)
-		return (print_usage(fdf));
 	if (has_opt(&fdf->opts, 'o'))
 	{
 		if (!init_obj_file(fdf))
-		{
-			ft_dprintf(STDERR_FILENO, "fdf: unable to parse obj file\n");
 			return (0);
-		}
 		fdf->use_obj_render = 1;
 	}
 	else
 	{
 		fdf->pos = read_file((fdf->argv)[0], fdf);
 		if (fdf->pos.size == 0)
-		{
-			ft_dprintf(STDERR_FILENO, "fdf: unable to parse map file\n");
 			return (0);
-		}
+	}
+	return (1);
+}
+
+static int	init(t_fdf *fdf, int argc, char **argv)
+{
+	if (!init_fdf(fdf, argc, argv))
+		return (0);
+	else if (fdf->opts.error != 0 || fdf->argc <= 0)
+		return (print_usage(fdf));
+	else if (!init_points(fdf))
+	{
+		ft_dprintf(STDERR_FILENO, "fdf: unable to parse file\n");
+		return (0);
 	}
 	ft_lstfree(&(fdf->palette));
 	if (!init_mlx(fdf))

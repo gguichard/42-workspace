@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/09 18:49:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/09 23:09:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,23 +74,14 @@ static void	clear_window(t_fdf *fdf)
 	ft_memset(fdf->lib.img_data, 0, fdf->lib.size_line * fdf->winsize.height);
 }
 
-void		fill_window_image(t_fdf *fdf)
+static void	render_points(t_fdf *fdf)
 {
-	int			index;
-	int			total;
+	int	index;
 
-	clear_window(fdf);
-	total = fdf->pos.size;
-	index = 0;
-	while (index < total)
-	{
-		proj_pos(fdf, (t_pos *)(fdf->pos.data)[index]);
-		index++;
-	}
 	index = 0;
 	if (!fdf->use_obj_render)
 	{
-		while (index < total)
+		while (index < fdf->pos.size)
 		{
 			draw_edges(fdf, *(t_pos *)(fdf->pos.data)[index]);
 			index++;
@@ -98,7 +89,7 @@ void		fill_window_image(t_fdf *fdf)
 	}
 	else
 	{
-		while ((index + 3) < total)
+		while ((index + 3) < fdf->pos.size)
 		{
 			draw_triangle(fdf, *(t_pos *)(fdf->pos.data)[index]
 				, *(t_pos *)(fdf->pos.data)[index + 1]
@@ -106,4 +97,18 @@ void		fill_window_image(t_fdf *fdf)
 			index += 3;
 		}
 	}
+}
+
+void		fill_window_image(t_fdf *fdf)
+{
+	int	index;
+
+	clear_window(fdf);
+	index = 0;
+	while (index < fdf->pos.size)
+	{
+		proj_pos(fdf, (t_pos *)(fdf->pos.data)[index]);
+		index++;
+	}
+	render_points(fdf);
 }
