@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/09 23:11:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 01:38:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,17 @@ static int	init_obj_file(t_fdf *fdf)
 	idx = 0;
 	while (idx < fdf->objfile.vertices.size)
 	{
-		pos = ft_memalloc(sizeof(t_pos));
-		if (pos == NULL)
+		if ((pos = ft_memalloc(sizeof(t_pos))) == NULL)
 			break ;
 		pos->x = ((t_vec3d *)fdf->objfile.vertices.data[idx])->x;
 		pos->y = ((t_vec3d *)fdf->objfile.vertices.data[idx])->y;
 		pos->z = ((t_vec3d *)fdf->objfile.vertices.data[idx])->z;
 		pos->color = 0xFFFFFF;
 		if (!ft_vecpush(&fdf->pos, pos))
+		{
+			free(pos);
 			break ;
+		}
 		idx++;
 	}
 	free_wf_obj(&fdf->objfile);
