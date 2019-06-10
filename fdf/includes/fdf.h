@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/09 18:49:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 18:24:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include "options.h"
 # include "winsize.h"
+# include "lib_mlx.h"
 # include "vectors.h"
 # include "wf_obj_parser.h"
 
@@ -24,17 +25,6 @@ typedef struct		s_color
 	int				max;
 	unsigned int	value;
 }					t_color;
-
-typedef struct		s_mlx
-{
-	void			*mlx_ptr;
-	void			*win_ptr;
-	void			*img_ptr;
-	unsigned int	*img_data;
-	int				bits_per_pixel;
-	int				size_line;
-	int				endian;
-}					t_mlx;
 
 typedef struct		s_pos
 {
@@ -93,12 +83,17 @@ int					get_palette_color(t_fdf *fdf, int z);
 /*
 ** PARSING.
 */
-t_vector			read_file(const char *name, t_fdf *fdf);
+t_error				read_file(t_fdf *fdf);
+t_error				read_obj_file(t_fdf *fdf);
 
 /*
 ** GRAPHICS.
 */
 void				fill_window_image(t_fdf *fdf);
+
+void				draw_edges(t_fdf *fdf, t_pos pos);
+void				draw_triangle(t_fdf *fdf, t_pos pos_1, t_pos pos_2
+	, t_pos pos_3);
 
 /*
 ** HOOKS.

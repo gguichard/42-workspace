@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/09 18:44:03 by gguichar         ###   ########.fr        #
+#    Updated: 2019/06/10 18:24:38 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,21 +19,25 @@ INC_DIR		=	includes
 
 CC			=	gcc -O2
 CPPFLAGS	=	-Ilibft/includes -I$(INC_DIR)
-CFLAGS 		=	#-Wall -Werror -Wextra
+CFLAGS 		=	-Wall -Werror -Wextra
 LDFLAGS		=	-Llibft -lft -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
 
 SRC_DIR		=	src
 SRC 		=			\
 draw.c					\
+draw_utils.c			\
+error.c					\
 graphics.c				\
 handle_hooks.c			\
 hooks.c					\
 key_hooks.c				\
+lib_mlx.c				\
 main.c					\
 math_utils.c			\
 matrix44.c				\
 palette.c				\
 parser.c				\
+parser_obj.c			\
 utils.c					\
 vectors.c				\
 wf_obj_parser.c			\

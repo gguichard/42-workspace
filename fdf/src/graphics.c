@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/09 23:09:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 18:25:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "libft.h"
 #include "fdf.h"
 #include "matrix44.h"
-#include "bresenham.h"
 
 static void	proj_pos(t_fdf *fdf, t_pos *pos)
 {
@@ -28,35 +27,6 @@ static void	proj_pos(t_fdf *fdf, t_pos *pos)
 	vec = mat44_apply(result, vec);
 	pos->proj.x = vec.x + fdf->winsize.width / 2.;
 	pos->proj.y = vec.y + fdf->winsize.height / 2.;
-}
-
-static void	rasterize(t_fdf *fdf, t_pos pos, t_pos edge)
-{
-	if ((pos.proj.x < 0 && edge.proj.x < 0)
-		|| (pos.proj.y < 0 && edge.proj.y < 0)
-		|| (pos.proj.x >= fdf->winsize.width
-			&& edge.proj.x >= fdf->winsize.width)
-		|| (pos.proj.y >= fdf->winsize.height
-			&& edge.proj.y >= fdf->winsize.height))
-		return ;
-	draw_line(fdf, pos, edge);
-}
-
-static void	draw_edges(t_fdf *fdf, t_pos pos)
-{
-	if (pos.x + 1 < fdf->cols)
-		rasterize(fdf, pos
-			, *(t_pos *)(fdf->pos.data)[pos.y * fdf->cols + pos.x + 1]);
-	if (pos.y + 1 < fdf->rows)
-		rasterize(fdf, pos
-			, *(t_pos *)(fdf->pos.data)[(pos.y + 1) * fdf->cols + pos.x]);
-}
-
-static void	draw_triangle(t_fdf *fdf, t_pos pos_1, t_pos pos_2, t_pos pos_3)
-{
-	rasterize(fdf, pos_1, pos_2);
-	rasterize(fdf, pos_1, pos_3);
-	rasterize(fdf, pos_3, pos_2);
 }
 
 static void	clear_window(t_fdf *fdf)
@@ -76,7 +46,7 @@ static void	clear_window(t_fdf *fdf)
 
 static void	render_points(t_fdf *fdf)
 {
-	int	index;
+	size_t	index;
 
 	index = 0;
 	if (!fdf->use_obj_render)
@@ -101,7 +71,7 @@ static void	render_points(t_fdf *fdf)
 
 void		fill_window_image(t_fdf *fdf)
 {
-	int	index;
+	size_t	index;
 
 	clear_window(fdf);
 	index = 0;

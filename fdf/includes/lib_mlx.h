@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   lib_mlx.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/09 17:54:29 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 17:50:59 by gguichar         ###   ########.fr       */
+/*   Created: 2019/06/10 14:01:10 by gguichar          #+#    #+#             */
+/*   Updated: 2019/06/10 14:04:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#ifndef LIB_MLX_H
+# define LIB_MLX_H
 
-typedef enum	e_error
+# include "winsize.h"
+
+typedef struct		s_mlx
 {
-	ERR_NOERROR,
-	ERR_UNEXPECTED,
-	ERR_ERRNO,
-	ERR_WRONGMAPFILE,
-	ERR_BADOBJFILE,
-	ERR_BADOPTIONS,
-	ERR_SHOWUSAGE,
-	ERR_NOPOSITIONS,
-	ERR_MLXINIT
-}				t_error;
+	void			*mlx_ptr;
+	void			*win_ptr;
+	void			*img_ptr;
+	unsigned int	*img_data;
+	int				bits_per_pixel;
+	int				size_line;
+	int				endian;
+}					t_mlx;
 
-const char		*error_to_str(t_error error);
+void				clean_mlx(t_mlx *lib);
+int					init_mlx(t_mlx *lib, t_winsize winsize);
 
 #endif

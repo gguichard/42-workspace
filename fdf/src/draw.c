@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/01 16:42:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 18:05:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void			step_line(t_line *line)
 	}
 }
 
-void				draw_line(t_fdf *fdf, t_pos start, t_pos end)
+static void			draw_line_bresenham(t_fdf *fdf, t_pos start, t_pos end)
 {
 	t_line	line;
 
@@ -74,4 +74,16 @@ void				draw_line(t_fdf *fdf, t_pos start, t_pos end)
 			draw_pixel(fdf, line);
 		step_line(&line);
 	}
+}
+
+void				draw_line(t_fdf *fdf, t_pos start, t_pos end)
+{
+	if ((start.proj.x < 0 && end.proj.x < 0)
+		|| (start.proj.y < 0 && end.proj.y < 0)
+		|| (start.proj.x >= fdf->winsize.width
+			&& end.proj.x >= fdf->winsize.width)
+		|| (start.proj.y >= fdf->winsize.height
+			&& end.proj.y >= fdf->winsize.height))
+		return ;
+	draw_line_bresenham(fdf, start, end);
 }

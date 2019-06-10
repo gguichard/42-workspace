@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/03 12:13:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 17:57:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "get_next_line.h"
 #include "fdf.h"
 
-static int		parse_pos(t_fdf *fdf, t_pos *pos, char **line)
+static int	parse_pos(t_fdf *fdf, t_pos *pos, char **line)
 {
 	pos->z = ft_strtol(*line, line, 10);
 	if ((*line)[0] != ',')
@@ -34,7 +34,7 @@ static int		parse_pos(t_fdf *fdf, t_pos *pos, char **line)
 	return (1);
 }
 
-static int		parse_line(t_fdf *fdf, char *line, t_vector *points)
+static int	parse_line(t_fdf *fdf, char *line, t_vector *points)
 {
 	t_pos	pos;
 	t_pos	*ptr;
@@ -61,30 +61,31 @@ static int		parse_line(t_fdf *fdf, char *line, t_vector *points)
 	return (pos.x == fdf->cols);
 }
 
-t_vector		read_file(const char *name, t_fdf *fdf)
+t_error		read_file(t_fdf *fdf)
 {
-	t_vector	points;
-	int			fd;
-	int			ret;
-	char		*line;
+	t_error	err;
+	int		fd;
+	int		ret;
+	char	*line;
 
-	ft_memset(&points, 0, sizeof(t_vector));
-	fd = open(name, O_RDONLY);
+	err = ERR_NOERROR;
+	fd = open(fdf->argv[0], O_RDONLY);
 	if (fd == -1)
-		return (points);
-	ret = 1;
-	fdf->cols = 0;
-	fdf->rows = 0;
-	while (ret && get_next_line(fd, &line) > 0)
+		err = ERR_ERRNO;
+	else
 	{
-		ret = parse_line(fdf, line, &points);
-		free(line);
-		(fdf->rows)++;
+		while (err == ERR_NOERROR && (ret = get_next_line(fd, &line)) > 0)
+		{
+			if (!parse_line(fdf, line, &fdf->pos))
+				err = ERR_WRONGMAPFILE;
+			free(line);
+			(fdf->rows)++;
+		}
+		if (ret == -1)
+			err = ERR_ERRNO;
+		close(fd);
+		if (err != ERR_NOERROR)
+			ft_vecfree(&fdf->pos);
 	}
-	close(fd);
-	if (fdf->rows == 0 || fdf->cols == 0)
-		ret = 0;
-	if (!ret)
-		ft_vecfree(&points);
-	return (points);
+	return (err);
 }
