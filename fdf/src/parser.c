@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 19:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 17:57:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 20:04:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,12 @@ t_error		read_file(t_fdf *fdf)
 	int		ret;
 	char	*line;
 
-	err = ERR_NOERROR;
 	fd = open(fdf->argv[0], O_RDONLY);
 	if (fd == -1)
 		err = ERR_ERRNO;
 	else
 	{
+		err = ERR_NOERROR;
 		while (err == ERR_NOERROR && (ret = get_next_line(fd, &line)) > 0)
 		{
 			if (!parse_line(fdf, line, &fdf->pos))

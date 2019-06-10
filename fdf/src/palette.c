@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 02:45:40 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/31 03:18:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 20:05:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,31 @@ static int	parse_color(t_fdf *fdf, char *line)
 	return (1);
 }
 
-int			parse_palette(const char *file, t_fdf *fdf)
+t_error		parse_palette(const char *file, t_fdf *fdf)
 {
+	t_error	err;
 	int		fd;
 	int		ret;
 	char	*line;
 
 	fd = open(file, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	ret = 1;
-	while (ret && get_next_line(fd, &line) > 0)
+	if (fd == -1)
+		err = ERR_ERRNO;
+	else
 	{
-		if (line[0] != '#' && !parse_color(fdf, line))
-			ret = 0;
-		free(line);
+		err = ERR_NOERROR;
+		while (err == ERR_NOERROR && (ret = get_next_line(fd, &line)) > 0)
+		{
+			if (line[0] != '#' && !parse_color(fdf, line))
+				err = ERR_WRONGPALETTEFILE;
+			free(line);
+		}
+		if (ret == -1)
+			err = ERR_ERRNO;
+		if (err != ERR_NOERROR)
+			ft_lstfree(&(fdf->palette));
 	}
-	if (!ret)
-		ft_lstfree(&(fdf->palette));
-	return (ret);
+	return (err);
 }
 
 int			get_palette_color(t_fdf *fdf, int z)

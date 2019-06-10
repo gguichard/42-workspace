@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 17:58:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 20:19:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ static t_error	init_fdf(t_fdf *fdf, int argc, char **argv)
 	fdf->argv = argv + fdf->opts.index;
 	if (fdf->opts.error != 0 || fdf->argc <= 0)
 		return (ERR_SHOWUSAGE);
-	else if (!check_options(fdf))
-		return (ERR_BADOPTIONS);
+	update_winsize(fdf);
 	fdf->z_buffer = (int *)malloc(fdf->winsize.width * fdf->winsize.height
 			* sizeof(int));
 	if (!fdf->z_buffer)
@@ -49,7 +48,13 @@ static t_error	parse_map_file(t_fdf *fdf)
 {
 	t_error	err;
 
-	err = ERR_NOERROR;
+	if (has_opt(&fdf->opts, 'p'))
+	{
+		err = parse_palette(get_optarg(&fdf->opts, 'p'), fdf);
+		if (err != ERR_NOERROR)
+			ft_printf("fdf: warning: unable to load palette: %s\n"
+				, error_to_str(err));
+	}
 	if (!has_opt(&fdf->opts, 'o'))
 		err = read_file(fdf);
 	else
@@ -66,7 +71,7 @@ static int		clean_and_print_error(t_fdf *fdf, t_error err)
 	clean_fdf(fdf);
 	if (err == ERR_SHOWUSAGE)
 		print_usage(fdf);
-	else if (err != ERR_BADOPTIONS)
+	else
 		ft_dprintf(STDERR_FILENO, "fdf: error: %s\n", error_to_str(err));
 	return (1);
 }

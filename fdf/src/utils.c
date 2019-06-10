@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/30 05:08:55 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/09 18:50:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 20:11:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,39 +27,33 @@ int			print_usage(t_fdf *fdf)
 	return (0);
 }
 
-static int	window_size(const char *str)
+static int	window_size(const char *str, int def_value)
 {
-	int	size;
+	int	value;
 
-	if (str == NULL)
-		return (-1);
-	size = ft_atoi(str);
-	if (size <= 0 || size > 2560)
-		return (-1);
-	return (size);
+	value = (str == NULL ? -1 : ft_atoi(str));
+	if (value <= 0 || value > 2560)
+	{
+		ft_printf("fdf: warning: wrong winsize value (%d) replaced "
+			"by default one (%d)\n"
+			, value, def_value);
+		return (def_value);
+	}
+	return (value);
 }
 
-int			check_options(t_fdf *fdf)
+void		update_winsize(t_fdf *fdf)
 {
-	if ((fdf->winsize.width = has_opt(&fdf->opts, 'w')
-				? window_size(get_optarg(&fdf->opts, 'w')) : WIN_WIDTH) == -1)
-	{
-		ft_dprintf(2, "fdf: please provide valid width or remove -w option\n");
-		return (0);
-	}
-	if ((fdf->winsize.height = has_opt(&fdf->opts, 'h')
-				? window_size(get_optarg(&fdf->opts, 'h')) : WIN_HEIGHT) == -1)
-	{
-		ft_dprintf(2, "fdf: please provide valid height or remove -h option\n");
-		return (0);
-	}
-	if (has_opt(&fdf->opts, 'p')
-		&& !parse_palette(get_optarg(&fdf->opts, 'p'), fdf))
-	{
-		ft_dprintf(2, "fdf: unable to load color palette\n");
-		return (0);
-	}
-	return (1);
+	if (!has_opt(&fdf->opts, 'w'))
+		fdf->winsize.width = WIN_WIDTH;
+	else
+		fdf->winsize.width = window_size(get_optarg(&fdf->opts, 'w')
+				, WIN_WIDTH);
+	if (!has_opt(&fdf->opts, 'h'))
+		fdf->winsize.height = WIN_HEIGHT;
+	else
+		fdf->winsize.height = window_size(get_optarg(&fdf->opts, 'h')
+				, WIN_HEIGHT);
 }
 
 int			exit_fdf(t_fdf *fdf)

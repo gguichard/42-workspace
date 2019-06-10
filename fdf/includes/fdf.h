@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 18:24:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 20:05:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int					clean_fdf(t_fdf *fdf);
 ** UTILS.
 */
 int					print_usage(t_fdf *fdf);
-int					check_options(t_fdf *fdf);
+void				update_winsize(t_fdf *fdf);
 int					exit_fdf(t_fdf *fdf);
 
 /*
@@ -77,7 +77,7 @@ unsigned int		get_color(unsigned int start, unsigned int end
 /*
 ** COLORS parsing.
 */
-int					parse_palette(const char *file, t_fdf *fdf);
+t_error				parse_palette(const char *file, t_fdf *fdf);
 int					get_palette_color(t_fdf *fdf, int z);
 
 /*

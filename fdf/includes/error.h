@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/09 17:54:29 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 17:50:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/10 20:10:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@ typedef enum	e_error
 	ERR_ERRNO,
 	ERR_WRONGMAPFILE,
 	ERR_BADOBJFILE,
-	ERR_BADOPTIONS,
 	ERR_SHOWUSAGE,
-	ERR_NOPOSITIONS,
-	ERR_MLXINIT
+	ERR_MLXINIT,
+	ERR_WRONGPALETTEFILE
 }				t_error;
 
 const char		*error_to_str(t_error error);
