@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 18:04:07 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/11 23:22:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/11 23:39:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ static void		draw_vline(t_fdf *fdf, t_vec3d tracker_1, t_vec3d tracker_2
 		return ;
 	x0 = fmin(tracker_1.x, tracker_2.x);
 	x1 = fmax(tracker_1.x, tracker_2.x);
-	z0 = (x0 == tracker_1.x ? tracker_1.z : tracker_2.z);
-	z1 = (x0 == tracker_1.x ? tracker_2.z : tracker_1.z);
+	z0 = (x0 == (int)tracker_1.x ? tracker_1.z : tracker_2.z);
+	z1 = (x0 == (int)tracker_1.x ? tracker_2.z : tracker_1.z);
 	x = x0;
 	while (x <= x1)
 	{
