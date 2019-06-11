@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 18:04:07 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/11 02:33:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/11 16:47:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "fdf.h"
 #include "bresenham.h"
 
-void		draw_edges(t_fdf *fdf, t_pos pos)
+void			draw_edges(t_fdf *fdf, t_pos pos)
 {
 	if (pos.x + 1 < fdf->cols)
 		draw_line(fdf, pos
@@ -25,62 +25,67 @@ void		draw_edges(t_fdf *fdf, t_pos pos)
 			, *(t_pos *)(fdf->pos.data)[(pos.y + 1) * fdf->cols + pos.x]);
 }
 
-static double	get_slope(double x_diff, double y_diff)
+static double	get_slope(t_pos pos_a, t_pos pos_b)
 {
-	if (fabs(y_diff) < 0.0001)
+	double	x_diff;
+	double	y_diff;
+
+	x_diff = (int)pos_a.proj.x - (int)pos_b.proj.x;
+	y_diff = (int)pos_a.proj.y - (int)pos_b.proj.y;
+	if (fabs(y_diff) < 1e-4)
 		return (0);
 	else
 		return (x_diff / y_diff);
 }
 
-static t_pos	vec2d_as_pos(t_vec2d vec, unsigned int color)
+static void		draw_vline(t_fdf *fdf, int x0, int x1, int y)
 {
-	t_pos			pos;
+	int	tmp;
 
-	ft_memset(&pos, 0, sizeof(t_pos));
-	pos.proj = vec;
-	pos.color = color;
-	return (pos);
-}
-
-static void	rasterize_triangle(t_fdf *fdf, t_pos highest_pos, t_pos pos_a
-	, t_pos pos_b)
-{
-	double			slope_a;
-	double			slope_b;
-	t_vec2d			tracker_a;
-	t_vec2d			tracker_b;
-	unsigned char	c;
-	unsigned int	color;
-
-	c = (rand() / (double)RAND_MAX) * 255;
-	color = 0xFFFFFF;//(c << 16) | (c << 8) | c;
-	slope_a = get_slope((int)pos_a.proj.x - (int)highest_pos.proj.x
-		, (int)pos_a.proj.y - (int)highest_pos.proj.y);
-	slope_b = get_slope((int)pos_b.proj.x - (int)highest_pos.proj.x
-		, (int)pos_b.proj.y - (int)highest_pos.proj.y);
-	tracker_a = highest_pos.proj;
-	tracker_b = highest_pos.proj;
-	while (1)
+	if (y < 0 || y >= fdf->winsize.height)
+		return ;
+	else if (x1 < x0)
 	{
-		draw_line(fdf, vec2d_as_pos(tracker_a, color)
-			, vec2d_as_pos(tracker_b, color));
-		if ((int)tracker_b.y == (int)pos_b.proj.y)
-			break ;
-		else if ((int)tracker_a.y == (int)pos_a.proj.y)
-		{
-			tracker_a.x = pos_a.proj.x;
-			slope_a = get_slope((int)pos_b.proj.x - (int)tracker_a.x
-					, (int)pos_b.proj.y - (int)tracker_a.y);
-		}
-		tracker_a.x += slope_a;
-		tracker_b.x += slope_b;
-		tracker_a.y += 1.;
-		tracker_b.y += 1.;
+		tmp = x0;
+		x0 = x1;
+		x1 = tmp;
+	}
+	while (x0 <= x1)
+	{
+		if (x0 >= 0 && x0 < fdf->winsize.width)
+			fdf->lib.img_data[y * fdf->winsize.width + x0] = 0xFFFFFF;
+		x0++;
 	}
 }
 
-void		draw_triangle(t_fdf *fdf, t_pos pos_1, t_pos pos_2, t_pos pos_3)
+static void		rasterize_triangle(t_fdf *fdf, t_pos highest_pos, t_pos pos_a
+	, t_pos pos_b)
+{
+	double	invslope_a;
+	double	invslope_b;
+	t_pos	tracker_a;
+	t_pos	tracker_b;
+
+	invslope_a = get_slope(pos_a, highest_pos);
+	invslope_b = get_slope(pos_b, highest_pos);
+	tracker_a = highest_pos;
+	tracker_b = highest_pos;
+	while ((int)tracker_b.proj.y <= (int)pos_b.proj.y)
+	{
+		if ((int)tracker_a.proj.y == (int)pos_a.proj.y)
+		{
+			tracker_a.proj = pos_a.proj;
+			invslope_a = get_slope(pos_b, pos_a);
+		}
+		draw_vline(fdf, tracker_a.proj.x, tracker_b.proj.x, tracker_b.proj.y);
+		tracker_a.proj.x += invslope_a;
+		tracker_b.proj.x += invslope_b;
+		tracker_a.proj.y += 1.;
+		tracker_b.proj.y += 1.;
+	}
+}
+
+void			draw_triangle(t_fdf *fdf, t_pos pos_1, t_pos pos_2, t_pos pos_3)
 {
 	t_pos	pos[3];
 	t_pos	tmp;
