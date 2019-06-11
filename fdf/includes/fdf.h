@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 20:05:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/11 22:22:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ t_error				read_obj_file(t_fdf *fdf);
 void				fill_window_image(t_fdf *fdf);
 
 void				draw_edges(t_fdf *fdf, t_pos pos);
-void				draw_triangle(t_fdf *fdf, t_pos pos_1, t_pos pos_2
-	, t_pos pos_3);
+void				draw_triangle(t_fdf *fdf, int index, t_vec3d vec_1
+	, t_vec3d vec_2, t_vec3d vec_3);
 
 /*
 ** HOOKS.

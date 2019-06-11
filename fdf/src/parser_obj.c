@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:33:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 18:02:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/11 21:47:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 static t_error	add_vertices_as_points(t_fdf *fdf, t_wf_obj *obj)
 {
 	size_t	idx;
-	t_pos	*pos;
+	t_vec3d	*pos;
 
 	idx = 0;
 	while (idx < obj->vertices.size)
@@ -30,7 +30,6 @@ static t_error	add_vertices_as_points(t_fdf *fdf, t_wf_obj *obj)
 		pos->x = ((t_vec3d *)obj->vertices.data[idx])->x;
 		pos->y = ((t_vec3d *)obj->vertices.data[idx])->y;
 		pos->z = ((t_vec3d *)obj->vertices.data[idx])->z;
-		pos->color = 0xFFFFFF;
 		if (!ft_vecpush(&fdf->pos, pos))
 		{
 			free(pos);

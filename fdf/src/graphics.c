@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/11 01:21:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/11 22:23:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "fdf.h"
 #include "matrix44.h"
 
-static void	proj_pos(t_fdf *fdf, t_pos *pos)
+static void		proj_pos(t_fdf *fdf, t_pos *pos)
 {
 	t_vec3d	vec;
 	double	result[4][4];
@@ -29,7 +29,18 @@ static void	proj_pos(t_fdf *fdf, t_pos *pos)
 	pos->proj.y = vec.y + fdf->winsize.height / 2.;
 }
 
-static void	clear_window(t_fdf *fdf)
+static t_vec3d	proj_vec3d(t_fdf *fdf, t_vec3d vec)
+{
+	double	result[4][4];
+
+	mat44_mul(fdf->matrix, fdf->matrix_translate, result);
+	vec = mat44_apply(result, vec);
+	vec.x += fdf->winsize.width / 2.;
+	vec.y += fdf->winsize.height / 2.;
+	return (vec);
+}
+
+static void		clear_window(t_fdf *fdf)
 {
 	int	index;
 	int	total;
@@ -44,41 +55,35 @@ static void	clear_window(t_fdf *fdf)
 	ft_memset(fdf->lib.img_data, 0, fdf->lib.size_line * fdf->winsize.height);
 }
 
-static void	render_points(t_fdf *fdf)
+void			fill_window_image(t_fdf *fdf)
 {
 	size_t	index;
 
+	clear_window(fdf);
 	index = 0;
-	if (!fdf->use_obj_render)
+	if (fdf->use_obj_render)
 	{
+		while ((index + 3) <= fdf->pos.size)
+		{
+			draw_triangle(fdf, index
+				, proj_vec3d(fdf, *(t_vec3d *)(fdf->pos.data)[index])
+				, proj_vec3d(fdf, *(t_vec3d *)(fdf->pos.data)[index + 1])
+				, proj_vec3d(fdf, *(t_vec3d *)(fdf->pos.data)[index + 2]));
+			index += 3;
+		}
+	}
+	else
+	{
+		while (index < fdf->pos.size)
+		{
+			proj_pos(fdf, (t_pos *)(fdf->pos.data)[index]);
+			index++;
+		}
+		index = 0;
 		while (index < fdf->pos.size)
 		{
 			draw_edges(fdf, *(t_pos *)(fdf->pos.data)[index]);
 			index++;
 		}
 	}
-	else
-	{
-		while ((index + 3) <= fdf->pos.size)
-		{
-			draw_triangle(fdf, *(t_pos *)(fdf->pos.data)[index]
-				, *(t_pos *)(fdf->pos.data)[index + 1]
-				, *(t_pos *)(fdf->pos.data)[index + 2]);
-			index += 3;
-		}
-	}
-}
-
-void		fill_window_image(t_fdf *fdf)
-{
-	size_t	index;
-
-	clear_window(fdf);
-	index = 0;
-	while (index < fdf->pos.size)
-	{
-		proj_pos(fdf, (t_pos *)(fdf->pos.data)[index]);
-		index++;
-	}
-	render_points(fdf);
 }
