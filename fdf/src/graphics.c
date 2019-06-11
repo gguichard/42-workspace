@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/07 10:03:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 18:25:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/11 01:21:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	render_points(t_fdf *fdf)
 	}
 	else
 	{
-		while ((index + 3) < fdf->pos.size)
+		while ((index + 3) <= fdf->pos.size)
 		{
 			draw_triangle(fdf, *(t_pos *)(fdf->pos.data)[index]
 				, *(t_pos *)(fdf->pos.data)[index + 1]
