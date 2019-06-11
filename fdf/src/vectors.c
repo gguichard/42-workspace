@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/01 16:41:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 13:56:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/11 23:13:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ t_vec3d	vec3d(double x, double y, double z)
 	vec.x = x;
 	vec.y = y;
 	vec.z = z;
+	return (vec);
+}
+
+t_vec3d	vec3d_add(t_vec3d vec_1, t_vec3d vec_2)
+{
+	t_vec3d	vec;
+
+	vec.x = vec_1.x + vec_2.x;
+	vec.y = vec_1.y + vec_2.y;
+	vec.z = vec_1.z + vec_2.z;
 	return (vec);
 }
 
