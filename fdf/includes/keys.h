@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 19:05:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 13:35:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/12 19:54:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define KEY_S 1
 # define KEY_D 2
 # define KEY_W 13
+# define KEY_R 15
 
 # define KEY_PLUS 24
 # define KEY_MINUS 27
@@ -43,5 +44,6 @@
 # define DEPTH_DECREASE (1 << 7)
 # define ROTATE_LEFT (1 << 8)
 # define ROTATE_RIGHT (1 << 9)
+# define ENABLE_RASTERIZATION (1 << 10)
 
 #endif

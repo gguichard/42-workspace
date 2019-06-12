@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 18:04:07 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/11 23:39:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/12 20:00:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <math.h>
 #include "fdf.h"
 #include "bresenham.h"
+#include "keys.h"
 
 void			draw_edges(t_fdf *fdf, t_pos pos)
 {
@@ -112,6 +113,17 @@ static void		rasterize_triangle(t_fdf *fdf, int index, t_vec3d highest_vert
 	}
 }
 
+static t_pos	vec3d_as_pos(t_vec3d vertex)
+{
+	t_pos	pos;
+
+	pos.proj.x = vertex.x;
+	pos.proj.y = vertex.y;
+	pos.z = vertex.z;
+	pos.color = 0xFFFFFF;
+	return (pos);
+}
+
 void			draw_triangle(t_fdf *fdf, int index, t_vec3d vec_1
 	, t_vec3d vec_2, t_vec3d vec_3)
 {
@@ -119,6 +131,13 @@ void			draw_triangle(t_fdf *fdf, int index, t_vec3d vec_1
 	t_vec3d	tmp;
 	size_t	idx;
 
+	if (!(fdf->keys & ENABLE_RASTERIZATION))
+	{
+		draw_line(fdf, vec3d_as_pos(vec_1), vec3d_as_pos(vec_2));
+		draw_line(fdf, vec3d_as_pos(vec_1), vec3d_as_pos(vec_3));
+		draw_line(fdf, vec3d_as_pos(vec_3), vec3d_as_pos(vec_2));
+		return ;
+	}
 	vectors[0] = vec_1;
 	vectors[1] = vec_2;
 	vectors[2] = vec_3;

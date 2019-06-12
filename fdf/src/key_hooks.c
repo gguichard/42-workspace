@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/02 21:30:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/02 21:31:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/12 20:00:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ int	keypress_hook(int keycode, t_fdf *fdf)
 		fdf->keys |= TRANSLATE_Y_UP;
 	else if (keycode == KEY_S)
 		fdf->keys |= TRANSLATE_Y_DOWN;
+	else if (keycode == KEY_R)
+	{
+		fdf->keys ^= ENABLE_RASTERIZATION;
+		fill_window_image(fdf);
+		expose_hook(fdf);
+	}
 	else if (keycode == KEY_MINUS)
 		fdf->keys |= SCALE_OUT;
 	else if (keycode == KEY_PLUS)
