@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 17:17:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 20:09:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/06/12 21:24:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ const char	*error_to_str(t_error error)
 	else if (error == ERR_WRONGMAPFILE)
 		return ("Wrong map file");
 	else if (error == ERR_BADOBJFILE)
-		return ("Bad wavefront obj file\n");
+		return ("Bad wavefront obj file");
 	else if (error == ERR_MLXINIT)
 		return ("MLX init error");
 	else if (error == ERR_WRONGPALETTEFILE)
