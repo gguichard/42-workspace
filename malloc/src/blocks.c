@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/25 14:23:22 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/25 23:00:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,39 @@ void				add_to_free_list(t_free_alloc **free_list
 	*free_list = free_alloc;
 }
 
+int					remove_from_free_list(t_free_alloc **free_list
+	, t_free_alloc *target)
+{
+	t_free_alloc	*prev;
+	t_free_alloc	*it;
+
+	prev = NULL;
+	it = *free_list;
+	while (it != target)
+	{
+		if (it == NULL)
+			return (0);
+		prev = it;
+		it = it->next;
+	}
+	if (prev == NULL)
+		*free_list = target->next;
+	else
+		prev->next = target->next;
+	return (1);
+}
+
 static void			split_block(t_region *region, t_free_alloc *block
 	, int level)
 {
 	size_t			blk_index;
 	t_free_alloc	*buddy;
 
-	block->size >>= 1;
 	blk_index = get_block_index(region, block);
-	buddy = (t_free_alloc *)((char *)block + block->size);
-	buddy->size = block->size;
 	region->bitmap[blk_index].free = 1;
-	region->bitmap[blk_index].size -= 1;
+	region->bitmap[blk_index].order -= 1;
+	buddy = (t_free_alloc *)((char *)block
+			+ (1 << region->bitmap[blk_index].order));
 	region->bitmap[get_block_index(region, buddy)] = region->bitmap[blk_index];
 	add_to_free_list(region->free_list + level, buddy);
 	add_to_free_list(region->free_list + level, block);
@@ -93,31 +114,33 @@ static t_free_alloc	*get_free_addr(t_region *region, int level)
 	return (free_addr);
 }
 
-void				*get_free_block_addr(t_region **region_list, int order)
+void				*get_free_block_addr(t_region **region_list, int order
+	, size_t user_size)
 {
-	int			level;
-	void		*addr;
-	t_region	*it;
-	t_region	*new_region;
+	int				level;
+	t_free_alloc	*addr;
+	t_region		*it;
 
 	level = 23 - order;
 	addr = NULL;
 	it = *region_list;
 	while (it != NULL)
 	{
-		addr = (void *)get_free_addr(it, level);
+		addr = get_free_addr(it, level);
 		if (addr != NULL)
 			break ;
 		it = it->next;
 	}
 	if (addr == NULL)
 	{
-		new_region = init_malloc_region();
-		if (new_region == NULL)
+		it = init_malloc_region();
+		if (it == NULL)
 			return (NULL);
-		new_region->next = *region_list;
-		*region_list = new_region;
-		addr = (void *)get_free_addr(new_region, level);
+		it->next = *region_list;
+		*region_list = it;
+		addr = get_free_addr(it, level);
 	}
+	if (addr != NULL)
+		it->bitmap[get_block_index(it, addr)].user_size = user_size;
 	return (addr);
 }

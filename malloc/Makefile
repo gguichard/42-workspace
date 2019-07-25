@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/07/25 14:15:48 by gguichar         ###   ########.fr        #
+#    Updated: 2019/07/25 20:22:56 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,13 @@ CFLAGS 		=	-Wall -Werror -Wextra -fPIC -g3
 LDFLAGS		=	-Llibft -lft
 
 SRC_DIR		=	src
-SRC 		=	\
-blocks.c		\
-malloc.c		\
-regions.c		\
+SRC 		=		\
+blocks.c			\
+malloc.c			\
+regions.c			\
+routines/free.c		\
+routines/malloc.c	\
+routines/realloc.c	\
 utils.c
 
 OBJ_DIR		=	.obj
@@ -47,6 +50,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	@mkdir $@ 2> /dev/null || true
+	@mkdir $@/routines 2> /dev/null || true
 
 clean:
 	$(MAKE) -C libft clean
