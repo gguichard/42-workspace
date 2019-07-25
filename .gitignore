@@ -5,3 +5,4 @@
 *.d
 .*.swp
 a.out
+*.so
