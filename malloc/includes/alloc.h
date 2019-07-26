@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 12:56:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/25 23:00:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/26 19:00:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ typedef struct	s_free_alloc
 	struct s_free_alloc	*next;
 }				t_free_alloc;
 
-typedef struct	s_large_list
+typedef struct	s_large_block
 {
-	size_t				size;
-	struct s_large_list	*next;
-}				t_large_list;
+	size_t					map_size;
+	size_t					user_size;
+	struct s_large_block	*prev;
+	struct s_large_block	*next;
+}				t_large_block;
 
 #endif

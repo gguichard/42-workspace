@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 20:17:25 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/25 23:00:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/26 19:11:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include <sys/mman.h>
 #include "malloc.h"
 #include "zone.h"
 #include "region.h"
@@ -45,6 +46,28 @@ static int	coalesce_block_with_buddy(t_region *region, t_free_alloc *block
 	return (0);
 }
 
+void		free_large_block(t_zone *zone, t_large_block *large_block)
+{
+	if (large_block->prev == NULL)
+		zone->large_list = NULL;
+	else
+	{
+		large_block->prev->next = large_block->next;
+		if (large_block->next != NULL)
+			large_block->next->prev = large_block->prev;
+	}
+	munmap(large_block, large_block->map_size);
+}
+
+static void	try_to_free_large_block(t_zone *zone, void *addr)
+{
+	t_large_block	*large_block;
+
+	large_block = search_large_block(zone, addr);
+	if (large_block != NULL)
+		free_large_block(zone, large_block);
+}
+
 void		free_routine(t_zone *zone, void *ptr)
 {
 	t_region	*region;
@@ -55,7 +78,10 @@ void		free_routine(t_zone *zone, void *ptr)
 		return ;
 	region = get_block_region(zone->small_region, ptr);
 	if (region == NULL)
+	{
+		try_to_free_large_block(zone, ptr);
 		return ;
+	}
 	block_index = get_block_index(region, ptr);
 	if (region->bitmap[block_index].order == 0
 		|| region->bitmap[block_index].free)

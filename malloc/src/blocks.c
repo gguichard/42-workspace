@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/25 23:00:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/26 19:02:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,24 @@ t_region			*get_block_region(t_region *region_list, void *addr)
 		it = it->next;
 	}
 	return (it);
+}
+
+t_large_block		*search_large_block(t_zone *zone, void *addr)
+{
+	void			*real_addr;
+	t_large_block	*it;
+
+	if (((uintptr_t)addr & (sizeof(t_large_block) - 1)) != 0)
+		return (NULL);
+	real_addr = ((t_large_block *)addr) - 1;
+	it = zone->large_list;
+	while (it != NULL)
+	{
+		if (it == real_addr)
+			return (it);
+		it = it->next;
+	}
+	return (NULL);
 }
 
 void				add_to_free_list(t_free_alloc **free_list
