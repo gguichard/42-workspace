@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:18:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 21:31:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 22:00:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 t_zone			g_def_zone = (t_zone){
 	(t_region_list){
 		TINY_QUANTUM,
-		TINY_MAX_BLOCKS,
 		TINY_MAX_ORDER,
+		TINY_MAX_BLOCKS,
 		NULL
 	},
 	(t_region_list){
 		SMALL_QUANTUM,
-		SMALL_MAX_BLOCKS,
 		SMALL_MAX_ORDER,
+		SMALL_MAX_BLOCKS,
 		NULL
 	},
 	NULL

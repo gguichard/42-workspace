@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/28 21:15:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 21:51:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:56:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 static void	show_region_allocs(t_region *region)
 {
-	int		block_index;
+	size_t	block_index;
 	void	*start_ptr;
 	void	*end_ptr;
 

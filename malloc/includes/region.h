@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:27:16 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 21:14:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:56:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ typedef struct	s_region
 struct			s_region_list
 {
 	int			quantum_size;
-	int			max_blocks;
 	int			max_order;
+	size_t		max_blocks;
 	t_region	*head;
 };
 
