@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/07/25 20:22:56 by gguichar         ###   ########.fr        #
+#    Updated: 2019/07/28 14:32:53 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ INC_DIR		=	includes
 
 CC			=	gcc
 CPPFLAGS	=	-Ilibft/includes -I$(INC_DIR)
-CFLAGS 		=	-Wall -Werror -Wextra -fPIC -g3
+CFLAGS 		=	-Wall -Werror -Wextra -fPIC
 LDFLAGS		=	-Llibft -lft
 
 SRC_DIR		=	src

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 20:18:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/26 19:17:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 14:07:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		*realloc_routine(t_zone *zone, void *ptr, size_t size)
 
 	if (ptr == NULL)
 		return (malloc_routine(zone, size));
-	region = get_block_region(zone->small_region, ptr);
+	region = get_block_region(zone, ptr);
 	if (region == NULL)
 		return (try_to_realloc_large_block(zone, ptr, size));
 	old_size = region->bitmap[get_block_index(region, ptr)].user_size;

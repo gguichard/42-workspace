@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 20:16:45 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/26 19:02:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 14:23:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "zone.h"
 #include "alloc.h"
 
-static void	*malloc_large_block(t_zone *zone, size_t size)
+static void		*malloc_large_block(t_zone *zone, size_t size)
 {
 	size_t			map_size;
 	t_large_block	*large_block;
@@ -38,17 +38,23 @@ static void	*malloc_large_block(t_zone *zone, size_t size)
 	return ((void *)(large_block + 1));
 }
 
-void		*malloc_routine(t_zone *zone, size_t size)
+void			*malloc_routine(t_zone *zone, size_t size)
 {
-	void	*ptr;
-	int		order;
+	void			*ptr;
+	int				order;
+	t_region_list	*region_list;
 
-	if (size > SMALL_THRESHOLD)
+	if (size > LARGE_THRESHOLD)
 		ptr = malloc_large_block(zone, size);
 	else
 	{
-		order = (int)ceil(log2(size < SMALL_QUANTUM ? SMALL_QUANTUM : size));
-		ptr = get_free_block_addr(&zone->small_region, order, size);
+		if (size > SMALL_THRESHOLD)
+			region_list = &zone->small_region;
+		else
+			region_list = &zone->tiny_region;
+		order = ceil(log2(size < (size_t)region_list->quantum_size
+					? region_list->quantum_size : size));
+		ptr = get_free_block_addr(region_list, order, size);
 	}
 	return (ptr);
 }

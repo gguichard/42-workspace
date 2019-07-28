@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/26 19:02:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 14:44:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,38 @@
 
 size_t				get_block_index(t_region *region, t_free_alloc *block)
 {
-	size_t	block_index;
-
-	block_index = ((uintptr_t)block - (uintptr_t)region->ptr_start);
-	block_index /= SMALL_QUANTUM;
-	return (block_index);
+	return (((uintptr_t)block - (uintptr_t)region->ptr_start)
+		/ region->parent_list->quantum_size);
 }
 
-t_region			*get_block_region(t_region *region_list, void *addr)
+static t_region		*get_block_region_of_list(t_region_list *region_list
+	, void *addr)
 {
 	t_region	*it;
 
-	it = region_list;
+	it = region_list->head;
 	while (it != NULL)
 	{
-		if (addr >= it->ptr_start && addr < (it->ptr_start + it->size))
+		if (addr >= it->ptr_start && addr < (it->ptr_start + it->region_size))
 		{
 			if ((((uintptr_t)addr - (uintptr_t)it->ptr_start)
-				& (SMALL_QUANTUM - 1)) != 0)
+				& (region_list->quantum_size - 1)) != 0)
 				it = NULL;
 			break ;
 		}
 		it = it->next;
 	}
 	return (it);
+}
+
+t_region			*get_block_region(t_zone *zone, void *addr)
+{
+	t_region	*region;
+
+	region = get_block_region_of_list(&zone->tiny_region, addr);
+	if (region == NULL)
+		region = get_block_region_of_list(&zone->small_region, addr);
+	return (region);
 }
 
 t_large_block		*search_large_block(t_zone *zone, void *addr)
@@ -132,16 +140,16 @@ static t_free_alloc	*get_free_addr(t_region *region, int level)
 	return (free_addr);
 }
 
-void				*get_free_block_addr(t_region **region_list, int order
+void				*get_free_block_addr(t_region_list *region_list, int order
 	, size_t user_size)
 {
 	int				level;
 	t_free_alloc	*addr;
 	t_region		*it;
 
-	level = 23 - order;
+	level = region_list->max_order - order;
 	addr = NULL;
-	it = *region_list;
+	it = region_list->head;
 	while (it != NULL)
 	{
 		addr = get_free_addr(it, level);
@@ -151,11 +159,15 @@ void				*get_free_block_addr(t_region **region_list, int order
 	}
 	if (addr == NULL)
 	{
-		it = init_malloc_region();
+		it = init_malloc_region(*region_list);
 		if (it == NULL)
 			return (NULL);
-		it->next = *region_list;
-		*region_list = it;
+		it->parent_list = region_list;
+		it->prev = NULL;
+		it->next = region_list->head;
+		if (it->next != NULL)
+			it->next->prev = it;
+		region_list->head = it;
 		addr = get_free_addr(it, level);
 	}
 	if (addr != NULL)

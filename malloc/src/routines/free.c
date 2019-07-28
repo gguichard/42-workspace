@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 20:17:25 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/26 19:11:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 14:54:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@
 #include "region.h"
 #include "alloc.h"
 
+static int	free_region(t_region *region)
+{
+	region->prev->next = region->next;
+	if (region->next != NULL)
+		region->next->prev = region->prev;
+	munmap(region, region->map_size);
+	return (0);
+}
+
 static int	coalesce_block_with_buddy(t_region *region, t_free_alloc *block
 	, int order)
 {
@@ -26,7 +35,7 @@ static int	coalesce_block_with_buddy(t_region *region, t_free_alloc *block
 	t_free_alloc	*parent;
 	t_free_alloc	*parent_buddy;
 
-	free_level = 23 - order;
+	free_level = region->parent_list->max_order - order;
 	buddy = (t_free_alloc *)((((uintptr_t)block - (uintptr_t)region->ptr_start)
 				^ (1 << order)) + (uintptr_t)region->ptr_start);
 	buddy_index = get_block_index(region, buddy);
@@ -41,6 +50,8 @@ static int	coalesce_block_with_buddy(t_region *region, t_free_alloc *block
 		((uint8_t *)&region->bitmap[buddy_index])[0] = 0;
 		return (coalesce_block_with_buddy(region, parent, order));
 	}
+	if (free_level == 0 && region->prev != NULL)
+		return (free_region(region));
 	region->bitmap[get_block_index(region, block)].free = 1;
 	add_to_free_list(region->free_list + free_level, block);
 	return (0);
@@ -76,7 +87,7 @@ void		free_routine(t_zone *zone, void *ptr)
 
 	if (ptr == NULL)
 		return ;
-	region = get_block_region(zone->small_region, ptr);
+	region = get_block_region(zone, ptr);
 	if (region == NULL)
 	{
 		try_to_free_large_block(zone, ptr);
