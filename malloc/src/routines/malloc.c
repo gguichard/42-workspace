@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 20:16:45 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 14:23:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 19:47:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ void			*malloc_routine(t_zone *zone, size_t size)
 	int				order;
 	t_region_list	*region_list;
 
-	if (size > LARGE_THRESHOLD)
+	if (size >= LARGE_THRESHOLD)
 		ptr = malloc_large_block(zone, size);
 	else
 	{
-		if (size > SMALL_THRESHOLD)
+		if (size >= SMALL_THRESHOLD)
 			region_list = &zone->small_region;
 		else
 			region_list = &zone->tiny_region;

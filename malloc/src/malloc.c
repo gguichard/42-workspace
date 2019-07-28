@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:18:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 14:23:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 19:46:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*calloc(size_t count, size_t size)
 	pthread_mutex_lock(&g_mutex);
 	ptr = malloc_routine(&g_def_zone, total_size);
 	pthread_mutex_unlock(&g_mutex);
-	if (size <= LARGE_THRESHOLD)
+	if (size < LARGE_THRESHOLD)
 		ft_memset(ptr, 0, total_size);
 	return (ptr);
 }
