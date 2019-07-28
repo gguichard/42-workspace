@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 14:44:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 19:38:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,23 @@ static t_free_alloc	*get_free_addr(t_region *region, int level)
 	return (free_addr);
 }
 
+static t_region		*push_new_region(t_region_list *region_list)
+{
+	t_region	*region;
+
+	region = init_malloc_region(*region_list);
+	if (region != NULL)
+	{
+		region->parent_list = region_list;
+		region->prev = NULL;
+		region->next = region_list->head;
+		if (region->next != NULL)
+			region->next->prev = region;
+		region_list->head = region;
+	}
+	return (region);
+}
+
 void				*get_free_block_addr(t_region_list *region_list, int order
 	, size_t user_size)
 {
@@ -149,6 +166,8 @@ void				*get_free_block_addr(t_region_list *region_list, int order
 
 	level = region_list->max_order - order;
 	addr = NULL;
+	if (region_list->head == NULL)
+		push_new_region(region_list);
 	it = region_list->head;
 	while (it != NULL)
 	{
@@ -156,19 +175,8 @@ void				*get_free_block_addr(t_region_list *region_list, int order
 		if (addr != NULL)
 			break ;
 		it = it->next;
-	}
-	if (addr == NULL)
-	{
-		it = init_malloc_region(*region_list);
 		if (it == NULL)
-			return (NULL);
-		it->parent_list = region_list;
-		it->prev = NULL;
-		it->next = region_list->head;
-		if (it->next != NULL)
-			it->next->prev = it;
-		region_list->head = it;
-		addr = get_free_addr(it, level);
+			it = push_new_region(region_list);
 	}
 	if (addr != NULL)
 		it->bitmap[get_block_index(it, addr)].user_size = user_size;
