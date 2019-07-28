@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:17:11 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 14:22:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:34:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include "alloc.h"
 # include "zone.h"
 
+# define ALIGN_MEMORY 16
+
 # define TINY_QUANTUM 16
 # define TINY_MAX_BLOCKS 65536
 # define TINY_MAX_ORDER 20
@@ -26,7 +28,7 @@
 # define SMALL_MAX_BLOCKS 16384
 # define SMALL_MAX_ORDER 23
 
-# define SMALL_THRESHOLD 1024
+# define SMALL_THRESHOLD 512
 # define LARGE_THRESHOLD 16384
 
 size_t			align_up(size_t n, int mod);
@@ -47,10 +49,14 @@ void			*realloc_routine(t_zone *zone, void *ptr, size_t size);
 void			free_large_block(t_zone *zone, t_large_block *large_block);
 void			free_routine(t_zone *zone, void *ptr);
 
+void			show_alloc_mem_routine(t_zone *zone);
+
 void			*malloc(size_t size);
 void			*calloc(size_t count, size_t size);
 void			*realloc(void *ptr, size_t size);
 void			*reallocf(void *ptr, size_t size);
 void			free(void *ptr);
+
+void			show_alloc_mem(void);
 
 #endif

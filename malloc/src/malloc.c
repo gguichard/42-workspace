@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:18:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 19:46:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:31:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,12 @@ void	free(void *ptr)
 {
 	pthread_mutex_lock(&g_mutex);
 	free_routine(&g_def_zone, ptr);
+	pthread_mutex_unlock(&g_mutex);
+}
+
+void	show_alloc_mem(void)
+{
+	pthread_mutex_lock(&g_mutex);
+	show_alloc_mem_routine(&g_def_zone);
 	pthread_mutex_unlock(&g_mutex);
 }

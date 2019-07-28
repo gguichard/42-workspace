@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:27:16 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 19:22:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:14:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct	s_region
 	void			*ptr_start;
 	struct s_region	*prev;
 	struct s_region	*next;
-	t_free_alloc	*free_list[25];
+	t_free_alloc	*free_list[17];
 	t_alloc_meta	bitmap[0];
 }				t_region;
 

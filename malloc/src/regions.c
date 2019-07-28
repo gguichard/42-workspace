@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:02:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 14:52:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/28 21:15:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_region	*init_malloc_region(t_region_list data)
 	t_free_alloc	*block;
 
 	region_meta_size = align_up(sizeof(t_region)
-		+ sizeof(t_alloc_meta) * data.max_blocks, 16);
+		+ sizeof(t_alloc_meta) * data.max_blocks, ALIGN_MEMORY);
 	region_data_size = data.quantum_size * data.max_blocks;
 	region_map_size = align_up(region_meta_size + region_data_size
 			, getpagesize());
