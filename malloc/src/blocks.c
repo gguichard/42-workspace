@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 19:38:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/29 13:56:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 #include "region.h"
 #include "alloc.h"
 
-size_t				get_block_index(t_region *region, t_free_alloc *block)
+size_t				get_block_index(t_region *region, const t_free_alloc *block)
 {
 	return (((uintptr_t)block - (uintptr_t)region->ptr_start)
 		/ region->parent_list->quantum_size);
 }
 
 static t_region		*get_block_region_of_list(t_region_list *region_list
-	, void *addr)
+	, const void *addr)
 {
 	t_region	*it;
 
@@ -41,7 +41,7 @@ static t_region		*get_block_region_of_list(t_region_list *region_list
 	return (it);
 }
 
-t_region			*get_block_region(t_zone *zone, void *addr)
+t_region			*get_block_region(t_zone *zone, const void *addr)
 {
 	t_region	*region;
 
@@ -51,7 +51,7 @@ t_region			*get_block_region(t_zone *zone, void *addr)
 	return (region);
 }
 
-t_large_block		*search_large_block(t_zone *zone, void *addr)
+t_large_block		*search_large_block(t_zone *zone, const void *addr)
 {
 	void			*real_addr;
 	t_large_block	*it;
@@ -104,15 +104,17 @@ int					remove_from_free_list(t_free_alloc **free_list
 static void			split_block(t_region *region, t_free_alloc *block
 	, int level)
 {
-	size_t			blk_index;
+	size_t			block_index;
 	t_free_alloc	*buddy;
+	size_t			buddy_index;
 
-	blk_index = get_block_index(region, block);
-	region->bitmap[blk_index].free = 1;
-	region->bitmap[blk_index].order -= 1;
-	buddy = (t_free_alloc *)((char *)block
-			+ (1 << region->bitmap[blk_index].order));
-	region->bitmap[get_block_index(region, buddy)] = region->bitmap[blk_index];
+	block_index = get_block_index(region, block);
+	region->bitmap[block_index].free = 1;
+	region->bitmap[block_index].order -= 1;
+	buddy = (t_free_alloc *)((uintptr_t)block
+			+ (uintptr_t)(1 << region->bitmap[block_index].order));
+	buddy_index = get_block_index(region, buddy);
+	region->bitmap[buddy_index] = region->bitmap[block_index];
 	add_to_free_list(region->free_list + level, buddy);
 	add_to_free_list(region->free_list + level, block);
 }
