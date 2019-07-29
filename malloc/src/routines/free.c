@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 20:17:25 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/29 11:32:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/29 11:41:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static int	coalesce_block_with_buddy(t_region *region, t_free_alloc *block
 	t_free_alloc	*buddy;
 	size_t			buddy_index;
 	t_free_alloc	*parent;
-	t_free_alloc	*parent_buddy;
 
 	free_level = region->parent_list->max_order - order;
 	buddy = (t_free_alloc *)((((uintptr_t)block - (uintptr_t)region->ptr_start)
@@ -44,9 +43,9 @@ static int	coalesce_block_with_buddy(t_region *region, t_free_alloc *block
 		&& remove_from_free_list(region->free_list + free_level, buddy))
 	{
 		parent = (block < buddy ? block : buddy);
-		parent_buddy = (parent == block ? buddy : block);
 		region->bitmap[get_block_index(region, parent)].order = ++order;
-		buddy_index = get_block_index(region, parent_buddy);
+		buddy_index = get_block_index(region
+				, (parent == block ? buddy : block));
 		((uint64_t *)&region->bitmap[buddy_index])[0] = 0;
 		return (coalesce_block_with_buddy(region, parent, order));
 	}

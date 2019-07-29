@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:02:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/28 21:15:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/29 11:45:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <sys/mman.h>
 #include <unistd.h>
@@ -34,7 +35,7 @@ t_region	*init_malloc_region(t_region_list data)
 			, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
 	if ((void *)region == MAP_FAILED)
 		return (NULL);
-	block = (t_free_alloc *)((char *)region + region_meta_size);
+	block = (t_free_alloc *)((uintptr_t)region + (uintptr_t)region_meta_size);
 	block->next = NULL;
 	region->map_size = region_map_size;
 	region->region_size = region_data_size;
