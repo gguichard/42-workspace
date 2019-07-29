@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/29 22:47:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/29 22:54:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_free_alloc	*get_free_addr(t_region *region, int level)
 	return (free_addr);
 }
 
-static t_region		*push_new_region(t_region_list *region_list)
+static t_region		*map_region(t_region_list *region_list)
 {
 	t_region	*region;
 
@@ -84,7 +84,7 @@ void				*get_free_block_addr(t_region_list *region_list, int order
 	level = region_list->max_order - order;
 	addr = NULL;
 	if (region_list->head == NULL)
-		push_new_region(region_list);
+		map_region(region_list);
 	it = region_list->head;
 	while (it != NULL)
 	{
@@ -93,7 +93,7 @@ void				*get_free_block_addr(t_region_list *region_list, int order
 			break ;
 		it = it->next;
 		if (it == NULL)
-			it = push_new_region(region_list);
+			it = map_region(region_list);
 	}
 	if (addr != NULL)
 		it->bitmap[get_block_index(it, addr)].user_size = user_size;
