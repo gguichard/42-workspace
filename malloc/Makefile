@@ -6,11 +6,12 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/07/28 21:16:19 by gguichar         ###   ########.fr        #
+#    Updated: 2019/07/29 13:51:54 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	malloc.so
+NAME		=	libft_malloc_$(HOSTTYPE).so
+SYMLINK		=	libft_malloc.so
 
 END			=	\x1b[0m
 GREEN		=	\x1b[32m
@@ -29,6 +30,7 @@ malloc.c					\
 regions.c					\
 routines/free.c				\
 routines/malloc.c			\
+routines/malloc_size.c		\
 routines/realloc.c			\
 routines/show_alloc_mem.c	\
 utils.c
@@ -37,11 +39,19 @@ OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)
 DEP			=	$(OBJ:.o=.d)
 
-all: $(NAME)
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+
+all: $(SYMLINK)
+
+$(SYMLINK): $(NAME)
+	ln -sf $< $@
 
 $(NAME): $(addprefix $(OBJ_DIR)/,$(OBJ))
 	$(MAKE) -C libft
 	$(CC) -shared -o $@ $^ $(LDFLAGS)
+	$(MAKE) $(SYMLINK)
 	@echo "\n$(NAME):\t\t\t$(GREEN)[READY]\n\t\t¯\_(ツ)_/¯$(END)"
 
 -include $(addprefix $(OBJ_DIR)/,$(DEP))
@@ -59,6 +69,7 @@ clean:
 
 fclean: clean
 	$(MAKE) -C libft fclean
+	$(RM) $(SYMLINK)
 	$(RM) $(NAME)
 	@echo "$(NAME):\t\t\t$(GREEN)[CLEAN]$(END)"
 
