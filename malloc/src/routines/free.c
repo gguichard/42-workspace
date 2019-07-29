@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 20:17:25 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/29 17:28:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/29 22:52:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include <stdlib.h>
 #include <sys/mman.h>
 #include "malloc.h"
 #include "zone.h"

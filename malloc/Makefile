@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/07/29 13:51:54 by gguichar         ###   ########.fr        #
+#    Updated: 2019/07/29 22:50:45 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,11 @@ LDFLAGS		=	-Llibft -lft
 
 SRC_DIR		=	src
 SRC 		=				\
-blocks.c					\
+allocs.c					\
+block_utils.c				\
+free_list.c					\
 malloc.c					\
+malloc_info.c				\
 regions.c					\
 routines/free.c				\
 routines/malloc.c			\
