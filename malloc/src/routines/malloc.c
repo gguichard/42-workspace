@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/25 20:16:45 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/29 22:52:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/31 20:57:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static void		*malloc_large_block(t_zone *zone, size_t size)
 	t_large_block	*large_block;
 
 	map_size = align_up(size + sizeof(t_large_block), getpagesize());
+	if (map_size < size)
+		return (NULL);
 	large_block = mmap(NULL, map_size, PROT_READ | PROT_WRITE
 			, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
 	if ((void *)large_block == MAP_FAILED)
