@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:18:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/29 22:50:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/07/31 16:06:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*malloc(size_t size)
 	ptr = malloc_routine(&g_def_zone, size);
 	pthread_mutex_unlock(&g_mutex);
 	return (ptr);
-} 
+}
 
 void	*calloc(size_t count, size_t size)
 {
