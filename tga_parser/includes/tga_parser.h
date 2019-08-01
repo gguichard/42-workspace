@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:49:43 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/31 19:46:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/08/01 19:28:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ typedef enum	e_tga_error
 	TGAERR_NOERROR,
 	TGAERR_ERRNO,
 	TGAERR_CORRUPTED,
-	TGAERR_MEMORY
+	TGAERR_MEMORY,
+	TGAERR_UNSUPPORTEDCOLORMAP,
+	TGAERR_UNSUPPORTEDIMAGETYPE,
+	TGAERR_UNSUPPORTEDPIXELDEPTH
 }				t_tga_error;
 
-#pragma pack(push,1)
+# pragma pack(push, 1)
+
 typedef struct	s_tga_color_map
 {
 	uint16_t	first_entry_index;
@@ -49,7 +53,8 @@ typedef struct	s_tga_header
 	t_tga_color_map		color_map;
 	t_tga_image_spec	image_spec;
 }				t_tga_header;
-#pragma pack(pop)
+
+# pragma pack(pop)
 
 typedef struct	s_tga_image
 {
@@ -57,5 +62,12 @@ typedef struct	s_tga_image
 	uint16_t	height;
 	uint32_t	*pixels;
 }				t_tga_image;
+
+t_tga_error		parse_16bits_tga(uint8_t *data, t_tga_image *image);
+t_tga_error		parse_24bits_tga(uint8_t *data, t_tga_image *image);
+t_tga_error		parse_32bits_tga(uint8_t *data, t_tga_image *image);
+
+t_tga_error		load_tga_file(const char *path, t_tga_image *image);
+void			release_tga_file(t_tga_image *image);
 
 #endif

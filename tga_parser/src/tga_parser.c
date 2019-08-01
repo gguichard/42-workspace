@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:48:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/31 19:47:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/08/01 19:28:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,25 @@
 #include <sys/stat.h>
 #include "tga_parser.h"
 
-static void			parse_truecolor_tga(uint32_t *data, t_tga_image *image)
+static t_tga_error	parse_truecolor_tga(t_tga_header *header
+	, t_tga_image *image)
 {
-	(void)data;
-	(void)image;
+	t_tga_error	err;
+	uint8_t		*data;
+	int			pixel_depth;
+
+	err = TGAERR_NOERROR;
+	data = (uint8_t *)((uintptr_t)(header + 1) + header->id_length);
+	pixel_depth = header->image_spec.pixel_depth;
+	if (pixel_depth == 16)
+		err = parse_16bits_tga(data, image);
+	else if (pixel_depth == 24)
+		err = parse_24bits_tga(data, image);
+	else if (pixel_depth == 32)
+		err = parse_32bits_tga(data, image);
+	else
+		err = TGAERR_UNSUPPORTEDPIXELDEPTH;
+	return (err);
 }
 
 static t_tga_error	parse_tga(t_tga_header *header, t_tga_image *image
@@ -32,10 +47,11 @@ static t_tga_error	parse_tga(t_tga_header *header, t_tga_image *image
 
 	if ((size_t)buf.st_size < sizeof(t_tga_header))
 		err = TGAERR_CORRUPTED;
+	else if (header->color_map_type != 0)
+		err = TGAERR_UNSUPPORTEDCOLORMAP;
 	else
 	{
 		err = TGAERR_NOERROR;
-		memset(image, 0, sizeof(t_tga_image));
 		image->width = header->image_spec.image_width;
 		image->height = header->image_spec.image_height;
 		image->pixels = (uint32_t *)malloc(sizeof(uint32_t) * image->width
@@ -43,9 +59,11 @@ static t_tga_error	parse_tga(t_tga_header *header, t_tga_image *image
 		if (image->pixels == NULL)
 			err = TGAERR_MEMORY;
 		else if (header->image_type == 2)
-			parse_truecolor_tga((uint32_t *)
-				((uintptr_t)header + sizeof(t_tga_header) + header->id_length)
-				, image);
+			err = parse_truecolor_tga(header, image);
+		else
+			err = TGAERR_UNSUPPORTEDIMAGETYPE;
+		if (err != TGAERR_NOERROR)
+			release_tga_file(image);
 	}
 	return (err);
 }
@@ -77,4 +95,10 @@ t_tga_error			load_tga_file(const char *path, t_tga_image *image)
 	if (fd != -1)
 		close(fd);
 	return (err);
+}
+
+void				release_tga_file(t_tga_image *image)
+{
+	free(image->pixels);
+	image->pixels = NULL;
 }

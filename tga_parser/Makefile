@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/07/31 19:46:16 by gguichar         ###   ########.fr        #
+#    Updated: 2019/08/01 18:42:34 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ LDFLAGS		=	-Llibft -lft
 
 SRC_DIR		=	src
 SRC 		=	\
-tga_parser.c
+tga_parser.c	\
+tga_pixel_depth.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)
