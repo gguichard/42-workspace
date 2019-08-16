@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.h                                            :+:      :+:    :+:   */
+/*   vectors.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/09 17:54:29 by gguichar          #+#    #+#             */
-/*   Updated: 2019/08/16 13:58:40 by gguichar         ###   ########.fr       */
+/*   Created: 2019/06/01 16:41:40 by gguichar          #+#    #+#             */
+/*   Updated: 2019/08/16 13:33:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ERROR_H
-# define ERROR_H
+#include "vectors.h"
 
-# define ERROR_BUFF_SIZE 4096
-
-typedef enum	e_error
+t_vec3d	vec3d(double x, double y, double z)
 {
-	ERR_NOERROR,
-	ERR_UNEXPECTED,
-	ERR_ERRNO,
-	ERR_MLXINIT,
-	ERR_OPENGL,
-	ERR_OVERFLOW,
-	ERR_SHADERCOMPILE,
-	ERR_BADOBJFILE
-}				t_error;
+	t_vec3d	vec;
 
-char			*error_buffer(const char *new_error);
-const char		*error_to_str(t_error error);
-
-#endif
+	vec.x = x;
+	vec.y = y;
+	vec.z = z;
+	return (vec);
+}

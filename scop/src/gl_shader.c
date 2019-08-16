@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shader.c                                           :+:      :+:    :+:   */
+/*   gl_shader.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 13:23:43 by gguichar          #+#    #+#             */
-/*   Updated: 2019/08/15 15:21:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/08/16 11:45:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
-#include <OpenGL/gl.h>
+#include <OpenGL/gl3.h>
 #include "libft.h"
 #include "scop.h"
 #include "error.h"
 
-static t_error	map_shader(const char *file_path, char **source
+static t_error	load_shader_content(const char *file_path, char **source
 	, GLint *source_len)
 {
 	t_error		err;
@@ -49,28 +49,28 @@ static t_error	map_shader(const char *file_path, char **source
 	return (err);
 }
 
-t_error			load_shader(const char *file_path, GLenum shader_type)
+t_error			gl_load_shader(GLuint *shader, const char *file_path
+	, GLenum shader_type)
 {
 	t_error	err;
 	char	*source;
 	GLsizei	source_len;
-	GLuint	shader_id;
 	GLint	compile_ret;
 
-	err = map_shader(file_path, &source, &source_len);
+	err = load_shader_content(file_path, &source, &source_len);
 	if (err == ERR_NOERROR)
 	{
-		shader_id = glCreateShader(shader_type);
-		glShaderSource(shader_id, 1, (const char **)&source, &source_len);
+		*shader = glCreateShader(shader_type);
+		glShaderSource(*shader, 1, (const char **)&source, &source_len);
 		munmap(source, source_len);
-		glCompileShader(shader_id);
-		glGetShaderiv(shader_id, GL_COMPILE_STATUS, &compile_ret);
+		glCompileShader(*shader);
+		glGetShaderiv(*shader, GL_COMPILE_STATUS, &compile_ret);
 		if (compile_ret != GL_TRUE)
 		{
 			err = ERR_SHADERCOMPILE;
-			glGetShaderInfoLog(shader_id, ERROR_BUFF_SIZE - 1, NULL
+			glGetShaderInfoLog(*shader, ERROR_BUFF_SIZE - 1, NULL
 				, error_buffer(NULL));
-			glDeleteShader(shader_id);
+			glDeleteShader(*shader);
 		}
 	}
 	return (err);

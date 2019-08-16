@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 10:31:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/08/15 15:18:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/08/16 13:34:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include "libft.h"
 #include "scop.h"
+#include "gl_program.h"
 #include "winsize.h"
 #include "error.h"
 
@@ -32,7 +33,8 @@ int	main(int argc, char **argv)
 	if (!init_mlx(&scop.lib, scop.winsize, "Scop"))
 		err = ERR_MLXINIT;
 	if (err == ERR_NOERROR)
-		err = load_shader("test.glsl", GL_VERTEX_SHADER);
+		err = gl_create_program(&scop.gl_program, "scop.vertexshader"
+			, "scop.fragmentshader");
 	if (err != ERR_NOERROR)
 	{
 		ft_printf("error: %s\n", error_to_str(err));

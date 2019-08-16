@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/08/15 15:22:04 by gguichar         ###   ########.fr        #
+#    Updated: 2019/08/16 13:33:19 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,10 +26,14 @@ LDFLAGS		=	-Llibft -lft -Lminilibx_macos -lmlx -framework OpenGL -framework AppK
 SRC_DIR		=	src
 SRC 		=	\
 error.c			\
+gl_program.c	\
+gl_shader.c		\
 hooks.c			\
 lib_mlx.c		\
 main.c			\
-shader.c
+vectors.c		\
+wf_obj_parser.c	\
+wf_obj_parser_helper.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)
