@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/31 16:49:43 by gguichar          #+#    #+#             */
-/*   Updated: 2019/08/01 19:28:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/21 18:25:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define TGA_PARSER_H
 
 # include <stdint.h>
+# include <sys/stat.h>
 
 typedef enum	e_tga_error
 {
@@ -23,7 +24,8 @@ typedef enum	e_tga_error
 	TGAERR_MEMORY,
 	TGAERR_UNSUPPORTEDCOLORMAP,
 	TGAERR_UNSUPPORTEDIMAGETYPE,
-	TGAERR_UNSUPPORTEDPIXELDEPTH
+	TGAERR_UNSUPPORTEDPIXELDEPTH,
+	TGAERR_IMAGEDATACORRUPTED
 }				t_tga_error;
 
 # pragma pack(push, 1)
@@ -61,6 +63,7 @@ typedef struct	s_tga_image
 	uint16_t	width;
 	uint16_t	height;
 	uint32_t	*pixels;
+	struct stat	file_stat;
 }				t_tga_image;
 
 t_tga_error		parse_16bits_tga(uint8_t *data, t_tga_image *image);
