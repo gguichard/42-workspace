@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 18:58:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/22 15:35:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 16:05:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@ typedef struct	s_line
 	int			z;
 	int			err;
 }				t_line;
+
+typedef struct	s_vline
+{
+	int			x0;
+	int			x1;
+	double		z0;
+	double		z1;
+	int			x;
+	int			y;
+	int			z;
+}				t_vline;
 
 void			draw_line(t_fdf *fdf, t_pos start, t_pos end);
 

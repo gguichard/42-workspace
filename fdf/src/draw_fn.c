@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 15:16:43 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/22 15:36:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:09:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void			draw_obj_vertices(t_fdf *fdf)
 	index = 0;
 	while ((index + 3) <= fdf->pos.size)
 	{
-		draw_triangle(fdf, index
+		draw_triangle(fdf
 			, proj_vec3d(fdf, *(t_vec3d *)(fdf->pos.data)[index])
 			, proj_vec3d(fdf, *(t_vec3d *)(fdf->pos.data)[index + 1])
 			, proj_vec3d(fdf, *(t_vec3d *)(fdf->pos.data)[index + 2]));

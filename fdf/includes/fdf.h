@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/22 15:35:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:18:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int					exit_fdf(t_fdf *fdf);
 */
 double				clamp(double value, double lo, double hi);
 int					lint(int start, int end, double percent);
+double				flint(double start, double end, double percent);
 double				pcnt(int start, int end, int current);
 unsigned int		get_color(unsigned int start, unsigned int end
 	, double percent);
@@ -93,8 +94,8 @@ void				draw_obj_vertices(t_fdf *fdf);
 void				draw_regular_points(t_fdf *fdf);
 void				fill_window_image(t_fdf *fdf);
 
-void				draw_triangle(t_fdf *fdf, int index, t_vec3d vec_1
-	, t_vec3d vec_2, t_vec3d vec_3);
+void				draw_triangle(t_fdf *fdf
+	, t_vec3d vert_1, t_vec3d vert_2, t_vec3d vert_3);
 
 /*
 ** HOOKS.

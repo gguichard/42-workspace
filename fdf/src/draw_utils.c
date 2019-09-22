@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 18:04:07 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/22 15:36:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:18:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "line_draw.h"
 #include "keys.h"
 
-static t_vec3d	get_slope(t_vec3d vert_1, t_vec3d vert_2)
+static t_vec3d		get_slope(t_vec3d vert_1, t_vec3d vert_2)
 {
 	t_vec3d	vec;
 	double	y_diff;
@@ -36,74 +36,43 @@ static t_vec3d	get_slope(t_vec3d vert_1, t_vec3d vert_2)
 	return (vec);
 }
 
-static void		draw_vline(t_fdf *fdf, t_vec3d tracker_1, t_vec3d tracker_2
+static void inline	plot_pixel(t_fdf *fdf, int index, int z, unsigned int color)
+{
+	if ((fdf->z_buffer)[index] < z)
+	{
+		(fdf->z_buffer)[index] = z;
+		fdf->lib.img_data[index] = color;
+	}
+}
+
+static void			draw_vertical_line(t_fdf *fdf, t_vec3d trackers[2]
 	, unsigned int color)
 {
-	int		x0;
-	int		x1;
-	double	z0;
-	double	z1;
-	int		x;
-	int		y;
-	int		z;
-	int		index;
-	double	percent;
+	t_vline	vline;
+	size_t	index;
 
-	y = tracker_2.y;
-	if (y < 0 || y >= fdf->winsize.height)
+	vline.y = trackers[1].y;
+	if (vline.y < 0 || vline.y >= fdf->winsize.height)
 		return ;
-	x0 = fmin(tracker_1.x, tracker_2.x);
-	x1 = fmax(tracker_1.x, tracker_2.x);
-	z0 = (x0 == (int)tracker_1.x ? tracker_1.z : tracker_2.z);
-	z1 = (x0 == (int)tracker_1.x ? tracker_2.z : tracker_1.z);
-	x = x0;
-	while (x <= x1)
+	vline.x0 = fmin(trackers[0].x, trackers[1].x);
+	vline.x1 = fmax(trackers[0].x, trackers[1].x);
+	vline.z0 = (vline.x0 == (int)trackers[0].x ? trackers[0].z : trackers[1].z);
+	vline.z1 = (vline.x0 == (int)trackers[0].x ? trackers[1].z : trackers[0].z);
+	vline.x = vline.x0;
+	while (vline.x <= vline.x1)
 	{
-		if (x >= 0 && x < fdf->winsize.width)
+		if (vline.x >= 0 && vline.x < fdf->winsize.width)
 		{
-			index = y * fdf->winsize.width + x;
-			percent = pcnt(x0, x1, x);
-			z = (1 - percent) * z0 + percent * z1;
-			if ((fdf->z_buffer)[index] < z)
-			{
-				(fdf->z_buffer)[index] = z;
-				fdf->lib.img_data[index] = color;
-			}
+			vline.z = (int)flint(vline.z0, vline.z1
+					, pcnt(vline.x0, vline.x1, vline.x));
+			index = vline.y * fdf->winsize.width + vline.x;
+			plot_pixel(fdf, index, vline.z, color);
 		}
-		x++;
+		vline.x++;
 	}
 }
 
-static void		rasterize_triangle(t_fdf *fdf, int index, t_vec3d highest_vert
-	, t_vec3d vert_1, t_vec3d vert_2)
-{
-	t_vec3d			slope_1;
-	t_vec3d			slope_2;
-	t_vec3d			tracker_1;
-	t_vec3d			tracker_2;
-	unsigned char	part;
-	unsigned int	color;
-
-	slope_1 = get_slope(vert_1, highest_vert);
-	slope_2 = get_slope(vert_2, highest_vert);
-	tracker_1 = highest_vert;
-	tracker_2 = highest_vert;
-	part = 255 * (index / (double)fdf->pos.size);
-	color = (part << 16) | (part << 8) | part;
-	while ((int)tracker_2.y <= (int)vert_2.y)
-	{
-		if ((int)tracker_1.y == (int)vert_1.y)
-		{
-			tracker_1 = vert_1;
-			slope_1 = get_slope(vert_2, vert_1);
-		}
-		draw_vline(fdf, tracker_1, tracker_2, color);
-		tracker_1 = vec3d_add(tracker_1, slope_1);
-		tracker_2 = vec3d_add(tracker_2, slope_2);
-	}
-}
-
-static t_pos	vec3d_as_pos(t_vec3d vertex)
+static t_pos		vec3d_as_pos(t_vec3d vertex)
 {
 	t_pos	pos;
 
@@ -114,31 +83,41 @@ static t_pos	vec3d_as_pos(t_vec3d vertex)
 	return (pos);
 }
 
-void			draw_triangle(t_fdf *fdf, int index, t_vec3d vec_1
-	, t_vec3d vec_2, t_vec3d vec_3)
+static void			rasterize_triangle(t_fdf *fdf, t_vec3d vertices[3])
 {
-	t_vec3d	vectors[3];
-	t_vec3d	tmp;
-	size_t	idx;
+	t_vec3d	slopes[2];
+	t_vec3d	trackers[2];
 
-	if (!(fdf->keys & ENABLE_RASTERIZATION))
+	slopes[0] = get_slope(vertices[1], vertices[0]);
+	slopes[1] = get_slope(vertices[2], vertices[0]);
+	trackers[0] = vertices[0];
+	trackers[1] = vertices[0];
+	while ((int)trackers[1].y <= (int)vertices[2].y)
 	{
-		draw_line(fdf, vec3d_as_pos(vec_1), vec3d_as_pos(vec_2));
-		draw_line(fdf, vec3d_as_pos(vec_1), vec3d_as_pos(vec_3));
-		draw_line(fdf, vec3d_as_pos(vec_3), vec3d_as_pos(vec_2));
-		return ;
-	}
-	vectors[0] = vec_1;
-	vectors[1] = vec_2;
-	vectors[2] = vec_3;
-	idx = 0;
-	while ((idx + 1) < (sizeof(vectors) / sizeof(vectors[0])))
-	{
-		if (vectors[idx].y > vectors[idx + 1].y)
+		if ((int)trackers[0].y == (int)vertices[1].y)
 		{
-			tmp = vectors[idx];
-			vectors[idx] = vectors[idx + 1];
-			vectors[idx + 1] = tmp;
+			trackers[0] = vertices[1];
+			slopes[0] = get_slope(vertices[2], vertices[1]);
+		}
+		draw_vertical_line(fdf, trackers, 0xFFFFFF);
+		trackers[0] = vec3d_add(trackers[0], slopes[0]);
+		trackers[1] = vec3d_add(trackers[1], slopes[1]);
+	}
+}
+
+static void			sort_vertices(t_vec3d vertices[3])
+{
+	size_t	idx;
+	t_vec3d	tmp;
+
+	idx = 0;
+	while ((idx + 1) < 3)
+	{
+		if (vertices[idx].y > vertices[idx + 1].y)
+		{
+			tmp = vertices[idx];
+			vertices[idx] = vertices[idx + 1];
+			vertices[idx + 1] = tmp;
 			if (idx > 0)
 			{
 				idx -= 1;
@@ -147,5 +126,25 @@ void			draw_triangle(t_fdf *fdf, int index, t_vec3d vec_1
 		}
 		idx++;
 	}
-	rasterize_triangle(fdf, index, vectors[0], vectors[1], vectors[2]);
+}
+
+void				draw_triangle(t_fdf *fdf
+	, t_vec3d vert_1, t_vec3d vert_2, t_vec3d vert_3)
+{
+	t_vec3d	vertices[3];
+
+	if (!(fdf->keys & ENABLE_RASTERIZATION))
+	{
+		draw_line(fdf, vec3d_as_pos(vert_1), vec3d_as_pos(vert_2));
+		draw_line(fdf, vec3d_as_pos(vert_1), vec3d_as_pos(vert_3));
+		draw_line(fdf, vec3d_as_pos(vert_3), vec3d_as_pos(vert_2));
+	}
+	else
+	{
+		vertices[0] = vert_1;
+		vertices[1] = vert_2;
+		vertices[2] = vert_3;
+		sort_vertices(vertices);
+		rasterize_triangle(fdf, vertices);
+	}
 }
