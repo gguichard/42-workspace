@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/09 17:54:29 by gguichar          #+#    #+#             */
-/*   Updated: 2019/08/16 13:58:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 14:48:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ typedef enum	e_error
 	ERR_NOERROR,
 	ERR_UNEXPECTED,
 	ERR_ERRNO,
-	ERR_MLXINIT,
-	ERR_OPENGL,
-	ERR_OVERFLOW,
-	ERR_SHADERCOMPILE,
+	ERR_SDLINIT,
+	ERR_CUSTOM,
 	ERR_BADOBJFILE
 }				t_error;
 

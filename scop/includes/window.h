@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gl_program.h                                       :+:      :+:    :+:   */
+/*   window.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/08/16 11:25:36 by gguichar          #+#    #+#             */
-/*   Updated: 2019/08/16 12:59:36 by gguichar         ###   ########.fr       */
+/*   Created: 2019/09/22 12:20:58 by gguichar          #+#    #+#             */
+/*   Updated: 2019/09/22 14:39:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GL_PROGRAM_H
-# define GL_PROGRAM_H
+#ifndef WINDOW_H
+# define WINDOW_H
 
-# include <OpenGL/gl3.h>
+# include <SDL.h>
 # include "error.h"
+# include "winsize.h"
 
-typedef struct	s_gl_program
+# define WIN_TITLE "Scop"
+# define WIN_WIDTH 1640
+# define WIN_HEIGHT 1280
+
+typedef struct	s_win_data
 {
-	GLuint		program;
-	GLuint		vertex_array;
-	GLuint		vertex_buffer;
-	GLuint		vertex_shader;
-	GLuint		fragment_shader;
-}				t_gl_program;
+	const char		*title;
+	t_winsize		size;
+	SDL_Window		*window;
+	SDL_GLContext	context;
+}				t_win_data;
 
-t_error			gl_create_program(t_gl_program *gl_program
-	, const char *vertex_shader, const char *fragment_shader);
-t_error			gl_load_shader(GLuint *shader, const char *file_path
-	, GLenum shader_type);
+t_error			create_context_window(t_win_data *win_data);
+void			destroy_window(t_win_data *win_data);
 
 #endif

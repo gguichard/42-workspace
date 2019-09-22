@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 10:31:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/08/16 13:34:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 14:50:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 #include <stdlib.h>
 #include "libft.h"
 #include "scop.h"
-#include "gl_program.h"
-#include "winsize.h"
+#include "window.h"
 #include "error.h"
 
-int	main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_scop	scop;
 	t_error	err;
@@ -27,22 +26,18 @@ int	main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 	ft_memset(&scop, 0, sizeof(t_scop));
-	scop.winsize.width = WIN_WIDTH;
-	scop.winsize.height = WIN_HEIGHT;
-	err = ERR_NOERROR;
-	if (!init_mlx(&scop.lib, scop.winsize, "Scop"))
-		err = ERR_MLXINIT;
-	if (err == ERR_NOERROR)
-		err = gl_create_program(&scop.gl_program, "scop.vertexshader"
-			, "scop.fragmentshader");
+	scop.win_data.title = WIN_TITLE;
+	scop.win_data.size.width = WIN_WIDTH;
+	scop.win_data.size.height = WIN_HEIGHT;
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		err = ERR_SDLINIT;
+	else
+		err = create_context_window(&scop.win_data);
 	if (err != ERR_NOERROR)
 	{
-		ft_printf("error: %s\n", error_to_str(err));
+		ft_dprintf(STDERR_FILENO, "error: %s\n", error_to_str(err));
 		return (EXIT_FAILURE);
 	}
-	mlx_loop_hook(scop.lib.mlx_ptr, loop_hook, &scop);
-	mlx_expose_hook(scop.lib.win_ptr, expose_hook, &scop);
-	mlx_hook(scop.lib.win_ptr, 17, (1L << 17), exit_window, &scop);
-	mlx_loop(scop.lib.mlx_ptr);
+	run_window_loop(&scop.win_data);
 	return (EXIT_SUCCESS);
 }
