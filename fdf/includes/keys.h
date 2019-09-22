@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 19:05:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/12 19:54:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 15:07:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,11 @@
 # define ROTATE_LEFT (1 << 8)
 # define ROTATE_RIGHT (1 << 9)
 # define ENABLE_RASTERIZATION (1 << 10)
+
+typedef struct	s_key
+{
+	int			keycode;
+	int			bitmask;
+}				t_key;
 
 #endif
