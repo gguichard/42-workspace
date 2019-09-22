@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:34:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 20:19:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 15:19:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,14 @@ static t_error	parse_map_file(t_fdf *fdf)
 				, error_to_str(err));
 	}
 	if (!has_opt(&fdf->opts, 'o'))
+	{
 		err = read_file(fdf);
+		fdf->draw_window_fn = draw_regular_points;
+	}
 	else
 	{
 		err = read_obj_file(fdf);
-		fdf->use_obj_render = 1;
+		fdf->draw_window_fn = draw_obj_vertices;
 	}
 	ft_lstfree(&(fdf->palette));
 	return (err);

@@ -6,25 +6,15 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/10 18:04:07 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/12 20:00:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 15:36:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <math.h>
 #include "fdf.h"
-#include "bresenham.h"
+#include "line_draw.h"
 #include "keys.h"
-
-void			draw_edges(t_fdf *fdf, t_pos pos)
-{
-	if (pos.x + 1 < fdf->cols)
-		draw_line(fdf, pos
-			, *(t_pos *)(fdf->pos.data)[pos.y * fdf->cols + pos.x + 1]);
-	if (pos.y + 1 < fdf->rows)
-		draw_line(fdf, pos
-			, *(t_pos *)(fdf->pos.data)[(pos.y + 1) * fdf->cols + pos.x]);
-}
 
 static t_vec3d	get_slope(t_vec3d vert_1, t_vec3d vert_2)
 {

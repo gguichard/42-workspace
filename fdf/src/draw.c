@@ -6,13 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/10 18:05:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 15:36:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "fdf.h"
-#include "bresenham.h"
+#include "line_draw.h"
 
 static inline void	draw_pixel(t_fdf *fdf, t_line line)
 {

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/06/10 18:24:38 by gguichar         ###   ########.fr        #
+#    Updated: 2019/09/22 15:17:51 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ LDFLAGS		=	-Llibft -lft -L/usr/local/lib -lmlx -framework OpenGL -framework AppK
 SRC_DIR		=	src
 SRC 		=			\
 draw.c					\
+draw_fn.c				\
 draw_utils.c			\
 error.c					\
 graphics.c				\

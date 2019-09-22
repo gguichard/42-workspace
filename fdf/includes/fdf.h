@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 13:36:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/06/11 22:22:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 15:35:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct		s_fdf
 	t_opts			opts;
 	int				argc;
 	char			**argv;
+	void			(*draw_window_fn)(struct s_fdf *);
 	t_winsize		winsize;
 	int				rows;
 	int				cols;
@@ -52,7 +53,6 @@ typedef struct		s_fdf
 	double			matrix_translate[4][4];
 	int				drag;
 	t_vec2d			prev_cursor;
-	int				use_obj_render;
 	t_wf_obj		objfile;
 }					t_fdf;
 
@@ -89,9 +89,10 @@ t_error				read_obj_file(t_fdf *fdf);
 /*
 ** GRAPHICS.
 */
+void				draw_obj_vertices(t_fdf *fdf);
+void				draw_regular_points(t_fdf *fdf);
 void				fill_window_image(t_fdf *fdf);
 
-void				draw_edges(t_fdf *fdf, t_pos pos);
 void				draw_triangle(t_fdf *fdf, int index, t_vec3d vec_1
 	, t_vec3d vec_2, t_vec3d vec_3);
 
