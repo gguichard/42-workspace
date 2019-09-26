@@ -6,12 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:17:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/26 22:17:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/26 22:48:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_SSL_H
 # define FT_SSL_H
+
+# include <string.h>
 
 size_t	align_up(size_t n, int mod);
 
