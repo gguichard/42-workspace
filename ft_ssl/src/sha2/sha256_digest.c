@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5_digest.c                                       :+:      :+:    :+:   */
+/*   sha256_digest.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/26 22:40:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/27 18:43:09 by gguichar         ###   ########.fr       */
+/*   Created: 2019/09/27 14:03:34 by gguichar          #+#    #+#             */
+/*   Updated: 2019/09/27 15:24:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,25 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
-#include "libft.h"
-#include "ft_ssl_md5.h"
+#include "ft_ssl_sha2.h"
 
-void	md5_print_digest(uint32_t hash[4])
+void	sha256_print_digest(uint32_t hash[8])
 {
-	uint8_t	digest[16];
+	uint8_t	digest[32];
 	size_t	idx;
-	char	buffer[33];
+	char	buffer[65];
 
-	ft_memcpy(digest, hash, sizeof(digest));
 	idx = 0;
-	while (idx < 16)
+	while (idx < 8)
+	{
+		digest[idx * 4] = (hash[idx] >> 24) & 0xff;
+		digest[idx * 4 + 1] = (hash[idx] >> 16) & 0xff;
+		digest[idx * 4 + 2] = (hash[idx] >> 8) & 0xff;
+		digest[idx * 4 + 3] = hash[idx] & 0xff;
+		idx++;
+	}
+	idx = 0;
+	while (idx < 32)
 	{
 		sprintf(buffer + idx * 2, "%02x", digest[idx]);
 		idx++;

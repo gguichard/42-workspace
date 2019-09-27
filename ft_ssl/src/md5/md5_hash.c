@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5.c                                              :+:      :+:    :+:   */
+/*   md5_hash.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:19:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/26 22:45:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 01:12:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,42 +54,7 @@ static t_md5_step	g_md5_steps[64] = {
 		, {2, 15, 0x2ad7d2bb}, {9, 21, 0xeb86d391}
 };
 
-static inline uint8_t	md5_byte(const uint8_t *bytes, size_t len, size_t index)
-{
-	if (index < len)
-		return (bytes[index]);
-	else if (index == len)
-		return (1 << 7);
-	else
-		return (0);
-}
-
-static inline void		md5_decode(const uint8_t *bytes
-	, size_t len, size_t total_len
-	, uint32_t buffer[16], size_t offset)
-{
-	size_t	idx;
-
-	idx = 0;
-	while (idx < 16)
-	{
-		if (offset <= len)
-			buffer[idx] = (uint32_t)md5_byte(bytes, len, offset)
-					| ((uint32_t)md5_byte(bytes, len, offset + 1) << 8)
-					| ((uint32_t)md5_byte(bytes, len, offset + 2) << 16)
-					| ((uint32_t)md5_byte(bytes, len, offset + 3) << 24);
-		else if ((offset + 4) == total_len)
-			buffer[idx] = (len * 8) << 32;
-		else if ((offset + 8) == total_len)
-			buffer[idx] = (len * 8) & 0xffffffff;
-		else
-			buffer[idx] = 0;
-		offset += 4;
-		idx++;
-	}
-}
-
-static inline void		md5_steps(uint32_t words[16], uint32_t output[4])
+static void		md5_steps(uint32_t words[16], uint32_t output[4])
 {
 	size_t		idx;
 	uint32_t	value;
@@ -99,59 +64,49 @@ static inline void		md5_steps(uint32_t words[16], uint32_t output[4])
 	while (idx < 64)
 	{
 		if (idx < 16)
-			value = MD5_FUN_F(output[1], output[2], output[3]);
+			value = MD5_HASH_F(output[1], output[2], output[3]);
 		else if (idx < 32)
-			value = MD5_FUN_G(output[1], output[2], output[3]);
+			value = MD5_HASH_G(output[1], output[2], output[3]);
 		else if (idx < 48)
-			value = MD5_FUN_H(output[1], output[2], output[3]);
+			value = MD5_HASH_H(output[1], output[2], output[3]);
 		else
-			value = MD5_FUN_I(output[1], output[2], output[3]);
+			value = MD5_HASH_I(output[1], output[2], output[3]);
 		step = &g_md5_steps[idx];
 		value += output[0] + words[step->word_index] + step->sine;
 		output[0] = output[3];
 		output[3] = output[2];
 		output[2] = output[1];
-		output[1] += MD5_ROTATELEFT(value, step->shift_rotate);
+		output[1] += UTILS_ROTATELEFT(value, step->shift_rotate);
 		idx++;
 	}
 }
 
-static inline void		md5_process_words(uint32_t states[4]
-	, uint32_t words[16])
+void			md5_process_words(uint32_t hash[4], uint32_t words[16])
 {
 	uint32_t	values[4];
 
-	values[0] = states[0];
-	values[1] = states[1];
-	values[2] = states[2];
-	values[3] = states[3];
+	values[0] = hash[0];
+	values[1] = hash[1];
+	values[2] = hash[2];
+	values[3] = hash[3];
 	md5_steps(words, values);
-	states[0] += values[0];
-	states[1] += values[1];
-	states[2] += values[2];
-	states[3] += values[3];
+	hash[0] += values[0];
+	hash[1] += values[1];
+	hash[2] += values[2];
+	hash[3] += values[3];
 }
 
-void					md5_hash(const uint8_t *bytes, size_t len)
+void			md5_hash(const uint8_t *bytes, size_t len)
 {
-	size_t		total_len;
-	uint32_t	states[4];
-	size_t		idx;
-	uint32_t	words[16];
+	t_md5_stream	stream;
 
-	total_len = align_up(len, 64);
-	if ((total_len - len) <= 8)
-		total_len += 64;
-	states[0] = 0x67452301;
-	states[1] = 0xefcdab89;
-	states[2] = 0x98badcfe;
-	states[3] = 0x10325476;
-	idx = 0;
-	while (idx < total_len)
-	{
-		md5_decode(bytes, len, total_len, words, idx);
-		md5_process_words(states, words);
-		idx += 64;
-	}
-	md5_print_digest(states);
+	stream.hash[0] = 0x67452301;
+	stream.hash[1] = 0xefcdab89;
+	stream.hash[2] = 0x98badcfe;
+	stream.hash[3] = 0x10325476;
+	stream.hash_fn = md5_stream_fn;
+	hash_stream_begin((t_hash_stream *)&stream);
+	hash_stream((t_hash_stream *)&stream, bytes, len);
+	hash_stream_end((t_hash_stream *)&stream);
+	md5_print_digest(stream.hash);
 }
