@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:21:35 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 14:28:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 18:51:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,14 @@
 typedef struct	s_md5_stream
 {
 	size_t		len;
-	size_t		total_len;
 	uint8_t		buffer[64];
 	size_t		offset;
-	void		(*hash_fn)(struct s_md5_stream *
-		, const uint8_t *, size_t, size_t);
+	void		(*hash_fn)(uint32_t *, const uint8_t *);
 	uint32_t	hash[4];
 }				t_md5_stream;
 
 void			md5_stream_init(t_md5_stream *stream);
-void			md5_process_words(uint32_t hash[4], uint32_t words[16]);
+void			md5_roll(uint32_t hash[4], uint32_t words[16]);
 
 void			md5_hash(const uint8_t *bytes, size_t len);
 void			md5_stream_file(int fd);

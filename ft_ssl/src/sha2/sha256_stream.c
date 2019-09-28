@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 16:50:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 20:58:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,7 @@
 #include "ft_ssl.h"
 #include "ft_ssl_sha2.h"
 
-static uint8_t	sha256_byte(const uint8_t *bytes, size_t len, size_t index)
-{
-	if (index < len)
-		return (bytes[index]);
-	else if (index == len)
-		return (1 << 7);
-	else
-		return (0);
-}
-
-static void		sha256_roll_words(uint32_t words[64])
-{
-	size_t	idx;
-
-	idx = 16;
-	while (idx < 64)
-	{
-		words[idx] = SHA2_HASH_SSIG1(words[idx - 2]) + words[idx - 7]
-			+ SHA2_HASH_SSIG0(words[idx - 15]) + words[idx - 16];
-		idx++;
-	}
-}
-
-static void		sha256_stream_fn(t_sha2_stream *stream
-	, const uint8_t *bytes, size_t len, size_t offset)
+static void	sha256_stream_fn(uint32_t hash[8], const uint8_t *bytes)
 {
 	size_t		idx;
 	uint32_t	buffer[64];
@@ -48,25 +24,22 @@ static void		sha256_stream_fn(t_sha2_stream *stream
 	idx = 0;
 	while (idx < 16)
 	{
-		if (offset <= len)
-			buffer[idx] = ((uint32_t)sha256_byte(bytes, len, offset) << 24)
-					| ((uint32_t)sha256_byte(bytes, len, offset + 1) << 16)
-					| ((uint32_t)sha256_byte(bytes, len, offset + 2) << 8)
-					| (uint32_t)sha256_byte(bytes, len, offset + 3);
-		else if ((offset + 4) == stream->total_len)
-			buffer[idx] = (len * 8) & 0xffffffff;
-		else if ((offset + 8) == stream->total_len)
-			buffer[idx] = (len * 8) >> 32;
-		else
-			buffer[idx] = 0;
-		offset += 4;
+		buffer[idx] = (bytes[idx * 4] << 24)
+			| (bytes[idx * 4 + 1] << 16)
+			| (bytes[idx * 4 + 2] << 8)
+			| bytes[idx * 4 + 3];
 		idx++;
 	}
-	sha256_roll_words(buffer);
-	sha256_process_words(stream->hash, buffer);
+	while (idx < 64)
+	{
+		buffer[idx] = SHA2_HASH_SSIG1(buffer[idx - 2]) + buffer[idx - 7]
+			+ SHA2_HASH_SSIG0(buffer[idx - 15]) + buffer[idx - 16];
+		idx++;
+	}
+	sha256_roll(hash, buffer);
 }
 
-void			sha256_stream_init(t_sha2_stream *stream)
+void		sha256_stream_init(t_sha2_stream *stream)
 {
 	stream->hash[0] = 0x6a09e667;
 	stream->hash[1] = 0xbb67ae85;
@@ -79,7 +52,7 @@ void			sha256_stream_init(t_sha2_stream *stream)
 	stream->hash_fn = sha256_stream_fn;
 }
 
-void			sha256_stream_file(int fd)
+void		sha256_stream_file(int fd)
 {
 	t_sha2_stream	stream;
 	uint8_t			buffer[4096];

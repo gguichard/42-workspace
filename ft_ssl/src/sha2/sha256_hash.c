@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:25:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 14:26:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 18:52:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	sha256_steps(uint32_t words[64], uint32_t output[8])
 	}
 }
 
-void		sha256_process_words(uint32_t hash[8], uint32_t words[64])
+void		sha256_roll(uint32_t hash[8], uint32_t words[64])
 {
 	size_t		idx;
 	uint32_t	values[8];

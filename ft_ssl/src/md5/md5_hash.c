@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:19:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 14:28:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 19:28:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static const uint32_t	g_md5_t[] = {
 	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
 };
 
-static void		md5_steps(uint32_t words[16], uint32_t output[4])
+static void	md5_steps(uint32_t words[16], uint32_t output[4])
 {
 	size_t		idx;
 	uint32_t	value;
@@ -73,7 +73,7 @@ static void		md5_steps(uint32_t words[16], uint32_t output[4])
 	}
 }
 
-void			md5_process_words(uint32_t hash[4], uint32_t words[16])
+void		md5_roll(uint32_t hash[4], uint32_t words[16])
 {
 	uint32_t	values[4];
 
@@ -88,7 +88,7 @@ void			md5_process_words(uint32_t hash[4], uint32_t words[16])
 	hash[3] += values[3];
 }
 
-void			md5_hash(const uint8_t *bytes, size_t len)
+void		md5_hash(const uint8_t *bytes, size_t len)
 {
 	t_md5_stream	stream;
 

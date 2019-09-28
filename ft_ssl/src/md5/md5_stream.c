@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:50:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 16:49:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 20:20:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,7 @@
 #include "ft_ssl.h"
 #include "ft_ssl_md5.h"
 
-static uint8_t	md5_byte(const uint8_t *bytes, size_t len, size_t index)
-{
-	if (index < len)
-		return (bytes[index]);
-	else if (index == len)
-		return (1 << 7);
-	else
-		return (0);
-}
-
-static void		md5_stream_fn(t_md5_stream *stream
-	, const uint8_t *bytes, size_t len, size_t offset)
+static void	md5_stream_fn(uint32_t hash[4], const uint8_t *bytes)
 {
 	size_t		idx;
 	uint32_t	buffer[16];
@@ -35,24 +24,16 @@ static void		md5_stream_fn(t_md5_stream *stream
 	idx = 0;
 	while (idx < (sizeof(buffer) / sizeof(buffer[0])))
 	{
-		if (offset <= len)
-			buffer[idx] = (uint32_t)md5_byte(bytes, len, offset)
-					| ((uint32_t)md5_byte(bytes, len, offset + 1) << 8)
-					| ((uint32_t)md5_byte(bytes, len, offset + 2) << 16)
-					| ((uint32_t)md5_byte(bytes, len, offset + 3) << 24);
-		else if ((offset + 4) == stream->total_len)
-			buffer[idx] = (len * 8) >> 32;
-		else if ((offset + 8) == stream->total_len)
-			buffer[idx] = (len * 8) & 0xffffffff;
-		else
-			buffer[idx] = 0;
-		offset += 4;
+		buffer[idx] = bytes[idx * 4]
+			| (bytes[idx * 4 + 1] << 8)
+			| (bytes[idx * 4 + 2] << 16)
+			| (bytes[idx * 4 + 3] << 24);
 		idx++;
 	}
-	md5_process_words(stream->hash, buffer);
+	md5_roll(hash, buffer);
 }
 
-void			md5_stream_init(t_md5_stream *stream)
+void		md5_stream_init(t_md5_stream *stream)
 {
 	stream->hash[0] = 0x67452301;
 	stream->hash[1] = 0xefcdab89;
@@ -61,7 +42,7 @@ void			md5_stream_init(t_md5_stream *stream)
 	stream->hash_fn = md5_stream_fn;
 }
 
-void			md5_stream_file(int fd)
+void		md5_stream_file(int fd)
 {
 	t_md5_stream	stream;
 	uint8_t			buffer[4096];
