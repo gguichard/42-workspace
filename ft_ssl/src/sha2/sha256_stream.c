@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 14:27:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 16:50:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void		sha256_stream_fn(t_sha2_stream *stream
 		else if ((offset + 4) == stream->total_len)
 			buffer[idx] = (len * 8) & 0xffffffff;
 		else if ((offset + 8) == stream->total_len)
-			buffer[idx] = (len * 8) << 32;
+			buffer[idx] = (len * 8) >> 32;
 		else
 			buffer[idx] = 0;
 		offset += 4;

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:50:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 14:28:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 16:49:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void		md5_stream_fn(t_md5_stream *stream
 					| ((uint32_t)md5_byte(bytes, len, offset + 2) << 16)
 					| ((uint32_t)md5_byte(bytes, len, offset + 3) << 24);
 		else if ((offset + 4) == stream->total_len)
-			buffer[idx] = (len * 8) << 32;
+			buffer[idx] = (len * 8) >> 32;
 		else if ((offset + 8) == stream->total_len)
 			buffer[idx] = (len * 8) & 0xffffffff;
 		else
