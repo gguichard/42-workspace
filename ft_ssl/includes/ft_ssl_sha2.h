@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:30:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 18:51:50 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 23:04:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 typedef struct	s_sha2_stream
 {
+	uint8_t		big_endian;
 	size_t		len;
 	uint8_t		buffer[64];
 	size_t		offset;

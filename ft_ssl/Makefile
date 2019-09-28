@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/09/28 20:41:19 by gguichar         ###   ########.fr        #
+#    Updated: 2019/09/28 23:25:12 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ md5/md5_stream.c		\
 sha2/sha256_digest.c	\
 sha2/sha256_hash.c		\
 sha2/sha256_stream.c	\
-stream.c
+stream.c				\
+utils.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:50:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 20:20:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 23:05:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	md5_stream_fn(uint32_t hash[4], const uint8_t *bytes)
 
 void		md5_stream_init(t_md5_stream *stream)
 {
+	stream->big_endian = 0;
 	stream->hash[0] = 0x67452301;
 	stream->hash[1] = 0xefcdab89;
 	stream->hash[2] = 0x98badcfe;

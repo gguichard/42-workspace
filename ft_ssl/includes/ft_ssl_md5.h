@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:21:35 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 18:51:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 23:04:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 typedef struct	s_md5_stream
 {
+	uint8_t		big_endian;
 	size_t		len;
 	uint8_t		buffer[64];
 	size_t		offset;

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 20:58:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 23:26:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	sha256_stream_fn(uint32_t hash[8], const uint8_t *bytes)
 
 void		sha256_stream_init(t_sha2_stream *stream)
 {
+	stream->big_endian = 1;
 	stream->hash[0] = 0x6a09e667;
 	stream->hash[1] = 0xbb67ae85;
 	stream->hash[2] = 0x3c6ef372;

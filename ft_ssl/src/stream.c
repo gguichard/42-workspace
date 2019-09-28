@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:28:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 20:58:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 23:24:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void		hash_stream_end(t_hash_stream *stream)
 		ft_memset(stream->buffer, 0, 56);
 	}
 	total_len = stream->len * 8;
+	if (stream->big_endian)
+		total_len = byte_swap64(total_len);
 	ft_memcpy(stream->buffer + 56, &total_len, 8);
 	stream->hash_fn(stream->hash, stream->buffer);
 }
