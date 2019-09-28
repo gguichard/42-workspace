@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:28:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 01:15:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 11:33:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void		hash_stream_begin(t_hash_stream *stream)
 {
 	stream->len = 0;
-	stream->total_len = ~((uint32_t)0);
+	stream->total_len = ~((size_t)0);
 	stream->offset = 0;
 }
 

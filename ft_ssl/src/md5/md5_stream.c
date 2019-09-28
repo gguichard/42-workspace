@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:50:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 01:12:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 14:28:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static uint8_t	md5_byte(const uint8_t *bytes, size_t len, size_t index)
 		return (0);
 }
 
-void			md5_stream_fn(t_md5_stream *stream
+static void		md5_stream_fn(t_md5_stream *stream
 	, const uint8_t *bytes, size_t len, size_t offset)
 {
 	size_t		idx;
@@ -52,17 +52,22 @@ void			md5_stream_fn(t_md5_stream *stream
 	md5_process_words(stream->hash, buffer);
 }
 
+void			md5_stream_init(t_md5_stream *stream)
+{
+	stream->hash[0] = 0x67452301;
+	stream->hash[1] = 0xefcdab89;
+	stream->hash[2] = 0x98badcfe;
+	stream->hash[3] = 0x10325476;
+	stream->hash_fn = md5_stream_fn;
+}
+
 void			md5_stream_file(int fd)
 {
 	t_md5_stream	stream;
 	uint8_t			buffer[4096];
 	ssize_t			size_read;
 
-	stream.hash[0] = 0x67452301;
-	stream.hash[1] = 0xefcdab89;
-	stream.hash[2] = 0x98badcfe;
-	stream.hash[3] = 0x10325476;
-	stream.hash_fn = md5_stream_fn;
+	md5_stream_init(&stream);
 	hash_stream_begin((t_hash_stream *)&stream);
 	while ((size_read = read(fd, buffer, sizeof(buffer))) > 0)
 		hash_stream((t_hash_stream *)&stream, buffer, size_read);

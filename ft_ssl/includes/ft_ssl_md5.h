@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:21:35 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 01:16:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 14:28:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@
 # define MD5_HASH_H(x, y, z) (x ^ y ^ z)
 # define MD5_HASH_I(x, y, z) (y ^ (x | ~z))
 
-typedef struct	s_md5_step
-{
-	size_t		word_index;
-	int			shift_rotate;
-	uint32_t	sine;
-}				t_md5_step;
-
 typedef struct	s_md5_stream
 {
 	size_t		len;
@@ -39,8 +32,7 @@ typedef struct	s_md5_stream
 	uint32_t	hash[4];
 }				t_md5_stream;
 
-void			md5_stream_fn(t_md5_stream *stream
-	, const uint8_t *bytes, size_t len, size_t offset);
+void			md5_stream_init(t_md5_stream *stream);
 void			md5_process_words(uint32_t hash[4], uint32_t words[16]);
 
 void			md5_hash(const uint8_t *bytes, size_t len);

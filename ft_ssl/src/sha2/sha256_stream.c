@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 01:25:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 14:27:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,20 @@ static uint8_t	sha256_byte(const uint8_t *bytes, size_t len, size_t index)
 		return (0);
 }
 
-void			sha256_stream_fn(t_sha2_stream *stream
+static void		sha256_roll_words(uint32_t words[64])
+{
+	size_t	idx;
+
+	idx = 16;
+	while (idx < 64)
+	{
+		words[idx] = SHA2_HASH_SSIG1(words[idx - 2]) + words[idx - 7]
+			+ SHA2_HASH_SSIG0(words[idx - 15]) + words[idx - 16];
+		idx++;
+	}
+}
+
+static void		sha256_stream_fn(t_sha2_stream *stream
 	, const uint8_t *bytes, size_t len, size_t offset)
 {
 	size_t		idx;
@@ -49,7 +62,21 @@ void			sha256_stream_fn(t_sha2_stream *stream
 		offset += 4;
 		idx++;
 	}
+	sha256_roll_words(buffer);
 	sha256_process_words(stream->hash, buffer);
+}
+
+void			sha256_stream_init(t_sha2_stream *stream)
+{
+	stream->hash[0] = 0x6a09e667;
+	stream->hash[1] = 0xbb67ae85;
+	stream->hash[2] = 0x3c6ef372;
+	stream->hash[3] = 0xa54ff53a;
+	stream->hash[4] = 0x510e527f;
+	stream->hash[5] = 0x9b05688c;
+	stream->hash[6] = 0x1f83d9ab;
+	stream->hash[7] = 0x5be0cd19;
+	stream->hash_fn = sha256_stream_fn;
 }
 
 void			sha256_stream_file(int fd)
@@ -58,15 +85,7 @@ void			sha256_stream_file(int fd)
 	uint8_t			buffer[4096];
 	ssize_t			size_read;
 
-	stream.hash[0] = 0x6a09e667;
-	stream.hash[1] = 0xbb67ae85;
-	stream.hash[2] = 0x3c6ef372;
-	stream.hash[3] = 0xa54ff53a;
-	stream.hash[4] = 0x510e527f;
-	stream.hash[5] = 0x9b05688c;
-	stream.hash[6] = 0x1f83d9ab;
-	stream.hash[7] = 0x5be0cd19;
-	stream.hash_fn = sha256_stream_fn;
+	sha256_stream_init(&stream);
 	hash_stream_begin((t_hash_stream *)&stream);
 	while ((size_read = read(fd, buffer, sizeof(buffer))) > 0)
 		hash_stream((t_hash_stream *)&stream, buffer, size_read);

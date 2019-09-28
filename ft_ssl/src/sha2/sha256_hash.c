@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:25:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 01:25:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/28 14:26:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,6 @@ void		sha256_process_words(uint32_t hash[8], uint32_t words[64])
 	size_t		idx;
 	uint32_t	values[8];
 
-	idx = 16;
-	while (idx < 64)
-	{
-		words[idx] = SHA2_HASH_SSIG1(words[idx - 2]) + words[idx - 7]
-			+ SHA2_HASH_SSIG0(words[idx - 15]) + words[idx - 16];
-		idx++;
-	}
 	idx = 0;
 	while (idx < 8)
 	{
@@ -91,15 +84,7 @@ void		sha256_hash(const uint8_t *bytes, size_t len)
 {
 	t_sha2_stream	stream;
 
-	stream.hash[0] = 0x6a09e667;
-	stream.hash[1] = 0xbb67ae85;
-	stream.hash[2] = 0x3c6ef372;
-	stream.hash[3] = 0xa54ff53a;
-	stream.hash[4] = 0x510e527f;
-	stream.hash[5] = 0x9b05688c;
-	stream.hash[6] = 0x1f83d9ab;
-	stream.hash[7] = 0x5be0cd19;
-	stream.hash_fn = sha256_stream_fn;
+	sha256_stream_init(&stream);
 	hash_stream_begin((t_hash_stream *)&stream);
 	hash_stream((t_hash_stream *)&stream, bytes, len);
 	hash_stream_end((t_hash_stream *)&stream);
