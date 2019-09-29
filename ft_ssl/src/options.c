@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 12:35:44 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 12:38:27 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 12:56:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static int	parse_as_files(t_ssl_opts *opts)
 		else
 		{
 			opts->file_hash_fn(digest, fd);
+			close(fd);
 			print_file_digest(opts, opts->argv[opts->index], digest);
 		}
 		opts->index += 1;
