@@ -6,13 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 14:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 12:17:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 15:54:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
-#include <stdio.h>
+#include "ft_ssl.h"
 #include "ft_ssl_sha2.h"
 
 void	sha256_digest(char buffer[65], uint32_t hash[8])
@@ -32,7 +32,7 @@ void	sha256_digest(char buffer[65], uint32_t hash[8])
 	idx = 0;
 	while (idx < 32)
 	{
-		sprintf(buffer + idx * 2, "%02x", digest[idx]);
+		digest_hex(buffer + idx * 2, digest[idx]);
 		idx++;
 	}
 	buffer[64] = '\0';

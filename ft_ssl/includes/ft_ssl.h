@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:17:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 12:48:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 15:53:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdint.h>
 # include <string.h>
 # include "options.h"
+
+# define MAX_DIGEST_BYTES 64
 
 # define UTILS_MIN(x, y) (x > y ? y : x)
 # define UTILS_ROTATELEFT(n, s) (((n) << s) | ((n) >> (sizeof(n) * 8 - s)))
@@ -29,7 +31,7 @@ typedef struct	s_ssl_opts
 	int			index;
 	char		**argv;
 	void		(*hash_fn)(char *, const uint8_t *, size_t);
-	void		(*file_hash_fn)(char *, int);
+	int			(*file_hash_fn)(char *, int);
 }				t_ssl_opts;
 
 typedef struct	s_hash_stream
@@ -48,6 +50,7 @@ void			hash_stream(t_hash_stream *stream
 	, const uint8_t *bytes, size_t len);
 
 uint64_t		byte_swap64(uint64_t x);
+void			digest_hex(char buffer[2], uint8_t byte);
 
 void			print_string_digest(t_ssl_opts *opts, const char *str
 	, char digest[65]);

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:18:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 12:50:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 15:10:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,13 @@ static int	parse_command(t_ssl_opts *opts, const char *cmd)
 	return (0);
 }
 
+static void	usage_help(char **argv)
+{
+	ft_dprintf(STDERR_FILENO, "%s: %s: not a valid command\n\n"
+		, argv[0], argv[1]);
+	ft_dprintf(STDERR_FILENO, "Message digest commands:\nmd5\nsha256\n");
+}
+
 int			main(int argc, char **argv)
 {
 	t_ssl_opts	opts;
@@ -46,11 +53,11 @@ int			main(int argc, char **argv)
 	{
 		ft_memset(&opts, 0, sizeof(t_ssl_opts));
 		if (!parse_command(&opts, argv[1]))
-			ft_dprintf(STDERR_FILENO, "%s: %s: not a valid command\n"
-					, argv[0], argv[1]);
+			usage_help(argv);
 		else
 		{
-			opts.argv = argv + 1;
+			opts.argv = argv;
+			opts.index = 1;
 			if (parse_ssl_options(&opts))
 				return (EXIT_SUCCESS);
 		}

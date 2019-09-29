@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 22:40:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 12:17:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 15:54:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
-#include <stdio.h>
 #include "libft.h"
+#include "ft_ssl.h"
 #include "ft_ssl_md5.h"
 
 void	md5_digest(char buffer[33], uint32_t hash[4])
@@ -25,7 +25,7 @@ void	md5_digest(char buffer[33], uint32_t hash[4])
 	idx = 0;
 	while (idx < 16)
 	{
-		sprintf(buffer + idx * 2, "%02x", digest[idx]);
+		digest_hex(buffer + idx * 2, digest[idx]);
 		idx++;
 	}
 	buffer[32] = '\0';

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 23:24:32 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 23:24:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 15:54:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,10 @@ uint64_t	byte_swap64(uint64_t x)
 	x = ((x & 0x0000ffff0000ffff) << 16) | ((x & 0xffff0000ffff0000) >> 16);
 	x = ((x & 0x00ff00ff00ff00ff) << 8) | ((x & 0xff00ff00ff00ff00) >> 8);
 	return (x);
+}
+
+void		digest_hex(char buffer[2], uint8_t byte)
+{
+	buffer[0] = "0123456789abcdef"[byte >> 4];
+	buffer[1] = "0123456789abcdef"[byte & 0xf];
 }
