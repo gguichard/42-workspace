@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:18:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 15:10:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 17:08:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int			main(int argc, char **argv)
 			usage_help(argv);
 		else
 		{
+			opts.argc = argc;
 			opts.argv = argv;
-			opts.index = 1;
 			if (parse_ssl_options(&opts))
 				return (EXIT_SUCCESS);
 		}

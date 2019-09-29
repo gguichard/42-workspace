@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:17:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 15:53:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 17:15:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <stdint.h>
 # include <string.h>
-# include "options.h"
 
 # define MAX_DIGEST_BYTES 64
 
@@ -23,12 +22,14 @@
 # define UTILS_ROTATELEFT(n, s) (((n) << s) | ((n) >> (sizeof(n) * 8 - s)))
 # define UTILS_ROTATERIGHT(n, s) (((n) >> s) | ((n) << (sizeof(n) * 8 - s)))
 
+# define OPT_QUIET (1 << 0)
+# define OPT_REVERSE (1 << 1)
+
 typedef struct	s_ssl_opts
 {
 	char		hash_name[8];
-	int			prev_options;
-	t_opts		sub_opts;
-	int			index;
+	int			options;
+	int			argc;
 	char		**argv;
 	void		(*hash_fn)(char *, const uint8_t *, size_t);
 	int			(*file_hash_fn)(char *, int);
