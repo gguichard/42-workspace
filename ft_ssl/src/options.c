@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 16:46:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 17:13:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 19:59:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 #include "libft.h"
 #include "ft_ssl.h"
 
-static int	unknown_opt(t_ssl_opts *opts)
+static int	unknown_opt(t_ssl_opts *opts, char opt)
 {
-	ft_dprintf(STDERR_FILENO, "usage: %s %s [-pqrt] [-s string] [files ...]\n"
+	ft_dprintf(STDERR_FILENO, "%s: illegal option -- %c\n", opts->argv[0], opt);
+	ft_dprintf(STDERR_FILENO, "usage: %s %s [-pqr] [-s string] [files ...]\n"
 		, opts->argv[0], opts->argv[1]);
 	return (0);
 }
@@ -38,7 +39,7 @@ static int	stdin_opt(t_ssl_opts *opts)
 	return (1);
 }
 
-static int	string_opt(t_ssl_opts *opts, const char *str)
+static int	string_opt(t_ssl_opts *opts, const char *optarg)
 {
 	char	digest[MAX_DIGEST_BYTES + 1];
 
@@ -48,8 +49,8 @@ static int	string_opt(t_ssl_opts *opts, const char *str)
 			, opts->argv[0]);
 		return (0);
 	}
-	opts->hash_fn(digest, (const uint8_t *)str, ft_strlen(str));
-	print_string_digest(opts, str, digest);
+	opts->hash_fn(digest, (const uint8_t *)optarg, ft_strlen(optarg));
+	print_string_digest(opts, optarg, digest);
 	return (1);
 }
 
@@ -82,10 +83,12 @@ static int	parse_files(t_ssl_opts *opts, int index)
 
 int			parse_ssl_options(t_ssl_opts *opts)
 {
-	int	opt;
+	t_getopt	getopt;
+	int			opt;
 
-	optind = 2;
-	while ((opt = getopt(opts->argc, opts->argv, "pqrs:")) != -1)
+	getopt.index = 2;
+	getopt.offset = 0;
+	while ((opt = ft_getopt(opts->argc, opts->argv, "pqrs:", &getopt)) != -1)
 	{
 		if (opt == 'q')
 			opts->options |= OPT_QUIET;
@@ -94,10 +97,10 @@ int			parse_ssl_options(t_ssl_opts *opts)
 		else if (opt == 'p')
 			stdin_opt(opts);
 		else if (opt == 's')
-			string_opt(opts, optarg);
+			string_opt(opts, getopt.optarg);
 		else
-			return (unknown_opt(opts));
+			return (unknown_opt(opts, opt));
 	}
-	parse_files(opts, optind);
+	parse_files(opts, getopt.index);
 	return (1);
 }

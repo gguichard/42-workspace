@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/04/24 16:43:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 19:27:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ typedef struct	s_vector
 	size_t		capacity;
 	size_t		size;
 }				t_vector;
+
+typedef struct	s_getopt
+{
+	int			index;
+	char		*optarg;
+	int			offset;
+
+}				t_getopt;
 
 void			*ft_memset(void *s, int c, size_t n);
 void			*ft_memcpy(void *dest, const void *src, size_t n);
@@ -149,5 +157,8 @@ size_t			ft_strtab_count(char **tab);
 void			*ft_strtab_free(char **tab);
 
 int				ft_levenshtein(const char *s1, const char *s2);
+
+int				ft_getopt(int argc, char **argv, const char *optstring
+	, t_getopt *opt);
 
 #endif
