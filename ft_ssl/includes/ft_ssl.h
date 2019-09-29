@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:17:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 23:25:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/29 12:48:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,22 @@
 
 # include <stdint.h>
 # include <string.h>
+# include "options.h"
 
 # define UTILS_MIN(x, y) (x > y ? y : x)
 # define UTILS_ROTATELEFT(n, s) (((n) << s) | ((n) >> (sizeof(n) * 8 - s)))
 # define UTILS_ROTATERIGHT(n, s) (((n) >> s) | ((n) << (sizeof(n) * 8 - s)))
+
+typedef struct	s_ssl_opts
+{
+	char		hash_name[8];
+	int			prev_options;
+	t_opts		sub_opts;
+	int			index;
+	char		**argv;
+	void		(*hash_fn)(char *, const uint8_t *, size_t);
+	void		(*file_hash_fn)(char *, int);
+}				t_ssl_opts;
 
 typedef struct	s_hash_stream
 {
@@ -36,5 +48,11 @@ void			hash_stream(t_hash_stream *stream
 	, const uint8_t *bytes, size_t len);
 
 uint64_t		byte_swap64(uint64_t x);
+
+void			print_string_digest(t_ssl_opts *opts, const char *str
+	, char digest[65]);
+void			print_file_digest(t_ssl_opts *opts, const char *filename
+	, char digest[65]);
+int				parse_ssl_options(t_ssl_opts *opts);
 
 #endif

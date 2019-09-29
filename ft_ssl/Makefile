@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/09/28 23:25:12 by gguichar         ###   ########.fr        #
+#    Updated: 2019/09/29 12:40:25 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,12 @@ LDFLAGS		=	-Llibft -lft
 
 SRC_DIR		=	src
 SRC 		=			\
+digest_print.c			\
 main.c					\
 md5/md5_digest.c		\
 md5/md5_hash.c			\
 md5/md5_stream.c		\
+options.c				\
 sha2/sha256_digest.c	\
 sha2/sha256_hash.c		\
 sha2/sha256_stream.c	\
