@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 14:59:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/30 22:43:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void		sha256_stream_init(t_sha2_stream *stream)
 	stream->hash_fn = sha256_stream_fn;
 }
 
-int			sha256_stream_file(char buffer[65], int fd)
+int			sha256_stream_file(char digest[65], int fd)
 {
 	t_sha2_stream	stream;
 	uint8_t			read_buffer[4096];
@@ -66,6 +66,6 @@ int			sha256_stream_file(char buffer[65], int fd)
 	if (size_read == -1)
 		return (0);
 	hash_stream_end((t_hash_stream *)&stream);
-	sha256_digest(buffer, stream.hash);
+	sha256_digest(digest, stream.hash);
 	return (1);
 }

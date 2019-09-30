@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:50:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 14:58:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/30 22:42:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void		md5_stream_init(t_md5_stream *stream)
 	stream->hash_fn = md5_stream_fn;
 }
 
-int			md5_stream_file(char buffer[33], int fd)
+int			md5_stream_file(char digest[33], int fd)
 {
 	t_md5_stream	stream;
 	uint8_t			read_buffer[4096];
@@ -56,6 +56,6 @@ int			md5_stream_file(char buffer[33], int fd)
 	if (size_read == -1)
 		return (0);
 	hash_stream_end((t_hash_stream *)&stream);
-	md5_digest(buffer, stream.hash);
+	md5_digest(digest, stream.hash);
 	return (1);
 }
