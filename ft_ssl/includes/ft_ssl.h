@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:17:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 23:07:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/30 23:24:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,11 @@ typedef struct	s_hash_stream
 
 typedef struct	s_ssl_opts
 {
-	char		hash_name[8];
 	int			options;
 	int			argc;
 	char		**argv;
+	int			hash_count;
+	char		hash_name[8];
 	void		(*stream_init_fn)(t_hash_stream *);
 }				t_ssl_opts;
 

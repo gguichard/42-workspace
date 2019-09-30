@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 16:46:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 23:07:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/30 23:24:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,23 @@
 
 static int	unknown_opt(t_ssl_opts *opts, char opt)
 {
-	ft_dprintf(STDERR_FILENO, "%s: illegal option -- %c\n", opts->argv[0], opt);
+	if (opt == 's')
+		ft_dprintf(STDERR_FILENO, "%s: option requires an argument -- s\n"
+			, opts->argv[0]);
+	else
+		ft_dprintf(STDERR_FILENO, "%s: illegal option -- %c\n"
+			, opts->argv[0], opt);
 	ft_dprintf(STDERR_FILENO, "usage: %s %s [-pqr] [-s string] [files ...]\n"
 		, opts->argv[0], opts->argv[1]);
 	return (0);
 }
 
-static int	stdin_opt(t_ssl_opts *opts)
+static int	stdin_opt(t_ssl_opts *opts, int in_out)
 {
 	char	digest[MAX_DIGEST_BYTES + 1];
 
-	if (hash_stream_file(opts->stream_init_fn, digest, STDIN_FILENO, 1))
+	opts->hash_count += 1;
+	if (hash_stream_file(opts->stream_init_fn, digest, STDIN_FILENO, in_out))
 		ft_printf("%s\n", digest);
 	else
 	{
@@ -43,12 +49,9 @@ static int	string_opt(t_ssl_opts *opts, const char *optarg)
 {
 	char	digest[MAX_DIGEST_BYTES + 1];
 
+	opts->hash_count += 1;
 	if (optarg == NULL)
-	{
-		ft_dprintf(STDERR_FILENO, "%s: option requires an argument -- s\n"
-			, opts->argv[0]);
-		return (0);
-	}
+		return (unknown_opt(opts, 's'));
 	hash_stream_bytes(opts->stream_init_fn, digest
 		, (const uint8_t *)optarg, ft_strlen(optarg));
 	print_string_digest(opts, optarg, digest);
@@ -64,6 +67,7 @@ static int	parse_files(t_ssl_opts *opts, int index)
 	ret = 1;
 	while (index < opts->argc)
 	{
+		opts->hash_count += 1;
 		fd = open(opts->argv[index], O_RDONLY);
 		if (fd == -1 && (ret = 0) == 0)
 			ft_dprintf(STDERR_FILENO, "%s: %s: unable to open\n"
@@ -84,9 +88,11 @@ static int	parse_files(t_ssl_opts *opts, int index)
 
 int			parse_ssl_options(t_ssl_opts *opts)
 {
+	int			ret;
 	t_getopt	getopt;
 	int			opt;
 
+	ret = 0;
 	getopt.index = 2;
 	getopt.offset = 0;
 	while ((opt = ft_getopt(opts->argc, opts->argv, "pqrs:", &getopt)) != -1)
@@ -96,12 +102,14 @@ int			parse_ssl_options(t_ssl_opts *opts)
 		else if (opt == 'r')
 			opts->options |= OPT_REVERSE;
 		else if (opt == 'p')
-			stdin_opt(opts);
+			ret |= (!stdin_opt(opts, 1));
 		else if (opt == 's')
-			string_opt(opts, getopt.optarg);
+			ret |= (!string_opt(opts, getopt.optarg));
 		else
 			return (unknown_opt(opts, opt));
 	}
-	parse_files(opts, getopt.index);
-	return (1);
+	ret |= (!parse_files(opts, getopt.index));
+	if (ret == 0 && opts->hash_count == 0)
+		ret |= (!stdin_opt(opts, 0));
+	return (!ret);
 }
