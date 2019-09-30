@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/09/29 13:05:27 by gguichar         ###   ########.fr        #
+#    Updated: 2019/09/30 23:00:06 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ sha2/sha256_digest.c	\
 sha2/sha256_hash.c		\
 sha2/sha256_stream.c	\
 stream.c				\
+stream_hash.c			\
 utils.c
 
 OBJ_DIR		=	.obj

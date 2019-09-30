@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:18:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 17:08:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/30 23:01:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ static int	parse_command(t_ssl_opts *opts, const char *cmd)
 {
 	if (ft_strequ("md5", cmd))
 	{
-		opts->hash_fn = md5_hash;
-		opts->file_hash_fn = md5_stream_file;
+		opts->stream_init_fn = md5_stream_init;
 		ft_strcpy(opts->hash_name, "MD5");
 		return (1);
 	}
 	else if (ft_strequ("sha256", cmd))
 	{
-		opts->hash_fn = sha256_hash;
-		opts->file_hash_fn = sha256_stream_file;
+		opts->stream_init_fn = sha256_stream_init;
 		ft_strcpy(opts->hash_name, "SHA256");
 		return (1);
 	}

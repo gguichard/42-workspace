@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:19:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 22:43:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/30 22:57:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,4 @@ void		md5_roll(uint32_t hash[4], uint32_t words[16])
 	hash[1] += values[1];
 	hash[2] += values[2];
 	hash[3] += values[3];
-}
-
-void		md5_hash(char digest[33], const uint8_t *bytes, size_t len)
-{
-	t_md5_stream	stream;
-
-	md5_stream_init(&stream);
-	hash_stream_begin((t_hash_stream *)&stream);
-	hash_stream((t_hash_stream *)&stream, bytes, len);
-	hash_stream_end((t_hash_stream *)&stream);
-	md5_digest(digest, stream.hash);
 }

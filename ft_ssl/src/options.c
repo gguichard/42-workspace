@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 16:46:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 19:59:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/30 23:07:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	stdin_opt(t_ssl_opts *opts)
 {
 	char	digest[MAX_DIGEST_BYTES + 1];
 
-	if (opts->file_hash_fn(digest, STDIN_FILENO))
+	if (hash_stream_file(opts->stream_init_fn, digest, STDIN_FILENO, 1))
 		ft_printf("%s\n", digest);
 	else
 	{
@@ -49,7 +49,8 @@ static int	string_opt(t_ssl_opts *opts, const char *optarg)
 			, opts->argv[0]);
 		return (0);
 	}
-	opts->hash_fn(digest, (const uint8_t *)optarg, ft_strlen(optarg));
+	hash_stream_bytes(opts->stream_init_fn, digest
+		, (const uint8_t *)optarg, ft_strlen(optarg));
 	print_string_digest(opts, optarg, digest);
 	return (1);
 }
@@ -69,7 +70,7 @@ static int	parse_files(t_ssl_opts *opts, int index)
 				, opts->argv[0], opts->argv[index]);
 		else
 		{
-			if (opts->file_hash_fn(digest, fd))
+			if (hash_stream_file(opts->stream_init_fn, digest, fd, 0))
 				print_file_digest(opts, opts->argv[index], digest);
 			else if ((ret = 0) == 0)
 				ft_dprintf(STDERR_FILENO, "%s: %s: unable to read\n"
