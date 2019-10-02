@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:17:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 23:24:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/02 19:12:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct	s_hash_stream
 
 typedef struct	s_ssl_opts
 {
+	const char	*prefix;
 	int			options;
 	int			argc;
 	char		**argv;
@@ -63,6 +64,10 @@ void			print_string_digest(t_ssl_opts *opts, const char *str
 	, char digest[65]);
 void			print_file_digest(t_ssl_opts *opts, const char *filename
 	, char digest[65]);
+
+int				run_command(const char *prefix, int argc, char **argv);
 int				parse_ssl_options(t_ssl_opts *opts);
+
+int				interactive_mode(const char *prefix);
 
 #endif

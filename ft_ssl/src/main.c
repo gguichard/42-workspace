@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:18:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 23:01:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/02 19:22:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,15 @@
 #include "ft_ssl_md5.h"
 #include "ft_ssl_sha2.h"
 
-static int	parse_command(t_ssl_opts *opts, const char *cmd)
+static void	usage_help(const char *prefix, const char *cmd)
+{
+	ft_dprintf(STDERR_FILENO, "%s: %s: not a valid command\n", prefix, cmd);
+	ft_dprintf(STDERR_FILENO, "\nStandard commands\nNone\n");
+	ft_dprintf(STDERR_FILENO, "\nMessage Digest commands\nmd5\nsha256\n");
+	ft_dprintf(STDERR_FILENO, "\nCipher commands\nNone\n\n");
+}
+
+static int	setup_command(t_ssl_opts *opts, const char *cmd)
 {
 	if (ft_strequ("md5", cmd))
 	{
@@ -34,31 +42,32 @@ static int	parse_command(t_ssl_opts *opts, const char *cmd)
 	return (0);
 }
 
-static void	usage_help(char **argv)
+int			run_command(const char *prefix, int argc, char **argv)
 {
-	ft_dprintf(STDERR_FILENO, "%s: %s: not a valid command\n\n"
-		, argv[0], argv[1]);
-	ft_dprintf(STDERR_FILENO, "Message digest commands:\nmd5\nsha256\n");
+	int			valid;
+	t_ssl_opts	opts;
+
+	valid = 0;
+	ft_memset(&opts, 0, sizeof(t_ssl_opts));
+	opts.prefix = prefix;
+	if (!setup_command(&opts, argv[0]))
+		usage_help(prefix, argv[0]);
+	else
+	{
+		opts.argc = argc;
+		opts.argv = argv;
+		valid = parse_ssl_options(&opts);
+	}
+	return (valid);
 }
 
 int			main(int argc, char **argv)
 {
-	t_ssl_opts	opts;
+	int	valid;
 
 	if (argc < 2)
-		ft_printf("usage: %s command [command opts] [command args]\n", argv[0]);
+		valid = interactive_mode(argv[0]);
 	else
-	{
-		ft_memset(&opts, 0, sizeof(t_ssl_opts));
-		if (!parse_command(&opts, argv[1]))
-			usage_help(argv);
-		else
-		{
-			opts.argc = argc;
-			opts.argv = argv;
-			if (parse_ssl_options(&opts))
-				return (EXIT_SUCCESS);
-		}
-	}
-	return (EXIT_FAILURE);
+		valid = run_command(argv[0], argc - 1, argv + 1);
+	return (!valid ? EXIT_FAILURE : EXIT_SUCCESS);
 }

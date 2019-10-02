@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 16:46:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 23:24:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/02 19:02:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ static int	unknown_opt(t_ssl_opts *opts, char opt)
 {
 	if (opt == 's')
 		ft_dprintf(STDERR_FILENO, "%s: option requires an argument -- s\n"
-			, opts->argv[0]);
+			, opts->prefix);
 	else
 		ft_dprintf(STDERR_FILENO, "%s: illegal option -- %c\n"
-			, opts->argv[0], opt);
+			, opts->prefix, opt);
 	ft_dprintf(STDERR_FILENO, "usage: %s %s [-pqr] [-s string] [files ...]\n"
-		, opts->argv[0], opts->argv[1]);
+		, opts->prefix, opts->argv[0]);
 	return (0);
 }
 
@@ -39,7 +39,7 @@ static int	stdin_opt(t_ssl_opts *opts, int in_out)
 	else
 	{
 		ft_dprintf(STDERR_FILENO, "%s: unable to read from stdin\n"
-			, opts->argv[0]);
+			, opts->prefix);
 		return (0);
 	}
 	return (1);
@@ -70,15 +70,15 @@ static int	parse_files(t_ssl_opts *opts, int index)
 		opts->hash_count += 1;
 		fd = open(opts->argv[index], O_RDONLY);
 		if (fd == -1 && (ret = 0) == 0)
-			ft_dprintf(STDERR_FILENO, "%s: %s: unable to open\n"
-				, opts->argv[0], opts->argv[index]);
+			ft_dprintf(STDERR_FILENO, "%s: %s: unable to open file\n"
+				, opts->prefix, opts->argv[index]);
 		else
 		{
 			if (hash_stream_file(opts->stream_init_fn, digest, fd, 0))
 				print_file_digest(opts, opts->argv[index], digest);
 			else if ((ret = 0) == 0)
-				ft_dprintf(STDERR_FILENO, "%s: %s: unable to read\n"
-					, opts->argv[0], opts->argv[index]);
+				ft_dprintf(STDERR_FILENO, "%s: %s: unable to read file\n"
+					, opts->prefix, opts->argv[index]);
 			close(fd);
 		}
 		index++;
@@ -93,7 +93,7 @@ int			parse_ssl_options(t_ssl_opts *opts)
 	int			opt;
 
 	ret = 0;
-	getopt.index = 2;
+	getopt.index = 1;
 	getopt.offset = 0;
 	while ((opt = ft_getopt(opts->argc, opts->argv, "pqrs:", &getopt)) != -1)
 	{

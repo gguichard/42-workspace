@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/09/30 23:00:06 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/02 19:12:11 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ GREEN		=	\x1b[32m
 
 INC_DIR		=	includes
 
-CC			=	gcc -O2 -fsanitize=address
+CC			=	gcc -O2
 CPPFLAGS	=	-Ilibft/includes -I$(INC_DIR)
 CFLAGS 		=	-Wall -Werror -Wextra
 LDFLAGS		=	-Llibft -lft
@@ -25,6 +25,7 @@ LDFLAGS		=	-Llibft -lft
 SRC_DIR		=	src
 SRC 		=			\
 digest_print.c			\
+interactive.c			\
 main.c					\
 md5/md5_digest.c		\
 md5/md5_hash.c			\
