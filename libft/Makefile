@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/29 17:35:18 by gguichar          #+#    #+#              #
-#    Updated: 2019/04/24 16:32:51 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/02 19:29:40 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,6 +93,7 @@ ft_strrchr.c			\
 ft_strreplace.c			\
 ft_strreplace_free.c	\
 ft_strsplit.c			\
+ft_strssplit.c			\
 ft_strstr.c				\
 ft_strstrim.c			\
 ft_strsub.c				\
