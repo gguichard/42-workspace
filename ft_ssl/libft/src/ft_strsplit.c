@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/10 02:45:25 by gguichar          #+#    #+#             */
-/*   Updated: 2018/11/29 17:16:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/02 19:29:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,20 +41,6 @@ static size_t	ft_count_words(char const *s, char c)
 	return (words);
 }
 
-static void		*ft_free_tab(char **tab, size_t len)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < len)
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-	return (NULL);
-}
-
 char			**ft_strsplit(char const *s, char c)
 {
 	size_t	words;
@@ -75,7 +61,7 @@ char			**ft_strsplit(char const *s, char c)
 			s++;
 		word_len = ft_word_len(s, c);
 		if (!(tab[i] = ft_strsub(s, 0, word_len)))
-			return (ft_free_tab(tab, i));
+			return (ft_strtab_free(tab));
 		s += word_len;
 		i++;
 	}
