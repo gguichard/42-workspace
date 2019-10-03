@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:18:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/02 19:22:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/03 18:55:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,41 @@
 #include "ft_ssl_md5.h"
 #include "ft_ssl_sha2.h"
 
+static t_ssl_hash_cmd	g_hash_cmds[] = {
+	{"md5", "MD5", md5_stream_init},
+	{"sha256", "SHA256", sha256_stream_init}
+};
+
 static void	usage_help(const char *prefix, const char *cmd)
 {
+	size_t	idx;
+
 	ft_dprintf(STDERR_FILENO, "%s: %s: not a valid command\n", prefix, cmd);
 	ft_dprintf(STDERR_FILENO, "\nStandard commands\nNone\n");
-	ft_dprintf(STDERR_FILENO, "\nMessage Digest commands\nmd5\nsha256\n");
+	ft_dprintf(STDERR_FILENO, "\nMessage Digest commands\n");
+	idx = 0;
+	while (idx < (sizeof(g_hash_cmds) / sizeof(g_hash_cmds[0])))
+	{
+		ft_dprintf(STDERR_FILENO, "%s\n", g_hash_cmds[idx].hash_cmd);
+		idx++;
+	}
 	ft_dprintf(STDERR_FILENO, "\nCipher commands\nNone\n\n");
 }
 
 static int	setup_command(t_ssl_opts *opts, const char *cmd)
 {
-	if (ft_strequ("md5", cmd))
+	size_t	idx;
+
+	idx = 0;
+	while (idx < (sizeof(g_hash_cmds) / sizeof(g_hash_cmds[0])))
 	{
-		opts->stream_init_fn = md5_stream_init;
-		ft_strcpy(opts->hash_name, "MD5");
-		return (1);
-	}
-	else if (ft_strequ("sha256", cmd))
-	{
-		opts->stream_init_fn = sha256_stream_init;
-		ft_strcpy(opts->hash_name, "SHA256");
-		return (1);
+		if (ft_strequ(g_hash_cmds[idx].hash_cmd, cmd))
+		{
+			opts->stream_fn = g_hash_cmds[idx].stream_fn;
+			ft_strcpy(opts->hash_name, g_hash_cmds[idx].hash_name);
+			return (1);
+		}
+		idx++;
 	}
 	return (0);
 }
