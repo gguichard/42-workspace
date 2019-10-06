@@ -1,0 +1,3 @@
+# pour recup un token (sur Char) : docker swarm join-token worker
+# switch sur Aiur : eval $(docker-machine env Aiur)
+docker swarm join --token mon-token $(docker-machine ip Char)

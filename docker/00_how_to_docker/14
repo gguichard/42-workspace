@@ -1,0 +1,1 @@
+docker run --name lair --publish 8080:80 --env WORDPRESS_DB_HOST=$(docker container inspect spawning-pool --format "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}") --env WORDPRESS_DB_USER=root --env WORDPRESS_DB_PASSWORD=Kerrigan --env WORDPRESS_DB_NAME=zerglings --detach wordpress

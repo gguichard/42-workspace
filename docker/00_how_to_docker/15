@@ -1,0 +1,1 @@
+docker run --name roach-warden --publish 8081:80 --env PMA_HOST=$(docker container inspect spawning-pool --format "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}") --detach phpmyadmin/phpmyadmin
