@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 11:39:36 by gguichar          #+#    #+#              #
-#    Updated: 2019/10/10 16:15:43 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/13 15:31:41 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ LDLIBS	=
 
 SRC_DIR	=	src
 SRC 	=		\
+ast.c			\
 error.c			\
 lexer.c			\
 lexer_types.c	\
