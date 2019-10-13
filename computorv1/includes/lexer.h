@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:04:44 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/10 16:29:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/12 23:00:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define BRACKET_CHARS "()[]"
 # define OPERATOR_CHARS "+-*/"
 # define DIGIT_CHARS "0123456789"
-# define VAR_CHARS "X"
+# define VAR_CHARS "xX"
 # define POW_CHARS "^"
 # define EQUAL_CHARS "="
 
