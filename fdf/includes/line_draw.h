@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 18:58:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/22 16:05:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 19:17:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ typedef struct	s_vline
 }				t_vline;
 
 void			draw_line(t_fdf *fdf, t_pos start, t_pos end);
+void			draw_vline(t_fdf *fdf, t_vec3d pos[2], unsigned int color);
 
 #endif

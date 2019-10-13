@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   line_draw.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/22 15:36:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/09/22 19:29:18 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static inline void	draw_pixel(t_fdf *fdf, t_line line)
 	fdf->lib.img_data[index] = get_color(line.c0, line.c1, percent);
 }
 
-static void			step_line(t_line *line)
+static inline void	step_line(t_line *line)
 {
 	int	tmp;
 
@@ -48,7 +48,7 @@ static void			step_line(t_line *line)
 	}
 }
 
-static void			draw_line_bresenham(t_fdf *fdf, t_pos start, t_pos end)
+static inline void	draw_line_bresenham(t_fdf *fdf, t_pos start, t_pos end)
 {
 	t_line	line;
 

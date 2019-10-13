@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/09/22 15:17:51 by gguichar         ###   ########.fr        #
+#    Updated: 2019/09/22 19:29:43 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,6 @@ LDFLAGS		=	-Llibft -lft -L/usr/local/lib -lmlx -framework OpenGL -framework AppK
 
 SRC_DIR		=	src
 SRC 		=			\
-draw.c					\
 draw_fn.c				\
 draw_utils.c			\
 error.c					\
@@ -33,6 +32,7 @@ handle_hooks.c			\
 hooks.c					\
 key_hooks.c				\
 lib_mlx.c				\
+line_draw.c				\
 main.c					\
 math_utils.c			\
 matrix44.c				\
@@ -41,6 +41,7 @@ parser.c				\
 parser_obj.c			\
 utils.c					\
 vectors.c				\
+vline_draw.c			\
 wf_obj_parser.c			\
 wf_obj_parser_helper.c
 
