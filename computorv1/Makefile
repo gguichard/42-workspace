@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 11:39:36 by gguichar          #+#    #+#              #
-#    Updated: 2019/10/15 14:18:42 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/15 20:27:03 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ lexer.c				\
 main.c				\
 parser.c			\
 poly.c				\
+solve.c				\
 utils.c
 
 OBJ_DIR		=	.obj

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:59:20 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/15 18:20:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/15 19:50:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void			reduce_factor_list(factor_list_t **lst, factor_list_t *from)
 
 	for (node = from; node != NULL; node = node->next)
 		get_factor_or_create(lst, node->power)->value -= node->value;
+
+	// Suppression des facteurs nuls
 	for (node = *lst; node != NULL; node = next)
 	{
 		next = node->next;
@@ -66,11 +68,11 @@ void			reduce_factor_list(factor_list_t **lst, factor_list_t *from)
 			prev = node;
 		else
 		{
+			free(node);
 			if (prev == NULL)
 				*lst = next;
 			else
 				prev->next = next;
-			free(node);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:41:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/15 18:21:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/15 20:26:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,29 @@
 # include "ast.h"
 # include "lexer.h"
 
+typedef struct factor_list factor_list_t;
+
 /*
  * POLY SOLVER
  */
 void			solve_poly(ast_node_t *root);
 
+typedef struct
+{
+	int		degree;
+	void	(*fn)(factor_list_t *);
+} solve_map_t;
+
 /*
  * FACTORS
  */
 
-typedef struct factor_list
+struct factor_list
 {
 	struct factor_list	*next;
 	double				value;
 	int					power;
-} factor_list_t;
+};
 
 typedef struct
 {
@@ -39,6 +47,7 @@ typedef struct
 } op_map_t;
 
 factor_list_t	*compute_ast_factors(ast_node_t *root);
+int				solve_poly_fn(int degree, factor_list_t *poly);
 
 factor_list_t	*get_factor(factor_list_t *lst, int power);
 double			get_factor_value_or_default(factor_list_t *lst
