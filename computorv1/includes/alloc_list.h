@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.h                                              :+:      :+:    :+:   */
+/*   alloc_list.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/13 11:40:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/14 14:26:46 by gguichar         ###   ########.fr       */
+/*   Created: 2019/10/14 11:11:30 by gguichar          #+#    #+#             */
+/*   Updated: 2019/10/15 09:03:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AST_H
-# define AST_H
+#ifndef ALLOC_LIST_H
+# define ALLOC_LIST_H
 
-# include "lexer.h"
-
-typedef struct	ast_node
+typedef struct	alloc_list
 {
-	lexeme_t		*token;
-	struct ast_node	*left;
-	struct ast_node	*right;
-} ast_node_t;
+	void				*data;
+	struct alloc_list	*next;
+} alloc_list_t;
 
-void			free_ast(ast_node_t *root);
+alloc_list_t	*push_alloc(alloc_list_t **lst, void *data);
+void			del_alloc_list(alloc_list_t **lst, void (*fn)(void *));
 
 #endif

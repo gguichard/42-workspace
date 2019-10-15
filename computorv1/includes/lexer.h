@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:04:44 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/12 23:00:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/15 11:28:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 
 # define WHITESPACE_CHARS " \t"
 # define BRACKET_CHARS "()[]"
-# define OPERATOR_CHARS "+-*/"
+# define OPERATOR_CHARS "+-*/^"
 # define DIGIT_CHARS "0123456789"
 # define VAR_CHARS "xX"
-# define POW_CHARS "^"
 # define EQUAL_CHARS "="
 
 typedef enum
@@ -30,12 +29,12 @@ typedef enum
 	e_LEX_CLOSE_BRACKET = 2,
 	e_LEX_NUMBER = 4,
 	e_LEX_VAR = 8,
-	e_LEX_POW = 16,
-	e_LEX_EQUAL = 32,
-	e_LEX_OP_PLUS = 64,
-	e_LEX_OP_MINUS = 128,
-	e_LEX_OP_DIV = 256,
-	e_LEX_OP_MUL = 512,
+	e_LEX_EQUAL = 16,
+	e_LEX_OP_PLUS = 32,
+	e_LEX_OP_MINUS = 64,
+	e_LEX_OP_DIV = 128,
+	e_LEX_OP_MUL = 256,
+	e_LEX_OP_POW = 512,
 	e_LEX_END = 1024
 } lexeme_type_t;
 
@@ -70,7 +69,6 @@ void			lex_bracket(lexeme_ctx_t *ctx);
 void			lex_operator(lexeme_ctx_t *ctx);
 void			lex_number(lexeme_ctx_t *ctx);
 void			lex_var(lexeme_ctx_t *ctx);
-void			lex_pow(lexeme_ctx_t *ctx);
 void			lex_equal(lexeme_ctx_t *ctx);
 
 void			free_lexeme_list(lexeme_list_t *lst);

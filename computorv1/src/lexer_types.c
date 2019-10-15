@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 13:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/10 15:07:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/15 13:58:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ void	lex_operator(lexeme_ctx_t *ctx)
 		case '*':
 			ctx->type = e_LEX_OP_MUL;
 			break;
+		case '^':
+			ctx->type = e_LEX_OP_POW;
+			break;
 		default:
 			ctx->type = e_LEX_UNKNOWN;
 			break;
@@ -45,20 +48,24 @@ void	lex_operator(lexeme_ctx_t *ctx)
 
 void	lex_number(lexeme_ctx_t *ctx)
 {
-	while (ctx->buffer[ctx->len] != '\0' &&
-		strchr(DIGIT_CHARS, ctx->buffer[ctx->len]) != NULL)
+	int	decimal = 0;
+
+	while (ctx->buffer[ctx->len] != '\0'
+		&& (ctx->buffer[ctx->len] == '.'
+			|| strchr(DIGIT_CHARS, ctx->buffer[ctx->len]) != NULL))
+	{
+		if (ctx->buffer[ctx->len] == '.')
+			decimal += 1;
+		if (decimal > 1)
+			break;
 		ctx->len += 1;
+	}
 	ctx->type = e_LEX_NUMBER;
 }
 
 void	lex_var(lexeme_ctx_t *ctx)
 {
 	ctx->type = e_LEX_VAR;
-}
-
-void	lex_pow(lexeme_ctx_t *ctx)
-{
-	ctx->type = e_LEX_POW;
 }
 
 void	lex_equal(lexeme_ctx_t *ctx)

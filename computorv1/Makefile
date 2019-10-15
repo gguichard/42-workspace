@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 11:39:36 by gguichar          #+#    #+#              #
-#    Updated: 2019/10/13 15:31:41 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/15 14:18:42 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,13 +23,19 @@ LDFLAGS	=
 LDLIBS	=
 
 SRC_DIR	=	src
-SRC 	=		\
-ast.c			\
-error.c			\
-lexer.c			\
-lexer_types.c	\
-main.c			\
-parser.c
+SRC 	=			\
+alloc_list.c		\
+ast.c				\
+compute.c			\
+error.c				\
+factor_list_op.c	\
+factor_list.c		\
+lexer_types.c		\
+lexer.c				\
+main.c				\
+parser.c			\
+poly.c				\
+utils.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)

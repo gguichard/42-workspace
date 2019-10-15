@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:58:59 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/10 16:36:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/14 13:24:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static lexeme_ctx_t	dispatch_lexer(const char *str, size_t offset)
 		{OPERATOR_CHARS, lex_operator},
 		{DIGIT_CHARS, lex_number},
 		{VAR_CHARS, lex_var},
-		{POW_CHARS, lex_pow},
 		{EQUAL_CHARS, lex_equal}
 	};
 	size_t			idx;

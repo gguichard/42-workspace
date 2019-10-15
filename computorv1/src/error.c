@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:15:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/10 16:23:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/15 13:14:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void		print_parser_error(lexeme_list_t *lst, lexeme_t *err_node
 	, const char *info)
 {
 	fprintf(stderr, "\e[37;1msyntax:\e[0m \e[31;1merror:"
-		"\e[0m < \e[37;1m%.*s\e[0m > expected %s\n"
+		"\e[0m < \e[37;1m%.*s\e[0m > %s\n"
 		, (int)err_node->content_size, err_node->content, info);
 	print_nodes_for_error(lst, err_node);
 }
