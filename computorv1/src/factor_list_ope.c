@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   factor_list_op.c                                   :+:      :+:    :+:   */
+/*   factor_list_ope.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:17:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/15 18:21:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:38:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "computorv1.h"
+#include "utils.h"
 
 factor_list_t	*factor_list_plus(factor_list_t *a, factor_list_t *b)
 {

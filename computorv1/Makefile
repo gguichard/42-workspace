@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/08 11:39:36 by gguichar          #+#    #+#              #
-#    Updated: 2019/10/15 20:27:03 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/16 15:38:10 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,12 @@ alloc_list.c		\
 ast.c				\
 compute.c			\
 error.c				\
-factor_list_op.c	\
+factor_list_ope.c	\
 factor_list.c		\
 lexer_types.c		\
 lexer.c				\
 main.c				\
+math_utils.c		\
 parser.c			\
 poly.c				\
 solve.c				\

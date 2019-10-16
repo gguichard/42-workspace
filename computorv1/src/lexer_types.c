@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 13:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/15 13:58:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:38:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ void	lex_operator(lexeme_ctx_t *ctx)
 	switch (ctx->buffer[0])
 	{
 		case '+':
-			ctx->type = e_LEX_OP_PLUS;
+			ctx->type = e_LEX_OPE_PLUS;
 			break;
 		case '-':
-			ctx->type = e_LEX_OP_MINUS;
+			ctx->type = e_LEX_OPE_MINUS;
 			break;
 		case '/':
-			ctx->type = e_LEX_OP_DIV;
+			ctx->type = e_LEX_OPE_DIV;
 			break;
 		case '*':
-			ctx->type = e_LEX_OP_MUL;
+			ctx->type = e_LEX_OPE_MUL;
 			break;
 		case '^':
-			ctx->type = e_LEX_OP_POW;
+			ctx->type = e_LEX_OPE_POW;
 			break;
 		default:
 			ctx->type = e_LEX_UNKNOWN;

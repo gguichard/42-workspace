@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   alloc_list.h                                       :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/14 11:11:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 09:31:53 by gguichar         ###   ########.fr       */
+/*   Created: 2019/10/16 11:38:30 by gguichar          #+#    #+#             */
+/*   Updated: 2019/10/16 19:34:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ALLOC_LIST_H
-# define ALLOC_LIST_H
+#ifndef UTILS_H
+# define UTILS_H
 
-typedef struct alloc_list
+# include "computorv1.h"
+
+typedef struct
 {
-	void				*data;
-	struct alloc_list	*next;
-} alloc_list_t;
+	double	real;
+	double	imag;
+} complex_t;
 
-alloc_list_t	*push_alloc(alloc_list_t **lst, void *data);
-void			del_alloc_list(alloc_list_t **lst, void (*fn)(void *));
+complex_t	new_complex(double real, double imag);
+
+double		abs_fn(double nb);
+double		pow_fn(double nb, int pow);
+double		sqrt_fn(double nb);
+
+void		print_value(double value);
+void		print_factor_list(factor_list_t *lst);
 
 #endif

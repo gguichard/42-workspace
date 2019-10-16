@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:59:20 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/15 19:50:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 13:52:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,19 @@ factor_list_t	*get_factor_or_create(factor_list_t **lst, int power)
 		*lst = node;
 	}
 	return node;
+}
+
+factor_list_t	*factor_list_derivate(factor_list_t *poly)
+{
+	factor_list_t	*lst = NULL;
+	factor_list_t	*node;
+
+	for (node = poly; node != NULL; node = node->next)
+	{
+		if (node->power > 0)
+			get_factor_or_create(&lst, node->power - 1)->value = node->value * node->power;
+	}
+	return lst;
 }
 
 void			reduce_factor_list(factor_list_t **lst, factor_list_t *from)

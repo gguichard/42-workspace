@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:04:44 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/15 11:28:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 15:38:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ typedef enum
 	e_LEX_NUMBER = 4,
 	e_LEX_VAR = 8,
 	e_LEX_EQUAL = 16,
-	e_LEX_OP_PLUS = 32,
-	e_LEX_OP_MINUS = 64,
-	e_LEX_OP_DIV = 128,
-	e_LEX_OP_MUL = 256,
-	e_LEX_OP_POW = 512,
+	e_LEX_OPE_PLUS = 32,
+	e_LEX_OPE_MINUS = 64,
+	e_LEX_OPE_DIV = 128,
+	e_LEX_OPE_MUL = 256,
+	e_LEX_OPE_POW = 512,
 	e_LEX_END = 1024
 } lexeme_type_t;
 
