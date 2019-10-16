@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 20:24:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 19:34:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 19:49:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void		solve_const_poly(factor_list_t *poly)
 	if (c != 0.0)
 		fprintf(stderr, "I can't solve that equation because it is wrong.\n");
 	else
-		fprintf(stdout, "The solutions are all real numbers.\n");
+		fprintf(stdout, "Every complex number is a solution.\n");
 }
 
 static void		solve_linear_poly(factor_list_t *poly)
