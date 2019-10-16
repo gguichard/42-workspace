@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 22:50:17 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 15:38:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 22:08:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 
 static jmp_error_t		error;
 static alloc_list_t		*alloc_lst;
+static lexeme_t			lexeme_mul = {
+	.type = e_LEX_OPE_MUL,
+	.content = "*",
+	.content_size = 1,
+	.next = NULL
+};
 
 static ast_node_t		*parse_expr(lexeme_t **current, int allow_var);
 
@@ -86,7 +92,7 @@ static ast_node_t		*parse_factor(lexeme_t **current, int allow_var)
 		accept_lexeme(current, get_lexeme_type(current));
 		node = parse_factor(current, allow_var);
 		if (node == NULL)
-			throw_error(JUMP_PARSE_ERROR, "expected factor after unary operator");
+			throw_error(JUMP_PARSE_ERROR, "expected factor after unary ope");
 		node = create_node(token, NULL, node);
 	}
 	else if (!allow_var && is_lexeme_type(current, e_LEX_VAR))
@@ -123,11 +129,15 @@ static ast_node_t		*parse_term(lexeme_t **current, int allow_var)
 	ast_node_t	*factor;
 	lexeme_t	*token;
 
-	while (is_lexeme_type(current, e_LEX_OPE_MUL | e_LEX_OPE_DIV))
+	while (is_lexeme_type(current
+		, e_LEX_OPE_MUL | e_LEX_OPE_DIV | e_LEX_VAR | e_LEX_OPEN_BRACKET))
 	{
 		if (node == NULL)
 			throw_error(JUMP_PARSE_ERROR, "term must begin with a factor");
-		token = *current;
+		else if (is_lexeme_type(current, e_LEX_VAR | e_LEX_OPEN_BRACKET))
+			token = &lexeme_mul;
+		else
+			token = *current;
 		accept_lexeme(current, e_LEX_OPE_MUL | e_LEX_OPE_DIV);
 		factor = parse_factor(current, allow_var);
 		if (factor == NULL)
