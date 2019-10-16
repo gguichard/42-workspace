@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 20:24:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 19:49:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 20:00:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,4 +170,5 @@ static void		solve_cubic_poly(factor_list_t *poly)
 		print_complex(1, x1);
 		print_complex(2, x2);
 	}
+	free_factor_list(&derivative);
 }
