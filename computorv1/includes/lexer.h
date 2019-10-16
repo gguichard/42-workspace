@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:04:44 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 15:38:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 19:44:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <string.h>
 
-# define WHITESPACE_CHARS " \t"
+# define WHITESPACE_CHARS " \t\n"
 # define BRACKET_CHARS "()[]"
 # define OPERATOR_CHARS "+-*/^"
 # define DIGIT_CHARS "0123456789"
