@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:40:50 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 11:02:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/16 20:02:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv)
 			solve_poly(root);
 			free_ast(root);
 		}
-		free_lexeme_list(&lst);
 	}
+	free_lexeme_list(&lst);
 	return EXIT_SUCCESS;
 }
