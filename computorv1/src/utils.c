@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:42:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 14:33:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 23:29:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void		print_factor_list(factor_list_t *lst)
 				, node->value < 0 ? '-' : '+'
 				, (node->value >= 0 || node != lst) ? " " : "");
 		}
-		if (node->value != 1.0 && node->value != -1.0)
+		if (abs_fn(node->value) != 1.0)
 		{
 			print_real_value(abs_fn(node->value));
 			fprintf(stdout, " * ");

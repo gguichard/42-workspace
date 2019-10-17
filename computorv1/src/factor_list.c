@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:59:20 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 15:57:22 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 23:26:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ factor_list_t	*factor_list_derivate(factor_list_t *poly)
 	for (node = poly; node != NULL; node = node->next)
 	{
 		if (node->power > 0)
-			get_factor_or_create(&lst, node->power - 1)->value = node->value * node->power;
+			get_factor_or_create(&lst, node->power - 1)->value
+				= node->value * node->power;
 	}
 	return lst;
 }

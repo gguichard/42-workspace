@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:03:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 15:41:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 23:29:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,6 @@ static int	get_poly_degree(factor_list_t *lst)
 	return degree;
 }
 
-static void	print_reduced_form(factor_list_t *poly)
-{
-	fprintf(stdout, "Reduced form: ");
-	print_factor_list(poly);
-	fprintf(stdout, " = 0\n");
-}
-
 void		solve_poly(ast_node_t *root)
 {
 	factor_list_t	*poly;
@@ -80,7 +73,9 @@ void		solve_poly(ast_node_t *root)
 	result = ast_factor_list(root->right);
 	reduce_factor_list(&poly, result);
 	reorder_poly_factors(&poly);
-	print_reduced_form(poly);
+	fprintf(stdout, "Reduced form: ");
+	print_factor_list(poly);
+	fprintf(stdout, " = 0\n");
 	degree = get_poly_degree(poly);
 	fprintf(stdout, "Polynomial degree: %d\n", degree);
 	if (!solve_poly_fn(degree, poly))
