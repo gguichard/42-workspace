@@ -6,12 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:59:20 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 13:52:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:57:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "computorv1.h"
+#include "utils.h"
 
 factor_list_t	*get_factor(factor_list_t *lst, int power)
 {
@@ -44,6 +45,8 @@ factor_list_t	*get_factor_or_create(factor_list_t **lst, int power)
 	if (node == NULL)
 	{
 		node = malloc(sizeof(factor_list_t));
+		if (node == NULL)
+			exit_unexpected();
 		node->next = *lst;
 		node->value = 0;
 		node->power = power;
@@ -68,12 +71,26 @@ factor_list_t	*factor_list_derivate(factor_list_t *poly)
 void			reduce_factor_list(factor_list_t **lst, factor_list_t *from)
 {
 	factor_list_t	*node;
+	int				lowest_power = 0;
 	factor_list_t	*next, *prev = NULL;
 
 	for (node = from; node != NULL; node = node->next)
 		get_factor_or_create(lst, node->power)->value -= node->value;
 
-	// Suppression des facteurs nuls
+	// Replace negative factors
+	for (node = *lst; node != NULL; node = node->next)
+	{
+		if (node->power < lowest_power)
+			lowest_power = node->power;
+	}
+	if (lowest_power < 0)
+	{
+		lowest_power = -lowest_power;
+		for (node = *lst; node != NULL; node = node->next)
+			node->power += lowest_power;
+	}
+
+	// Remove null factors
 	for (node = *lst; node != NULL; node = next)
 	{
 		next = node->next;

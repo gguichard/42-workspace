@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:04:44 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 19:44:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 12:32:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ typedef struct
 
 typedef struct
 {
-	lexeme_t		*front;
-	lexeme_t		*back;
+	lexeme_t	*front;
+	lexeme_t	*back;
 } lexeme_list_t;
 
 typedef struct

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 20:24:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 20:00:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 17:28:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,29 +43,22 @@ int				solve_poly_fn(int degree, factor_list_t *poly)
 
 static void		solve_const_poly(factor_list_t *poly)
 {
-	double	c = get_factor_value_or_default(poly, 0, 0.0);
+	double	k;
 
-	if (c != 0.0)
-		fprintf(stderr, "I can't solve that equation because it is wrong.\n");
+	k = get_factor_value_or_default(poly, 0, 0.0);
+	if (k != 0.0)
+		fprintf(stderr, "There is no solution.\n");
 	else
 		fprintf(stdout, "Every complex number is a solution.\n");
 }
 
 static void		solve_linear_poly(factor_list_t *poly)
 {
-	double	a = get_factor_value_or_default(poly, 1, 0.0);
-	double	b = get_factor_value_or_default(poly, 0, 0.0);
+	double	a, b;
 
-	fprintf(stdout, "X = %f\n", -b / a);
-}
-
-static void		print_complex(int nb, complex_t value)
-{
-	if (value.imag == 0.0)
-		fprintf(stdout, "X%d = %f\n", nb, value.real);
-	else
-		fprintf(stdout, "X%d = %f %c %fi\n"
-			, nb, value.real, value.imag < 0.0 ? '-' : '+', abs_fn(value.imag));
+	a = get_factor_value_or_default(poly, 1, 0.0);
+	b = get_factor_value_or_default(poly, 0, 0.0);
+	print_complex(0, new_complex(-b / a, 0));
 }
 
 static double	solve_quadratic(double quad_a, double quad_b, double quad_c
@@ -112,39 +105,10 @@ static void		solve_quad_poly(factor_list_t *poly)
 		print_complex(1, x1);
 }
 
-static double	compute_poly(factor_list_t *poly, double x)
-{
-	factor_list_t	*node;
-	double			value = 0.0;
-
-	for (node = poly; node != NULL; node = node->next)
-		value += (node->value * pow_fn(x, node->power));
-	return value;
-}
-
-static double	search_real_root(factor_list_t *poly, factor_list_t *derivative)
-{
-	int		iter;
-	double	x0 = 1.0, x1 = 1.0;
-	double	y_prime;
-
-	// Search a root thanks to Newton-Raphson
-	for (iter = 0; iter < 100; iter++)
-	{
-		y_prime = compute_poly(derivative, x0);
-		if (abs_fn(y_prime) < 1e-14)
-			break;
-		x1 = x0 - (compute_poly(poly, x0) / y_prime);
-		if (abs_fn(x1 - x0) <= 1e-6)
-			break;
-		x0 = x1;
-	}
-	return x1;
-}
-
 static void		solve_cubic_poly(factor_list_t *poly)
 {
 	factor_list_t	*derivative;
+	int				succeed;
 	complex_t		x0, x1, x2;
 	double			a, b, c;
 
@@ -153,18 +117,21 @@ static void		solve_cubic_poly(factor_list_t *poly)
 	fprintf(stdout, "Derivative function: ");
 	print_factor_list(derivative);
 	fprintf(stdout, "\n");
-	x0 = new_complex(search_real_root(poly, derivative), 0.0);
-	if (abs_fn(x0.real) <= 1e-6)
-	{
-		fprintf(stdout, "The triple real solution is:\n");
-		print_complex(0, x0);
-	}
+	x0 = new_complex(search_real_root(poly, derivative, &succeed), 0.0);
+	if (!succeed)
+		fprintf(stderr, "Sorry, I'm unable to find a root.\n");
 	else
 	{
-		c = get_factor_value_or_default(poly, 0, 0.0) / -(x0.real);
-		b = (get_factor_value_or_default(poly, 1, 0.0) - c) / -(x0.real);
-		a = (get_factor_value_or_default(poly, 2, 0.0) - b) / -(x0.real);
-		solve_quadratic(a, b, c, &x1, &x2);
+		// Round the number and ignore the non significant decimal part due to
+		// Newton-Raphson precision errors.
+		if (x0.real * (1 / EPSILON) < 10.0)
+			x0.real = (int)x0.real;
+		x1 = x2 = x0;
+		a = get_factor_value_or_default(poly, 3, 0.0);
+		b = get_factor_value_or_default(poly, 2, 0.0) + a * x0.real;
+		c = get_factor_value_or_default(poly, 1, 0.0) + b * x0.real;
+		if (abs_fn(a) > EPSILON)
+			solve_quadratic(a, b, c, &x1, &x2);
 		fprintf(stdout, "The three solutions are:\n");
 		print_complex(0, x0);
 		print_complex(1, x1);

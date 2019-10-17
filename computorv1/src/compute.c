@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:39:32 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 15:38:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 12:19:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "computorv1.h"
 #include "lexer.h"
 #include "ast.h"
+#include "utils.h"
 
 static const op_map_t	ope_map_fn[] = {
 	{e_LEX_OPE_PLUS, factor_list_plus},
@@ -28,6 +29,8 @@ static factor_list_t	*create_end_factor(ast_node_t *root)
 {
 	factor_list_t	*factor = malloc(sizeof(factor_list_t));
 
+	if (factor == NULL)
+		exit_unexpected();
 	factor->next = NULL;
 	if (root->token->type == e_LEX_VAR)
 		factor->power = factor->value = 1;

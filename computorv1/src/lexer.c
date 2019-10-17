@@ -6,13 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:58:59 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/14 13:24:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 12:18:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <string.h>
 #include "lexer.h"
+#include "utils.h"
 
 static lexeme_ctx_t	lexeme_end_ctx = {
 	.type = e_LEX_END,
@@ -47,7 +48,7 @@ static lexeme_ctx_t	dispatch_lexer(const char *str, size_t offset)
 	return ctx;
 }
 
-static int			store_lexeme(lexeme_list_t *lst, lexeme_ctx_t *ctx)
+static void			store_lexeme(lexeme_list_t *lst, lexeme_ctx_t *ctx)
 {
 	lexeme_t	*node;
 
@@ -61,22 +62,18 @@ static int			store_lexeme(lexeme_list_t *lst, lexeme_ctx_t *ctx)
 	else
 	{
 		node = malloc(sizeof(lexeme_t));
-		if (node != NULL)
-		{
-			node->type = ctx->type;
-			node->content = ctx->buffer;
-			node->content_size = ctx->len;
-			node->next = NULL;
-			if (lst->front == NULL)
-				lst->front = node;
-			if (lst->back != NULL)
-				lst->back->next = node;
-
-			lst->back = node;
-		}
+		if (node == NULL)
+			exit_unexpected();
+		node->type = ctx->type;
+		node->content = ctx->buffer;
+		node->content_size = ctx->len;
+		node->next = NULL;
+		if (lst->front == NULL)
+			lst->front = node;
+		if (lst->back != NULL)
+			lst->back->next = node;
+		lst->back = node;
 	}
-
-	return node != NULL;
 }
 
 void				free_lexeme_list(lexeme_list_t *lst)
@@ -106,15 +103,10 @@ lexeme_list_t		split_input_in_lexemes(const char *str)
 		else
 		{
 			ctx = dispatch_lexer(str, offset);
-			if (!store_lexeme(&lst, &ctx))
-			{
-				free_lexeme_list(&lst);
-				break;
-			}
+			store_lexeme(&lst, &ctx);
 			offset += ctx.len;
 		}
 	}
-	if (!store_lexeme(&lst, &lexeme_end_ctx))
-		free_lexeme_list(&lst);
+	store_lexeme(&lst, &lexeme_end_ctx);
 	return lst;
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 13:36:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 15:38:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 10:27:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,13 @@ void	lex_operator(lexeme_ctx_t *ctx)
 			ctx->type = e_LEX_OPE_DIV;
 			break;
 		case '*':
-			ctx->type = e_LEX_OPE_MUL;
+			if (ctx->buffer[1] != '*')
+				ctx->type = e_LEX_OPE_MUL;
+			else
+			{
+				ctx->len += 1;
+				ctx->type = e_LEX_OPE_POW;
+			}
 			break;
 		case '^':
 			ctx->type = e_LEX_OPE_POW;

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 22:50:17 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 22:08:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:53:02 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
 #include "ast.h"
 #include "alloc_list.h"
 #include "error.h"
+#include "utils.h"
 
 static jmp_error_t		error;
 static alloc_list_t		*alloc_lst;
-static lexeme_t			lexeme_mul = {
+static lexeme_t			lexeme_ope_mul = {
 	.type = e_LEX_OPE_MUL,
 	.content = "*",
 	.content_size = 1,
@@ -30,10 +31,10 @@ static lexeme_t			lexeme_mul = {
 
 static ast_node_t		*parse_expr(lexeme_t **current, int allow_var);
 
-static void				throw_error(int type, const char *reason)
+static void				throw_error(const char *reason)
 {
 	error.message = reason;
-	longjmp(error.buf, type);
+	longjmp(error.buf, JUMP_PARSE_ERROR);
 }
 
 static ast_node_t		*create_node(lexeme_t *token
@@ -42,15 +43,11 @@ static ast_node_t		*create_node(lexeme_t *token
 	ast_node_t	*node = malloc(sizeof(ast_node_t));
 
 	if (node == NULL)
-		throw_error(JUMP_UNEXPECTED, "unexpected error");
+		exit_unexpected();
 	node->left = left;
 	node->right = right;
 	node->token = token;
-	if (push_alloc(&alloc_lst, node) == NULL)
-	{
-		free(node);
-		throw_error(JUMP_UNEXPECTED, "unexpected error");
-	}
+	push_alloc(&alloc_lst, node);
 	return node;
 }
 
@@ -86,30 +83,30 @@ static ast_node_t		*parse_factor(lexeme_t **current, int allow_var)
 	lexeme_t	*token;
 	ast_node_t	*expr;
 
-	if (is_lexeme_type(current, e_LEX_OPE_PLUS | e_LEX_OPE_MINUS))
+	if (!allow_var && is_lexeme_type(current, e_LEX_VAR))
+		throw_error("variable not allowed in power factor");
+	else if (is_lexeme_type(current, e_LEX_VAR | e_LEX_NUMBER))
+	{
+		node = create_node(*current, NULL, NULL);
+		accept_lexeme(current, get_lexeme_type(current));
+	}
+	else if (is_lexeme_type(current, e_LEX_OPE_PLUS | e_LEX_OPE_MINUS))
 	{
 		token = *current;
 		accept_lexeme(current, get_lexeme_type(current));
 		node = parse_factor(current, allow_var);
 		if (node == NULL)
-			throw_error(JUMP_PARSE_ERROR, "expected factor after unary ope");
+			throw_error("expected factor after unary operator");
 		node = create_node(token, NULL, node);
-	}
-	else if (!allow_var && is_lexeme_type(current, e_LEX_VAR))
-		throw_error(JUMP_PARSE_ERROR, "variable not allowed in power factor");
-	else if (is_lexeme_type(current, e_LEX_VAR | e_LEX_NUMBER))
-	{
-		node = create_node(*current, NULL, NULL);
-		accept_lexeme(current, get_lexeme_type(current));
 	}
 	else if (is_lexeme_type(current, e_LEX_OPEN_BRACKET))
 	{
 		accept_lexeme(current, e_LEX_OPEN_BRACKET);
 		node = parse_expr(current, allow_var);
 		if (node == NULL)
-			throw_error(JUMP_PARSE_ERROR, "expected expr inside brackets");
+			throw_error("expected expr inside brackets");
 		else if (!accept_lexeme(current, e_LEX_CLOSE_BRACKET))
-			throw_error(JUMP_PARSE_ERROR, "expected close bracket");
+			throw_error("expected close bracket");
 	}
 	if (node != NULL && is_lexeme_type(current, e_LEX_OPE_POW))
 	{
@@ -117,7 +114,7 @@ static ast_node_t		*parse_factor(lexeme_t **current, int allow_var)
 		accept_lexeme(current, e_LEX_OPE_POW);
 		expr = parse_factor(current, 0);
 		if (expr == NULL)
-			throw_error(JUMP_PARSE_ERROR, "expected power factor");
+			throw_error("expected power factor");
 		node = create_node(token, node, expr);
 	}
 	return node;
@@ -133,15 +130,15 @@ static ast_node_t		*parse_term(lexeme_t **current, int allow_var)
 		, e_LEX_OPE_MUL | e_LEX_OPE_DIV | e_LEX_VAR | e_LEX_OPEN_BRACKET))
 	{
 		if (node == NULL)
-			throw_error(JUMP_PARSE_ERROR, "term must begin with a factor");
+			throw_error("term must begin with a factor");
 		else if (is_lexeme_type(current, e_LEX_VAR | e_LEX_OPEN_BRACKET))
-			token = &lexeme_mul;
+			token = &lexeme_ope_mul;
 		else
 			token = *current;
 		accept_lexeme(current, e_LEX_OPE_MUL | e_LEX_OPE_DIV);
 		factor = parse_factor(current, allow_var);
 		if (factor == NULL)
-			throw_error(JUMP_PARSE_ERROR, "expected factor");
+			throw_error("expected factor");
 		node = create_node(token, node, factor);
 	}
 	return node;
@@ -156,12 +153,12 @@ static ast_node_t		*parse_expr(lexeme_t **current, int allow_var)
 	while (is_lexeme_type(current, e_LEX_OPE_PLUS | e_LEX_OPE_MINUS))
 	{
 		if (node == NULL)
-			throw_error(JUMP_PARSE_ERROR, "expr must begin with a factor");
+			throw_error("expr must begin with a factor");
 		token = *current;
 		accept_lexeme(current, e_LEX_OPE_PLUS | e_LEX_OPE_MINUS);
 		term = parse_term(current, allow_var);
 		if (term == NULL)
-			throw_error(JUMP_PARSE_ERROR, "expected term");
+			throw_error("expected term");
 		node = create_node(token, node, term);
 	}
 	return node;
@@ -171,16 +168,16 @@ static void				parse_poly(lexeme_t **current, ast_node_t *root)
 {
 	root->left = parse_expr(current, 1);
 	if (root->left == NULL)
-		throw_error(JUMP_PARSE_ERROR, "expected left expr");
+		throw_error("expected left expr");
 	else if (!is_lexeme_type(current, e_LEX_EQUAL))
-		throw_error(JUMP_PARSE_ERROR, "expected equal");
+		throw_error("expected equal");
 	root->token = *current;
 	accept_lexeme(current, e_LEX_EQUAL);
 	root->right = parse_expr(current, 1);
 	if (root->right == NULL)
-		throw_error(JUMP_PARSE_ERROR, "expected right expr");
+		throw_error("expected right expr");
 	else if (!accept_lexeme(current, e_LEX_END))
-		throw_error(JUMP_PARSE_ERROR, "expected poly end");
+		throw_error("expected poly end");
 }
 
 ast_node_t				*parse_lexemes(lexeme_list_t *lst)
@@ -198,13 +195,9 @@ ast_node_t				*parse_lexemes(lexeme_list_t *lst)
 			del_alloc_list(&alloc_lst, NULL);
 			return root;
 		case JUMP_PARSE_ERROR:
-			del_alloc_list(&alloc_lst, free);
-			print_parser_error(lst, node, error.message);
-			break;
-		case JUMP_UNEXPECTED:
 		default:
 			del_alloc_list(&alloc_lst, free);
-			fprintf(stderr, "%s\n", error.message);
+			print_parser_error(lst, node, error.message);
 			break;
 	}
 	return NULL;

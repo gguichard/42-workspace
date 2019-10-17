@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 11:38:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 19:33:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 13:15:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,44 @@ double		sqrt_fn(double nb)
 	for (iter = 0; iter < 20; iter++)
 	{
 		x1 = 0.5 * (x0 + nb / x0);
-		if (abs_fn(x1 - x0) <= 1e-6)
+		if (abs_fn(x1 - x0) <= EPSILON)
 			break;
 		x0 = x1;
 	}
+	return x1;
+}
+
+int			euclidean_gcd(int a, int b)
+{
+	int	t;
+
+	while (b != 0)
+	{
+		t = b;
+		b = a % b;
+		a = t;
+	}
+	return a;
+}
+
+double		search_real_root(factor_list_t *poly, factor_list_t *derivative
+	, int *succeed)
+{
+	int		iter;
+	double	x0 = 1.0, x1 = 1.0;
+	double	y_prime;
+
+	// Search a root thanks to Newton-Raphson
+	for (iter = 0; iter < 100; iter++)
+	{
+		y_prime = compute_poly(derivative, x0);
+		if (abs_fn(y_prime) < 1e-14)
+			break;
+		x1 = x0 - (compute_poly(poly, x0) / y_prime);
+		if (abs_fn(x1 - x0) <= EPSILON)
+			break;
+		x0 = x1;
+	}
+	*succeed = iter < 100;
 	return x1;
 }

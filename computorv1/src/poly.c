@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 13:03:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 13:57:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 15:41:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,25 @@ void		reorder_poly_factors(factor_list_t **lst)
 	}
 }
 
-static int	get_poly_degree(factor_list_t *lst, int *has_neg_power)
+double		compute_poly(factor_list_t *poly, double x)
+{
+	factor_list_t	*node;
+	double			value = 0.0;
+
+	for (node = poly; node != NULL; node = node->next)
+		value += (node->value * pow_fn(x, node->power));
+	return value;
+}
+
+static int	get_poly_degree(factor_list_t *lst)
 {
 	int				degree = 0;
 	factor_list_t	*node;
 
-	*has_neg_power = 0;
 	for (node = lst; node != NULL; node = node->next)
 	{
 		if (degree < node->power)
 			degree = node->power;
-		if (node->power < 0)
-			*has_neg_power = 1;
 	}
 	return degree;
 }
@@ -68,18 +75,15 @@ void		solve_poly(ast_node_t *root)
 	factor_list_t	*poly;
 	factor_list_t	*result;
 	int				degree;
-	int				has_neg_power = 0;
 
 	poly = ast_factor_list(root->left);
 	result = ast_factor_list(root->right);
 	reduce_factor_list(&poly, result);
 	reorder_poly_factors(&poly);
 	print_reduced_form(poly);
-	degree = get_poly_degree(poly, &has_neg_power);
+	degree = get_poly_degree(poly);
 	fprintf(stdout, "Polynomial degree: %d\n", degree);
-	if (has_neg_power)
-		fprintf(stderr, "I can't solve equation with negative powers.\n");
-	else if (!solve_poly_fn(degree, poly))
+	if (!solve_poly_fn(degree, poly))
 		fprintf(stderr, "I can't solve that polynomial degree.\n");
 	free_factor_list(&poly);
 	free_factor_list(&result);

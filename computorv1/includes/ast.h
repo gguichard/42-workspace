@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/13 11:40:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/14 14:26:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 12:32:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "lexer.h"
 
-typedef struct	ast_node
+typedef struct ast_node
 {
 	lexeme_t		*token;
 	struct ast_node	*left;

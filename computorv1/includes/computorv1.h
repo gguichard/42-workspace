@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:41:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/16 16:01:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/17 12:17:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct factor_list factor_list_t;
  */
 
 void			reorder_poly_factors(factor_list_t **lst);
+double			compute_poly(factor_list_t *poly, double x);
 void			solve_poly(ast_node_t *root);
 
 typedef struct
