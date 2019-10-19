@@ -6,12 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:39:32 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 12:19:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/18 15:24:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "computorv1.h"
 #include "lexer.h"
 #include "ast.h"
@@ -42,7 +43,25 @@ static factor_list_t	*create_end_factor(ast_node_t *root)
 	return factor;
 }
 
-static factor_list_t	*create_factor_list(ast_node_t *root)
+static void				print_compute_details(ast_node_t *node
+	, factor_list_t *factor_lst
+	, factor_list_t *left_lst
+	, factor_list_t *right_lst)
+{
+	print_factor_list(left_lst);
+	fprintf(stdout, " \e[1m\e[31;1m%.*s\e[0m "
+		, (int)node->token->content_size, node->token->content);
+	print_factor_list(right_lst);
+	fprintf(stdout, " = \e[33;1m");
+	print_factor_list(factor_lst);
+	fprintf(stdout, "\e[0m\n");
+	fprintf_char_n_times(stdout, '-', 80);
+	fprintf(stdout, "\n");
+	print_ast(node);
+	fprintf(stdout, "\n");
+}
+
+static factor_list_t	*create_factor_list(ast_node_t *node, int print_details)
 {
 	size_t			idx;
 	factor_list_t	*left_lst, *right_lst;
@@ -50,11 +69,13 @@ static factor_list_t	*create_factor_list(ast_node_t *root)
 
 	for (idx = 0; idx < (sizeof(ope_map_fn) / sizeof(ope_map_fn[0])); idx++)
 	{
-		if (ope_map_fn[idx].type == root->token->type)
+		if (ope_map_fn[idx].type == node->token->type)
 		{
-			left_lst = ast_factor_list(root->left);
-			right_lst = ast_factor_list(root->right);
+			left_lst = ast_factor_list(node->left, print_details);
+			right_lst = ast_factor_list(node->right, print_details);
 			factor_lst = ope_map_fn[idx].fn(left_lst, right_lst);
+			if (factor_lst != NULL && print_details)
+				print_compute_details(node, factor_lst, left_lst, right_lst);
 			free_factor_list(&left_lst);
 			free_factor_list(&right_lst);
 			break;
@@ -63,7 +84,7 @@ static factor_list_t	*create_factor_list(ast_node_t *root)
 	return factor_lst;
 }
 
-factor_list_t			*ast_factor_list(ast_node_t *root)
+factor_list_t			*ast_factor_list(ast_node_t *root, int print_details)
 {
 	factor_list_t	*factor_lst = NULL;
 
@@ -80,7 +101,7 @@ factor_list_t			*ast_factor_list(ast_node_t *root)
 		case e_LEX_OPE_MUL:
 		case e_LEX_OPE_DIV:
 		case e_LEX_OPE_POW:
-			factor_lst = create_factor_list(root);
+			factor_lst = create_factor_list(root, print_details);
 			break;
 		default:
 			break;

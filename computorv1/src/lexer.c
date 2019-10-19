@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:58:59 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 12:18:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/18 13:05:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ static void			store_lexeme(lexeme_list_t *lst, lexeme_ctx_t *ctx)
 {
 	lexeme_t	*node;
 
-	if (ctx->type == e_LEX_UNKNOWN && lst->back != NULL
-		&& lst->back->type == e_LEX_UNKNOWN)
+	if (ctx->type == e_LEX_UNKNOWN
+		&& lst->back != NULL && lst->back->type == e_LEX_UNKNOWN)
 	{
 		// Rassemblement des tokens UNKNOWN
 		node = lst->back;

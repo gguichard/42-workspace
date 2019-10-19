@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/16 11:38:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 13:15:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/18 13:48:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,12 @@ double		pow_fn(double nb, int pow)
 {
 	double	result = 1;
 	double	factor = (pow < 0 ? (1 / nb) : nb);
+	int		incr = (pow < 0 ? 1 : -1);
 
 	while (pow != 0)
 	{
 		result *= factor;
-		if (pow < 0)
-			pow += 1;
-		else
-			pow -= 1;
+		pow += incr;
 	}
 	return result;
 }

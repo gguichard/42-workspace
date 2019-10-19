@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:42:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 23:29:17 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/18 16:25:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ void		exit_unexpected(void)
 {
 	fprintf(stderr, "Unexpected error\n");
 	exit(0);
+}
+
+void		fprintf_char_n_times(FILE *stream, char c, size_t times)
+{
+	size_t	n;
+
+	for (n = 0; n < times; n++)
+		fprintf(stream, "%c", c);
 }
 
 static void	print_real_value(double value)
@@ -57,11 +65,15 @@ void		print_factor_list(factor_list_t *lst)
 				, node->value < 0 ? '-' : '+'
 				, (node->value >= 0 || node != lst) ? " " : "");
 		}
-		if (abs_fn(node->value) != 1.0)
-		{
+		if ((int)node->power == 0)
 			print_real_value(abs_fn(node->value));
-			fprintf(stdout, " * ");
+		else
+		{
+			if (abs_fn(node->value) != 1.0)
+				print_real_value(abs_fn(node->value));
+			fprintf(stdout, "X");
+			if ((int)node->power != 1)
+				fprintf(stdout, "^%d", (int)node->power);
 		}
-		fprintf(stdout, "X^%d", (int)node->power);
 	}
 }

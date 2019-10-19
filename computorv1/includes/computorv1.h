@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:41:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 12:17:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/18 16:06:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "ast.h"
 # include "lexer.h"
 
+# define DEBUG_OPT (1 << 0)
+
 typedef struct factor_list factor_list_t;
 
 /*
@@ -24,7 +26,7 @@ typedef struct factor_list factor_list_t;
 
 void			reorder_poly_factors(factor_list_t **lst);
 double			compute_poly(factor_list_t *poly, double x);
-void			solve_poly(ast_node_t *root);
+void			solve_poly(ast_node_t *root, int print_details);
 
 typedef struct
 {
@@ -49,7 +51,7 @@ typedef struct
 	factor_list_t	*(*fn)(factor_list_t *, factor_list_t *);
 } op_map_t;
 
-factor_list_t	*ast_factor_list(ast_node_t *root);
+factor_list_t	*ast_factor_list(ast_node_t *root, int print_details);
 int				solve_poly_fn(int degree, factor_list_t *poly);
 
 factor_list_t	*get_factor(factor_list_t *lst, int power);

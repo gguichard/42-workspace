@@ -6,12 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:59:20 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 23:26:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/18 16:21:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "computorv1.h"
+#include "error.h"
 #include "utils.h"
 
 factor_list_t	*get_factor(factor_list_t *lst, int power)

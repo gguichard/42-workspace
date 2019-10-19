@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 20:24:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 17:28:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/18 10:11:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,14 +124,16 @@ static void		solve_cubic_poly(factor_list_t *poly)
 	{
 		// Round the number and ignore the non significant decimal part due to
 		// Newton-Raphson precision errors.
-		if (x0.real * (1 / EPSILON) < 10.0)
+		if (abs_fn(x0.real) * (1 / EPSILON) < 10.0)
 			x0.real = (int)x0.real;
 		x1 = x2 = x0;
 		a = get_factor_value_or_default(poly, 3, 0.0);
-		b = get_factor_value_or_default(poly, 2, 0.0) + a * x0.real;
-		c = get_factor_value_or_default(poly, 1, 0.0) + b * x0.real;
 		if (abs_fn(a) > EPSILON)
+		{
+			b = get_factor_value_or_default(poly, 2, 0.0) + a * x0.real;
+			c = get_factor_value_or_default(poly, 1, 0.0) + b * x0.real;
 			solve_quadratic(a, b, c, &x1, &x2);
+		}
 		fprintf(stdout, "The three solutions are:\n");
 		print_complex(0, x0);
 		print_complex(1, x1);

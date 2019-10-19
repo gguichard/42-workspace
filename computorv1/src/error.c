@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 16:15:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/15 13:14:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/18 11:19:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,7 @@
 #include <string.h>
 #include "error.h"
 #include "lexer.h"
-
-static void	fprintf_char_n_times(FILE *stream, char c, size_t times)
-{
-	size_t	n;
-
-	for (n = 0; n < times; n++)
-		fprintf(stream, "%c", c);
-}
+#include "utils.h"
 
 static void	print_nodes_for_error(lexeme_list_t *lst, lexeme_t *err_node)
 {

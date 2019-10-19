@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 22:50:17 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/17 15:53:02 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/19 01:27:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static lexeme_t			lexeme_ope_mul = {
 	.next = NULL
 };
 
-static ast_node_t		*parse_expr(lexeme_t **current, int allow_var);
+static ast_node_t		*parse_expr(lexeme_t **current);
 
 static void				throw_error(const char *reason)
 {
@@ -44,9 +44,14 @@ static ast_node_t		*create_node(lexeme_t *token
 
 	if (node == NULL)
 		exit_unexpected();
+	node->token = token;
 	node->left = left;
 	node->right = right;
-	node->token = token;
+	node->parent = NULL;
+	if (left != NULL)
+		left->parent = node;
+	if (right != NULL)
+		right->parent = node;
 	push_alloc(&alloc_lst, node);
 	return node;
 }
@@ -77,15 +82,13 @@ static int				accept_lexeme(lexeme_t **current, lexeme_type_t type)
 	return 0;
 }
 
-static ast_node_t		*parse_factor(lexeme_t **current, int allow_var)
+static ast_node_t		*parse_factor(lexeme_t **current)
 {
 	ast_node_t	*node = NULL;
 	lexeme_t	*token;
 	ast_node_t	*expr;
 
-	if (!allow_var && is_lexeme_type(current, e_LEX_VAR))
-		throw_error("variable not allowed in power factor");
-	else if (is_lexeme_type(current, e_LEX_VAR | e_LEX_NUMBER))
+	if (is_lexeme_type(current, e_LEX_VAR | e_LEX_NUMBER))
 	{
 		node = create_node(*current, NULL, NULL);
 		accept_lexeme(current, get_lexeme_type(current));
@@ -94,7 +97,7 @@ static ast_node_t		*parse_factor(lexeme_t **current, int allow_var)
 	{
 		token = *current;
 		accept_lexeme(current, get_lexeme_type(current));
-		node = parse_factor(current, allow_var);
+		node = parse_factor(current);
 		if (node == NULL)
 			throw_error("expected factor after unary operator");
 		node = create_node(token, NULL, node);
@@ -102,7 +105,7 @@ static ast_node_t		*parse_factor(lexeme_t **current, int allow_var)
 	else if (is_lexeme_type(current, e_LEX_OPEN_BRACKET))
 	{
 		accept_lexeme(current, e_LEX_OPEN_BRACKET);
-		node = parse_expr(current, allow_var);
+		node = parse_expr(current);
 		if (node == NULL)
 			throw_error("expected expr inside brackets");
 		else if (!accept_lexeme(current, e_LEX_CLOSE_BRACKET))
@@ -112,7 +115,7 @@ static ast_node_t		*parse_factor(lexeme_t **current, int allow_var)
 	{
 		token = *current;
 		accept_lexeme(current, e_LEX_OPE_POW);
-		expr = parse_factor(current, 0);
+		expr = parse_factor(current);
 		if (expr == NULL)
 			throw_error("expected power factor");
 		node = create_node(token, node, expr);
@@ -120,9 +123,9 @@ static ast_node_t		*parse_factor(lexeme_t **current, int allow_var)
 	return node;
 }
 
-static ast_node_t		*parse_term(lexeme_t **current, int allow_var)
+static ast_node_t		*parse_term(lexeme_t **current)
 {
-	ast_node_t	*node = parse_factor(current, allow_var);
+	ast_node_t	*node = parse_factor(current);
 	ast_node_t	*factor;
 	lexeme_t	*token;
 
@@ -136,7 +139,7 @@ static ast_node_t		*parse_term(lexeme_t **current, int allow_var)
 		else
 			token = *current;
 		accept_lexeme(current, e_LEX_OPE_MUL | e_LEX_OPE_DIV);
-		factor = parse_factor(current, allow_var);
+		factor = parse_factor(current);
 		if (factor == NULL)
 			throw_error("expected factor");
 		node = create_node(token, node, factor);
@@ -144,19 +147,19 @@ static ast_node_t		*parse_term(lexeme_t **current, int allow_var)
 	return node;
 }
 
-static ast_node_t		*parse_expr(lexeme_t **current, int allow_var)
+static ast_node_t		*parse_expr(lexeme_t **current)
 {
-	ast_node_t	*node = parse_term(current, allow_var);
+	ast_node_t	*node = parse_term(current);
 	ast_node_t	*term;
 	lexeme_t	*token;
 
 	while (is_lexeme_type(current, e_LEX_OPE_PLUS | e_LEX_OPE_MINUS))
 	{
 		if (node == NULL)
-			throw_error("expr must begin with a factor");
+			throw_error("expr must begin with a term");
 		token = *current;
 		accept_lexeme(current, e_LEX_OPE_PLUS | e_LEX_OPE_MINUS);
-		term = parse_term(current, allow_var);
+		term = parse_term(current);
 		if (term == NULL)
 			throw_error("expected term");
 		node = create_node(token, node, term);
@@ -166,14 +169,14 @@ static ast_node_t		*parse_expr(lexeme_t **current, int allow_var)
 
 static void				parse_poly(lexeme_t **current, ast_node_t *root)
 {
-	root->left = parse_expr(current, 1);
+	root->left = parse_expr(current);
 	if (root->left == NULL)
 		throw_error("expected left expr");
 	else if (!is_lexeme_type(current, e_LEX_EQUAL))
 		throw_error("expected equal");
 	root->token = *current;
 	accept_lexeme(current, e_LEX_EQUAL);
-	root->right = parse_expr(current, 1);
+	root->right = parse_expr(current);
 	if (root->right == NULL)
 		throw_error("expected right expr");
 	else if (!accept_lexeme(current, e_LEX_END))
