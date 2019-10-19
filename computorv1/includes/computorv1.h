@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 11:41:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/18 16:06:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/19 11:51:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ factor_list_t	*factor_list_derivate(factor_list_t *poly);
 void			reduce_factor_list(factor_list_t **lst, factor_list_t *from);
 void			free_factor_list(factor_list_t **lst);
 
-factor_list_t	*factor_list_plus(factor_list_t *a, factor_list_t *b);
-factor_list_t	*factor_list_minus(factor_list_t *a, factor_list_t *b);
+factor_list_t	*factor_list_add(factor_list_t *a, factor_list_t *b);
+factor_list_t	*factor_list_sub(factor_list_t *a, factor_list_t *b);
 factor_list_t	*factor_list_mul(factor_list_t *a, factor_list_t *b);
 factor_list_t	*factor_list_div(factor_list_t *a, factor_list_t *b);
 factor_list_t	*factor_list_pow(factor_list_t *a, factor_list_t *b);

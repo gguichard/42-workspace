@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:39:32 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/18 15:24:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/19 11:51:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 #include "utils.h"
 
 static const op_map_t	ope_map_fn[] = {
-	{e_LEX_OPE_PLUS, factor_list_plus},
-	{e_LEX_OPE_MINUS, factor_list_minus},
+	{e_LEX_OPE_PLUS, factor_list_add},
+	{e_LEX_OPE_MINUS, factor_list_sub},
 	{e_LEX_OPE_MUL, factor_list_mul},
 	{e_LEX_OPE_DIV, factor_list_div},
 	{e_LEX_OPE_POW, factor_list_pow}

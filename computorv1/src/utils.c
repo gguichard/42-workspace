@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:42:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/18 16:25:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/19 11:52:26 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,12 @@ void		print_factor_list(factor_list_t *lst)
 		{
 			if (abs_fn(node->value) != 1.0)
 				print_real_value(abs_fn(node->value));
-			fprintf(stdout, "X");
-			if ((int)node->power != 1)
-				fprintf(stdout, "^%d", (int)node->power);
+			if (node->value != 0.0)
+			{
+				fprintf(stdout, "X");
+				if ((int)node->power != 1)
+					fprintf(stdout, "^%d", (int)node->power);
+			}
 		}
 	}
 }
