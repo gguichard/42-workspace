@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:39:32 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/19 11:51:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/19 11:57:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,12 @@ static void				print_compute_details(ast_node_t *node
 	, factor_list_t *left_lst
 	, factor_list_t *right_lst)
 {
+	fprintf(stdout, "(");
 	print_factor_list(left_lst);
-	fprintf(stdout, " \e[1m\e[31;1m%.*s\e[0m "
+	fprintf(stdout, ") \e[1m\e[31;1m%.*s\e[0m ("
 		, (int)node->token->content_size, node->token->content);
 	print_factor_list(right_lst);
-	fprintf(stdout, " = \e[33;1m");
+	fprintf(stdout, ") = \e[33;1m");
 	print_factor_list(factor_lst);
 	fprintf(stdout, "\e[0m\n");
 	fprintf_char_n_times(stdout, '-', 80);
