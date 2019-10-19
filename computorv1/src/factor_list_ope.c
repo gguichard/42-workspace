@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 14:17:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/19 11:53:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/19 12:06:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,12 @@ factor_list_t	*factor_list_pow(factor_list_t *a, factor_list_t *b)
 			if ((node_b->power != 0.0 && node_b->value != 0.0)
 				|| (node_a->value == 0.0 && node_b->value < 0.0))
 			{
-				free_factor_list(&lst);
 				fprintf(stdout, "Unable to compute: ");
 				print_factor_list(node_a);
 				fprintf(stdout, "^(");
 				print_factor_list(node_b);
 				fprintf(stdout, ")\n");
-				return NULL;
+				exit(EXIT_FAILURE);
 			}
 			result = pow_fn(node_a->value, node_b->value);
 			get_factor_or_create(&lst, power)->value += result;

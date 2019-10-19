@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 10:42:31 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/19 11:52:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/19 12:05:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 void		exit_unexpected(void)
 {
 	fprintf(stderr, "Unexpected error\n");
-	exit(0);
+	exit(EXIT_FAILURE);
 }
 
 void		fprintf_char_n_times(FILE *stream, char c, size_t times)

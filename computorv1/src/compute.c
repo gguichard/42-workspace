@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:39:32 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/19 11:57:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/19 12:04:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static factor_list_t	*create_factor_list(ast_node_t *node, int print_details)
 			left_lst = ast_factor_list(node->left, print_details);
 			right_lst = ast_factor_list(node->right, print_details);
 			factor_lst = ope_map_fn[idx].fn(left_lst, right_lst);
-			if (factor_lst != NULL && print_details)
+			if (print_details)
 				print_compute_details(node, factor_lst, left_lst, right_lst);
 			free_factor_list(&left_lst);
 			free_factor_list(&right_lst);
