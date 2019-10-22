@@ -6,11 +6,10 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/15 10:31:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/22 14:50:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/22 20:10:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include "libft.h"
