@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:28:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/28 23:24:28 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/23 23:45:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,23 @@ void		hash_stream_begin(t_hash_stream *stream)
 
 void		hash_stream_end(t_hash_stream *stream)
 {
-	uint64_t	total_len;
+	size_t	offset;
 
-	stream->len += stream->offset;
-	stream->buffer[stream->offset] = (1 << 7);
+	offset = stream->offset;
+	stream->ctx_buffer[stream->offset] = (1 << 7);
 	stream->offset += 1;
-	if (stream->offset < 64)
-		ft_memset(stream->buffer + stream->offset, 0, 64 - stream->offset);
-	if (stream->offset > 56)
+	if (stream->offset < stream->ctx_buffer_size)
+		ft_memset(stream->ctx_buffer + stream->offset, 0
+			, stream->ctx_buffer_size - stream->offset);
+	if (stream->offset > (stream->ctx_buffer_size - stream->final_len_size))
 	{
-		stream->hash_fn(stream->hash, stream->buffer);
+		stream->hash_fn(stream->ctx);
 		stream->offset = 0;
-		ft_memset(stream->buffer, 0, 56);
+		ft_memset(stream->ctx_buffer, 0
+			, stream->ctx_buffer_size - stream->final_len_size);
 	}
-	total_len = stream->len * 8;
-	if (stream->big_endian)
-		total_len = byte_swap64(total_len);
-	ft_memcpy(stream->buffer + 56, &total_len, 8);
-	stream->hash_fn(stream->hash, stream->buffer);
+	stream->final_fn(stream->ctx, offset);
+	stream->hash_fn(stream->ctx);
 }
 
 static int	hash_stream_buffer(t_hash_stream *stream
@@ -48,12 +47,12 @@ static int	hash_stream_buffer(t_hash_stream *stream
 {
 	size_t	copy_len;
 
-	copy_len = UTILS_MIN(len, 64 - stream->offset);
-	ft_memcpy(stream->buffer + stream->offset, bytes, copy_len);
+	copy_len = UTILS_MIN(len, stream->ctx_buffer_size - stream->offset);
+	ft_memcpy(stream->ctx_buffer + stream->offset, bytes, copy_len);
 	stream->offset += copy_len;
-	if (stream->offset == 64)
+	if (stream->offset == stream->ctx_buffer_size)
 	{
-		stream->hash_fn(stream->hash, stream->buffer);
+		stream->hash_fn(stream->ctx);
 		stream->len += stream->offset;
 		stream->offset = 0;
 	}
@@ -71,16 +70,17 @@ void		hash_stream(t_hash_stream *stream
 		bytes += offset;
 		len -= offset;
 	}
-	while (len >= 64)
+	while (len >= stream->ctx_buffer_size)
 	{
-		stream->hash_fn(stream->hash, bytes);
-		stream->len += 64;
-		bytes += 64;
-		len -= 64;
+		ft_memcpy(stream->ctx_buffer, bytes, stream->ctx_buffer_size);
+		stream->hash_fn(stream->ctx);
+		stream->len += stream->ctx_buffer_size;
+		bytes += stream->ctx_buffer_size;
+		len -= stream->ctx_buffer_size;
 	}
 	if (len != 0)
 	{
-		ft_memcpy(stream->buffer, bytes, len);
+		ft_memcpy(stream->ctx_buffer, bytes, len);
 		stream->offset = len;
 	}
 }

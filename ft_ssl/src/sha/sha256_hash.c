@@ -6,16 +6,16 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:25:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 22:55:19 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/23 23:48:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
 #include "ft_ssl.h"
-#include "ft_ssl_sha2.h"
+#include "ft_ssl_sha.h"
 
-static const uint32_t	g_sha2_hash[64] = {
+static const uint32_t	g_sha256_hash[64] = {
 	0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
 	0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
 	0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
@@ -43,11 +43,12 @@ static void	sha256_steps(uint32_t words[64], uint32_t output[8])
 	idx = 0;
 	while (idx < 64)
 	{
-		value1 = output[7] + SHA2_HASH_BSIG1(output[4])
-			+ SHA2_HASH_CH(output[4], output[5], output[6])
-			+ g_sha2_hash[idx] + words[idx];
-		value2 = SHA2_HASH_BSIG0(output[0])
-			+ SHA2_HASH_MAJ(output[0], output[1], output[2]);
+		value1 = output[7] + SHA256_HASH_BSIG1(output[4])
+			+ SHA256_HASH_CH(output[4], output[5], output[6])
+			+ g_sha256_hash[idx]
+			+ words[idx];
+		value2 = SHA256_HASH_BSIG0(output[0])
+			+ SHA256_HASH_MAJ(output[0], output[1], output[2]);
 		output[7] = output[6];
 		output[6] = output[5];
 		output[5] = output[4];
@@ -60,22 +61,44 @@ static void	sha256_steps(uint32_t words[64], uint32_t output[8])
 	}
 }
 
-void		sha256_roll(uint32_t hash[8], uint32_t words[64])
+static void	sha256_words(t_sha256_ctx *ctx)
+{
+	size_t	idx;
+
+	idx = 0;
+	while (idx < 16)
+	{
+		ctx->words[idx] = byte_swap32(ctx->words[idx]);
+		idx++;
+	}
+	while (idx < 64)
+	{
+		ctx->words[idx] = SHA256_HASH_SSIG1(ctx->words[idx - 2])
+			+ ctx->words[idx - 7]
+			+ SHA256_HASH_SSIG0(ctx->words[idx - 15])
+			+ ctx->words[idx - 16];
+		idx++;
+	}
+}
+
+void		sha256_stream(t_sha256_ctx *ctx)
 {
 	size_t		idx;
 	uint32_t	values[8];
 
+	ctx->len += SHA256_BUFFER_SIZE;
+	sha256_words(ctx);
 	idx = 0;
 	while (idx < 8)
 	{
-		values[idx] = hash[idx];
+		values[idx] = ctx->hash.words[idx];
 		idx++;
 	}
-	sha256_steps(words, values);
+	sha256_steps(ctx->words, values);
 	idx = 0;
 	while (idx < 8)
 	{
-		hash[idx] += values[idx];
+		ctx->hash.words[idx] += values[idx];
 		idx++;
 	}
 }

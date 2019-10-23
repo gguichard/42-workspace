@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 22:55:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 23:10:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/23 21:22:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include <unistd.h>
 #include "ft_ssl.h"
 
-void		hash_stream_bytes(void (*init_fn)(t_hash_stream *)
-	, char digest[65], const uint8_t *bytes, size_t len)
+char	*hash_stream_bytes(void (*init_fn)(t_hash_stream *)
+	, const uint8_t *bytes, size_t len)
 {
 	t_hash_stream	stream;
 
@@ -24,11 +24,12 @@ void		hash_stream_bytes(void (*init_fn)(t_hash_stream *)
 	hash_stream_begin(&stream);
 	hash_stream(&stream, bytes, len);
 	hash_stream_end(&stream);
-	stream.digest_fn(digest, stream.hash);
+	stream.digest_fn(stream.ctx);
+	return (stream.digest_buffer);
 }
 
-int			hash_stream_file(void (*init_fn)(t_hash_stream *)
-	, char digest[65], int fd, int in_out)
+char	*hash_stream_file(void (*init_fn)(t_hash_stream *)
+	, int fd, int in_out)
 {
 	t_hash_stream	stream;
 	uint8_t			read_buffer[4096];
@@ -43,8 +44,8 @@ int			hash_stream_file(void (*init_fn)(t_hash_stream *)
 		hash_stream(&stream, read_buffer, size_read);
 	}
 	if (size_read == -1)
-		return (0);
+		return (NULL);
 	hash_stream_end(&stream);
-	stream.digest_fn(digest, stream.hash);
-	return (1);
+	stream.digest_fn(stream.ctx);
+	return (stream.digest_buffer);
 }

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/10/02 19:12:11 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/23 22:36:04 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,13 @@ main.c					\
 md5/md5_digest.c		\
 md5/md5_hash.c			\
 md5/md5_stream.c		\
+sha/sha1_digest.c		\
+sha/sha1_hash.c			\
+sha/sha1_stream.c		\
+sha/sha256_digest.c		\
+sha/sha256_hash.c		\
+sha/sha256_stream.c		\
 options.c				\
-sha2/sha256_digest.c	\
-sha2/sha256_hash.c		\
-sha2/sha256_stream.c	\
 stream.c				\
 stream_hash.c			\
 utils.c
@@ -57,7 +60,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(OBJ_DIR):
 	@mkdir $@ 2> /dev/null || true
 	@mkdir $@/md5 2> /dev/null || true
-	@mkdir $@/sha2 2> /dev/null || true
+	@mkdir $@/sha 2> /dev/null || true
 
 clean:
 	$(MAKE) -C libft clean

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:19:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/30 22:57:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/23 23:40:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,17 +73,18 @@ static void	md5_steps(uint32_t words[16], uint32_t output[4])
 	}
 }
 
-void		md5_roll(uint32_t hash[4], uint32_t words[16])
+void		md5_stream(t_md5_ctx *ctx)
 {
 	uint32_t	values[4];
 
-	values[0] = hash[0];
-	values[1] = hash[1];
-	values[2] = hash[2];
-	values[3] = hash[3];
-	md5_steps(words, values);
-	hash[0] += values[0];
-	hash[1] += values[1];
-	hash[2] += values[2];
-	hash[3] += values[3];
+	ctx->len += sizeof(ctx->words);
+	values[0] = ctx->hash.words[0];
+	values[1] = ctx->hash.words[1];
+	values[2] = ctx->hash.words[2];
+	values[3] = ctx->hash.words[3];
+	md5_steps(ctx->words, values);
+	ctx->hash.words[0] += values[0];
+	ctx->hash.words[1] += values[1];
+	ctx->hash.words[2] += values[2];
+	ctx->hash.words[3] += values[3];
 }

@@ -6,12 +6,19 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 23:24:32 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 15:54:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/23 22:14:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include "ft_ssl.h"
+
+uint32_t	byte_swap32(uint32_t x)
+{
+	x = ((x << 8) & 0xff00ff00) | ((x >> 8) & 0x00ff00ff);
+    x = (x << 16) | (x >> 16);
+	return (x);
+}
 
 uint64_t	byte_swap64(uint64_t x)
 {

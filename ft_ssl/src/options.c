@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 16:46:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/03 18:52:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/23 23:54:47 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ static int	unknown_opt(t_ssl_opts *opts, char opt)
 
 static int	stdin_opt(t_ssl_opts *opts, int in_out)
 {
-	char	digest[MAX_DIGEST_BYTES + 1];
+	char	*digest;
 
 	opts->hash_count += 1;
-	if (hash_stream_file(opts->stream_fn, digest, STDIN_FILENO, in_out))
+	digest = hash_stream_file(opts->hash->stream_fn, STDIN_FILENO, in_out);
+	if (digest != NULL)
 		ft_printf("%s\n", digest);
 	else
 	{
@@ -47,12 +48,12 @@ static int	stdin_opt(t_ssl_opts *opts, int in_out)
 
 static int	string_opt(t_ssl_opts *opts, const char *optarg)
 {
-	char	digest[MAX_DIGEST_BYTES + 1];
+	char	*digest;
 
 	opts->hash_count += 1;
 	if (optarg == NULL)
 		return (unknown_opt(opts, 's'));
-	hash_stream_bytes(opts->stream_fn, digest
+	digest = hash_stream_bytes(opts->hash->stream_fn
 		, (const uint8_t *)optarg, ft_strlen(optarg));
 	print_string_digest(opts, optarg, digest);
 	return (1);
@@ -62,7 +63,7 @@ static int	parse_files(t_ssl_opts *opts, int index)
 {
 	int		ret;
 	int		fd;
-	char	digest[MAX_DIGEST_BYTES + 1];
+	char	*digest;
 
 	ret = 1;
 	while (index < opts->argc)
@@ -74,7 +75,8 @@ static int	parse_files(t_ssl_opts *opts, int index)
 				, opts->prefix, opts->argv[index]);
 		else
 		{
-			if (hash_stream_file(opts->stream_fn, digest, fd, 0))
+			digest = hash_stream_file(opts->hash->stream_fn, fd, 0);
+			if (digest != NULL)
 				print_file_digest(opts, opts->argv[index], digest);
 			else if ((ret = 0) == 0)
 				ft_dprintf(STDERR_FILENO, "%s: %s: unable to read file\n"

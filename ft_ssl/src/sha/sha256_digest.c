@@ -6,34 +6,30 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 14:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/09/29 15:54:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/23 22:24:52 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
 #include "ft_ssl.h"
-#include "ft_ssl_sha2.h"
+#include "ft_ssl_sha.h"
 
-void	sha256_digest(char buffer[65], uint32_t hash[8])
+void	sha256_digest(t_sha256_ctx *ctx)
 {
-	uint8_t	digest[32];
 	size_t	idx;
 
 	idx = 0;
-	while (idx < 8)
+	while (idx < (ctx->digest_size / sizeof(uint32_t)))
 	{
-		digest[idx * 4] = (hash[idx] >> 24) & 0xff;
-		digest[idx * 4 + 1] = (hash[idx] >> 16) & 0xff;
-		digest[idx * 4 + 2] = (hash[idx] >> 8) & 0xff;
-		digest[idx * 4 + 3] = hash[idx] & 0xff;
+		ctx->hash.words[idx] = byte_swap32(ctx->hash.words[idx]);
 		idx++;
 	}
 	idx = 0;
-	while (idx < 32)
+	while (idx < ctx->digest_size)
 	{
-		digest_hex(buffer + idx * 2, digest[idx]);
+		digest_hex(ctx->digest + idx * 2, ctx->hash.bytes[idx]);
 		idx++;
 	}
-	buffer[64] = '\0';
+	ctx->digest[idx * 2] = '\0';
 }
