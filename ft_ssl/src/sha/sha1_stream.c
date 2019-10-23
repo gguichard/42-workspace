@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:09:02 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 23:52:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 00:01:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	sha1_stream_init(t_hash_stream *stream)
 	ctx.hash.words[4] = 0xC3D2E1F0;
 	stream->ctx = &ctx;
 	stream->ctx_buffer = (uint8_t *)ctx.words;
-	stream->ctx_buffer_size = SHA1_BUFFER_SIZE;
+	stream->block_size = SHA1_BLOCK_SIZE;
 	stream->digest_buffer = ctx.digest;
 	stream->hash_fn = (void *)sha1_stream;
 	stream->final_fn = (void *)sha1_final;

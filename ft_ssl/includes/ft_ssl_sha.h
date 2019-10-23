@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:30:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 23:46:48 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 00:01:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <string.h>
 # include "ft_ssl.h"
 
-# define SHA1_BUFFER_SIZE 64
-# define SHA256_BUFFER_SIZE 64
+# define SHA1_BLOCK_SIZE 64
+# define SHA256_BLOCK_SIZE 64
 # define SHA224_DIGEST_SIZE 28
 # define SHA256_DIGEST_SIZE 32
 

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:05:50 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 23:50:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 00:02:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		sha1_stream(t_sha1_ctx *ctx)
 	size_t		idx;
 	uint32_t	values[5];
 
-	ctx->len += SHA1_BUFFER_SIZE;
+	ctx->len += SHA1_BLOCK_SIZE;
 	sha1_words(ctx);
 	idx = 0;
 	while (idx < 5)
