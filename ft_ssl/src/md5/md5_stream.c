@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:50:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:46:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 13:44:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	md5_stream_init(t_hash_stream *stream)
 	ctx.hash.words[2] = 0x98badcfe;
 	ctx.hash.words[3] = 0x10325476;
 	stream->ctx = &ctx;
-	stream->ctx_buffer = (uint8_t *)ctx.words;
+	stream->block = ctx.words;
 	stream->block_size = sizeof(ctx.words);
 	stream->final_len_size = sizeof(uint64_t);
 	stream->digest_buffer = ctx.digest;

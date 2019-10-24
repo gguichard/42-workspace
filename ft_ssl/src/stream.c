@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:28:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:43:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 13:48:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,22 @@ void		hash_stream_begin(t_hash_stream *stream)
 
 void		hash_stream_end(t_hash_stream *stream)
 {
-	size_t	offset;
+	size_t	len;
 
-	offset = stream->offset;
-	stream->ctx_buffer[stream->offset] = (1 << 7);
+	len = stream->offset;
+	((uint8_t *)stream->block)[stream->offset] = (1 << 7);
 	stream->offset += 1;
 	if (stream->offset < stream->block_size)
-		ft_memset(stream->ctx_buffer + stream->offset, 0
+		ft_memset(stream->block + stream->offset, 0
 			, stream->block_size - stream->offset);
 	if (stream->offset > (stream->block_size - stream->final_len_size))
 	{
 		stream->hash_fn(stream->ctx);
 		stream->offset = 0;
-		ft_memset(stream->ctx_buffer, 0
+		ft_memset(stream->block, 0
 			, stream->block_size - stream->final_len_size);
 	}
-	stream->final_fn(stream->ctx, offset);
+	stream->final_fn(stream->ctx, len);
 	stream->hash_fn(stream->ctx);
 }
 
@@ -49,7 +49,7 @@ static int	hash_stream_buffer(t_hash_stream *stream
 	size_t	copy_len;
 
 	copy_len = UTILS_MIN(len, stream->block_size - stream->offset);
-	ft_memcpy(stream->ctx_buffer + stream->offset, bytes, copy_len);
+	ft_memcpy(stream->block + stream->offset, bytes, copy_len);
 	stream->offset += copy_len;
 	if (stream->offset == stream->block_size)
 	{
@@ -73,7 +73,7 @@ void		hash_stream(t_hash_stream *stream
 	}
 	while (len >= stream->block_size)
 	{
-		ft_memcpy(stream->ctx_buffer, bytes, stream->block_size);
+		ft_memcpy(stream->block, bytes, stream->block_size);
 		stream->hash_fn(stream->ctx);
 		stream->len += stream->block_size;
 		bytes += stream->block_size;
@@ -81,7 +81,7 @@ void		hash_stream(t_hash_stream *stream
 	}
 	if (len != 0)
 	{
-		ft_memcpy(stream->ctx_buffer, bytes, len);
+		ft_memcpy(stream->block, bytes, len);
 		stream->offset = len;
 	}
 }

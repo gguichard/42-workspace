@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:44:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 13:44:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	sha224_stream_init(t_hash_stream *stream)
 	ctx.hash.words[7] = 0xbefa4fa4;
 	ctx.digest_size = SHA224_DIGEST_SIZE;
 	stream->ctx = &ctx;
-	stream->ctx_buffer = (uint8_t *)ctx.words;
+	stream->block = ctx.words;
 	stream->block_size = SHA256_BLOCK_SIZE;
 	stream->final_len_size = sizeof(uint64_t);
 	stream->digest_buffer = ctx.digest;
@@ -56,7 +56,7 @@ void	sha256_stream_init(t_hash_stream *stream)
 	ctx.hash.words[7] = 0x5be0cd19;
 	ctx.digest_size = SHA256_DIGEST_SIZE;
 	stream->ctx = &ctx;
-	stream->ctx_buffer = (uint8_t *)ctx.words;
+	stream->block = ctx.words;
 	stream->block_size = SHA256_BLOCK_SIZE;
 	stream->final_len_size = sizeof(uint64_t);
 	stream->digest_buffer = ctx.digest;

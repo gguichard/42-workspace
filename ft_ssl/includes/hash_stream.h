@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 09:37:43 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 10:57:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 13:43:49 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 typedef struct	s_hash_stream
 {
 	void		*ctx;
-	uint8_t		*ctx_buffer;
+	void		*block;
 	size_t		block_size;
 	size_t		final_len_size;
 	char		*digest_buffer;
