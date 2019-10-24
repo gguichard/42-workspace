@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:09:02 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 13:50:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 13:54:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	sha1_stream_init(t_hash_stream *stream)
 	ft_memset(&ctx, 0, sizeof(t_sha1_ctx));
 	ctx.hash.words[0] = 0x67452301;
 	ctx.hash.words[1] = 0xefcdab89;
-	ctx.hash.words[2] = 0x98Badcfe;
+	ctx.hash.words[2] = 0x98badcfe;
 	ctx.hash.words[3] = 0x10325476;
 	ctx.hash.words[4] = 0xc3d2e1f0;
 	stream->ctx = &ctx;
