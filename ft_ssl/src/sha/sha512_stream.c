@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 09:50:29 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 10:51:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 12:45:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,11 @@ void	sha512_final(t_sha512_ctx *ctx, size_t offset)
 	uint64_t	len_bits_hi;
 	uint64_t	len_bits_lo;
 
-	len_bits_hi = 0;
-	len_bits_lo = (ctx->len + offset) * 8;
+	len_bits_hi = ctx->len_bits_hi;
+	len_bits_lo = ctx->len_bits_lo + offset * 8;
+	if (len_bits_lo < ctx->len_bits_lo)
+		len_bits_hi += 1;
+	len_bits_hi = byte_swap64(len_bits_hi);
 	len_bits_lo = byte_swap64(len_bits_lo);
 	ft_memcpy(ctx->words + 14, &len_bits_hi, sizeof(len_bits_hi));
 	ft_memcpy(ctx->words + 15, &len_bits_lo, sizeof(len_bits_lo));

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 09:57:43 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 10:25:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 12:44:50 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,15 @@ void		sha512_stream(t_sha512_ctx *ctx)
 {
 	size_t		idx;
 	uint64_t	values[8];
+	uint64_t	len_bits_hi;
+	uint64_t	len_bits_lo;
 
-	ctx->len += SHA512_BLOCK_SIZE;
+	len_bits_hi = ctx->len_bits_hi;
+	len_bits_lo = ctx->len_bits_lo + SHA512_BLOCK_SIZE * 8;
+	if (len_bits_lo < ctx->len_bits_lo)
+		len_bits_hi += 1;
+	ctx->len_bits_hi = len_bits_hi;
+	ctx->len_bits_lo = len_bits_lo;
 	sha512_words(ctx);
 	idx = 0;
 	while (idx < 8)

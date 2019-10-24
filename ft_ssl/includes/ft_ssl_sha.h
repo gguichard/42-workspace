@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:30:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 10:48:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 12:44:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,8 @@ typedef struct	s_sha256_ctx
 
 typedef struct	s_sha512_ctx
 {
-	size_t				len;
+	uint64_t			len_bits_hi;
+	uint64_t			len_bits_lo;
 	size_t				digest_size;
 	char				digest[129];
 	uint64_t			words[80];
