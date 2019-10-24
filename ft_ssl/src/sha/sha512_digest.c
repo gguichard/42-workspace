@@ -1,25 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5_digest.c                                       :+:      :+:    :+:   */
+/*   sha512_digest.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/26 22:40:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:45:42 by gguichar         ###   ########.fr       */
+/*   Created: 2019/10/24 09:57:06 by gguichar          #+#    #+#             */
+/*   Updated: 2019/10/24 09:57:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdint.h>
 #include <string.h>
-#include "ft_ssl_md5.h"
+#include "ft_ssl_sha.h"
 #include "utils.h"
 
-void	md5_digest(t_md5_ctx *ctx)
+void	sha512_digest(t_sha512_ctx *ctx)
 {
 	size_t	idx;
 
 	idx = 0;
-	while (idx < sizeof(ctx->hash))
+	while (idx < (ctx->digest_size / sizeof(uint64_t)))
+	{
+		ctx->hash.words[idx] = byte_swap64(ctx->hash.words[idx]);
+		idx++;
+	}
+	idx = 0;
+	while (idx < ctx->digest_size)
 	{
 		digest_hex(ctx->digest + idx * 2, ctx->hash.bytes[idx]);
 		idx++;

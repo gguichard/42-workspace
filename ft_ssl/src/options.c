@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 16:46:18 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 23:54:47 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 09:43:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include "libft.h"
 #include "ft_ssl.h"
+#include "hash_stream.h"
 
 static int	unknown_opt(t_ssl_opts *opts, char opt)
 {
@@ -88,7 +89,7 @@ static int	parse_files(t_ssl_opts *opts, int index)
 	return (ret);
 }
 
-int			parse_ssl_options(t_ssl_opts *opts)
+int			parse_options(t_ssl_opts *opts)
 {
 	int			ret;
 	t_getopt	getopt;

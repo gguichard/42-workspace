@@ -6,15 +6,16 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 00:03:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 09:44:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
 #include "libft.h"
-#include "ft_ssl.h"
 #include "ft_ssl_sha.h"
+#include "hash_stream.h"
+#include "utils.h"
 
 void	sha224_stream_init(t_hash_stream *stream)
 {

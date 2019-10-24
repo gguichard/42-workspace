@@ -6,12 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 23:24:32 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 22:14:22 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 09:42:48 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
-#include "ft_ssl.h"
+#include "utils.h"
 
 uint32_t	byte_swap32(uint32_t x)
 {

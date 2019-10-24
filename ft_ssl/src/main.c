@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:18:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 23:53:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 10:49:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ static t_hash	g_hash_cmds[] = {
 	{"md5", "MD5", md5_stream_init},
 	{"sha1", "SHA-1", sha1_stream_init},
 	{"sha224", "SHA-224", sha224_stream_init},
-	{"sha256", "SHA-256", sha256_stream_init}
+	{"sha256", "SHA-256", sha256_stream_init},
+	{"sha384", "SHA-384", sha384_stream_init},
+	{"sha512", "SHA-512", sha512_stream_init}
 };
 
 static void	usage_help(const char *prefix, const char *cmd)
@@ -71,7 +73,7 @@ int			run_command(const char *prefix, int argc, char **argv)
 	{
 		opts.argc = argc;
 		opts.argv = argv;
-		valid = parse_ssl_options(&opts);
+		valid = parse_options(&opts);
 	}
 	return (valid);
 }

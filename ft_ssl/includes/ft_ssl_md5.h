@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:21:35 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 23:40:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 09:42:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define FT_SSL_MD5_H
 
 # include <stdint.h>
+# include <string.h>
+# include "hash_stream.h"
 
 # define MD5_HASH_F(x, y, z) ((x & y) | (~x & z))
 # define MD5_HASH_G(x, y, z) ((x & z) | (y & ~z))

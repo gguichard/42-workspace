@@ -6,15 +6,16 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:50:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 00:00:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 09:46:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
 #include "libft.h"
-#include "ft_ssl.h"
 #include "ft_ssl_md5.h"
+#include "hash_stream.h"
+#include "utils.h"
 
 void	md5_stream_init(t_hash_stream *stream)
 {

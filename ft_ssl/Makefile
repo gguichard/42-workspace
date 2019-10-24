@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/10/23 22:36:04 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/24 10:03:26 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,9 @@ sha/sha1_stream.c		\
 sha/sha256_digest.c		\
 sha/sha256_hash.c		\
 sha/sha256_stream.c		\
+sha/sha512_digest.c		\
+sha/sha512_hash.c		\
+sha/sha512_stream.c		\
 options.c				\
 stream.c				\
 stream_hash.c			\

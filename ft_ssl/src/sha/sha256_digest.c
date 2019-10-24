@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 14:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 22:24:52 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 09:45:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
-#include "ft_ssl.h"
 #include "ft_ssl_sha.h"
+#include "utils.h"
 
 void	sha256_digest(t_sha256_ctx *ctx)
 {

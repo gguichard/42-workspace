@@ -6,14 +6,15 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:28:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 00:02:22 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 09:43:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
 #include "libft.h"
-#include "ft_ssl.h"
+#include "hash_stream.h"
+#include "utils.h"
 
 void		hash_stream_begin(t_hash_stream *stream)
 {

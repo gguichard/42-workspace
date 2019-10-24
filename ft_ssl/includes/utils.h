@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5_digest.c                                       :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/26 22:40:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:45:42 by gguichar         ###   ########.fr       */
+/*   Created: 2019/10/24 09:38:38 by gguichar          #+#    #+#             */
+/*   Updated: 2019/10/24 10:57:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include "ft_ssl_md5.h"
-#include "utils.h"
+#ifndef UTILS_H
+# define UTILS_H
 
-void	md5_digest(t_md5_ctx *ctx)
-{
-	size_t	idx;
+# define UTILS_MIN(x, y) (x > y ? y : x)
+# define UTILS_ROTATELEFT(n, s) (((n) << s) | ((n) >> (sizeof(n) * 8 - s)))
+# define UTILS_ROTATERIGHT(n, s) (((n) >> s) | ((n) << (sizeof(n) * 8 - s)))
 
-	idx = 0;
-	while (idx < sizeof(ctx->hash))
-	{
-		digest_hex(ctx->digest + idx * 2, ctx->hash.bytes[idx]);
-		idx++;
-	}
-	ctx->digest[idx * 2] = '\0';
-}
+# include <stdint.h>
+
+uint32_t	byte_swap32(uint32_t x);
+uint64_t	byte_swap64(uint64_t x);
+void		digest_hex(char buffer[2], uint8_t byte);
+
+#endif

@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 22:55:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/23 21:22:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/24 09:43:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
 #include <unistd.h>
-#include "ft_ssl.h"
+#include "hash_stream.h"
 
 char	*hash_stream_bytes(void (*init_fn)(t_hash_stream *)
 	, const uint8_t *bytes, size_t len)
