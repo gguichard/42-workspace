@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/07/29 22:50:45 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/25 10:10:32 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,18 +24,19 @@ CFLAGS 		=	-Wall -Werror -Wextra -fPIC
 LDFLAGS		=	-Llibft -lft
 
 SRC_DIR		=	src
-SRC 		=				\
-allocs.c					\
-block_utils.c				\
-free_list.c					\
-malloc.c					\
-malloc_info.c				\
-regions.c					\
-routines/free.c				\
-routines/malloc.c			\
-routines/malloc_size.c		\
-routines/realloc.c			\
-routines/show_alloc_mem.c	\
+SRC 		=					\
+allocs.c						\
+block_utils.c					\
+free_list.c						\
+malloc.c						\
+malloc_info.c					\
+regions.c						\
+routines/free.c					\
+routines/malloc.c				\
+routines/malloc_size.c			\
+routines/realloc.c				\
+routines/show_alloc_mem_hex.c	\
+routines/show_alloc_mem.c		\
 utils.c
 
 OBJ_DIR		=	.obj
