@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:17:11 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/27 12:27:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/27 16:51:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 void			malloc_constructor(void) __attribute__((constructor));
 
 size_t			align_up(size_t n, int mod);
+int				order_from_size(size_t size, size_t min_size);
 
 size_t			get_block_index(t_region *region, const t_free_alloc *block);
 t_region		*get_block_region(t_zone *zone, const void *addr);

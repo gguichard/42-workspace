@@ -6,13 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/29 22:49:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/27 12:28:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/27 16:54:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 #include <stdlib.h>
-#include <math.h>
 #include "malloc.h"
 #include "zone.h"
 
@@ -41,10 +40,8 @@ size_t	malloc_good_size(size_t size)
 {
 	if (size >= LARGE_THRESHOLD)
 		return (size);
-	else if (size == 0)
-		return (16);
 	else
-		return (1 << (int)ceil(log2(size)));
+		return (1 << order_from_size(size, TINY_QUANTUM));
 }
 
 void	show_alloc_mem(void)
