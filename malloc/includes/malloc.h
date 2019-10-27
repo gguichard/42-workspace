@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/23 14:17:11 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/25 10:54:07 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/27 12:27:54 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define SMALL_THRESHOLD 512
 # define LARGE_THRESHOLD 16384
 
+void			malloc_constructor(void) __attribute__((constructor));
+
 size_t			align_up(size_t n, int mod);
 
 size_t			get_block_index(t_region *region, const t_free_alloc *block);
@@ -50,7 +52,8 @@ void			free_large_block(t_zone *zone, t_large_block *large_block);
 void			free_routine(t_zone *zone, void *ptr);
 size_t			malloc_size_routine(t_zone *zone, const void *ptr);
 
-void			show_region_list_allocs(t_region_list *region_list, int dump_hex);
+void			show_region_list_allocs(t_region_list *region_list
+	, int dump_hex);
 void			show_large_allocs(t_large_block *large_list, int dump_hex);
 void			show_alloc_mem_routine(t_zone *zone);
 void			show_alloc_mem_hex_routine(t_zone *zone);

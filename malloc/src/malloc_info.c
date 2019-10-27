@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/29 22:49:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/25 10:09:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/27 12:28:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 
 extern t_zone			g_def_zone;
 extern pthread_mutex_t	g_mutex;
+
+void	malloc_constructor(void)
+{
+	if (getenv("MallocDumpAtExit") != NULL)
+		atexit(show_alloc_mem);
+}
 
 size_t	malloc_size(const void *ptr)
 {
