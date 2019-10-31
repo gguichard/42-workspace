@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:24:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/27 23:10:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/31 09:16:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int		parse_tile_id(const char *tile)
 static size_t	push_tiles(t_vector *tiles, char **positions, size_t row
 	, t_error *err)
 {
-	size_t		col;
+	int			col;
 	t_tile_id	tile_id;
 	t_tile_inf	*tile_inf;
 
@@ -79,7 +79,7 @@ static t_vector	read_tiles(int fd, t_map_inf *map_inf, t_error *err)
 	t_vector	tiles;
 	char		*line;
 	char		**positions;
-	size_t		col;
+	int			col;
 
 	*err = ERR_NOERROR;
 	ft_memset(&tiles, 0, sizeof(t_vector));

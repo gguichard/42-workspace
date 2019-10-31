@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/10/27 23:00:05 by gguichar         ###   ########.fr        #
+#    Updated: 2019/10/31 17:39:24 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,9 @@ map_parser.c		\
 map_parser_2.c		\
 states/menu.c		\
 states/play.c		\
+texture.c			\
+vec2d.c				\
+vec2i.c				\
 wolf3d.c
 
 OBJ_DIR		=	.obj

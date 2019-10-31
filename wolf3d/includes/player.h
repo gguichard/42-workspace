@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player_inf.h                                       :+:      :+:    :+:   */
+/*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:20:25 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/27 21:22:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/31 13:52:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PLAYER_INF_H
-# define PLAYER_INF_H
+#ifndef PLAYER_H
+# define PLAYER_H
 
 # include "vec2.h"
 
-typedef struct	s_player_inf
+typedef struct	s_player
 {
 	t_vec2d		position;
+	t_vec2d		dir;
+	t_vec2d		vel;
 	double		angle;
-}				t_player_inf;
+	double		fov;
+	double		dist_to_proj;
+}				t_player;
 
 #endif

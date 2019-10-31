@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/27 23:17:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/31 14:51:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ static t_key		g_keys[] = {
 	{SDLK_RETURN, ENTER_KEY},
 	{SDLK_UP, MOVE_FORWARD_KEY},
 	{SDLK_DOWN, MOVE_BACKWARD_KEY},
-	{SDLK_LEFT, STRAFE_LEFT_KEY},
-	{SDLK_RIGHT, STRAFE_RIGHT_KEY}
+	{SDLK_a, STRAFE_LEFT_KEY},
+	{SDLK_d, STRAFE_RIGHT_KEY},
+	{SDLK_LEFT, ROTATE_LEFT_KEY},
+	{SDLK_RIGHT, ROTATE_RIGHT_KEY}
 };
 
-static void	wolf3d_events(t_ctx *ctx)
+static void		wolf3d_events(t_ctx *ctx)
 {
 	SDL_Event	event;
 	size_t		idx;
@@ -55,18 +57,43 @@ static void	wolf3d_events(t_ctx *ctx)
 	}
 }
 
-t_error		wolf3d_init(const char *mapfile)
+static t_error	load_textures(t_ctx *ctx)
+{
+	static const char	*files[] = {
+		"textures/north.bmp",
+		"textures/east.bmp",
+		"textures/south.bmp",
+		"textures/west.bmp"
+	};
+	t_error				err;
+	size_t				idx;
+
+	err = ERR_NOERROR;
+	idx = 0;
+	while (idx < (sizeof(files) / sizeof(files[0])))
+	{
+		err = load_texture(files[idx], &ctx->textures[idx]);
+		if (err != ERR_NOERROR)
+			break ;
+		idx++;
+	}
+	return (err);
+}
+
+t_error			wolf3d_init(const char *mapfile)
 {
 	t_ctx	ctx;
 	t_error	err;
 
+	ft_memset(&ctx, 0, sizeof(t_ctx));
 	ctx.tile_map = load_mapfile(mapfile, &err);
 	if (err == ERR_NOERROR)
+		err = load_textures(&ctx);
+	if (err == ERR_NOERROR)
 	{
-		ft_memset(&ctx, 0, sizeof(t_ctx));
-		ctx.window.title = "Wolf3d";
-		ctx.window.size.width = 800;
-		ctx.window.size.height = 600;
+		ctx.window.title = "Wolf3D";
+		ctx.window.size.width = 1280;
+		ctx.window.size.height = 960;
 		err = window_create(&ctx.window);
 		if (err == ERR_NOERROR)
 		{
@@ -79,13 +106,14 @@ t_error		wolf3d_init(const char *mapfile)
 	return (err);
 }
 
-void		wolf3d_run(t_ctx *ctx)
+void			wolf3d_run(t_ctx *ctx)
 {
 	t_statefn	*fn;
 	int			dumb;
 
 	while (ctx->state != QUIT)
 	{
+		wolf3d_events(ctx);
 		if (SDL_LockTexture(ctx->window.texture, NULL
 			, (void **)&ctx->pixels, &dumb) < 0)
 			break ;
@@ -95,7 +123,5 @@ void		wolf3d_run(t_ctx *ctx)
 		SDL_UnlockTexture(ctx->window.texture);
 		SDL_RenderCopy(ctx->window.renderer, ctx->window.texture, NULL, NULL);
 		SDL_RenderPresent(ctx->window.renderer);
-		wolf3d_events(ctx);
 	}
-	ft_memdel((void **)ctx->tile_map.tiles);
 }
