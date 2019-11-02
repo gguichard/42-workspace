@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:18:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/31 17:36:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/10/31 22:36:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static t_tile_id	ray_hit_wall(int x, int y, t_map_inf *map_inf)
 {
 	if (x < 0 || x >= map_inf->width || y < 0 || y >= map_inf->height)
 		return (TILE_WALL);
-	return (map_inf->tiles[y * map_inf->width + x]);
+	else
+		return (map_inf->tiles[y * map_inf->width + x]);
 }
 
 static void			launch_hray(t_ray_inf *ray_inf, t_vec2d delta, double slope
@@ -50,6 +51,8 @@ static void			launch_hray(t_ray_inf *ray_inf, t_vec2d delta, double slope
 		pos.y += slope;
 	}
 	ray_inf->position = modf(pos.y, &dumb);
+	if (ray_inf->position < 0)
+		ray_inf->position += 1;
 	ray_inf->direction = (delta.x > 0 ? NORTH : SOUTH);
 	ray_inf->tile_id = tile_id;
 	ray_inf->length = sqrt(pow(pos.x - ray_inf->origin.x, 2)
@@ -74,6 +77,8 @@ static void			launch_vray(t_ray_inf *ray_inf, t_vec2d delta, double slope
 		pos.x += slope;
 	}
 	ray_inf->position = modf(pos.x, &dumb);
+	if (ray_inf->position < 0)
+		ray_inf->position += 1;
 	ray_inf->direction = (delta.y > 0 ? EAST : WEST);
 	ray_inf->tile_id = tile_id;
 	ray_inf->length = sqrt(pow(pos.x - ray_inf->origin.x, 2)
