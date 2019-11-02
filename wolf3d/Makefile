@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/10/31 17:39:24 by gguichar         ###   ########.fr        #
+#    Updated: 2019/11/02 15:50:04 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ LDFLAGS			=	-Llibft -lft $(shell ./$(SDL_DIR)/bin/sdl2-config --libs)
 
 SRC_DIR			=	src
 SRC 			=	\
+collision.c			\
 error.c				\
 launch_ray.c		\
 lib_sdl2.c			\

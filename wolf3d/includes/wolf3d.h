@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/31 17:36:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/02 15:48:37 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "player.h"
 # include "ray_inf.h"
 # include "texture_inf.h"
+# include "vec2.h"
 # include "error.h"
 
 typedef enum	e_state
@@ -55,5 +56,6 @@ void			wolf3d_main_menu(t_ctx *ctx);
 void			wolf3d_play(t_ctx *ctx);
 
 t_ray_inf		launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf);
+void			check_collision_after_move(t_ctx *ctx, t_vec2d old_position);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/02 09:59:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/02 19:07:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "window.h"
 #include "ray_inf.h"
 #include "texture_inf.h"
+#include "vec2.h"
 
 static void	handle_player_strafe_keys(t_ctx *ctx)
 {
@@ -101,7 +102,7 @@ static void	draw_ceil_floor(t_ctx *ctx, int x)
 	y_index = 0;
 	while (y_index < half_height)
 	{
-		ctx->pixels[y_index * ctx->window.size.width + x] = 0x0000FF;
+		ctx->pixels[y_index * ctx->window.size.width + x] = 0x427ef5;
 		ctx->pixels[(y_index + half_height) * ctx->window.size.width + x] =
 			0x505050;
 		y_index++;
@@ -166,11 +167,15 @@ static void	player_view_raycast(t_ctx *ctx)
 
 void		wolf3d_play(t_ctx *ctx)
 {
+	t_vec2d	old_pos;
+
 	if (ctx->keystates & ESC_KEY)
 		ctx->state = QUIT;
 	else
 	{
+		old_pos = ctx->player.position;
 		player_movement(ctx);
+		check_collision_after_move(ctx, old_pos);
 		player_view_raycast(ctx);
 	}
 }
