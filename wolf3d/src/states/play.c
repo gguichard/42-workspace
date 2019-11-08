@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/02 19:07:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/08 15:26:36 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "keystates.h"
 #include "player.h"
 #include "window.h"
+#include "minimap.h"
 #include "ray_inf.h"
 #include "texture_inf.h"
 #include "vec2.h"
@@ -177,5 +178,6 @@ void		wolf3d_play(t_ctx *ctx)
 		player_movement(ctx);
 		check_collision_after_move(ctx, old_pos);
 		player_view_raycast(ctx);
+		draw_map_view(ctx);
 	}
 }

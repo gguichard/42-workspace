@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/11/02 15:50:04 by gguichar         ###   ########.fr        #
+#    Updated: 2019/11/08 15:25:55 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ lib_sdl2.c			\
 main.c				\
 map_parser.c		\
 map_parser_2.c		\
+map_view.c			\
 states/menu.c		\
 states/play.c		\
 texture.c			\
