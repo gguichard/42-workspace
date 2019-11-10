@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/31 14:51:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/10 13:59:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,30 +80,37 @@ static t_error	load_textures(t_ctx *ctx)
 	return (err);
 }
 
-t_error			wolf3d_init(const char *mapfile)
+t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 {
-	t_ctx	ctx;
 	t_error	err;
 
-	ft_memset(&ctx, 0, sizeof(t_ctx));
-	ctx.tile_map = load_mapfile(mapfile, &err);
+	ft_memset(ctx, 0, sizeof(t_ctx));
+	ctx->tile_map = load_mapfile(mapfile, &err);
 	if (err == ERR_NOERROR)
-		err = load_textures(&ctx);
+		err = load_textures(ctx);
 	if (err == ERR_NOERROR)
 	{
-		ctx.window.title = "Wolf3D";
-		ctx.window.size.width = 1280;
-		ctx.window.size.height = 960;
-		err = window_create(&ctx.window);
+		ctx->window.title = "Wolf3D";
+		ctx->window.size.width = 1280;
+		ctx->window.size.height = 960;
+		err = window_create(&ctx->window);
+		if (err == ERR_NOERROR)
+			err = minimap_setup(ctx);
 		if (err == ERR_NOERROR)
 		{
-			ctx.state = MAIN_MENU;
+			ctx->state = MAIN_MENU;
 			g_states[MAIN_MENU] = wolf3d_main_menu;
 			g_states[PLAYING] = wolf3d_play;
-			wolf3d_run(&ctx);
+			wolf3d_run(ctx);
 		}
 	}
 	return (err);
+}
+
+void			wolf3d_clean(t_ctx *ctx)
+{
+	window_destroy(&ctx->window);
+	minimap_destroy(&ctx->minimap);
 }
 
 void			wolf3d_run(t_ctx *ctx)
@@ -115,7 +122,7 @@ void			wolf3d_run(t_ctx *ctx)
 	{
 		wolf3d_events(ctx);
 		if (SDL_LockTexture(ctx->window.texture, NULL
-			, (void **)&ctx->pixels, &dumb) < 0)
+			, (void **)&ctx->window.pixels, &dumb) < 0)
 			break ;
 		fn = g_states[ctx->state];
 		if (fn != NULL)

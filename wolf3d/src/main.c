@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:51:15 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/31 16:52:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/10 13:59:08 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 int	main(int argc, char **argv)
 {
 	t_error	err;
+	t_ctx	ctx;
 
 	err = ERR_NOERROR;
 	if (argc <= 1)
@@ -28,7 +29,8 @@ int	main(int argc, char **argv)
 		err = ERR_LIBSDL2;
 	else
 	{
-		err = wolf3d_init(argv[1]);
+		err = wolf3d_init(&ctx, argv[1]);
+		wolf3d_clean(&ctx);
 		SDL_Quit();
 	}
 	if (err != ERR_NOERROR)

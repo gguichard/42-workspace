@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:01:17 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/27 21:01:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/10 12:44:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct	s_win_data
 	SDL_Window		*window;
 	SDL_Renderer	*renderer;
 	SDL_Texture		*texture;
+	uint32_t		*pixels;
 }				t_win_data;
 
 t_error			window_create(t_win_data *win_data);

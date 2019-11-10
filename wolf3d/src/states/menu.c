@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:26:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/31 13:19:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/10 12:46:21 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	wolf3d_main_menu(t_ctx *ctx)
 	}
 	else
 	{
-		ft_memset(ctx->pixels, 255
+		ft_memset(ctx->window.pixels, 255
 			, ctx->window.size.width * ctx->window.size.height
-				* sizeof(*ctx->pixels));
+				* sizeof(*ctx->window.pixels));
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/08 15:26:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/10 15:20:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include "keystates.h"
 #include "player.h"
 #include "window.h"
-#include "minimap.h"
 #include "ray_inf.h"
 #include "texture_inf.h"
 #include "vec2.h"
@@ -39,7 +38,7 @@ static void	handle_player_strafe_keys(t_ctx *ctx)
 			acc = vec2d_sub(acc, dir);
 		if (acc.x != 0.0 || acc.y != 0.0)
 		{
-			acc = vec2d_scalar(vec2d_unit(acc), PLAYER_STRAFE_ACCEL);
+			acc = vec2d_mulf(vec2d_unit(acc), PLAYER_STRAFE_ACCEL);
 			ctx->player.velocity = vec2d_add(ctx->player.velocity, acc);
 		}
 	}
@@ -65,7 +64,7 @@ static void	handle_player_keys(t_ctx *ctx)
 			acc = vec2d_sub(acc, dir);
 		if (acc.x != 0.0 || acc.y != 0.0)
 		{
-			acc = vec2d_scalar(vec2d_unit(acc), PLAYER_ACCEL);
+			acc = vec2d_mulf(vec2d_unit(acc), PLAYER_ACCEL);
 			ctx->player.velocity = vec2d_add(ctx->player.velocity, acc);
 		}
 	}
@@ -81,13 +80,13 @@ static void	player_movement(t_ctx *ctx)
 	if (old_velocity.x == ctx->player.velocity.x
 		&& old_velocity.y == ctx->player.velocity.y)
 	{
-		ctx->player.velocity = vec2d_scalar(ctx->player.velocity
+		ctx->player.velocity = vec2d_mulf(ctx->player.velocity
 			, PLAYER_VELOCITY_DECREASE);
 	}
 	velocity_speed = sqrt(vec2d_length2(ctx->player.velocity));
 	if (velocity_speed > PLAYER_MAX_SPEED)
 	{
-		ctx->player.velocity = vec2d_scalar(vec2d_unit(ctx->player.velocity)
+		ctx->player.velocity = vec2d_mulf(vec2d_unit(ctx->player.velocity)
 			, PLAYER_MAX_SPEED);
 	}
 	ctx->player.position = vec2d_add(ctx->player.position
@@ -103,9 +102,9 @@ static void	draw_ceil_floor(t_ctx *ctx, int x)
 	y_index = 0;
 	while (y_index < half_height)
 	{
-		ctx->pixels[y_index * ctx->window.size.width + x] = 0x427ef5;
-		ctx->pixels[(y_index + half_height) * ctx->window.size.width + x] =
-			0x505050;
+		ctx->window.pixels[y_index * ctx->window.size.width + x] = CEIL_COLOR;
+		ctx->window.pixels[(y_index + half_height)
+			* ctx->window.size.width + x] = FLOOR_COLOR;
 		y_index++;
 	}
 }
@@ -128,8 +127,9 @@ static void	draw_texture(t_ctx *ctx, int x, int height, t_ray_inf *ray_inf)
 	{
 		text_coord.y = (text_inf->height - 1)
 			* ((y_index + wall_offsets[1]) / (double)height);
-		ctx->pixels[(y_index + wall_offsets[0]) * ctx->window.size.width + x] =
-			text_inf->pixels[text_coord.y * text_inf->width + text_coord.x];
+		ctx->window.pixels[(y_index + wall_offsets[0])
+			* ctx->window.size.width + x] = text_inf->pixels[text_coord.y
+					* text_inf->width + text_coord.x];
 		y_index++;
 	}
 }
@@ -160,6 +160,7 @@ static void	player_view_raycast(t_ctx *ctx)
 		angle = ctx->player.angle - atan((x - half_width)
 				/ ctx->player.dist_to_proj);
 		ray_inf = launch_ray(ctx->player.position, angle, &ctx->tile_map);
+		minimap_ray(ctx, ray_inf.length, angle);
 		ray_inf.length *= cos(ctx->player.angle - angle);
 		draw_column(ctx, &ray_inf, x);
 		x++;
@@ -175,9 +176,10 @@ void		wolf3d_play(t_ctx *ctx)
 	else
 	{
 		old_pos = ctx->player.position;
+		minimap_background(ctx);
 		player_movement(ctx);
 		check_collision_after_move(ctx, old_pos);
 		player_view_raycast(ctx);
-		draw_map_view(ctx);
+		draw_minimap_view(ctx);
 	}
 }

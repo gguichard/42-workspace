@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minimap.h                                          :+:      :+:    :+:   */
+/*   minimap_inf.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/08 15:08:11 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/08 15:26:20 by gguichar         ###   ########.fr       */
+/*   Created: 2019/11/10 13:11:04 by gguichar          #+#    #+#             */
+/*   Updated: 2019/11/10 14:53:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIMAP_H
-# define MINIMAP_H
+#ifndef MINIMAP_INF_H
+# define MINIMAP_INF_H
 
-# define MINIMAP_SIZE 0.2
-# define MINIMAP_VIEW_RADIUS 10
+# include <stdint.h>
 
-void	draw_map_view(t_ctx *ctx);
+typedef struct	s_minimap_inf
+{
+	int			size;
+	int			view_radius;
+	uint32_t	*pixels;
+}				t_minimap_inf;
 
 #endif

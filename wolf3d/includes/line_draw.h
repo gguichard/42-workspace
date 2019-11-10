@@ -1,37 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vec2.h                                             :+:      :+:    :+:   */
+/*   line_draw.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/27 21:14:59 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/10 12:28:57 by gguichar         ###   ########.fr       */
+/*   Created: 2019/05/31 18:58:56 by gguichar          #+#    #+#             */
+/*   Updated: 2019/11/10 15:02:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VEC2_H
-# define VEC2_H
+#ifndef LINE_DRAW_H
+# define LINE_DRAW_H
 
-typedef struct	s_vec2i
+# include <stdint.h>
+# include "vec2.h"
+
+typedef struct	s_line
 {
+	int			x0;
+	int			y0;
+	int			x1;
+	int			y1;
+	int			dx;
+	int			dy;
+	int			sx;
+	int			sy;
 	int			x;
 	int			y;
-}				t_vec2i;
+	int			err;
+}				t_line;
 
-typedef struct	s_vec2d
+typedef struct	s_line_ctx
 {
-	double		x;
-	double		y;
-}				t_vec2d;
+	int			win_width;
+	int			win_height;
+	uint32_t	*pixels;
+}				t_line_ctx;
 
-t_vec2i			vec2i(int x, int y);
-
-t_vec2d			vec2d(double x, double y);
-t_vec2d			vec2d_add(t_vec2d a, t_vec2d b);
-t_vec2d			vec2d_sub(t_vec2d a, t_vec2d b);
-t_vec2d			vec2d_mulf(t_vec2d a, double scalar);
-double			vec2d_length2(t_vec2d a);
-t_vec2d			vec2d_unit(t_vec2d a);
+void			draw_line(t_line_ctx ctx, t_vec2i start, t_vec2i end
+	, uint32_t color);
 
 #endif
