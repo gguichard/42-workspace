@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:21:35 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:42:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:27:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ union			u_md5_hash
 
 typedef struct	s_md5_ctx
 {
-	size_t				len;
 	char				digest[33];
 	uint32_t			words[16];
 	union u_md5_hash	hash;
@@ -38,7 +37,8 @@ typedef struct	s_md5_ctx
 
 void			md5_stream_init(t_hash_stream *stream);
 void			md5_stream(t_md5_ctx *ctx);
-void			md5_final(t_md5_ctx *ctx, size_t offset);
+void			md5_final(t_md5_ctx *ctx
+	, uint64_t len_bits_hi, uint64_t len_bits_lo);
 void			md5_digest(t_md5_ctx *ctx);
 
 #endif

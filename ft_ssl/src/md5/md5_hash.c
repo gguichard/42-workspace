@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:19:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 13:45:18 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:20:28 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void		md5_stream(t_md5_ctx *ctx)
 {
 	uint32_t	values[4];
 
-	ctx->len += sizeof(ctx->words);
 	values[0] = ctx->hash.words[0];
 	values[1] = ctx->hash.words[1];
 	values[2] = ctx->hash.words[2];

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:50:13 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 13:44:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:32:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ void	md5_stream_init(t_hash_stream *stream)
 	stream->digest_fn = (void *)md5_digest;
 }
 
-void	md5_final(t_md5_ctx *ctx, size_t offset)
+void	md5_final(t_md5_ctx *ctx, uint64_t len_bits_hi, uint64_t len_bits_lo)
 {
-	uint64_t	len_bits;
+	size_t	len_bits;
 
-	len_bits = (ctx->len + offset) * 8;
+	(void)len_bits_hi;
+	len_bits = len_bits_lo;
 	ft_memcpy((uint8_t *)ctx->words + 56, &len_bits, sizeof(len_bits));
 }

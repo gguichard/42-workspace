@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:28:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 13:48:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:33:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,23 @@
 #include "hash_stream.h"
 #include "utils.h"
 
+static void	hash_stream_len(t_hash_stream *stream, size_t count)
+{
+	uint64_t	len_bits_hi;
+	uint64_t	len_bits_lo;
+
+	len_bits_hi = stream->len_bits_hi;
+	len_bits_lo = stream->len_bits_lo + count * 8;
+	if (len_bits_lo < stream->len_bits_lo)
+		len_bits_hi += 1;
+	stream->len_bits_hi = len_bits_hi;
+	stream->len_bits_lo = len_bits_lo;
+}
+
 void		hash_stream_begin(t_hash_stream *stream)
 {
-	stream->len = 0;
+	stream->len_bits_hi = 0;
+	stream->len_bits_lo = 0;
 	stream->offset = 0;
 }
 
@@ -39,7 +53,8 @@ void		hash_stream_end(t_hash_stream *stream)
 		ft_memset(stream->block, 0
 			, stream->block_size - stream->final_len_size);
 	}
-	stream->final_fn(stream->ctx, len);
+	hash_stream_len(stream, len);
+	stream->final_fn(stream->ctx, stream->len_bits_hi, stream->len_bits_lo);
 	stream->hash_fn(stream->ctx);
 }
 
@@ -54,7 +69,7 @@ static int	hash_stream_buffer(t_hash_stream *stream
 	if (stream->offset == stream->block_size)
 	{
 		stream->hash_fn(stream->ctx);
-		stream->len += stream->offset;
+		hash_stream_len(stream, stream->block_size);
 		stream->offset = 0;
 	}
 	return (copy_len);
@@ -75,7 +90,7 @@ void		hash_stream(t_hash_stream *stream
 	{
 		ft_memcpy(stream->block, bytes, stream->block_size);
 		stream->hash_fn(stream->ctx);
-		stream->len += stream->block_size;
+		hash_stream_len(stream, stream->block_size);
 		bytes += stream->block_size;
 		len -= stream->block_size;
 	}

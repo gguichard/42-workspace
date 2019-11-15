@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 09:37:43 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 13:43:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:28:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ typedef struct	s_hash_stream
 	size_t		final_len_size;
 	char		*digest_buffer;
 	void		(*hash_fn)(void *);
-	void		(*final_fn)(void *, size_t);
+	void		(*final_fn)(void *, uint64_t, uint64_t);
 	void		(*digest_fn)(void *);
 	size_t		offset;
-	size_t		len;
+	uint64_t	len_bits_hi;
+	uint64_t	len_bits_lo;
 }				t_hash_stream;
 
 void			hash_stream_begin(t_hash_stream *stream);

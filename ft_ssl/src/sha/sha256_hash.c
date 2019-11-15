@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:25:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:45:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:20:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void		sha256_stream(t_sha256_ctx *ctx)
 	size_t		idx;
 	uint32_t	values[8];
 
-	ctx->len += SHA256_BLOCK_SIZE;
 	sha256_words(ctx);
 	idx = 0;
 	while (idx < 8)

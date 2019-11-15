@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 13:44:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:25:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,12 @@ void	sha256_stream_init(t_hash_stream *stream)
 	stream->digest_fn = (void *)sha256_digest;
 }
 
-void	sha256_final(t_sha256_ctx *ctx, size_t offset)
+void	sha256_final(t_sha256_ctx *ctx
+	, uint64_t len_bits_hi, uint64_t len_bits_lo)
 {
 	uint64_t	len_bits;
 
-	len_bits = (ctx->len + offset) * 8;
-	len_bits = byte_swap64(len_bits);
+	(void)len_bits_hi;
+	len_bits = byte_swap64(len_bits_lo);
 	ft_memcpy((uint8_t *)ctx->words + 56, &len_bits, sizeof(len_bits));
 }

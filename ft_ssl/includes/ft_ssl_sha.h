@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:30:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 12:44:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:27:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ union			u_sha512_hash
 
 typedef struct	s_sha1_ctx
 {
-	size_t				len;
 	char				digest[41];
 	uint32_t			words[80];
 	union u_sha1_hash	hash;
@@ -76,7 +75,6 @@ typedef struct	s_sha1_ctx
 
 typedef struct	s_sha256_ctx
 {
-	size_t				len;
 	size_t				digest_size;
 	char				digest[65];
 	uint32_t			words[64];
@@ -85,8 +83,6 @@ typedef struct	s_sha256_ctx
 
 typedef struct	s_sha512_ctx
 {
-	uint64_t			len_bits_hi;
-	uint64_t			len_bits_lo;
 	size_t				digest_size;
 	char				digest[129];
 	uint64_t			words[80];
@@ -103,9 +99,12 @@ void			sha1_stream(t_sha1_ctx *ctx);
 void			sha256_stream(t_sha256_ctx *ctx);
 void			sha512_stream(t_sha512_ctx *ctx);
 
-void			sha1_final(t_sha1_ctx *ctx, size_t offset);
-void			sha256_final(t_sha256_ctx *ctx, size_t offset);
-void			sha512_final(t_sha512_ctx *ctx, size_t offset);
+void			sha1_final(t_sha1_ctx *ctx
+	, uint64_t len_bits_hi, uint64_t len_bits_lo);
+void			sha256_final(t_sha256_ctx *ctx
+	, uint64_t len_bits_hi, uint64_t len_bits_lo);
+void			sha512_final(t_sha512_ctx *ctx
+	, uint64_t len_bits_hi, uint64_t len_bits_lo);
 
 void			sha1_digest(t_sha1_ctx *ctx);
 void			sha256_digest(t_sha256_ctx *ctx);
