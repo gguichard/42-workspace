@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/13 13:15:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/16 13:01:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <SDL.h>
 #include <math.h>
 #include <stdint.h>
 #include "libft.h"
@@ -165,6 +166,20 @@ static void	player_view_raycast(t_ctx *ctx)
 		draw_column(ctx, &ray_inf, x);
 		x++;
 	}
+}
+
+int			wolf3d_play_events(t_ctx *ctx, SDL_Event event)
+{
+	double	x_move;
+
+	(void)ctx;
+	if (event.type == SDL_MOUSEMOTION)
+	{
+		x_move = event.motion.xrel;
+		ctx->player.angle += -x_move * (M_PI / 1000);
+		return (1);
+	}
+	return (0);
 }
 
 void		wolf3d_play(t_ctx *ctx)

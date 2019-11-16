@@ -6,13 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/13 12:12:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/16 12:56:29 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
 
+# include <SDL.h>
 # include <stdint.h>
 # include "window.h"
 # include "keystates.h"
@@ -59,6 +60,7 @@ typedef struct	s_ctx
 }				t_ctx;
 
 typedef void	t_statefn(t_ctx *ctx);
+typedef int		t_state_evtfn(t_ctx *ctx, SDL_Event evt);
 
 void			place_player_map(t_map_inf *map_inf, t_tile_inf *tile_inf);
 t_map_inf		load_mapfile(const char *file, t_error *err);
@@ -70,6 +72,7 @@ void			wolf3d_clean(t_ctx *ctx);
 
 void			wolf3d_main_menu(t_ctx *ctx);
 void			wolf3d_play(t_ctx *ctx);
+int				wolf3d_play_events(t_ctx *ctx, SDL_Event event);
 
 t_ray_inf		launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf);
 void			check_collision_after_move(t_ctx *ctx, t_vec2d old_position);

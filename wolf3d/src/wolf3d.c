@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/10 13:59:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/16 13:02:23 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,16 @@
 #include "window.h"
 #include "error.h"
 
-static t_statefn	*g_states[STATE_LAST];
-static t_key		g_keys[] = {
+static t_statefn		*g_states[STATE_LAST];
+static t_state_evtfn	*g_states_evt[STATE_LAST];
+
+static t_key			g_keys[] = {
 	{SDLK_ESCAPE, ESC_KEY},
 	{SDLK_RETURN, ENTER_KEY},
 	{SDLK_UP, MOVE_FORWARD_KEY},
 	{SDLK_DOWN, MOVE_BACKWARD_KEY},
+	{SDLK_w, MOVE_FORWARD_KEY},
+	{SDLK_s, MOVE_BACKWARD_KEY},
 	{SDLK_a, STRAFE_LEFT_KEY},
 	{SDLK_d, STRAFE_RIGHT_KEY},
 	{SDLK_LEFT, ROTATE_LEFT_KEY},
@@ -33,12 +37,18 @@ static void		wolf3d_events(t_ctx *ctx)
 {
 	SDL_Event	event;
 	size_t		idx;
+	int			ret;
 
 	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
+		{
 			ctx->state = QUIT;
-		else if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
+			break ;
+		}
+		ret = g_states_evt[ctx->state] == NULL
+			|| !g_states_evt[ctx->state](ctx, event);
+		if (ret && (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP))
 		{
 			idx = 0;
 			while (idx < (sizeof(g_keys) / sizeof(g_keys[0])))
@@ -101,6 +111,7 @@ t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 			ctx->state = MAIN_MENU;
 			g_states[MAIN_MENU] = wolf3d_main_menu;
 			g_states[PLAYING] = wolf3d_play;
+			g_states_evt[PLAYING] = wolf3d_play_events;
 			wolf3d_run(ctx);
 		}
 	}
