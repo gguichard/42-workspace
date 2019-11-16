@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/10 15:02:28 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/13 12:12:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,18 @@
 #include "vec2.h"
 #include "window.h"
 #include "line_draw.h"
+
+static inline void	plot_pixel(t_line_ctx ctx, t_line line, uint32_t color)
+{
+	size_t	idx;
+
+	idx = line.y * ctx.win_width + line.x;
+	if (ctx.z_buffer[idx] < ctx.z_value)
+	{
+		ctx.pixels[idx] = color;
+		ctx.z_buffer[idx] = ctx.z_value;
+	}
+}
 
 static inline void	step_line(t_line *line)
 {
@@ -53,7 +65,7 @@ static inline void	draw_line_bresenham(t_line_ctx ctx
 	{
 		if (line.x >= 0 && line.y >= 0
 			&& line.x < ctx.win_width && line.y < ctx.win_height)
-			ctx.pixels[line.y * ctx.win_width + line.x] = color;
+			plot_pixel(ctx, line, color);
 		step_line(&line);
 	}
 }

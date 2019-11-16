@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/10 15:24:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/13 12:12:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@
 # define MINIMAP_VIEW_RADIUS 10
 # define MINIMAP_BORDER 1
 # define MINIMAP_BORDER_COLOR 0xFFFFFF
-# define MINIMAP_PLAYER_COLOR 0xF4A142
+# define MINIMAP_PLAYER_COLOR 0xFFFFFF
+# define MINIMAP_RAY_COLOR 0xF4A142
 # define MINIMAP_WALL_COLOR 0x000000
 # define MINIMAP_OUTSIDE_COLOR 0x000000
 
@@ -75,6 +76,7 @@ void			check_collision_after_move(t_ctx *ctx, t_vec2d old_position);
 
 t_error			minimap_setup(t_ctx *ctx);
 void			minimap_destroy(t_minimap_inf *minimap);
+void			minimap_reset_z_buffer(t_ctx *ctx);
 void			minimap_background(t_ctx *ctx);
 void			minimap_ray(t_ctx *ctx, double length, double angle);
 void			draw_minimap_view(t_ctx *ctx);

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/10 13:11:04 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/10 14:53:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/16 11:30:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct	s_minimap_inf
 	int			size;
 	int			view_radius;
 	uint32_t	*pixels;
+	int			*z_buffer;
 }				t_minimap_inf;
 
 #endif

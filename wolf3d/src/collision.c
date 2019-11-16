@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 11:37:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/02 18:02:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/13 15:14:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ static int	is_wall(int x, int y, t_map_inf *map_inf)
 		return (map_inf->tiles[y * map_inf->width + x] != TILE_EMPTY);
 }
 
-void		check_collision_after_move(t_ctx *ctx, t_vec2d old_position)
+void		check_collision_after_move(t_ctx *ctx, t_vec2d old_pos)
 {
 	t_vec2d	pos;
 	t_vec2d	dir;
 
 	pos = ctx->player.position;
-	dir = vec2d_sub(pos, old_position);
+	dir = vec2d_sub(pos, old_pos);
 	if (dir.x > 0
-		&& is_wall(pos.x + PLAYER_HALF_SIZE, old_position.y, &ctx->tile_map))
+		&& is_wall(pos.x + PLAYER_HALF_SIZE, old_pos.y, &ctx->tile_map))
 		pos.x = floor(pos.x + PLAYER_HALF_SIZE) - PLAYER_HALF_SIZE;
 	else if (dir.x < 0
-		&& is_wall(pos.x - PLAYER_HALF_SIZE, old_position.y, &ctx->tile_map))
+		&& is_wall(pos.x - PLAYER_HALF_SIZE, old_pos.y, &ctx->tile_map))
 		pos.x = floor(pos.x - PLAYER_HALF_SIZE + 1) + PLAYER_HALF_SIZE;
 	if (dir.y > 0
 		&& is_wall(pos.x, pos.y + PLAYER_HALF_SIZE, &ctx->tile_map))

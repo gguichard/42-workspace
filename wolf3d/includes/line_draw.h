@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/31 18:58:56 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/10 15:02:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/13 12:11:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ typedef struct	s_line_ctx
 	int			win_width;
 	int			win_height;
 	uint32_t	*pixels;
+	int			*z_buffer;
+	int			z_value;
 }				t_line_ctx;
 
 void			draw_line(t_line_ctx ctx, t_vec2i start, t_vec2i end
