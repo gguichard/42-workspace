@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:18:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/31 22:36:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/16 16:06:17 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_tile_id	ray_hit_wall(int x, int y, t_map_inf *map_inf)
 	if (x < 0 || x >= map_inf->width || y < 0 || y >= map_inf->height)
 		return (TILE_WALL);
 	else
-		return (map_inf->tiles[y * map_inf->width + x]);
+		return (map_inf->tiles[y * map_inf->width + x].id);
 }
 
 static void			launch_hray(t_ray_inf *ray_inf, t_vec2d delta, double slope

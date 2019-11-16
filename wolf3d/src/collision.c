@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 11:37:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/13 15:14:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/16 16:05:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	is_wall(int x, int y, t_map_inf *map_inf)
 	if (x < 0 || y < 0 || x >= map_inf->width || y >= map_inf->height)
 		return (1);
 	else
-		return (map_inf->tiles[y * map_inf->width + x] != TILE_EMPTY);
+		return (map_inf->tiles[y * map_inf->width + x].id != TILE_EMPTY);
 }
 
 void		check_collision_after_move(t_ctx *ctx, t_vec2d old_pos)

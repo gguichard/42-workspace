@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 14:55:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/16 12:30:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/16 16:07:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	minimap_plot(t_ctx *ctx, t_vec2i pos)
 		|| block_pos.y >= ctx->tile_map.height)
 		return (minimap_plot_px(ctx, idx, MINIMAP_OUTSIDE_COLOR, 10));
 	else if (ctx->tile_map.tiles[(int)block_pos.y * ctx->tile_map.width
-			+ (int)block_pos.x] != TILE_EMPTY)
+			+ (int)block_pos.x].id != TILE_EMPTY)
 		return (minimap_plot_px(ctx, idx, MINIMAP_WALL_COLOR, 10));
 	else if (fabs(block_pos.x - ctx->player.position.x) < PLAYER_HALF_SIZE
 		&& fabs(block_pos.y - ctx->player.position.y) < PLAYER_HALF_SIZE)

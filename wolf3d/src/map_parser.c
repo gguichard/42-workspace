@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:24:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/31 09:16:35 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/16 16:07:05 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static void		tiles_vector_to_map(t_vector tiles, t_map_inf *map_inf
 
 	*err = ERR_NOERROR;
 	size = map_inf->width * map_inf->height * sizeof(*map_inf->tiles);
-	map_inf->tiles = (t_tile_id *)malloc(size);
+	map_inf->tiles = (t_tile_meta *)malloc(size);
 	if (map_inf->tiles == NULL)
 		*err = ERR_UNEXPECTED;
 	else
@@ -121,7 +121,7 @@ static void		tiles_vector_to_map(t_vector tiles, t_map_inf *map_inf
 			tile_inf = (t_tile_inf *)tiles.data[idx];
 			if (tile_inf->id < 0)
 				place_player_map(map_inf, tile_inf);
-			map_inf->tiles[tile_inf->col + tile_inf->row * map_inf->width] =
+			map_inf->tiles[tile_inf->col + tile_inf->row * map_inf->width].id =
 				tile_inf->id;
 			idx++;
 		}
