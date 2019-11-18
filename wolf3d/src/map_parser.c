@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:24:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/16 16:07:05 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/19 08:34:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "wolf3d.h"
 #include "map_inf.h"
 #include "tile_inf.h"
+#include "vec2.h"
 #include "error.h"
 
 static int		parse_tile_id(const char *tile)
@@ -123,6 +124,8 @@ static void		tiles_vector_to_map(t_vector tiles, t_map_inf *map_inf
 				place_player_map(map_inf, tile_inf);
 			map_inf->tiles[tile_inf->col + tile_inf->row * map_inf->width].id =
 				tile_inf->id;
+			map_inf->tiles[tile_inf->col + tile_inf->row * map_inf->width].pos =
+				vec2i(tile_inf->col, tile_inf->row);
 			idx++;
 		}
 	}

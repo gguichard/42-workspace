@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/16 13:01:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/20 17:24:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "player.h"
 #include "window.h"
 #include "ray_inf.h"
+#include "tile_inf.h"
 #include "texture_inf.h"
 #include "vec2.h"
 
@@ -152,6 +153,7 @@ static void	player_view_raycast(t_ctx *ctx)
 	int			half_width;
 	int			x;
 	double		angle;
+	t_ray_inf	hit_inf;
 	t_ray_inf	ray_inf;
 
 	half_width = ctx->window.size.width / 2;
@@ -160,11 +162,49 @@ static void	player_view_raycast(t_ctx *ctx)
 	{
 		angle = ctx->player.angle - atan((x - half_width)
 				/ ctx->player.dist_to_proj);
-		ray_inf = launch_ray(ctx->player.position, angle, &ctx->tile_map);
-		minimap_ray(ctx, ray_inf.length, angle);
+		hit_inf = launch_ray(ctx->player.position, angle, &ctx->tile_map);
+		minimap_ray(ctx, hit_inf.length, angle);
+		ray_inf = launch_portal_ray(hit_inf, angle, &ctx->tile_map, 100);
 		ray_inf.length *= cos(ctx->player.angle - angle);
 		draw_column(ctx, &ray_inf, x);
 		x++;
+	}
+}
+
+static int	search_portal(t_ctx *ctx, t_portal_type type)
+{
+	size_t	total_size;
+	size_t	idx;
+
+	total_size = ctx->tile_map.width * ctx->tile_map.height;
+	idx = 0;
+	while (idx < total_size)
+	{
+		if (ctx->tile_map.tiles[idx].type == PORTAL_DATA
+			&& ctx->tile_map.tiles[idx].data.portal.type == type)
+			return (idx);
+		idx++;
+	}
+	return (-1);
+}
+
+static void	create_portal(t_ctx *ctx, t_portal_type type)
+{
+	t_ray_inf	ray_inf;
+
+	ray_inf = launch_ray(ctx->player.position, ctx->player.angle
+		, &ctx->tile_map);
+	if (ray_inf.tile != NULL)
+	{
+		ray_inf.tile->type = PORTAL_DATA;
+		ray_inf.tile->data.portal.type = type;
+		ray_inf.tile->data.portal.dir = ray_inf.direction;
+		ray_inf.tile->data.portal.target = search_portal(ctx
+			, (type == FIRST_PORTAL) ? SECOND_PORTAL : FIRST_PORTAL);
+		if (ray_inf.tile->data.portal.target != -1)
+			ctx->tile_map.tiles[ray_inf.tile->data.portal.target]
+				.data.portal.target = ray_inf.tile->pos.y * ctx->tile_map.width
+					+ ray_inf.tile->pos.x;
 	}
 }
 
@@ -172,11 +212,18 @@ int			wolf3d_play_events(t_ctx *ctx, SDL_Event event)
 {
 	double	x_move;
 
-	(void)ctx;
 	if (event.type == SDL_MOUSEMOTION)
 	{
 		x_move = event.motion.xrel;
-		ctx->player.angle += -x_move * (M_PI / 1000);
+		ctx->player.angle -= x_move * (M_PI / 1000);
+		return (1);
+	}
+	else if (event.type == SDL_MOUSEBUTTONDOWN)
+	{
+		if (event.button.button == SDL_BUTTON_LEFT)
+			create_portal(ctx, FIRST_PORTAL);
+		else if (event.button.button == SDL_BUTTON_RIGHT)
+			create_portal(ctx, SECOND_PORTAL);
 		return (1);
 	}
 	return (0);

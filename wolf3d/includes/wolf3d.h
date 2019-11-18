@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/16 12:56:29 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/20 17:26:31 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "window.h"
 # include "keystates.h"
 # include "map_inf.h"
+# include "tile_inf.h"
 # include "player.h"
 # include "ray_inf.h"
 # include "texture_inf.h"
@@ -83,5 +84,9 @@ void			minimap_reset_z_buffer(t_ctx *ctx);
 void			minimap_background(t_ctx *ctx);
 void			minimap_ray(t_ctx *ctx, double length, double angle);
 void			draw_minimap_view(t_ctx *ctx);
+
+t_ray_inf		launch_portal_ray(t_ray_inf hit_inf, double angle
+	, t_map_inf *map_inf, int depth);
+void			teleport_through_portal(t_ctx *ctx, t_tile_meta *tile);
 
 #endif

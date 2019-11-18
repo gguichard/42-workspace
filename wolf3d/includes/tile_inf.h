@@ -6,13 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:29:36 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/16 16:06:08 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/19 08:34:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TILE_INF_H
 # define TILE_INF_H
 
+# include "vec2.h"
 # include "direction.h"
 
 typedef enum	e_tile_id
@@ -26,6 +27,12 @@ typedef enum	e_tile_id
 	TILE_LAST = 2,
 	TILE_UNKNOWN
 }				t_tile_id;
+
+typedef enum	e_tile_data_type
+{
+	NO_DATA,
+	PORTAL_DATA
+}				t_tile_data_type;
 
 typedef struct	s_tile_inf
 {
@@ -44,17 +51,20 @@ typedef struct	s_portal_inf
 {
 	t_portal_type	type;
 	t_direction		dir;
+	int				target;
 }				t_portal_inf;
 
 typedef union	u_tile_data
 {
-	t_portal_inf	portal_inf;
+	t_portal_inf	portal;
 }				t_tile_data;
 
 typedef struct	s_tile_meta
 {
-	t_tile_id	id;
-	t_tile_data	data;
+	t_tile_id			id;
+	t_vec2i				pos;
+	t_tile_data_type	type;
+	t_tile_data			data;
 }				t_tile_meta;
 
 #endif

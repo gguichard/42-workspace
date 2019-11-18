@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/16 13:02:23 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/20 22:39:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,9 @@ static t_error	load_textures(t_ctx *ctx)
 		"textures/north.bmp",
 		"textures/east.bmp",
 		"textures/south.bmp",
-		"textures/west.bmp"
+		"textures/west.bmp",
+		//"textures/portal1.bmp",
+		//"textures/portal2.bmp"
 	};
 	t_error				err;
 	size_t				idx;

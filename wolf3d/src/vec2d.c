@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 20:11:27 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/10 12:29:54 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/19 10:58:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,13 @@ t_vec2d	vec2d_unit(t_vec2d a)
 	a.x /= length;
 	a.y /= length;
 	return (a);
+}
+
+t_vec2d	vec2d_rotate(t_vec2d a, double angle)
+{
+	t_vec2d	cossin;
+
+	cossin = vec2d(cos(angle), -sin(angle));
+	return (vec2d(a.x * cossin.x - a.y * cossin.y
+		, a.x * cossin.y + a.y * cossin.x));
 }

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/11/10 13:48:05 by gguichar         ###   ########.fr        #
+#    Updated: 2019/11/18 20:29:48 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ main.c				\
 map_parser.c		\
 map_parser_2.c		\
 minimap.c			\
+portal.c			\
 states/menu.c		\
 states/play.c		\
 texture.c			\
