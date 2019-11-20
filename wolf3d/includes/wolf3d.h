@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/20 17:26:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/20 22:50:06 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 # include "vec2.h"
 # include "error.h"
 
-# define CEIL_COLOR 0x427EF5
+# define CEIL_COLOR 0x303030
 # define FLOOR_COLOR 0x505050
 
 # define MINIMAP_SIZE 0.2
@@ -74,6 +74,8 @@ void			wolf3d_clean(t_ctx *ctx);
 void			wolf3d_main_menu(t_ctx *ctx);
 void			wolf3d_play(t_ctx *ctx);
 int				wolf3d_play_events(t_ctx *ctx, SDL_Event event);
+
+void			player_view_raycast(t_ctx *ctx);
 
 t_ray_inf		launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf);
 void			check_collision_after_move(t_ctx *ctx, t_vec2d old_position);

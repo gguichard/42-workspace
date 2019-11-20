@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/11/18 20:29:48 by gguichar         ###   ########.fr        #
+#    Updated: 2019/11/20 22:52:07 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ LDFLAGS			=	-Llibft -lft $(shell ./$(SDL_DIR)/bin/sdl2-config --libs)
 SRC_DIR			=	src
 SRC 			=	\
 collision.c			\
+draw_view.c			\
 error.c				\
 launch_ray.c		\
 lib_sdl2.c			\
@@ -37,6 +38,7 @@ line_draw.c			\
 main.c				\
 map_parser.c		\
 map_parser_2.c		\
+math_utils.c		\
 minimap.c			\
 portal.c			\
 states/menu.c		\
