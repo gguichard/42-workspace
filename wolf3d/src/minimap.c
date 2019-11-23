@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 14:55:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/16 16:07:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/23 10:34:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,10 @@ void		minimap_ray(t_ctx *ctx, double length, double angle)
 	line_ctx.pixels = ctx->minimap.pixels;
 	line_ctx.z_buffer = ctx->minimap.z_buffer;
 	line_ctx.z_value = 0;
-	ray_length = round(length / ctx->minimap.view_radius * ctx->minimap.size);
+	ray_length = ceil(length / ctx->minimap.view_radius * ctx->minimap.size);
 	start = vec2i(ctx->minimap.size / 2, ctx->minimap.size / 2);
-	end = vec2i(start.x + cos(angle) * ray_length, start.y - sin(angle) * ray_length);
+	end = vec2i(start.x + cos(angle) * ray_length
+			, start.y - sin(angle) * ray_length);
 	draw_line(line_ctx, start, end, MINIMAP_RAY_COLOR);
 }
 

@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/11/20 22:52:07 by gguichar         ###   ########.fr        #
+#    Updated: 2019/11/25 18:43:22 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC_DIR			=	src
 SRC 			=	\
 collision.c			\
 draw_view.c			\
+draw_view_render.c	\
 error.c				\
 launch_ray.c		\
 lib_sdl2.c			\

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/20 22:39:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/25 21:13:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ static t_error	load_textures(t_ctx *ctx)
 {
 	static const char	*files[] = {
 		"textures/north.bmp",
-		"textures/east.bmp",
-		"textures/south.bmp",
 		"textures/west.bmp",
-		//"textures/portal1.bmp",
-		//"textures/portal2.bmp"
+		"textures/south.bmp",
+		"textures/east.bmp",
+		"textures/portal_entry.bmp",
+		"textures/portal_exit.bmp",
 	};
 	t_error				err;
 	size_t				idx;
@@ -103,9 +103,16 @@ t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 	if (err == ERR_NOERROR)
 	{
 		ctx->window.title = "Wolf3D";
-		ctx->window.size.width = 1280;
-		ctx->window.size.height = 960;
+		ctx->window.size.width = 800;
+		ctx->window.size.height = 600;
 		err = window_create(&ctx->window);
+		if (err == ERR_NOERROR)
+		{
+			ctx->z_buffer = (int *)malloc(sizeof(int)
+				* ctx->window.size.width * ctx->window.size.height);
+			if (ctx->z_buffer == NULL)
+				err = ERR_UNEXPECTED;
+		}
 		if (err == ERR_NOERROR)
 			err = minimap_setup(ctx);
 		if (err == ERR_NOERROR)
@@ -124,6 +131,7 @@ void			wolf3d_clean(t_ctx *ctx)
 {
 	window_destroy(&ctx->window);
 	minimap_destroy(&ctx->minimap);
+	ft_memdel((void **)&ctx->z_buffer);
 }
 
 void			wolf3d_run(t_ctx *ctx)

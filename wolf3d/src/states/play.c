@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/20 22:52:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/25 11:32:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static void	create_portal(t_ctx *ctx, t_portal_type type)
 		ray_inf.tile->data.portal.type = type;
 		ray_inf.tile->data.portal.dir = ray_inf.direction;
 		ray_inf.tile->data.portal.target = search_portal(ctx
-			, (type == FIRST_PORTAL) ? SECOND_PORTAL : FIRST_PORTAL);
+			, (type == ENTRY_PORTAL) ? EXIT_PORTAL : ENTRY_PORTAL);
 		if (ray_inf.tile->data.portal.target != -1)
 			ctx->tile_map.tiles[ray_inf.tile->data.portal.target]
 				.data.portal.target = ray_inf.tile->pos.y * ctx->tile_map.width
@@ -141,10 +141,23 @@ int			wolf3d_play_events(t_ctx *ctx, SDL_Event event)
 	else if (event.type == SDL_MOUSEBUTTONDOWN)
 	{
 		if (event.button.button == SDL_BUTTON_LEFT)
-			create_portal(ctx, FIRST_PORTAL);
+			create_portal(ctx, ENTRY_PORTAL);
 		else if (event.button.button == SDL_BUTTON_RIGHT)
-			create_portal(ctx, SECOND_PORTAL);
+			create_portal(ctx, EXIT_PORTAL);
 		return (1);
+	}
+	else if (event.type == SDL_KEYDOWN)
+	{
+		if (event.key.keysym.sym == SDLK_f)
+		{
+			create_portal(ctx, ENTRY_PORTAL);
+			return (1);
+		}
+		else if (event.key.keysym.sym == SDLK_g)
+		{
+			create_portal(ctx, EXIT_PORTAL);
+			return (1);
+		}
 	}
 	return (0);
 }

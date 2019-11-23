@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/20 22:50:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/25 22:14:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 # include "vec2.h"
 # include "error.h"
 
-# define CEIL_COLOR 0x303030
-# define FLOOR_COLOR 0x505050
+# define CEIL_COLOR 0xff303030
+# define FLOOR_COLOR 0xff505050
 
 # define MINIMAP_SIZE 0.2
 # define MINIMAP_OFFSET_X 20
@@ -39,6 +39,12 @@
 # define MINIMAP_RAY_COLOR 0xF4A142
 # define MINIMAP_WALL_COLOR 0x000000
 # define MINIMAP_OUTSIDE_COLOR 0x000000
+# define FOG_DIST 15
+
+# define ALPHA_CHANNEL 0xff000000
+
+# define PORTAL_ENTRY_TEXTURE 4
+# define PORTAL_EXIT_TEXTURE 5
 
 typedef enum	e_state
 {
@@ -57,8 +63,19 @@ typedef struct	s_ctx
 	t_map_inf		tile_map;
 	t_minimap_inf	minimap;
 	t_player		player;
-	t_texture_inf	textures[4];
+	t_texture_inf	textures[6];
+	int				*z_buffer;
+	int				use_z_buffer;
+	int				depth;
 }				t_ctx;
+
+typedef struct	s_draw_ctx
+{
+	int	wall_height;
+	int	wall_top;
+	int	wall_screen_height;
+	int	wall_screen_top;
+}				t_draw_ctx;
 
 typedef void	t_statefn(t_ctx *ctx);
 typedef int		t_state_evtfn(t_ctx *ctx, SDL_Event evt);
@@ -75,6 +92,12 @@ void			wolf3d_main_menu(t_ctx *ctx);
 void			wolf3d_play(t_ctx *ctx);
 int				wolf3d_play_events(t_ctx *ctx, SDL_Event event);
 
+void			setup_draw_ctx(t_ctx *ctx, t_ray_inf *ray_inf
+	, t_draw_ctx *draw_ctx);
+void			draw_texture(t_ctx *ctx, t_ray_inf *ray_inf
+	, t_texture_inf *text_inf, int x);
+void			draw_column(t_ctx *ctx, t_ray_inf *ray_inf, int x);
+
 void			player_view_raycast(t_ctx *ctx);
 
 t_ray_inf		launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf);
@@ -87,8 +110,8 @@ void			minimap_background(t_ctx *ctx);
 void			minimap_ray(t_ctx *ctx, double length, double angle);
 void			draw_minimap_view(t_ctx *ctx);
 
-t_ray_inf		launch_portal_ray(t_ray_inf hit_inf, double angle
-	, t_map_inf *map_inf, int depth);
+t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, double angle
+	, t_map_inf *map_inf);
 void			teleport_through_portal(t_ctx *ctx, t_tile_meta *tile);
 
 #endif

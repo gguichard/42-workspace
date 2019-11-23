@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 11:08:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/20 17:26:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/25 22:09:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,32 +66,32 @@ static t_vec2d	get_launch_origin(t_direction hit_dir, double hit_position
 	return (origin);
 }
 
-t_ray_inf		launch_portal_ray(t_ray_inf hit_inf, double angle
-	, t_map_inf *map_inf, int depth)
+t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, double angle
+	, t_map_inf *map_inf)
 {
 	t_tile_meta	*target;
 	t_vec2d		origin;
 	double		ray_angle;
 	t_ray_inf	ray_inf;
 
-	if (depth > 0
-		&& hit_inf.tile != NULL
-		&& hit_inf.tile->type == PORTAL_DATA
-		&& hit_inf.direction == hit_inf.tile->data.portal.dir
-		&& hit_inf.position >= 0.2 && hit_inf.position <= 0.8)
+	if (hit_inf->tile != NULL
+		&& hit_inf->tile->type == PORTAL_DATA
+		&& hit_inf->tile->data.portal.dir == hit_inf->direction)
 	{
-		if (hit_inf.tile->data.portal.target == -1)
-			return (hit_inf);
-		target = &map_inf->tiles[hit_inf.tile->data.portal.target];
-		origin = get_launch_origin(hit_inf.direction, hit_inf.position, target);
+		if (hit_inf->tile->data.portal.target == -1)
+			return (*hit_inf);
+		target = &map_inf->tiles[hit_inf->tile->data.portal.target];
+		origin = get_launch_origin(hit_inf->direction, hit_inf->position
+			, target);
 		ray_angle = angle
-			+ get_angle_diff(&hit_inf.tile->data.portal, &target->data.portal);
+			+ get_angle_diff(&hit_inf->tile->data.portal, &target->data.portal);
 		ray_inf = launch_ray(origin, ray_angle, map_inf);
-		ray_inf.origin = hit_inf.origin;
-		ray_inf.length += hit_inf.length;
-		return (launch_portal_ray(ray_inf, angle, map_inf, depth - 1));
+		ray_inf.origin = hit_inf->origin;
+		ray_inf.length += hit_inf->length;
+		ray_inf.fisheye_angle = hit_inf->fisheye_angle;
+		return (ray_inf);
 	}
-	return (hit_inf);
+	return (*hit_inf);
 }
 
 static t_vec2d	get_offset(t_vec2d pos, t_direction dir, t_direction target_dir)

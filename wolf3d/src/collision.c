@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 11:37:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/20 17:26:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/25 21:02:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ void		check_collision_after_move(t_ctx *ctx, t_vec2d old_pos)
 	if (pos.x >= 0 && pos.y >= 0
 		&& pos.x < ctx->tile_map.width && pos.y < ctx->tile_map.height)
 	{
-		tile = &ctx->tile_map.tiles[(int)pos.y * ctx->tile_map.width
-			+ (int)pos.x];
+		tile = &ctx->tile_map.tiles[(int)pos.y * ctx->tile_map.width + (int)pos.x];
 		if (tile->type == PORTAL_DATA
 			&& tile->data.portal.target != -1
 			&& tile->data.portal.dir == coll_dir)

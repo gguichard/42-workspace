@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:10:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/19 23:19:26 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/25 21:15:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct	s_ray_inf
 	t_direction	direction;
 	t_tile_meta	*tile;
 	double		length;
+	double		fisheye_angle;
 }				t_ray_inf;
 
 #endif
