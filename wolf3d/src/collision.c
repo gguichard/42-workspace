@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 11:37:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 13:24:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 23:43:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <math.h>
 #include "wolf3d.h"
 #include "player.h"
@@ -28,7 +29,7 @@ static int	is_side_colliding(t_vec2d player_pos, t_vec2i tile_pos
 	tile = &map_inf->tiles[tile_pos.y * map_inf->width + tile_pos.x];
 	if (tile->id == TILE_EMPTY
 		|| (tile->type == PORTAL_DATA
-			&& tile->data.portal.target != -1
+			&& tile->data.portal.target != NULL
 			&& tile->data.portal.dir == dir))
 		return (0);
 	else if (dir == NORTH)
@@ -83,7 +84,7 @@ static void	check_portal_collision(t_ctx *ctx, t_vec2d pos)
 	{
 		tile = &ctx->tile_map.tiles[(int)pos.y * ctx->tile_map.width
 				+ (int)pos.x];
-		if (tile->type == PORTAL_DATA && tile->data.portal.target != -1)
+		if (tile->type == PORTAL_DATA && tile->data.portal.target != NULL)
 			teleport_through_portal(ctx, tile);
 	}
 }

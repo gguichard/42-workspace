@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 17:50:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 23:45:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <SDL.h>
+#include <stdlib.h>
 #include <math.h>
 #include "wolf3d.h"
 #include "keystates.h"
@@ -18,7 +19,7 @@
 #include "tile_inf.h"
 #include "vec2.h"
 
-static int	search_portal(t_ctx *ctx, t_portal_type type)
+static t_tile_meta	*search_portal(t_ctx *ctx, t_portal_type type)
 {
 	size_t	total_size;
 	size_t	idx;
@@ -29,16 +30,16 @@ static int	search_portal(t_ctx *ctx, t_portal_type type)
 	{
 		if (ctx->tile_map.tiles[idx].type == PORTAL_DATA
 			&& ctx->tile_map.tiles[idx].data.portal.type == type)
-			return (idx);
+			return (&ctx->tile_map.tiles[idx]);
 		idx++;
 	}
-	return (-1);
+	return (NULL);
 }
 
 static void	create_portal(t_ctx *ctx, t_portal_type type)
 {
 	t_ray_inf	ray_inf;
-	int			prev_portal;
+	t_tile_meta	*prev_portal;
 
 	ray_inf = launch_ray(ctx->player.position, ctx->player.angle
 		, &ctx->tile_map);
@@ -47,17 +48,15 @@ static void	create_portal(t_ctx *ctx, t_portal_type type)
 	if (ray_inf.tile != NULL)
 	{
 		prev_portal = search_portal(ctx, type);
-		if (prev_portal != -1)
-			ctx->tile_map.tiles[prev_portal].type = NO_DATA;
+		if (prev_portal != NULL)
+			prev_portal->type = NO_DATA;
 		ray_inf.tile->type = PORTAL_DATA;
 		ray_inf.tile->data.portal.type = type;
 		ray_inf.tile->data.portal.dir = ray_inf.direction;
 		ray_inf.tile->data.portal.target = search_portal(ctx
 			, (type == ENTRY_PORTAL) ? EXIT_PORTAL : ENTRY_PORTAL);
-		if (ray_inf.tile->data.portal.target != -1)
-			ctx->tile_map.tiles[ray_inf.tile->data.portal.target]
-				.data.portal.target = ray_inf.tile->pos.y * ctx->tile_map.width
-					+ ray_inf.tile->pos.x;
+		if (ray_inf.tile->data.portal.target != NULL)
+			ray_inf.tile->data.portal.target->data.portal.target = ray_inf.tile;
 	}
 }
 

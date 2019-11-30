@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 22:49:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:52:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 23:43:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <math.h>
 #include "libft.h"
 #include "wolf3d.h"
@@ -68,7 +69,7 @@ static void	draw_portal(t_ctx *ctx, t_column_inf *column_inf
 	column_inf->depth -= 1;
 	column_inf->use_z_buffer = 1;
 	draw_texture(ctx, column_inf, hit_inf, text_inf);
-	if (column_inf->depth > 0 && hit_inf->tile->data.portal.target != -1)
+	if (column_inf->depth > 0 && hit_inf->tile->data.portal.target != NULL)
 	{
 		ray_inf = launch_portal_ray(hit_inf, &ctx->tile_map);
 		draw_column(ctx, column_inf, &ray_inf);

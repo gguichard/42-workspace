@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 11:08:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:55:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 23:44:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include <math.h>
 #include "wolf3d.h"
 #include "ray_inf.h"
@@ -77,9 +78,9 @@ t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, t_map_inf *map_inf)
 		&& hit_inf->tile->type == PORTAL_DATA
 		&& hit_inf->tile->data.portal.dir == hit_inf->direction)
 	{
-		if (hit_inf->tile->data.portal.target == -1)
+		if (hit_inf->tile->data.portal.target == NULL)
 			return (*hit_inf);
-		target = &map_inf->tiles[hit_inf->tile->data.portal.target];
+		target = hit_inf->tile->data.portal.target;
 		origin = get_launch_origin(hit_inf->direction, hit_inf->position
 			, target);
 		angle = hit_inf->angle
@@ -129,7 +130,7 @@ void			teleport_through_portal(t_ctx *ctx, t_tile_meta *tile)
 	t_vec2d		pos;
 	double		angle_diff;
 
-	target = &ctx->tile_map.tiles[tile->data.portal.target];
+	target = tile->data.portal.target;
 	offset = get_offset(ctx->player.position
 		, tile->data.portal.dir, target->data.portal.dir);
 	if (target->data.portal.dir == NORTH)
