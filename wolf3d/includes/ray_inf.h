@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:10:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/25 21:15:40 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 14:51:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 typedef struct	s_ray_inf
 {
 	t_vec2d		origin;
+	double		angle;
 	double		position;
 	t_direction	direction;
 	t_tile_meta	*tile;

@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.h                                           :+:      :+:    :+:   */
+/*   column_inf.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/27 21:20:25 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:58:07 by gguichar         ###   ########.fr       */
+/*   Created: 2019/11/30 13:32:57 by gguichar          #+#    #+#             */
+/*   Updated: 2019/11/30 14:36:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PLAYER_H
-# define PLAYER_H
+#ifndef COLUMN_INF_H
+# define COLUMN_INF_H
 
-# include "vec2.h"
-
-# define PLAYER_ACCEL 0.025
-# define PLAYER_STRAFE_ACCEL 0.015
-# define PLAYER_MAX_SPEED 0.1
-# define PLAYER_VELOCITY_DECREASE 0.8
-# define PLAYER_HALF_SIZE 0.25
-
-typedef struct	s_player
+typedef struct	s_column_inf
 {
-	t_vec2d		position;
-	t_vec2d		velocity;
-	double		angle;
-	double		fov;
-	double		dist_to_proj;
-}				t_player;
+	int	x;
+	int	current_z;
+	int	z_buffer[960];
+	int	use_z_buffer;
+	int	depth;
+}				t_column_inf;
 
 #endif

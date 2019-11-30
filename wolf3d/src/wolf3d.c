@@ -6,66 +6,18 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/25 21:13:11 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 14:24:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <SDL.h>
 #include "libft.h"
 #include "wolf3d.h"
-#include "keystates.h"
 #include "window.h"
 #include "error.h"
 
-static t_statefn		*g_states[STATE_LAST];
-static t_state_evtfn	*g_states_evt[STATE_LAST];
-
-static t_key			g_keys[] = {
-	{SDLK_ESCAPE, ESC_KEY},
-	{SDLK_RETURN, ENTER_KEY},
-	{SDLK_UP, MOVE_FORWARD_KEY},
-	{SDLK_DOWN, MOVE_BACKWARD_KEY},
-	{SDLK_w, MOVE_FORWARD_KEY},
-	{SDLK_s, MOVE_BACKWARD_KEY},
-	{SDLK_a, STRAFE_LEFT_KEY},
-	{SDLK_d, STRAFE_RIGHT_KEY},
-	{SDLK_LEFT, ROTATE_LEFT_KEY},
-	{SDLK_RIGHT, ROTATE_RIGHT_KEY}
-};
-
-static void		wolf3d_events(t_ctx *ctx)
-{
-	SDL_Event	event;
-	size_t		idx;
-	int			ret;
-
-	while (SDL_PollEvent(&event))
-	{
-		if (event.type == SDL_QUIT)
-		{
-			ctx->state = QUIT;
-			break ;
-		}
-		ret = g_states_evt[ctx->state] == NULL
-			|| !g_states_evt[ctx->state](ctx, event);
-		if (ret && (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP))
-		{
-			idx = 0;
-			while (idx < (sizeof(g_keys) / sizeof(g_keys[0])))
-			{
-				if (g_keys[idx].keycode == event.key.keysym.sym)
-				{
-					if (event.type == SDL_KEYDOWN)
-						ctx->keystates |= g_keys[idx].bitmask;
-					else
-						ctx->keystates &= ~g_keys[idx].bitmask;
-					break ;
-				}
-				idx++;
-			}
-		}
-	}
-}
+t_statefn		*g_states[STATE_LAST];
+t_state_evtfn	*g_states_evt[STATE_LAST];
 
 static t_error	load_textures(t_ctx *ctx)
 {
@@ -103,16 +55,9 @@ t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 	if (err == ERR_NOERROR)
 	{
 		ctx->window.title = "Wolf3D";
-		ctx->window.size.width = 800;
-		ctx->window.size.height = 600;
+		ctx->window.size.width = 1280;
+		ctx->window.size.height = 960;
 		err = window_create(&ctx->window);
-		if (err == ERR_NOERROR)
-		{
-			ctx->z_buffer = (int *)malloc(sizeof(int)
-				* ctx->window.size.width * ctx->window.size.height);
-			if (ctx->z_buffer == NULL)
-				err = ERR_UNEXPECTED;
-		}
 		if (err == ERR_NOERROR)
 			err = minimap_setup(ctx);
 		if (err == ERR_NOERROR)
@@ -131,7 +76,6 @@ void			wolf3d_clean(t_ctx *ctx)
 {
 	window_destroy(&ctx->window);
 	minimap_destroy(&ctx->minimap);
-	ft_memdel((void **)&ctx->z_buffer);
 }
 
 void			wolf3d_run(t_ctx *ctx)

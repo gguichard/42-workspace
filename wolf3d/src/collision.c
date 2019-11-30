@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 11:37:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/28 12:49:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 13:24:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static int	is_side_colliding(t_vec2d player_pos, t_vec2i tile_pos
 	else if (dir == EAST)
 		return ((player_pos.y - PLAYER_HALF_SIZE) < (tile_pos.y + 1)
 			&& (player_pos.y + PLAYER_HALF_SIZE) > (tile_pos.y + 1));
-	return (1);
+	else
+		return (1);
 }
 
 static int	is_colliding(double x, double y, t_map_inf *map_inf
@@ -72,11 +73,25 @@ static int	is_colliding(double x, double y, t_map_inf *map_inf
 	return (0);
 }
 
+static void	check_portal_collision(t_ctx *ctx, t_vec2d pos)
+{
+	t_tile_meta	*tile;
+
+	if (pos.x >= 0 && pos.y >= 0
+		&& pos.x < ctx->tile_map.width
+		&& pos.y < ctx->tile_map.height)
+	{
+		tile = &ctx->tile_map.tiles[(int)pos.y * ctx->tile_map.width
+				+ (int)pos.x];
+		if (tile->type == PORTAL_DATA && tile->data.portal.target != -1)
+			teleport_through_portal(ctx, tile);
+	}
+}
+
 void		check_collision_after_move(t_ctx *ctx, t_vec2d old_pos)
 {
 	t_vec2d		pos;
 	t_vec2d		dir;
-	t_tile_meta	*tile;
 
 	pos = ctx->player.position;
 	dir = vec2d_sub(pos, old_pos);
@@ -97,12 +112,5 @@ void		check_collision_after_move(t_ctx *ctx, t_vec2d old_pos)
 			|| is_colliding(pos.x, pos.y, &ctx->tile_map, EAST)))
 		pos.y = floor(pos.y - PLAYER_HALF_SIZE + 1) + PLAYER_HALF_SIZE;
 	ctx->player.position = pos;
-	if (pos.x >= 0 && pos.y >= 0
-		&& pos.x < ctx->tile_map.width
-		&& pos.y < ctx->tile_map.height)
-	{
-		tile = &ctx->tile_map.tiles[(int)pos.y * ctx->tile_map.width + (int)pos.x];
-		if (tile->type == PORTAL_DATA && tile->data.portal.target != -1)
-			teleport_through_portal(ctx, tile);
-	}
+	check_portal_collision(ctx, pos);
 }

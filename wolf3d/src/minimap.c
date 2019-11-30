@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 14:55:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/23 10:34:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 14:34:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
+#include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <limits.h>
 #include "libft.h"
 #include "wolf3d.h"
 #include "vec2.h"
@@ -50,15 +50,15 @@ static int	minimap_plot(t_ctx *ctx, t_vec2i pos)
 	if (block_pos.x < 0 || block_pos.y < 0
 		|| block_pos.x >= ctx->tile_map.width
 		|| block_pos.y >= ctx->tile_map.height)
-		return (minimap_plot_px(ctx, idx, MINIMAP_OUTSIDE_COLOR, 10));
+		return (minimap_plot_px(ctx, idx, MINIMAP_OUTSIDE_COLOR, 50));
 	else if (ctx->tile_map.tiles[(int)block_pos.y * ctx->tile_map.width
 			+ (int)block_pos.x].id != TILE_EMPTY)
-		return (minimap_plot_px(ctx, idx, MINIMAP_WALL_COLOR, 10));
+		return (minimap_plot_px(ctx, idx, MINIMAP_WALL_COLOR, 50));
 	else if (fabs(block_pos.x - ctx->player.position.x) < PLAYER_HALF_SIZE
 		&& fabs(block_pos.y - ctx->player.position.y) < PLAYER_HALF_SIZE)
-		return (minimap_plot_px(ctx, idx, MINIMAP_PLAYER_COLOR, 1));
+		return (minimap_plot_px(ctx, idx, MINIMAP_PLAYER_COLOR, 10));
 	else
-		return (minimap_plot_px(ctx, idx, FLOOR_COLOR, -1));
+		return (minimap_plot_px(ctx, idx, FLOOR_COLOR, 0));
 }
 
 t_error		minimap_setup(t_ctx *ctx)
@@ -81,26 +81,6 @@ t_error		minimap_setup(t_ctx *ctx)
 			err = ERR_UNEXPECTED;
 	}
 	return (err);
-}
-
-void		minimap_destroy(t_minimap_inf *minimap)
-{
-	ft_memdel((void *)&minimap->pixels);
-	ft_memdel((void *)&minimap->z_buffer);
-}
-
-void		minimap_reset_z_buffer(t_ctx *ctx)
-{
-	size_t	total_size;
-	size_t	idx;
-
-	total_size = ctx->minimap.size * ctx->minimap.size;
-	idx = 0;
-	while (idx < total_size)
-	{
-		ctx->minimap.z_buffer[idx] = INT_MIN;
-		idx++;
-	}
 }
 
 void		minimap_background(t_ctx *ctx)
@@ -131,25 +111,10 @@ void		minimap_ray(t_ctx *ctx, double length, double angle)
 	line_ctx.win_height = ctx->minimap.size;
 	line_ctx.pixels = ctx->minimap.pixels;
 	line_ctx.z_buffer = ctx->minimap.z_buffer;
-	line_ctx.z_value = 0;
+	line_ctx.z_value = 5;
 	ray_length = ceil(length / ctx->minimap.view_radius * ctx->minimap.size);
 	start = vec2i(ctx->minimap.size / 2, ctx->minimap.size / 2);
 	end = vec2i(start.x + cos(angle) * ray_length
 			, start.y - sin(angle) * ray_length);
 	draw_line(line_ctx, start, end, MINIMAP_RAY_COLOR);
-}
-
-void		draw_minimap_view(t_ctx *ctx)
-{
-	int	y;
-
-	y = 0;
-	while (y < ctx->minimap.size)
-	{
-		ft_memcpy(&ctx->window.pixels[(y + MINIMAP_OFFSET_Y)
-				* ctx->window.size.width + MINIMAP_OFFSET_X]
-			, ctx->minimap.pixels + y * ctx->minimap.size
-			, ctx->minimap.size * sizeof(uint32_t));
-		y++;
-	}
 }

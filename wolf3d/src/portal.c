@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 11:08:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/25 22:09:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 14:55:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,11 @@ static t_vec2d	get_launch_origin(t_direction hit_dir, double hit_position
 	return (origin);
 }
 
-t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, double angle
-	, t_map_inf *map_inf)
+t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, t_map_inf *map_inf)
 {
 	t_tile_meta	*target;
 	t_vec2d		origin;
-	double		ray_angle;
+	double		angle;
 	t_ray_inf	ray_inf;
 
 	if (hit_inf->tile != NULL
@@ -83,9 +82,9 @@ t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, double angle
 		target = &map_inf->tiles[hit_inf->tile->data.portal.target];
 		origin = get_launch_origin(hit_inf->direction, hit_inf->position
 			, target);
-		ray_angle = angle
+		angle = hit_inf->angle
 			+ get_angle_diff(&hit_inf->tile->data.portal, &target->data.portal);
-		ray_inf = launch_ray(origin, ray_angle, map_inf);
+		ray_inf = launch_ray(origin, angle, map_inf);
 		ray_inf.origin = hit_inf->origin;
 		ray_inf.length += hit_inf->length;
 		ray_inf.fisheye_angle = hit_inf->fisheye_angle;
@@ -94,7 +93,7 @@ t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, double angle
 	return (*hit_inf);
 }
 
-static t_vec2d	get_offset(t_vec2d pos, t_direction dir, t_direction target_dir)
+static t_vec2d	get_offset(t_vec2d pos, t_direction dir, t_direction t_dir)
 {
 	t_vec2d	offset;
 
@@ -106,22 +105,18 @@ static t_vec2d	get_offset(t_vec2d pos, t_direction dir, t_direction target_dir)
 		offset = vec2d(pos.x - floor(pos.x), floor(pos.y + 1) - pos.y);
 	else
 		offset = vec2d(0, 0);
-	if ((target_dir == NORTH && dir == EAST)
-		|| (target_dir == SOUTH && dir == WEST))
+	if ((t_dir == NORTH && dir == EAST) || (t_dir == SOUTH && dir == WEST))
 		offset = vec2d(offset.y, 1 - offset.x);
-	else if ((target_dir == WEST && dir == SOUTH)
-		|| (target_dir == EAST && dir == NORTH))
+	else if ((t_dir == WEST && dir == SOUTH) || (t_dir == EAST && dir == NORTH))
 		offset = vec2d(1 - offset.y, offset.x);
-	else if ((target_dir == NORTH && dir == WEST)
-		|| (target_dir == WEST && dir == NORTH)
-		|| (target_dir == SOUTH && dir == EAST)
-		|| (target_dir == EAST && dir == SOUTH))
+	else if ((t_dir == NORTH && dir == WEST) || (t_dir == WEST && dir == NORTH)
+		|| (t_dir == SOUTH && dir == EAST) || (t_dir == EAST && dir == SOUTH))
 		offset = vec2d(offset.y, offset.x);
-	else if (target_dir == dir)
+	else if (t_dir == dir)
 	{
-		if (target_dir == NORTH || target_dir == SOUTH)
+		if (t_dir == NORTH || t_dir == SOUTH)
 			offset = vec2d(offset.x, 1 - offset.y);
-		else if (target_dir == WEST || target_dir == EAST)
+		else if (t_dir == WEST || t_dir == EAST)
 			offset = vec2d(1 - offset.x, offset.y);
 	}
 	return (offset);

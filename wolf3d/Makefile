@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/11/25 18:43:22 by gguichar         ###   ########.fr        #
+#    Updated: 2019/11/30 14:58:50 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,13 +41,18 @@ map_parser.c		\
 map_parser_2.c		\
 math_utils.c		\
 minimap.c			\
+minimap_utils.c		\
+player.c			\
 portal.c			\
 states/menu.c		\
 states/play.c		\
 texture.c			\
+thread.c			\
 vec2d.c				\
+vec2d_ope.c			\
 vec2i.c				\
-wolf3d.c
+wolf3d.c			\
+wolf3d_events.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)

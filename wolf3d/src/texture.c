@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:08:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/31 18:35:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 13:23:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,15 @@
 #include "texture_inf.h"
 #include "error.h"
 
-t_error	load_texture(const char *file, t_texture_inf *text_inf)
+static int	convert_pixels(SDL_Surface *surface, t_texture_inf *text_inf)
+{
+	return (SDL_ConvertPixels(surface->w, surface->h
+			, surface->format->format, surface->pixels
+			, surface->pitch, SDL_PIXELFORMAT_ARGB8888
+			, text_inf->pixels, surface->w * sizeof(uint32_t)));
+}
+
+t_error		load_texture(const char *file, t_texture_inf *text_inf)
 {
 	t_error		err;
 	SDL_Surface	*surface;
@@ -30,10 +38,7 @@ t_error	load_texture(const char *file, t_texture_inf *text_inf)
 			* sizeof(uint32_t));
 		if (text_inf->pixels == NULL)
 			err = ERR_UNEXPECTED;
-		else if (SDL_ConvertPixels(surface->w, surface->h
-				, surface->format->format, surface->pixels
-				, surface->pitch, SDL_PIXELFORMAT_ARGB8888
-				, text_inf->pixels, surface->w * sizeof(uint32_t)) < 0)
+		else if (convert_pixels(surface, text_inf) < 0)
 			err = ERR_LIBSDL2;
 		else
 		{

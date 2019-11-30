@@ -6,13 +6,15 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 22:49:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/25 22:15:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 14:52:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "libft.h"
 #include "wolf3d.h"
+#include "thread_inf.h"
+#include "column_inf.h"
 #include "tile_inf.h"
 #include "texture_inf.h"
 #include "ray_inf.h"
@@ -36,32 +38,21 @@ void		setup_draw_ctx(t_ctx *ctx, t_ray_inf *ray_inf
 		- draw_ctx->wall_screen_height / 2;
 }
 
-static void	reset_z_buffer(t_ctx *ctx, int x)
+static void	reset_portal_z_buffer(t_column_inf *column_inf)
 {
-	int	y;
+	size_t	y;
 
 	y = 0;
-	while (y < ctx->window.size.height)
+	while (y < (sizeof(column_inf->z_buffer) / sizeof(column_inf->z_buffer[0])))
 	{
-		ctx->z_buffer[y * ctx->window.size.width + x] = 0;
+		if (column_inf->z_buffer[y] != 100)
+			column_inf->z_buffer[y] = 0;
 		y++;
 	}
 }
 
-static void	reset_portal_z_buffer(t_ctx *ctx, int x)
-{
-	int	y;
-
-	y = 0;
-	while (y < ctx->window.size.height)
-	{
-		if (ctx->z_buffer[y * ctx->window.size.width + x] != 100)
-			ctx->z_buffer[y * ctx->window.size.width + x] = 0;
-		y++;
-	}
-}
-
-static void	draw_portal(t_ctx *ctx, t_ray_inf *hit_inf, int x, double angle)
+static void	draw_portal(t_ctx *ctx, t_column_inf *column_inf
+	, t_ray_inf *hit_inf)
 {
 	t_texture_inf	*text_inf;
 	t_ray_inf		ray_inf;
@@ -70,49 +61,50 @@ static void	draw_portal(t_ctx *ctx, t_ray_inf *hit_inf, int x, double angle)
 		text_inf = &ctx->textures[PORTAL_ENTRY_TEXTURE];
 	else
 		text_inf = &ctx->textures[PORTAL_EXIT_TEXTURE];
-	if (!ctx->use_z_buffer)
-		reset_z_buffer(ctx, x);
+	if (!column_inf->use_z_buffer)
+		ft_memset(column_inf->z_buffer, 0xff, sizeof(column_inf->z_buffer));
 	else
-		reset_portal_z_buffer(ctx, x);
-	ctx->depth -= 1;
-	ctx->use_z_buffer = 1;
-	draw_texture(ctx, hit_inf, text_inf, x);
-	if (ctx->depth > 0 && hit_inf->tile->data.portal.target != -1)
+		reset_portal_z_buffer(column_inf);
+	column_inf->depth -= 1;
+	column_inf->use_z_buffer = 1;
+	draw_texture(ctx, column_inf, hit_inf, text_inf);
+	if (column_inf->depth > 0 && hit_inf->tile->data.portal.target != -1)
 	{
-		ray_inf = launch_portal_ray(hit_inf, angle, &ctx->tile_map);
-		draw_column(ctx, &ray_inf, x);
+		ray_inf = launch_portal_ray(hit_inf, &ctx->tile_map);
+		draw_column(ctx, column_inf, &ray_inf);
 		if (ray_inf.tile != NULL
 			&& ray_inf.tile->type == PORTAL_DATA
 			&& ray_inf.tile->data.portal.dir == ray_inf.direction)
-			draw_portal(ctx, &ray_inf, x, angle);
+			draw_portal(ctx, column_inf, &ray_inf);
 	}
-	ctx->use_z_buffer = 0;
+	column_inf->use_z_buffer = 0;
 }
 
-void		player_view_raycast(t_ctx *ctx)
+void		player_view_thread(t_thread_inf *thread_inf)
 {
-	int			half_width;
-	int			x;
-	double		angle;
-	t_ray_inf	hit_inf;
+	t_ctx			*ctx;
+	int				half_width;
+	double			angle;
+	t_ray_inf		hit_inf;
+	t_column_inf	column_inf;
 
+	ctx = (t_ctx *)thread_inf->data;
 	half_width = ctx->window.size.width / 2;
-	x = 0;
-	while (x < ctx->window.size.width)
+	column_inf.x = thread_inf->x_start;
+	while (column_inf.x < ctx->window.size.width)
 	{
-		angle = ctx->player.angle - atan((x - half_width)
+		column_inf.use_z_buffer = 0;
+		column_inf.depth = FOG_DIST + 1;
+		angle = ctx->player.angle - atan((column_inf.x - half_width)
 				/ ctx->player.dist_to_proj);
 		hit_inf = launch_ray(ctx->player.position, angle, &ctx->tile_map);
 		hit_inf.fisheye_angle = cos(ctx->player.angle - angle);
 		minimap_ray(ctx, hit_inf.length, angle);
-		draw_column(ctx, &hit_inf, x);
+		draw_column(ctx, &column_inf, &hit_inf);
 		if (hit_inf.tile != NULL
 			&& hit_inf.tile->type == PORTAL_DATA
 			&& hit_inf.tile->data.portal.dir == hit_inf.direction)
-		{
-			ctx->depth = FOG_DIST;
-			draw_portal(ctx, &hit_inf, x, angle);
-		}
-		x++;
+			draw_portal(ctx, &column_inf, &hit_inf);
+		column_inf.x += THREADS_COUNT;
 	}
 }

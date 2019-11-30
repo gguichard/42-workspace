@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:18:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/22 21:56:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 14:52:20 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@
 #include "vec2.h"
 #include "direction.h"
 
-static void			init_ray_inf(t_ray_inf *ray_inf, t_vec2d origin)
+static void			init_ray_inf(t_ray_inf *ray_inf, t_vec2d origin
+	, double angle)
 {
 	ft_memset(ray_inf, 0, sizeof(t_ray_inf));
 	ray_inf->origin = origin;
+	ray_inf->angle = angle;
 	ray_inf->length = INFINITY;
 }
 
@@ -93,8 +95,8 @@ t_ray_inf			launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf)
 	t_vec2d		dir;
 
 	dir = vec2d(cos(angle), -sin(angle));
-	init_ray_inf(&vert_ray_inf, origin);
-	init_ray_inf(&hori_ray_inf, origin);
+	init_ray_inf(&vert_ray_inf, origin, angle);
+	init_ray_inf(&hori_ray_inf, origin, angle);
 	if (fabs(dir.x) != 0.0)
 		launch_hray(&hori_ray_inf, dir, dir.y / fabs(dir.x), map_inf);
 	if (fabs(dir.y) != 0.0)
