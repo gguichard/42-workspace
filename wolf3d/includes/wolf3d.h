@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:58:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 17:23:15 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include "vec2.h"
 # include "error.h"
 
-# define THREADS_COUNT 8
+# define THREADS_COUNT 4
 
 # define CEIL_COLOR 0xff303030
 # define FLOOR_COLOR 0xff505050

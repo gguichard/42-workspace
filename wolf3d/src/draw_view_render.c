@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 13:19:55 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:43:24 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 17:20:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,22 @@
 #include "vec2.h"
 #include "utils.h"
 
-static uint32_t	darker_color(uint32_t color, double percent)
+inline static uint32_t	darker_color(uint32_t color, double percent)
 {
-	uint8_t	a;
 	uint8_t	r;
 	uint8_t	g;
 	uint8_t	b;
 
-	a = (color >> 24) & 0xff;
 	r = (color >> 16) & 0xff;
 	g = (color >> 8) & 0xff;
 	b = color & 0xff;
 	r *= (1 - percent);
 	g *= (1 - percent);
 	b *= (1 - percent);
-	return ((a << 24) | (r << 16) | (g << 8) | b);
+	return ((color & ALPHA_CHANNEL) | (r << 16) | (g << 8) | b);
 }
 
-static int		plot_pixel_z(t_ctx *ctx, t_texture_inf *text_inf
+inline static int		plot_pixel_z(t_ctx *ctx, t_texture_inf *text_inf
 	, uint32_t color)
 {
 	if (text_inf == &ctx->textures[PORTAL_ENTRY_TEXTURE]
@@ -48,7 +46,7 @@ static int		plot_pixel_z(t_ctx *ctx, t_texture_inf *text_inf
 	return (10);
 }
 
-static void		plot_pixel(t_ctx *ctx, t_column_inf *column_inf, int y
+inline static void		plot_pixel(t_ctx *ctx, t_column_inf *column_inf, int y
 	, uint32_t color)
 {
 	if (column_inf->use_z_buffer)
@@ -61,7 +59,7 @@ static void		plot_pixel(t_ctx *ctx, t_column_inf *column_inf, int y
 		ctx->window.pixels[y * ctx->window.size.width + column_inf->x] = color;
 }
 
-void			draw_texture(t_ctx *ctx, t_column_inf *column_inf
+void					draw_texture(t_ctx *ctx, t_column_inf *column_inf
 	, t_ray_inf *ray_inf, t_texture_inf *text_inf)
 {
 	t_draw_ctx	draw_ctx;
@@ -86,7 +84,7 @@ void			draw_texture(t_ctx *ctx, t_column_inf *column_inf
 	}
 }
 
-void			draw_column(t_ctx *ctx, t_column_inf *column_inf
+void					draw_column(t_ctx *ctx, t_column_inf *column_inf
 	, t_ray_inf *ray_inf)
 {
 	int		half_height;
