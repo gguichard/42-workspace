@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 17:55:43 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 18:58:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <SDL.h>
 # include <stdint.h>
 # include "window.h"
+# include "state.h"
 # include "keystates.h"
 # include "map_inf.h"
 # include "tile_inf.h"
@@ -50,15 +51,6 @@
 # define PORTAL_ENTRY_TEXTURE 4
 # define PORTAL_EXIT_TEXTURE 5
 
-typedef enum	e_state_type
-{
-	MAIN_MENU = 0,
-	PLAYING = 1,
-	OPTIONS = 2,
-	QUIT = 3,
-	STATE_LAST = 4
-}				t_state_type;
-
 typedef struct	s_ctx
 {
 	t_win_data		window;
@@ -68,18 +60,8 @@ typedef struct	s_ctx
 	t_minimap_inf	minimap;
 	t_player		player;
 	t_texture_inf	textures[6];
+	t_state_inf		states[STATE_LAST];
 }				t_ctx;
-
-typedef void	t_statefn(t_ctx *ctx);
-typedef int		t_state_evtfn(t_ctx *ctx, SDL_Event evt);
-
-typedef struct	s_state_inf
-{
-	t_statefn		*init_fn;
-	t_statefn		*quit_fn;
-	t_statefn		*run_fn;
-	t_state_evtfn	*evt_fn;
-}				t_state_inf;
 
 typedef struct	s_draw_ctx
 {

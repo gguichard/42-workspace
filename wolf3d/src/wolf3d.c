@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 17:57:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 19:00:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 #include "libft.h"
 #include "wolf3d.h"
 #include "window.h"
+#include "state.h"
 #include "error.h"
-
-t_state_inf		g_states[STATE_LAST];
 
 static t_error	load_textures(t_ctx *ctx)
 {
@@ -44,6 +43,17 @@ static t_error	load_textures(t_ctx *ctx)
 	return (err);
 }
 
+static void		setup_states(t_ctx *ctx)
+{
+	t_state_inf	*states;
+
+	states = ctx->states;
+	states[MAIN_MENU].run_fn = wolf3d_main_menu;
+	states[PLAYING].init_fn = wolf3d_play_init;
+	states[PLAYING].run_fn = wolf3d_play_run;
+	states[PLAYING].evt_fn = wolf3d_play_events;
+}
+
 t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 {
 	t_error	err;
@@ -62,11 +72,8 @@ t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 			err = minimap_setup(ctx);
 		if (err == ERR_NOERROR)
 		{
+			setup_states(ctx);
 			ctx->state = MAIN_MENU;
-			g_states[MAIN_MENU].run_fn = wolf3d_main_menu;
-			g_states[PLAYING].init_fn = wolf3d_play_init;
-			g_states[PLAYING].run_fn = wolf3d_play_run;
-			g_states[PLAYING].evt_fn = wolf3d_play_events;
 			wolf3d_run(ctx);
 		}
 	}
@@ -102,14 +109,15 @@ void			wolf3d_run(t_ctx *ctx)
 			break ;
 		if (ctx->state != old_state)
 		{
-			if (old_state != STATE_LAST && g_states[old_state].quit_fn != NULL)
-				g_states[old_state].quit_fn(ctx);
-			if (g_states[ctx->state].init_fn != NULL)
-				g_states[ctx->state].init_fn(ctx);
+			if (old_state != STATE_LAST
+				&& ctx->states[old_state].quit_fn != NULL)
+				ctx->states[old_state].quit_fn(ctx);
+			if (ctx->states[ctx->state].init_fn != NULL)
+				ctx->states[ctx->state].init_fn(ctx);
 			old_state = ctx->state;
 		}
-		if (g_states[ctx->state].run_fn != NULL)
-			g_states[ctx->state].run_fn(ctx);
+		if (ctx->states[ctx->state].run_fn != NULL)
+			ctx->states[ctx->state].run_fn(ctx);
 		SDL_RenderCopy(ctx->window.renderer, ctx->window.texture, NULL, NULL);
 		SDL_UnlockTexture(ctx->window.texture);
 		SDL_RenderPresent(ctx->window.renderer);

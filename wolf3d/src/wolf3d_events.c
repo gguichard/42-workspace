@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 14:22:59 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 17:53:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 18:50:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include <SDL.h>
 #include "wolf3d.h"
 #include "keystates.h"
-
-extern t_state_inf	g_states[STATE_LAST];
 
 static t_key	g_keys[] = {
 	{SDLK_ESCAPE, ESC_KEY},
@@ -61,8 +59,8 @@ void		wolf3d_events(t_ctx *ctx)
 			ctx->state = QUIT;
 			break ;
 		}
-		ret = g_states[ctx->state].evt_fn == NULL
-			|| !g_states[ctx->state].evt_fn(ctx, event);
+		ret = ctx->states[ctx->state].evt_fn == NULL
+			|| !ctx->states[ctx->state].evt_fn(ctx, event);
 		if (ret && (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP))
 			wolf3d_keys(ctx, &event);
 	}
