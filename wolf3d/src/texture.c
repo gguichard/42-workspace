@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:08:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 13:23:16 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 15:35:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ t_error		load_texture(const char *file, t_texture_inf *text_inf)
 			text_inf->height = surface->h;
 		}
 		SDL_FreeSurface(surface);
+		if (err != ERR_NOERROR)
+			ft_memdel((void **)&text_inf->pixels);
 	}
-	if (err != ERR_NOERROR)
-		ft_memdel((void **)&text_inf->pixels);
 	return (err);
 }

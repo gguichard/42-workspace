@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:58:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/27 20:59:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 16:19:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void	window_destroy(t_win_data *win_data)
 {
 	if (win_data->window != NULL)
 	{
-		if (win_data->renderer != NULL)
-			SDL_DestroyRenderer(win_data->renderer);
 		if (win_data->texture != NULL)
 			SDL_DestroyTexture(win_data->texture);
+		if (win_data->renderer != NULL)
+			SDL_DestroyRenderer(win_data->renderer);
 		SDL_DestroyWindow(win_data->window);
 		ft_memset(win_data, 0, sizeof(t_win_data));
 	}

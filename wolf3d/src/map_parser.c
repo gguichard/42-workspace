@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:24:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/19 08:34:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 15:22:14 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,13 @@ static t_vector	read_tiles(int fd, t_map_inf *map_inf, t_error *err)
 	while (*err == ERR_NOERROR && get_next_line(fd, &line) == 1)
 	{
 		positions = ft_strssplit(line, " \t");
+		free(line);
 		if (positions == NULL)
 			*err = ERR_UNEXPECTED;
 		else
 		{
 			col = push_tiles(&tiles, positions, map_inf->height, err);
+			ft_strtab_free(positions);
 			if (*err == ERR_NOERROR && col > map_inf->width)
 				map_inf->width = col;
 		}

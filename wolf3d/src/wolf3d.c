@@ -6,10 +6,11 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:24:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 16:18:53 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
 #include <SDL.h>
 #include "libft.h"
 #include "wolf3d.h"
@@ -74,8 +75,17 @@ t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 
 void			wolf3d_clean(t_ctx *ctx)
 {
+	size_t	idx;
+
 	window_destroy(&ctx->window);
 	minimap_destroy(&ctx->minimap);
+	ft_memdel((void **)&ctx->tile_map.tiles);
+	idx = 0;
+	while (idx < (sizeof(ctx->textures) / sizeof(ctx->textures[0])))
+	{
+		ft_memdel((void **)&ctx->textures[idx].pixels);
+		idx++;
+	}
 }
 
 void			wolf3d_run(t_ctx *ctx)
@@ -92,8 +102,8 @@ void			wolf3d_run(t_ctx *ctx)
 		fn = g_states[ctx->state];
 		if (fn != NULL)
 			fn(ctx);
-		SDL_UnlockTexture(ctx->window.texture);
 		SDL_RenderCopy(ctx->window.renderer, ctx->window.texture, NULL, NULL);
+		SDL_UnlockTexture(ctx->window.texture);
 		SDL_RenderPresent(ctx->window.renderer);
 	}
 }
