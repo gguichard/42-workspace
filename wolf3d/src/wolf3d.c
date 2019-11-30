@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 16:18:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 17:57:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 #include "window.h"
 #include "error.h"
 
-t_statefn		*g_states[STATE_LAST];
-t_state_evtfn	*g_states_evt[STATE_LAST];
+t_state_inf		g_states[STATE_LAST];
 
 static t_error	load_textures(t_ctx *ctx)
 {
@@ -64,9 +63,10 @@ t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 		if (err == ERR_NOERROR)
 		{
 			ctx->state = MAIN_MENU;
-			g_states[MAIN_MENU] = wolf3d_main_menu;
-			g_states[PLAYING] = wolf3d_play;
-			g_states_evt[PLAYING] = wolf3d_play_events;
+			g_states[MAIN_MENU].run_fn = wolf3d_main_menu;
+			g_states[PLAYING].init_fn = wolf3d_play_init;
+			g_states[PLAYING].run_fn = wolf3d_play_run;
+			g_states[PLAYING].evt_fn = wolf3d_play_events;
 			wolf3d_run(ctx);
 		}
 	}
@@ -90,18 +90,26 @@ void			wolf3d_clean(t_ctx *ctx)
 
 void			wolf3d_run(t_ctx *ctx)
 {
-	t_statefn	*fn;
-	int			dumb;
+	t_state_type	old_state;
+	int				dumb;
 
+	old_state = STATE_LAST;
 	while (ctx->state != QUIT)
 	{
 		wolf3d_events(ctx);
 		if (SDL_LockTexture(ctx->window.texture, NULL
 			, (void **)&ctx->window.pixels, &dumb) < 0)
 			break ;
-		fn = g_states[ctx->state];
-		if (fn != NULL)
-			fn(ctx);
+		if (ctx->state != old_state)
+		{
+			if (old_state != STATE_LAST && g_states[old_state].quit_fn != NULL)
+				g_states[old_state].quit_fn(ctx);
+			if (g_states[ctx->state].init_fn != NULL)
+				g_states[ctx->state].init_fn(ctx);
+			old_state = ctx->state;
+		}
+		if (g_states[ctx->state].run_fn != NULL)
+			g_states[ctx->state].run_fn(ctx);
 		SDL_RenderCopy(ctx->window.renderer, ctx->window.texture, NULL, NULL);
 		SDL_UnlockTexture(ctx->window.texture);
 		SDL_RenderPresent(ctx->window.renderer);

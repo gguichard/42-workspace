@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 17:23:15 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 17:55:43 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,36 @@
 # define PORTAL_ENTRY_TEXTURE 4
 # define PORTAL_EXIT_TEXTURE 5
 
-typedef enum	e_state
+typedef enum	e_state_type
 {
 	MAIN_MENU = 0,
 	PLAYING = 1,
 	OPTIONS = 2,
 	QUIT = 3,
 	STATE_LAST = 4
-}				t_state;
+}				t_state_type;
 
 typedef struct	s_ctx
 {
 	t_win_data		window;
-	t_state			state;
+	t_state_type	state;
 	uint64_t		keystates;
 	t_map_inf		tile_map;
 	t_minimap_inf	minimap;
 	t_player		player;
 	t_texture_inf	textures[6];
 }				t_ctx;
+
+typedef void	t_statefn(t_ctx *ctx);
+typedef int		t_state_evtfn(t_ctx *ctx, SDL_Event evt);
+
+typedef struct	s_state_inf
+{
+	t_statefn		*init_fn;
+	t_statefn		*quit_fn;
+	t_statefn		*run_fn;
+	t_state_evtfn	*evt_fn;
+}				t_state_inf;
 
 typedef struct	s_draw_ctx
 {
@@ -77,9 +88,6 @@ typedef struct	s_draw_ctx
 	int	wall_screen_height;
 	int	wall_screen_top;
 }				t_draw_ctx;
-
-typedef void	t_statefn(t_ctx *ctx);
-typedef int		t_state_evtfn(t_ctx *ctx, SDL_Event evt);
 
 void			place_player_map(t_map_inf *map_inf, t_tile_inf *tile_inf);
 t_map_inf		load_mapfile(const char *file, t_error *err);
@@ -91,7 +99,8 @@ void			wolf3d_run(t_ctx *ctx);
 void			wolf3d_clean(t_ctx *ctx);
 
 void			wolf3d_main_menu(t_ctx *ctx);
-void			wolf3d_play(t_ctx *ctx);
+void			wolf3d_play_init(t_ctx *ctx);
+void			wolf3d_play_run(t_ctx *ctx);
 int				wolf3d_play_events(t_ctx *ctx, SDL_Event event);
 
 void			setup_draw_ctx(t_ctx *ctx, t_ray_inf *ray_inf

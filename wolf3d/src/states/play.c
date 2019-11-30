@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 15:10:34 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/11/30 17:50:11 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,16 @@ int			wolf3d_play_events(t_ctx *ctx, SDL_Event event)
 	return (0);
 }
 
-void		wolf3d_play(t_ctx *ctx)
+void		wolf3d_play_init(t_ctx *ctx)
+{
+	ctx->player = ctx->tile_map.player;
+	ctx->player.fov = (90 / 360.) * M_PI;
+	ctx->player.dist_to_proj = (ctx->window.size.width / 2)
+		/ tan(ctx->player.fov / 2);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
+}
+
+void		wolf3d_play_run(t_ctx *ctx)
 {
 	t_vec2d	old_pos;
 
