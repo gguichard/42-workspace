@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/11/30 14:58:50 by gguichar         ###   ########.fr        #
+#    Updated: 2019/11/30 16:23:36 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ GREEN			=	\x1b[32m
 
 INC_DIR			=	includes
 
-SDL_LIB			=	SDL2-2.0.9
+SDL_LIB			=	SDL2-2.0.10
 SDL_DIR			=	SDL2
 SDL_TAR			=	$(SDL_LIB).tar.gz
 SDL_BUILD		=	$(SDL_DIR)/lib/libSDL2.a
