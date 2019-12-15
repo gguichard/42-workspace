@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:26:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/05 08:11:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 14:19:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	wolf3d_main_menu(t_ctx *ctx)
 		ctx->state = PLAYING;
 	else
 	{
-		ft_memset(ctx->window.pixels, 255
+		ft_memcpy(ctx->window.pixels, ctx->textures[TEXTURE_MAIN_MENU].pixels
 			, ctx->window.size.width * ctx->window.size.height
-				* sizeof(*ctx->window.pixels));
+			* sizeof(*ctx->window.pixels));
 	}
 }

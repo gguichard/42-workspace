@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/05 08:02:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 14:20:01 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ typedef enum	e_texture_type
 	TEXTURE_EAST = 3,
 	TEXTURE_PORTAL_ENTRY = 4,
 	TEXTURE_PORTAL_EXIT = 5,
-	TEXTURE_LAST = 6
+	TEXTURE_MAIN_MENU = 6,
+	TEXTURE_LAST = 7
 }				t_texture_type;
 
 typedef struct	s_ctx

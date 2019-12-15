@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/05 07:54:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 14:20:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static t_error	load_textures(t_ctx *ctx)
 		"textures/east.bmp",
 		"textures/portal_entry.bmp",
 		"textures/portal_exit.bmp",
+		"textures/main_menu.bmp",
 	};
 	t_error				err;
 	size_t				idx;
@@ -67,8 +68,8 @@ t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 	if (err == ERR_NOERROR)
 	{
 		ctx->window.title = "Wolf3D";
-		ctx->window.size.width = 800;
-		ctx->window.size.height = 600;
+		ctx->window.size.width = 1280;
+		ctx->window.size.height = 720;
 		err = window_create(&ctx->window);
 		if (err == ERR_NOERROR)
 			err = minimap_setup(ctx);
