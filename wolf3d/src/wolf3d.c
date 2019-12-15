@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/15 14:20:22 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 15:03:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ static t_error	load_textures(t_ctx *ctx)
 		err = load_texture(files[idx], &ctx->textures[idx]);
 		if (err != ERR_NOERROR)
 			break ;
+		else if (ctx->textures[idx].width == 0
+			|| ctx->textures[idx].height == 0)
+			err = ERR_TEXTUREINVALID;
 		idx++;
 	}
 	return (err);

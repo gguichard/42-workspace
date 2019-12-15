@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:54:57 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/27 23:04:00 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 14:44:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ typedef enum	e_error
 	ERR_LIBSDL2,
 	ERR_ERRNO,
 	ERR_MAPTILE,
-	ERR_MAPNOPLAYER
+	ERR_MAPNOPLAYER,
+	ERR_TEXTUREINVALID
 }				t_error;
 
 const char		*error_to_str(t_error err);
