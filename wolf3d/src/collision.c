@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 11:37:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 23:43:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/03 12:23:59 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ static void	check_portal_collision(t_ctx *ctx, t_vec2d pos)
 
 void		check_collision_after_move(t_ctx *ctx, t_vec2d old_pos)
 {
-	t_vec2d		pos;
-	t_vec2d		dir;
+	t_vec2d	pos;
+	t_vec2d	dir;
 
 	pos = ctx->player.position;
 	dir = vec2d_sub(pos, old_pos);

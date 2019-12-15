@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 13:19:55 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 17:20:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/03 12:22:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ inline static uint32_t	darker_color(uint32_t color, double percent)
 inline static int		plot_pixel_z(t_ctx *ctx, t_texture_inf *text_inf
 	, uint32_t color)
 {
-	if (text_inf == &ctx->textures[PORTAL_ENTRY_TEXTURE]
-		|| text_inf == &ctx->textures[PORTAL_EXIT_TEXTURE])
+	if (text_inf == &ctx->textures[TEXTURE_PORTAL_ENTRY]
+		|| text_inf == &ctx->textures[TEXTURE_PORTAL_EXIT])
 	{
-		if ((color & ALPHA_CHANNEL) == 0 || (color & 0xffffff) != 0x0)
+		if ((color & ALPHA_CHANNEL) == 0x0 || (color & 0xffffff) != 0x0)
 			return (100);
 		return (1);
 	}
@@ -100,7 +100,7 @@ void					draw_column(t_ctx *ctx, t_column_inf *column_inf
 		plot_pixel(ctx, column_inf, y_index
 			, darker_color(CEIL_COLOR, darker));
 		plot_pixel(ctx, column_inf, ctx->window.size.height - y_index - 1
-			, darker_color(CEIL_COLOR, darker));
+			, darker_color(FLOOR_COLOR, darker));
 		y_index++;
 	}
 	draw_texture(ctx, column_inf, ray_inf, &ctx->textures[ray_inf->direction]);

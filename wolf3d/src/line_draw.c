@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/31 01:07:39 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/13 12:12:04 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/05 14:51:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "window.h"
 #include "line_draw.h"
 
-static inline void	plot_pixel(t_line_ctx ctx, t_line line, uint32_t color)
+inline static void	plot_pixel(t_line_ctx ctx, t_line line, uint32_t color)
 {
 	size_t	idx;
 
@@ -28,7 +28,7 @@ static inline void	plot_pixel(t_line_ctx ctx, t_line line, uint32_t color)
 	}
 }
 
-static inline void	step_line(t_line *line)
+inline static void	step_line(t_line *line)
 {
 	int	tmp;
 
@@ -45,7 +45,7 @@ static inline void	step_line(t_line *line)
 	}
 }
 
-static inline void	draw_line_bresenham(t_line_ctx ctx
+inline static void	draw_line_bresenham(t_line_ctx ctx
 	, t_vec2i start, t_vec2i end, uint32_t color)
 {
 	t_line	line;

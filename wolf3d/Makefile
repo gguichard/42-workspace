@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/11/30 16:23:36 by gguichar         ###   ########.fr        #
+#    Updated: 2019/12/15 11:37:00 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,29 +29,30 @@ LDFLAGS			=	-Llibft -lft $(shell ./$(SDL_DIR)/bin/sdl2-config --libs)
 
 SRC_DIR			=	src
 SRC 			=	\
-collision.c			\
-draw_view.c			\
-draw_view_render.c	\
-error.c				\
-launch_ray.c		\
-lib_sdl2.c			\
-line_draw.c			\
-main.c				\
-map_parser.c		\
-map_parser_2.c		\
-math_utils.c		\
-minimap.c			\
-minimap_utils.c		\
-player.c			\
-portal.c			\
-states/menu.c		\
-states/play.c		\
-texture.c			\
-thread.c			\
-vec2d.c				\
-vec2d_ope.c			\
-vec2i.c				\
-wolf3d.c			\
+collision.c						\
+draw_view.c						\
+draw_view_render.c				\
+error.c							\
+launch_ray.c					\
+lib_sdl2.c						\
+line_draw.c						\
+main.c							\
+map_parser.c					\
+map_parser_2.c					\
+math_utils.c					\
+minimap.c						\
+minimap_utils.c					\
+portal.c						\
+states/menu.c					\
+states/play/create_portal.c		\
+states/play/player_movement.c	\
+states/play.c					\
+texture.c						\
+thread.c						\
+vec2d.c							\
+vec2d_ope.c						\
+vec2i.c							\
+wolf3d.c						\
 wolf3d_events.c
 
 OBJ_DIR		=	.obj
@@ -83,6 +84,7 @@ $(SDL_DIR):
 $(OBJ_DIR):
 	@mkdir $@ 2> /dev/null || true
 	@mkdir $@/states 2> /dev/null || true
+	@mkdir $@/states/play 2> /dev/null || true
 
 clean:
 	$(MAKE) -C libft clean

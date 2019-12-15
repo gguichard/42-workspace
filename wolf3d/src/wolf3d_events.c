@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 14:22:59 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 18:50:09 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/04 09:22:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
+#include <stdlib.h>
 #include <SDL.h>
 #include "wolf3d.h"
 #include "keystates.h"

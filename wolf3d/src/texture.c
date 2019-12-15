@@ -6,11 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:08:08 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 15:35:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/05 14:50:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <SDL.h>
+#include <string.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include "libft.h"
 #include "texture_inf.h"
@@ -28,14 +30,14 @@ t_error		load_texture(const char *file, t_texture_inf *text_inf)
 {
 	t_error		err;
 	SDL_Surface	*surface;
+	size_t		total_size;
 
-	surface = SDL_LoadBMP(file);
-	if (surface == NULL)
+	if ((surface = SDL_LoadBMP(file)) == NULL)
 		err = ERR_LIBSDL2;
 	else
 	{
-		text_inf->pixels = (uint32_t *)malloc(surface->w * surface->h
-			* sizeof(uint32_t));
+		total_size = surface->w * surface->h;
+		text_inf->pixels = (uint32_t *)malloc(total_size * sizeof(uint32_t));
 		if (text_inf->pixels == NULL)
 			err = ERR_UNEXPECTED;
 		else if (convert_pixels(surface, text_inf) < 0)

@@ -6,12 +6,13 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 12:26:55 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 13:50:31 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/05 14:47:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <SDL.h>
+#include <stdlib.h>
 #include <string.h>
+#include <SDL.h>
 #include "wolf3d.h"
 #include "thread_inf.h"
 
@@ -25,14 +26,15 @@ void	player_view_raycast(t_ctx *ctx)
 	{
 		threads[idx].data = ctx;
 		threads[idx].x_start = idx;
-		threads[idx].thread = SDL_CreateThread((void *)player_view_thread, ""
-				, &threads[idx]);
+		threads[idx].thread = SDL_CreateThread((void *)player_view_thread
+				, "Wolf3D", &threads[idx]);
 		idx++;
 	}
 	idx = 0;
 	while (idx < THREADS_COUNT)
 	{
-		SDL_WaitThread(threads[idx].thread, NULL);
+		if (threads[idx].thread != NULL)
+			SDL_WaitThread(threads[idx].thread, NULL);
 		idx++;
 	}
 }

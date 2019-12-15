@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:29:36 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 23:43:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/13 08:22:16 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef enum	e_tile_id
 
 typedef enum	e_tile_data_type
 {
-	NO_DATA,
+	NO_DATA = 0,
 	PORTAL_DATA
 }				t_tile_data_type;
 

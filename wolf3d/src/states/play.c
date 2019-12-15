@@ -6,61 +6,20 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 23:45:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/05 08:01:39 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <SDL.h>
-#include <stdlib.h>
+#include <string.h>
 #include <math.h>
+#include "libft.h"
 #include "wolf3d.h"
 #include "keystates.h"
-#include "ray_inf.h"
 #include "tile_inf.h"
 #include "vec2.h"
 
-static t_tile_meta	*search_portal(t_ctx *ctx, t_portal_type type)
-{
-	size_t	total_size;
-	size_t	idx;
-
-	total_size = ctx->tile_map.width * ctx->tile_map.height;
-	idx = 0;
-	while (idx < total_size)
-	{
-		if (ctx->tile_map.tiles[idx].type == PORTAL_DATA
-			&& ctx->tile_map.tiles[idx].data.portal.type == type)
-			return (&ctx->tile_map.tiles[idx]);
-		idx++;
-	}
-	return (NULL);
-}
-
-static void	create_portal(t_ctx *ctx, t_portal_type type)
-{
-	t_ray_inf	ray_inf;
-	t_tile_meta	*prev_portal;
-
-	ray_inf = launch_ray(ctx->player.position, ctx->player.angle
-		, &ctx->tile_map);
-	if (ray_inf.tile != NULL)
-		ray_inf = launch_portal_ray(&ray_inf, &ctx->tile_map);
-	if (ray_inf.tile != NULL)
-	{
-		prev_portal = search_portal(ctx, type);
-		if (prev_portal != NULL)
-			prev_portal->type = NO_DATA;
-		ray_inf.tile->type = PORTAL_DATA;
-		ray_inf.tile->data.portal.type = type;
-		ray_inf.tile->data.portal.dir = ray_inf.direction;
-		ray_inf.tile->data.portal.target = search_portal(ctx
-			, (type == ENTRY_PORTAL) ? EXIT_PORTAL : ENTRY_PORTAL);
-		if (ray_inf.tile->data.portal.target != NULL)
-			ray_inf.tile->data.portal.target->data.portal.target = ray_inf.tile;
-	}
-}
-
-int			wolf3d_play_events(t_ctx *ctx, SDL_Event event)
+int		wolf3d_play_events(t_ctx *ctx, SDL_Event event)
 {
 	double	x_move;
 
@@ -81,7 +40,7 @@ int			wolf3d_play_events(t_ctx *ctx, SDL_Event event)
 	return (0);
 }
 
-void		wolf3d_play_init(t_ctx *ctx)
+void	wolf3d_play_init(t_ctx *ctx)
 {
 	ctx->player = ctx->tile_map.player;
 	ctx->player.fov = (90 / 360.) * M_PI;
@@ -90,12 +49,12 @@ void		wolf3d_play_init(t_ctx *ctx)
 	SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
-void		wolf3d_play_run(t_ctx *ctx)
+void	wolf3d_play_run(t_ctx *ctx)
 {
 	t_vec2d	old_pos;
 
 	if (ctx->keystates & ESC_KEY)
-		ctx->state = QUIT;
+		ctx->state = MAIN_MENU;
 	else
 	{
 		old_pos = ctx->player.position;
@@ -105,5 +64,21 @@ void		wolf3d_play_run(t_ctx *ctx)
 		minimap_background(ctx);
 		player_view_raycast(ctx);
 		draw_minimap_view(ctx);
+	}
+}
+
+void	wolf3d_play_quit(t_ctx *ctx)
+{
+	size_t	total_size;
+	size_t	idx;
+
+	SDL_SetRelativeMouseMode(SDL_FALSE);
+	total_size = ctx->tile_map.width * ctx->tile_map.height;
+	idx = 0;
+	while (idx < total_size)
+	{
+		ctx->tile_map.tiles[idx].type = NO_DATA;
+		ft_memset(&ctx->tile_map.tiles[idx].data, 0, sizeof(t_tile_data));
+		idx++;
 	}
 }

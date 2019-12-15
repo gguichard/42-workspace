@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:17:58 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 19:00:53 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/05 07:54:51 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
+#include <stdlib.h>
 #include <SDL.h>
 #include "libft.h"
 #include "wolf3d.h"
@@ -51,6 +52,7 @@ static void		setup_states(t_ctx *ctx)
 	states[MAIN_MENU].run_fn = wolf3d_main_menu;
 	states[PLAYING].init_fn = wolf3d_play_init;
 	states[PLAYING].run_fn = wolf3d_play_run;
+	states[PLAYING].quit_fn = wolf3d_play_quit;
 	states[PLAYING].evt_fn = wolf3d_play_events;
 }
 
@@ -65,8 +67,8 @@ t_error			wolf3d_init(t_ctx *ctx, const char *mapfile)
 	if (err == ERR_NOERROR)
 	{
 		ctx->window.title = "Wolf3D";
-		ctx->window.size.width = 1280;
-		ctx->window.size.height = 960;
+		ctx->window.size.width = 800;
+		ctx->window.size.height = 600;
 		err = window_create(&ctx->window);
 		if (err == ERR_NOERROR)
 			err = minimap_setup(ctx);

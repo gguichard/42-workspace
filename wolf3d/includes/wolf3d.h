@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 18:58:55 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/05 08:02:44 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <stdint.h>
 # include "window.h"
 # include "state.h"
-# include "keystates.h"
 # include "map_inf.h"
 # include "tile_inf.h"
 # include "player.h"
@@ -41,6 +40,8 @@
 # define MINIMAP_BORDER 1
 # define MINIMAP_BORDER_COLOR 0xFFFFFF
 # define MINIMAP_PLAYER_COLOR 0xFFFFFF
+# define MINIMAP_PORTAL_ENTRY_COLOR 0x0000FF
+# define MINIMAP_PORTAL_EXIT_COLOR 0xFF0000
 # define MINIMAP_RAY_COLOR 0xF4A142
 # define MINIMAP_WALL_COLOR 0x000000
 # define MINIMAP_OUTSIDE_COLOR 0x000000
@@ -48,8 +49,16 @@
 
 # define ALPHA_CHANNEL 0xff000000
 
-# define PORTAL_ENTRY_TEXTURE 4
-# define PORTAL_EXIT_TEXTURE 5
+typedef enum	e_texture_type
+{
+	TEXTURE_NORTH = 0,
+	TEXTURE_WEST = 1,
+	TEXTURE_SOUTH = 2,
+	TEXTURE_EAST = 3,
+	TEXTURE_PORTAL_ENTRY = 4,
+	TEXTURE_PORTAL_EXIT = 5,
+	TEXTURE_LAST = 6
+}				t_texture_type;
 
 typedef struct	s_ctx
 {
@@ -59,7 +68,7 @@ typedef struct	s_ctx
 	t_map_inf		tile_map;
 	t_minimap_inf	minimap;
 	t_player		player;
-	t_texture_inf	textures[6];
+	t_texture_inf	textures[TEXTURE_LAST];
 	t_state_inf		states[STATE_LAST];
 }				t_ctx;
 
@@ -81,8 +90,11 @@ void			wolf3d_run(t_ctx *ctx);
 void			wolf3d_clean(t_ctx *ctx);
 
 void			wolf3d_main_menu(t_ctx *ctx);
+
+void			create_portal(t_ctx *ctx, t_portal_type type);
 void			wolf3d_play_init(t_ctx *ctx);
 void			wolf3d_play_run(t_ctx *ctx);
+void			wolf3d_play_quit(t_ctx *ctx);
 int				wolf3d_play_events(t_ctx *ctx, SDL_Event event);
 
 void			setup_draw_ctx(t_ctx *ctx, t_ray_inf *ray_inf
@@ -97,7 +109,7 @@ void			player_view_raycast(t_ctx *ctx);
 void			player_movement(t_ctx *ctx);
 
 t_ray_inf		launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf);
-void			check_collision_after_move(t_ctx *ctx, t_vec2d old_position);
+void			check_collision_after_move(t_ctx *ctx, t_vec2d old_pos);
 
 t_error			minimap_setup(t_ctx *ctx);
 void			minimap_destroy(t_minimap_inf *minimap);

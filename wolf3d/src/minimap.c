@@ -6,20 +6,16 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 14:55:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:34:03 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/04 09:07:33 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <string.h>
 #include <stdint.h>
-#include <stdlib.h>
-#include "libft.h"
 #include "wolf3d.h"
 #include "vec2.h"
 #include "tile_inf.h"
-#include "line_draw.h"
-#include "error.h"
 
 static int	minimap_plot_px(t_ctx *ctx, size_t idx, uint32_t color, int z_value)
 {
@@ -32,55 +28,72 @@ static int	minimap_plot_px(t_ctx *ctx, size_t idx, uint32_t color, int z_value)
 	return (0);
 }
 
+static t_vec2d	minimap_to_map_pos(t_ctx *ctx, t_vec2i pos)
+{
+	t_vec2d	block_pos;
+
+	block_pos = vec2d(pos.x, pos.y);
+	block_pos = vec2d_mulf(block_pos, 1 / (double)ctx->minimap.size);
+	block_pos = vec2d_sub(block_pos, vec2d(0.5, 0.5));
+	block_pos = vec2d_mulf(block_pos, ctx->minimap.view_radius);
+	block_pos = vec2d_add(block_pos, ctx->player.position);
+	return (block_pos);
+}
+
+static int	minimap_wall_plot(t_ctx *ctx, size_t idx, t_tile_meta *tile_meta
+	, t_vec2d block_pos)
+{
+	double		dumb;
+	t_vec2d		new_pos;
+	uint32_t	color;
+
+	if (tile_meta->type == PORTAL_DATA)
+	{
+		new_pos = vec2d(modf(block_pos.x, &dumb), modf(block_pos.y, &dumb));
+		if ((tile_meta->data.portal.dir == NORTH
+				&& new_pos.x < PLAYER_HALF_SIZE)
+			|| (tile_meta->data.portal.dir == SOUTH
+				&& new_pos.x >= (1 - PLAYER_HALF_SIZE))
+			|| (tile_meta->data.portal.dir == WEST
+				&& new_pos.y < PLAYER_HALF_SIZE)
+			|| (tile_meta->data.portal.dir == EAST
+				&& new_pos.y >= (1 - PLAYER_HALF_SIZE)))
+		{
+			if (tile_meta->data.portal.type == ENTRY_PORTAL)
+				color = MINIMAP_PORTAL_ENTRY_COLOR;
+			else
+				color = MINIMAP_PORTAL_EXIT_COLOR;
+			return (minimap_plot_px(ctx, idx, color, 50));
+		}
+	}
+	return (minimap_plot_px(ctx, idx, MINIMAP_WALL_COLOR, 50));
+}
+
 static int	minimap_plot(t_ctx *ctx, t_vec2i pos)
 {
-	size_t	idx;
-	t_vec2d	block_pos;
+	size_t		idx;
+	t_vec2d		block_pos;
+	t_tile_meta	*tile_meta;
 
 	idx = pos.y * ctx->minimap.size + pos.x;
 	if (pos.x < MINIMAP_BORDER || pos.y < MINIMAP_BORDER
 		|| pos.x >= (ctx->minimap.size - MINIMAP_BORDER)
 		|| pos.y >= (ctx->minimap.size - MINIMAP_BORDER))
 		return (minimap_plot_px(ctx, idx, MINIMAP_BORDER_COLOR, 100));
-	block_pos = vec2d(pos.x, pos.y);
-	block_pos = vec2d_mulf(block_pos, 1 / (double)ctx->minimap.size);
-	block_pos = vec2d_sub(block_pos, vec2d(0.5, 0.5));
-	block_pos = vec2d_mulf(block_pos, ctx->minimap.view_radius);
-	block_pos = vec2d_add(block_pos, ctx->player.position);
+	block_pos = minimap_to_map_pos(ctx, pos);
 	if (block_pos.x < 0 || block_pos.y < 0
 		|| block_pos.x >= ctx->tile_map.width
 		|| block_pos.y >= ctx->tile_map.height)
 		return (minimap_plot_px(ctx, idx, MINIMAP_OUTSIDE_COLOR, 50));
-	else if (ctx->tile_map.tiles[(int)block_pos.y * ctx->tile_map.width
-			+ (int)block_pos.x].id != TILE_EMPTY)
-		return (minimap_plot_px(ctx, idx, MINIMAP_WALL_COLOR, 50));
+	tile_meta = &ctx->tile_map.tiles[(int)block_pos.y * ctx->tile_map.width
+		+ (int)block_pos.x];
+	if (tile_meta->id != TILE_EMPTY)
+		return (minimap_wall_plot(ctx, idx, tile_meta, block_pos));
 	else if (fabs(block_pos.x - ctx->player.position.x) < PLAYER_HALF_SIZE
 		&& fabs(block_pos.y - ctx->player.position.y) < PLAYER_HALF_SIZE)
 		return (minimap_plot_px(ctx, idx, MINIMAP_PLAYER_COLOR, 10));
 	else
 		return (minimap_plot_px(ctx, idx, FLOOR_COLOR, 0));
-}
-
-t_error		minimap_setup(t_ctx *ctx)
-{
-	t_error	err;
-	size_t	total_size;
-
-	err = ERR_NOERROR;
-	ctx->minimap.size = MINIMAP_SIZE * ctx->window.size.width;
-	ctx->minimap.view_radius = ft_min(ft_min(ctx->tile_map.width
-				, ctx->tile_map.height), MINIMAP_VIEW_RADIUS);
-	total_size = ctx->minimap.size * ctx->minimap.size;
-	ctx->minimap.pixels = (uint32_t *)malloc(total_size * sizeof(uint32_t));
-	if (ctx->minimap.pixels == NULL)
-		err = ERR_UNEXPECTED;
-	else
-	{
-		ctx->minimap.z_buffer = (int *)malloc(total_size * sizeof(int));
-		if (ctx->minimap.z_buffer == NULL)
-			err = ERR_UNEXPECTED;
-	}
-	return (err);
 }
 
 void		minimap_background(t_ctx *ctx)
@@ -98,23 +111,4 @@ void		minimap_background(t_ctx *ctx)
 		}
 		pos.x += 1;
 	}
-}
-
-void		minimap_ray(t_ctx *ctx, double length, double angle)
-{
-	t_line_ctx	line_ctx;
-	double		ray_length;
-	t_vec2i		start;
-	t_vec2i		end;
-
-	line_ctx.win_width = ctx->minimap.size;
-	line_ctx.win_height = ctx->minimap.size;
-	line_ctx.pixels = ctx->minimap.pixels;
-	line_ctx.z_buffer = ctx->minimap.z_buffer;
-	line_ctx.z_value = 5;
-	ray_length = ceil(length / ctx->minimap.view_radius * ctx->minimap.size);
-	start = vec2i(ctx->minimap.size / 2, ctx->minimap.size / 2);
-	end = vec2i(start.x + cos(angle) * ray_length
-			, start.y - sin(angle) * ray_length);
-	draw_line(line_ctx, start, end, MINIMAP_RAY_COLOR);
 }

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:26:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 17:48:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/05 08:11:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 
 void	wolf3d_main_menu(t_ctx *ctx)
 {
-	if (ctx->keystates & ENTER_KEY)
+	if (ctx->keystates & ESC_KEY)
+		ctx->state = QUIT;
+	else if (ctx->keystates & ENTER_KEY)
 		ctx->state = PLAYING;
 	else
 	{

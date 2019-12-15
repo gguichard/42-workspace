@@ -6,13 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/30 14:56:00 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:57:21 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/03 12:20:03 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "wolf3d.h"
 #include "player.h"
+#include "keystates.h"
 #include "vec2.h"
 
 static void	handle_player_strafe_keys(t_ctx *ctx)

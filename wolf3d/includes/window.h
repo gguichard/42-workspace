@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:01:17 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/10 12:44:42 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/03 10:24:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define WINDOW_H
 
 # include <SDL.h>
+# include <stdint.h>
 # include "error.h"
 
 typedef struct	s_win_size

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:24:26 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 15:22:14 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/13 08:29:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ static t_vector	read_tiles(int fd, t_map_inf *map_inf, t_error *err)
 		}
 		map_inf->height += 1;
 	}
+	get_next_line(fd, NULL);
 	return (tiles);
 }
 
@@ -139,6 +140,7 @@ t_map_inf		load_mapfile(const char *file, t_error *err)
 	int			fd;
 	t_vector	tiles;
 
+	*err = ERR_NOERROR;
 	ft_memset(&map_inf, 0, sizeof(t_map_inf));
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -149,7 +151,7 @@ t_map_inf		load_mapfile(const char *file, t_error *err)
 		if (*err == ERR_NOERROR)
 		{
 			tiles_vector_to_map(tiles, &map_inf, err);
-			if (!map_inf.has_player)
+			if (*err == ERR_NOERROR && !map_inf.has_player)
 				*err = ERR_MAPNOPLAYER;
 		}
 		ft_vecfree(&tiles);

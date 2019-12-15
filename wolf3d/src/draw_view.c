@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 22:49:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 23:43:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/04 09:11:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ static void	draw_portal(t_ctx *ctx, t_column_inf *column_inf
 	t_ray_inf		ray_inf;
 
 	if (hit_inf->tile->data.portal.type == ENTRY_PORTAL)
-		text_inf = &ctx->textures[PORTAL_ENTRY_TEXTURE];
+		text_inf = &ctx->textures[TEXTURE_PORTAL_ENTRY];
 	else
-		text_inf = &ctx->textures[PORTAL_EXIT_TEXTURE];
+		text_inf = &ctx->textures[TEXTURE_PORTAL_EXIT];
 	if (!column_inf->use_z_buffer)
 		ft_memset(column_inf->z_buffer, 0xff, sizeof(column_inf->z_buffer));
 	else
@@ -102,9 +102,9 @@ void		player_view_thread(t_thread_inf *thread_inf)
 		hit_inf.fisheye_angle = cos(ctx->player.angle - angle);
 		minimap_ray(ctx, hit_inf.length, angle);
 		draw_column(ctx, &column_inf, &hit_inf);
-		if (hit_inf.tile != NULL
-			&& hit_inf.tile->type == PORTAL_DATA
-			&& hit_inf.tile->data.portal.dir == hit_inf.direction)
+		if (hit_inf.tile != NULL && hit_inf.tile->type == PORTAL_DATA
+			&& hit_inf.tile->data.portal.dir == hit_inf.direction
+			&& hit_inf.length < FOG_DIST)
 			draw_portal(ctx, &column_inf, &hit_inf);
 		column_inf.x += THREADS_COUNT;
 	}
