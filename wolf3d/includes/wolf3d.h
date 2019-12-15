@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/15 14:20:01 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 14:23:32 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define CEIL_COLOR 0xff303030
 # define FLOOR_COLOR 0xff505050
 
-# define MINIMAP_SIZE 0.2
+# define MINIMAP_SIZE 0.15
 # define MINIMAP_OFFSET_X 20
 # define MINIMAP_OFFSET_Y 20
 # define MINIMAP_VIEW_RADIUS 10
