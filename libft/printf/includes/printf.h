@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/08 20:40:38 by gguichar          #+#    #+#             */
-/*   Updated: 2018/12/10 19:44:49 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 13:44:07 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,23 @@
 ** FLAGS
 ** modifie le resulat d'une conversion
 */
-# define HASH_FLAG (1 << 0)
-# define ZERO_FLAG (1 << 1)
-# define MINUS_FLAG (1 << 2)
-# define SPACE_FLAG (1 << 3)
-# define PLUS_FLAG (1 << 4)
+# define HASH_FLAG 0x1
+# define ZERO_FLAG 0x2
+# define MINUS_FLAG 0x4
+# define SPACE_FLAG 0x8
+# define PLUS_FLAG 0x10
 
 /*
 ** MODIFIERS
 ** change la facon dont les parametres sont recuperes
 */
-# define HH_MODIFIER (1 << 5)
-# define H_MODIFIER (1 << 6)
-# define L_MODIFIER (1 << 7)
-# define LL_MODIFIER (1 << 8)
-# define LUP_MODIFIER (1 << 9)
-# define J_MODIFIER (1 << 10)
-# define Z_MODIFIER (1 << 11)
+# define HH_MODIFIER 0x20
+# define H_MODIFIER 0x40
+# define L_MODIFIER 0x80
+# define LL_MODIFIER 0x100
+# define LUP_MODIFIER 0x200
+# define J_MODIFIER 0x400
+# define Z_MODIFIER 0x800
 
 /*
 ** PRINTF
