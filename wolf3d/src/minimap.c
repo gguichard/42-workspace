@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/08 14:55:28 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/04 09:07:33 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 13:41:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 #include "vec2.h"
 #include "tile_inf.h"
 
-static int	minimap_plot_px(t_ctx *ctx, size_t idx, uint32_t color, int z_value)
+static int		minimap_plot_px(t_ctx *ctx, size_t idx, uint32_t color
+	, int z_value)
 {
 	if (ctx->minimap.z_buffer[idx] < z_value)
 	{
@@ -40,7 +41,7 @@ static t_vec2d	minimap_to_map_pos(t_ctx *ctx, t_vec2i pos)
 	return (block_pos);
 }
 
-static int	minimap_wall_plot(t_ctx *ctx, size_t idx, t_tile_meta *tile_meta
+static int		minimap_wall_plot(t_ctx *ctx, size_t idx, t_tile_meta *tile_meta
 	, t_vec2d block_pos)
 {
 	double		dumb;
@@ -69,7 +70,7 @@ static int	minimap_wall_plot(t_ctx *ctx, size_t idx, t_tile_meta *tile_meta
 	return (minimap_plot_px(ctx, idx, MINIMAP_WALL_COLOR, 50));
 }
 
-static int	minimap_plot(t_ctx *ctx, t_vec2i pos)
+static int		minimap_plot(t_ctx *ctx, t_vec2i pos)
 {
 	size_t		idx;
 	t_vec2d		block_pos;
@@ -96,7 +97,7 @@ static int	minimap_plot(t_ctx *ctx, t_vec2i pos)
 		return (minimap_plot_px(ctx, idx, FLOOR_COLOR, 0));
 }
 
-void		minimap_background(t_ctx *ctx)
+void			minimap_background(t_ctx *ctx)
 {
 	t_vec2i	pos;
 
