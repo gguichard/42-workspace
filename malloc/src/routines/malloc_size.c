@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/29 13:49:06 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/29 22:52:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 16:08:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ size_t	malloc_size_routine(t_zone *zone, const void *ptr)
 		return (large_block == NULL ? 0 : large_block->map_size
 			- sizeof(t_large_block));
 	}
-	return (1 << region->bitmap[get_block_index(region, ptr)].order);
+	return (1 << region->data[get_block_index(region, ptr)].order);
 }

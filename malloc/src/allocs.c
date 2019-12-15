@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:00:24 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/29 22:54:13 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 16:08:10 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static void			split_block(t_region *region, t_free_alloc *block
 	size_t			buddy_index;
 
 	block_index = get_block_index(region, block);
-	region->bitmap[block_index].free = 1;
-	region->bitmap[block_index].order -= 1;
+	region->data[block_index].free = 1;
+	region->data[block_index].order -= 1;
 	buddy = (t_free_alloc *)((uintptr_t)block
-			+ (uintptr_t)(1 << region->bitmap[block_index].order));
+			+ (uintptr_t)(1 << region->data[block_index].order));
 	buddy_index = get_block_index(region, buddy);
-	region->bitmap[buddy_index] = region->bitmap[block_index];
+	region->data[buddy_index] = region->data[block_index];
 	add_to_free_list(region->free_list + level, buddy);
 	add_to_free_list(region->free_list + level, block);
 }
@@ -52,7 +52,7 @@ static t_free_alloc	*get_free_addr(t_region *region, int level)
 	if (free_addr != NULL)
 	{
 		region->free_list[level] = free_addr->next;
-		region->bitmap[get_block_index(region, free_addr)].free = 0;
+		region->data[get_block_index(region, free_addr)].free = 0;
 	}
 	return (free_addr);
 }
@@ -96,6 +96,6 @@ void				*get_free_block_addr(t_region_list *region_list, int order
 			it = map_region(region_list);
 	}
 	if (addr != NULL)
-		it->bitmap[get_block_index(it, addr)].user_size = user_size;
+		it->data[get_block_index(it, addr)].user_size = user_size;
 	return (addr);
 }

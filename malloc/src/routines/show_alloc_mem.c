@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/28 21:15:42 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/25 10:49:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 16:08:55 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	show_region_allocs(t_region *region, int dump_hex)
 	block_index = 0;
 	while (block_index < region->parent_list->max_blocks)
 	{
-		alloc_meta = &region->bitmap[block_index];
+		alloc_meta = &region->data[block_index];
 		if (alloc_meta->free == 0 && alloc_meta->order != 0)
 		{
 			start_ptr = (void *)((uintptr_t)region->ptr_start

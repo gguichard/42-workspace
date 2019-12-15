@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/07/24 21:02:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/07/29 11:45:37 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 16:08:19 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_region	*init_malloc_region(t_region_list data)
 	region->ptr_start = block;
 	region->next = NULL;
 	region->free_list[0] = block;
-	region->bitmap[0].free = 1;
-	region->bitmap[0].order = data.max_order;
+	region->data[0].free = 1;
+	region->data[0].order = data.max_order;
 	return (region);
 }
