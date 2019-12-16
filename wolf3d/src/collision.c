@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 11:37:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/03 12:23:59 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/16 08:44:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ static int	is_side_colliding(t_vec2d player_pos, t_vec2i tile_pos
 		return (1);
 }
 
-static int	is_colliding(double x, double y, t_map_inf *map_inf
+int			is_colliding(t_vec2d player_pos, t_map_inf *map_inf
 	, t_direction dir)
 {
-	t_vec2d	player_pos;
 	t_vec2i	start;
 	t_vec2i	end;
 	t_vec2i	pos;
 
-	player_pos = vec2d(x, y);
-	start = vec2i(floor(x - PLAYER_HALF_SIZE), floor(y - PLAYER_HALF_SIZE));
-	end = vec2i(ceil(x + PLAYER_HALF_SIZE), ceil(y + PLAYER_HALF_SIZE));
+	start = vec2i(floor(player_pos.x - PLAYER_HALF_SIZE)
+		, floor(player_pos.y - PLAYER_HALF_SIZE));
+	end = vec2i(ceil(player_pos.x + PLAYER_HALF_SIZE)
+		, ceil(player_pos.y + PLAYER_HALF_SIZE));
 	pos.x = start.x;
 	while (pos.x < end.x)
 	{
@@ -97,20 +97,20 @@ void		check_collision_after_move(t_ctx *ctx, t_vec2d old_pos)
 	pos = ctx->player.position;
 	dir = vec2d_sub(pos, old_pos);
 	if (dir.x > 0
-		&& (is_colliding(pos.x, old_pos.y, &ctx->tile_map, NORTH)
-			|| is_colliding(pos.x, old_pos.y, &ctx->tile_map, SOUTH)))
+		&& (is_colliding(vec2d(pos.x, old_pos.y), &ctx->tile_map, NORTH)
+			|| is_colliding(vec2d(pos.x, old_pos.y), &ctx->tile_map, SOUTH)))
 		pos.x = floor(pos.x + PLAYER_HALF_SIZE) - PLAYER_HALF_SIZE;
 	else if (dir.x < 0
-		&& (is_colliding(pos.x, old_pos.y, &ctx->tile_map, NORTH)
-			|| is_colliding(pos.x, old_pos.y, &ctx->tile_map, SOUTH)))
+		&& (is_colliding(vec2d(pos.x, old_pos.y), &ctx->tile_map, NORTH)
+			|| is_colliding(vec2d(pos.x, old_pos.y), &ctx->tile_map, SOUTH)))
 		pos.x = floor(pos.x - PLAYER_HALF_SIZE + 1) + PLAYER_HALF_SIZE;
 	if (dir.y > 0
-		&& (is_colliding(pos.x, pos.y, &ctx->tile_map, WEST)
-			|| is_colliding(pos.x, pos.y, &ctx->tile_map, EAST)))
+		&& (is_colliding(pos, &ctx->tile_map, WEST)
+			|| is_colliding(pos, &ctx->tile_map, EAST)))
 		pos.y = floor(pos.y + PLAYER_HALF_SIZE) - PLAYER_HALF_SIZE;
 	else if (dir.y < 0
-		&& (is_colliding(pos.x, pos.y, &ctx->tile_map, WEST)
-			|| is_colliding(pos.x, pos.y, &ctx->tile_map, EAST)))
+		&& (is_colliding(pos, &ctx->tile_map, WEST)
+			|| is_colliding(pos, &ctx->tile_map, EAST)))
 		pos.y = floor(pos.y - PLAYER_HALF_SIZE + 1) + PLAYER_HALF_SIZE;
 	ctx->player.position = pos;
 	check_portal_collision(ctx, pos);

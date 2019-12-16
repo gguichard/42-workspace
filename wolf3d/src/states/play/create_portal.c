@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/05 07:59:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/05 08:08:51 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/16 08:51:57 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@
 #include "wolf3d.h"
 #include "ray_inf.h"
 #include "tile_inf.h"
+
+static int			is_ray_valid(t_ray_inf *ray_inf)
+{
+	return (ray_inf->tile != NULL && ray_inf->length < FOG_DIST);
+}
 
 static t_tile_meta	*search_portal(t_ctx *ctx, t_portal_type type)
 {
@@ -45,16 +50,24 @@ static t_tile_meta	*search_opposite_portal(t_ctx *ctx, t_portal_type type)
 	return (search_portal(ctx, opp_type));
 }
 
-static int			is_ray_valid(t_ray_inf *ray_inf)
+static void			link_new_portal(t_ctx *ctx, t_ray_inf *ray_inf
+	, t_portal_type type)
 {
-	return (ray_inf->tile != NULL && ray_inf->length < FOG_DIST);
+	t_tile_meta	*new_portal;
+
+	new_portal = ray_inf->tile;
+	new_portal->type = PORTAL_DATA;
+	new_portal->data.portal.type = type;
+	new_portal->data.portal.dir = ray_inf->direction;
+	new_portal->data.portal.target = search_opposite_portal(ctx, type);
+	if (new_portal->data.portal.target != NULL)
+		new_portal->data.portal.target->data.portal.target = new_portal;
 }
 
 void				create_portal(t_ctx *ctx, t_portal_type type)
 {
 	t_ray_inf	ray_inf;
 	t_tile_meta	*prev_portal;
-	t_tile_meta	*new_portal;
 
 	ray_inf = launch_ray(ctx->player.position, ctx->player.angle
 		, &ctx->tile_map);
@@ -67,14 +80,14 @@ void				create_portal(t_ctx *ctx, t_portal_type type)
 		if (prev_portal != NULL)
 		{
 			prev_portal->type = NO_DATA;
+			if (is_colliding(ctx->player.position, &ctx->tile_map
+				, prev_portal->data.portal.dir))
+			{
+				prev_portal->type = PORTAL_DATA;
+				return ;
+			}
 			ft_memset(&prev_portal->data, 0, sizeof(prev_portal->data));
 		}
-		new_portal = ray_inf.tile;
-		new_portal->type = PORTAL_DATA;
-		new_portal->data.portal.type = type;
-		new_portal->data.portal.dir = ray_inf.direction;
-		new_portal->data.portal.target = search_opposite_portal(ctx, type);
-		if (new_portal->data.portal.target != NULL)
-			new_portal->data.portal.target->data.portal.target = new_portal;
+		link_new_portal(ctx, &ray_inf, type);
 	}
 }

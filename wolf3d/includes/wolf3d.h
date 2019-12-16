@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/15 14:23:32 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/16 08:44:38 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ void			player_view_raycast(t_ctx *ctx);
 void			player_movement(t_ctx *ctx);
 
 t_ray_inf		launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf);
+int				is_colliding(t_vec2d player_pos, t_map_inf *map_inf
+	, t_direction dir);
 void			check_collision_after_move(t_ctx *ctx, t_vec2d old_pos);
 
 t_error			minimap_setup(t_ctx *ctx);
