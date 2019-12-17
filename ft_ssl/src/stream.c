@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 23:28:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/15 17:33:30 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 13:02:34 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ static int	hash_stream_buffer(t_hash_stream *stream
 {
 	size_t	copy_len;
 
-	copy_len = UTILS_MIN(len, stream->block_size - stream->offset);
+	copy_len = stream->block_size - stream->offset;
+	if (len < copy_len)
+		copy_len = len;
 	ft_memcpy(stream->block + stream->offset, bytes, copy_len);
 	stream->offset += copy_len;
 	if (stream->offset == stream->block_size)

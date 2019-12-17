@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:17:49 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:41:36 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 12:05:35 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "hash_stream.h"
 
-# define OPT_QUIET (1 << 0)
-# define OPT_REVERSE (1 << 1)
+# define OPT_QUIET 0x1
+# define OPT_REVERSE 0x2
 
 typedef struct	s_hash
 {

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:25:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/15 17:20:41 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 12:19:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ static void	sha256_steps(uint32_t words[64], uint32_t output[8])
 	idx = 0;
 	while (idx < 64)
 	{
-		value1 = output[7] + SHA256_HASH_BSIG1(output[4])
-			+ SHA256_HASH_CH(output[4], output[5], output[6])
+		value1 = output[7] + sha256_hash_bsig1(output[4])
+			+ sha256_hash_ch(output[4], output[5], output[6])
 			+ g_sha256_hash[idx]
 			+ words[idx];
-		value2 = SHA256_HASH_BSIG0(output[0])
-			+ SHA256_HASH_MAJ(output[0], output[1], output[2]);
+		value2 = sha256_hash_bsig0(output[0])
+			+ sha256_hash_maj(output[0], output[1], output[2]);
 		output[7] = output[6];
 		output[6] = output[5];
 		output[5] = output[4];
@@ -73,9 +73,9 @@ static void	sha256_words(t_sha256_ctx *ctx)
 	}
 	while (idx < 64)
 	{
-		ctx->words[idx] = SHA256_HASH_SSIG1(ctx->words[idx - 2])
+		ctx->words[idx] = sha256_hash_ssig1(ctx->words[idx - 2])
 			+ ctx->words[idx - 7]
-			+ SHA256_HASH_SSIG0(ctx->words[idx - 15])
+			+ sha256_hash_ssig0(ctx->words[idx - 15])
 			+ ctx->words[idx - 16];
 		idx++;
 	}

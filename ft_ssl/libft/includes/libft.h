@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/29 15:05:10 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/02 19:30:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/15 16:15:25 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ typedef struct	s_vector
 
 typedef struct	s_getopt
 {
-	int			index;
-	char		*optarg;
-	int			offset;
-
+	int		index;
+	char	*optarg;
+	int		offset;
 }				t_getopt;
 
 void			*ft_memset(void *s, int c, size_t n);

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:21:35 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/15 17:27:58 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 12:08:46 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,7 @@
 # define FT_SSL_MD5_H
 
 # include <stdint.h>
-# include <string.h>
 # include "hash_stream.h"
-
-# define MD5_HASH_F(x, y, z) ((x & y) | (~x & z))
-# define MD5_HASH_G(x, y, z) ((x & z) | (y & ~z))
-# define MD5_HASH_H(x, y, z) (x ^ y ^ z)
-# define MD5_HASH_I(x, y, z) (y ^ (x | ~z))
 
 union			u_md5_hash
 {
@@ -34,6 +28,11 @@ typedef struct	s_md5_ctx
 	uint32_t			words[16];
 	union u_md5_hash	hash;
 }				t_md5_ctx;
+
+uint32_t		md5_hash_f(uint32_t x, uint32_t y, uint32_t z);
+uint32_t		md5_hash_g(uint32_t x, uint32_t y, uint32_t z);
+uint32_t		md5_hash_h(uint32_t x, uint32_t y, uint32_t z);
+uint32_t		md5_hash_i(uint32_t x, uint32_t y, uint32_t z);
 
 void			md5_stream_init(t_hash_stream *stream);
 void			md5_stream(t_md5_ctx *ctx);

@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   md5_hash_fn.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/24 09:38:38 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/17 13:01:41 by gguichar         ###   ########.fr       */
+/*   Created: 2019/12/17 12:06:42 by gguichar          #+#    #+#             */
+/*   Updated: 2019/12/17 12:08:09 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#include <stdint.h>
 
-# include <stdint.h>
+uint32_t	md5_hash_f(uint32_t x, uint32_t y, uint32_t z)
+{
+	return ((x & y) | (~x & z));
+}
 
-uint32_t	byte_swap32(uint32_t x);
-uint64_t	byte_swap64(uint64_t x);
-void		digest_hex(char buffer[2], uint8_t byte);
+uint32_t	md5_hash_g(uint32_t x, uint32_t y, uint32_t z)
+{
+	return ((x & z) | (y & ~z));
+}
 
-uint32_t	rotate_left32(uint32_t x, int s);
-uint64_t	rotate_left64(uint64_t x, int s);
-uint32_t	rotate_right32(uint32_t x, int s);
-uint64_t	rotate_right64(uint64_t x, int s);
+uint32_t	md5_hash_h(uint32_t x, uint32_t y, uint32_t z)
+{
+	return (x ^ y ^ z);
+}
 
-#endif
+uint32_t	md5_hash_i(uint32_t x, uint32_t y, uint32_t z)
+{
+	return (y ^ (x | ~z));
+}

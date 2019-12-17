@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:19:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/15 17:20:28 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 12:29:56 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,18 +57,18 @@ static void	md5_steps(uint32_t words[16], uint32_t output[4])
 	while (idx < 64)
 	{
 		if (idx < 16)
-			value = MD5_HASH_F(output[1], output[2], output[3]);
+			value = md5_hash_f(output[1], output[2], output[3]);
 		else if (idx < 32)
-			value = MD5_HASH_G(output[1], output[2], output[3]);
+			value = md5_hash_g(output[1], output[2], output[3]);
 		else if (idx < 48)
-			value = MD5_HASH_H(output[1], output[2], output[3]);
+			value = md5_hash_h(output[1], output[2], output[3]);
 		else
-			value = MD5_HASH_I(output[1], output[2], output[3]);
+			value = md5_hash_i(output[1], output[2], output[3]);
 		value += output[0] + words[g_md5_k[idx]] + g_md5_t[idx];
 		output[0] = output[3];
 		output[3] = output[2];
 		output[2] = output[1];
-		output[1] += UTILS_ROTATELEFT(value, g_md5_s[idx]);
+		output[1] += rotate_left32(value, g_md5_s[idx]);
 		idx++;
 	}
 }
