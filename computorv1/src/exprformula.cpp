@@ -34,7 +34,7 @@ double ExprFormula::compute(double x) const
 	return total;
 }
 
-bool ExprFormula::hasPowerFactor() const
+bool ExprFormula::hasUnknownPower() const
 {
 	return std::find_if(m_factors.begin(), m_factors.end(),
 		[](const Factor &f) -> bool { return f.power != 0 && f.value != 0.0; }) != m_factors.end();
@@ -162,7 +162,7 @@ ExprFormula ExprFormula::operator/(const ExprFormula expr2) const
 
 ExprFormula ExprFormula::operator^(const ExprFormula expr2) const
 {
-	if (expr2.hasPowerFactor())
+	if (expr2.hasUnknownPower())
 		throw std::logic_error("unable to use X as pow factor");
 
 	double integralPow;

@@ -19,7 +19,7 @@ public:
 
 	int degree() const;
 	double compute(double x) const;
-	bool hasPowerFactor() const;
+	bool hasUnknownPower() const;
 	bool hasNegativePower() const;
 
 	ExprFormula clean() const;
