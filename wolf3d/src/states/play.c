@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:28:09 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/05 08:01:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/16 22:02:41 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	wolf3d_play_run(t_ctx *ctx)
 		check_collision_after_move(ctx, old_pos);
 		minimap_reset_z_buffer(ctx);
 		minimap_background(ctx);
+		ft_memset(ctx->window.pixels, 0, ctx->window.size.width
+			* ctx->window.size.height * sizeof(*ctx->window.pixels));
 		player_view_raycast(ctx);
 		draw_minimap_view(ctx);
 	}

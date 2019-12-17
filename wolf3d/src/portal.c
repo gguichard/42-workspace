@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 11:08:33 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 23:44:39 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 17:33:24 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 #include "direction.h"
 #include "vec2.h"
 
-static double	get_angle_diff(t_portal_inf *portal, t_portal_inf *target)
+double			get_portal_angle_diff(t_portal_inf *portal
+	, t_portal_inf *target)
 {
 	double	angle;
 
@@ -40,8 +41,8 @@ static double	get_angle_diff(t_portal_inf *portal, t_portal_inf *target)
 	return (angle);
 }
 
-static t_vec2d	get_launch_origin(t_direction hit_dir, double hit_position
-	, t_tile_meta *target)
+t_vec2d			get_portal_launch_origin(t_direction hit_dir
+	, double hit_position, t_tile_meta *target)
 {
 	double	position;
 	t_vec2d	origin;
@@ -65,33 +66,6 @@ static t_vec2d	get_launch_origin(t_direction hit_dir, double hit_position
 		|| target->data.portal.dir == WEST)
 		origin.x += position;
 	return (origin);
-}
-
-t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, t_map_inf *map_inf)
-{
-	t_tile_meta	*target;
-	t_vec2d		origin;
-	double		angle;
-	t_ray_inf	ray_inf;
-
-	if (hit_inf->tile != NULL
-		&& hit_inf->tile->type == PORTAL_DATA
-		&& hit_inf->tile->data.portal.dir == hit_inf->direction)
-	{
-		if (hit_inf->tile->data.portal.target == NULL)
-			return (*hit_inf);
-		target = hit_inf->tile->data.portal.target;
-		origin = get_launch_origin(hit_inf->direction, hit_inf->position
-			, target);
-		angle = hit_inf->angle
-			+ get_angle_diff(&hit_inf->tile->data.portal, &target->data.portal);
-		ray_inf = launch_ray(origin, angle, map_inf);
-		ray_inf.origin = hit_inf->origin;
-		ray_inf.length += hit_inf->length;
-		ray_inf.fisheye_angle = hit_inf->fisheye_angle;
-		return (ray_inf);
-	}
-	return (*hit_inf);
 }
 
 static t_vec2d	get_offset(t_vec2d pos, t_direction dir, t_direction t_dir)
@@ -143,7 +117,7 @@ void			teleport_through_portal(t_ctx *ctx, t_tile_meta *tile)
 		pos = vec2d(target->pos.x + offset.x, target->pos.y + 1 + offset.y);
 	else
 		pos = vec2d(0, 0);
-	angle_diff = get_angle_diff(&tile->data.portal
+	angle_diff = get_portal_angle_diff(&tile->data.portal
 		, &target->data.portal);
 	ctx->player.angle += angle_diff;
 	ctx->player.velocity = vec2d_rotate(ctx->player.velocity, angle_diff);

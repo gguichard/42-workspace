@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/05 07:59:14 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/16 08:51:57 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 18:34:30 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,14 @@ static void			link_new_portal(t_ctx *ctx, t_ray_inf *ray_inf
 
 void				create_portal(t_ctx *ctx, t_portal_type type)
 {
-	t_ray_inf	ray_inf;
+	t_ray_list	*ray_list;
 	t_tile_meta	*prev_portal;
 
-	ray_inf = launch_ray(ctx->player.position, ctx->player.angle
-		, &ctx->tile_map);
-	if (!is_ray_valid(&ray_inf))
+	ray_list = launch_ray(ctx->player.position, ctx->player.angle
+		, &ctx->tile_map, 2);
+	if (ray_list == NULL)
 		return ;
-	ray_inf = launch_portal_ray(&ray_inf, &ctx->tile_map);
-	if (is_ray_valid(&ray_inf))
+	if (is_ray_valid(&ray_list->ray_inf))
 	{
 		prev_portal = search_portal(ctx, type);
 		if (prev_portal != NULL)
@@ -88,6 +87,7 @@ void				create_portal(t_ctx *ctx, t_portal_type type)
 			}
 			ft_memset(&prev_portal->data, 0, sizeof(prev_portal->data));
 		}
-		link_new_portal(ctx, &ray_inf, type);
+		link_new_portal(ctx, &ray_list->ray_inf, type);
 	}
+	free_ray_list(ray_list);
 }

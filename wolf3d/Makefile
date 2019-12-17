@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/27 19:50:57 by gguichar          #+#    #+#              #
-#    Updated: 2019/12/15 11:37:00 by gguichar         ###   ########.fr        #
+#    Updated: 2019/12/17 17:49:44 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ draw_view.c						\
 draw_view_render.c				\
 error.c							\
 launch_ray.c					\
+launch_ray_utils.c				\
 lib_sdl2.c						\
 line_draw.c						\
 main.c							\
@@ -48,7 +49,6 @@ states/play/create_portal.c		\
 states/play/player_movement.c	\
 states/play.c					\
 texture.c						\
-thread.c						\
 vec2d.c							\
 vec2d_ope.c						\
 vec2i.c							\

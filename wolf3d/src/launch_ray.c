@@ -6,27 +6,17 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 21:18:30 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/30 14:52:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 19:15:40 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
-#include "libft.h"
 #include "wolf3d.h"
 #include "ray_inf.h"
 #include "map_inf.h"
 #include "tile_inf.h"
 #include "vec2.h"
 #include "direction.h"
-
-static void			init_ray_inf(t_ray_inf *ray_inf, t_vec2d origin
-	, double angle)
-{
-	ft_memset(ray_inf, 0, sizeof(t_ray_inf));
-	ray_inf->origin = origin;
-	ray_inf->angle = angle;
-	ray_inf->length = INFINITY;
-}
 
 static t_tile_meta	*get_map_tile(int x, int y, t_map_inf *map_inf)
 {
@@ -88,12 +78,17 @@ static void			launch_vray(t_ray_inf *ray_inf, t_vec2d dir, double slope
 		+ pow(pos.y - ray_inf->origin.y, 2));
 }
 
-t_ray_inf			launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf)
+static t_ray_list	*launch_new_ray(t_vec2d origin, double angle
+	, t_map_inf *map_inf)
 {
+	t_ray_list	*hit;
+	t_vec2d		dir;
 	t_ray_inf	hori_ray_inf;
 	t_ray_inf	vert_ray_inf;
-	t_vec2d		dir;
 
+	hit = (t_ray_list *)malloc(sizeof(t_ray_list));
+	if (hit == NULL)
+		return (NULL);
 	dir = vec2d(cos(angle), -sin(angle));
 	init_ray_inf(&vert_ray_inf, origin, angle);
 	init_ray_inf(&hori_ray_inf, origin, angle);
@@ -102,7 +97,37 @@ t_ray_inf			launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf)
 	if (fabs(dir.y) != 0.0)
 		launch_vray(&vert_ray_inf, dir, dir.x / fabs(dir.y), map_inf);
 	if (vert_ray_inf.length < hori_ray_inf.length)
-		return (vert_ray_inf);
+		hit->ray_inf = vert_ray_inf;
 	else
-		return (hori_ray_inf);
+		hit->ray_inf = hori_ray_inf;
+	return (hit);
+}
+
+t_ray_list			*launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf
+	, int max_depth)
+{
+	t_ray_list	*last_hit_node;
+	t_ray_list	*hit_node;
+	t_ray_inf	*ray_inf;
+
+	last_hit_node = NULL;
+	while (max_depth > 0)
+	{
+		hit_node = launch_new_ray(origin, angle, map_inf);
+		if (hit_node == NULL)
+			break ;
+		ray_inf = &hit_node->ray_inf;
+		if (last_hit_node != NULL)
+			ray_inf->length += last_hit_node->ray_inf.length;
+		hit_node->prev = last_hit_node;
+		last_hit_node = hit_node;
+		if (is_ray_final_hit(ray_inf))
+			break ;
+		origin = get_portal_launch_origin(ray_inf->direction, ray_inf->position
+			, ray_inf->tile->data.portal.target);
+		angle += get_portal_angle_diff(&ray_inf->tile->data.portal
+				, &ray_inf->tile->data.portal.target->data.portal);
+		max_depth--;
+	}
+	return (last_hit_node);
 }

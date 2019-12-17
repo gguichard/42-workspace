@@ -6,11 +6,12 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 13:19:55 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/03 12:22:25 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 17:45:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
+#include "libft.h"
 #include "wolf3d.h"
 #include "column_inf.h"
 #include "tile_inf.h"
@@ -33,33 +34,7 @@ inline static uint32_t	darker_color(uint32_t color, double percent)
 	return ((color & ALPHA_CHANNEL) | (r << 16) | (g << 8) | b);
 }
 
-inline static int		plot_pixel_z(t_ctx *ctx, t_texture_inf *text_inf
-	, uint32_t color)
-{
-	if (text_inf == &ctx->textures[TEXTURE_PORTAL_ENTRY]
-		|| text_inf == &ctx->textures[TEXTURE_PORTAL_EXIT])
-	{
-		if ((color & ALPHA_CHANNEL) == 0x0 || (color & 0xffffff) != 0x0)
-			return (100);
-		return (1);
-	}
-	return (10);
-}
-
-inline static void		plot_pixel(t_ctx *ctx, t_column_inf *column_inf, int y
-	, uint32_t color)
-{
-	if (column_inf->use_z_buffer)
-	{
-		if (column_inf->current_z <= column_inf->z_buffer[y])
-			return ;
-		column_inf->z_buffer[y] = column_inf->current_z;
-	}
-	if ((color & ALPHA_CHANNEL) == ALPHA_CHANNEL)
-		ctx->window.pixels[y * ctx->window.size.width + column_inf->x] = color;
-}
-
-void					draw_texture(t_ctx *ctx, t_column_inf *column_inf
+static void				draw_texture(t_ctx *ctx, t_column_inf *column_inf
 	, t_ray_inf *ray_inf, t_texture_inf *text_inf)
 {
 	t_draw_ctx	draw_ctx;
@@ -68,7 +43,7 @@ void					draw_texture(t_ctx *ctx, t_column_inf *column_inf
 	int			y_index;
 	uint32_t	color;
 
-	setup_draw_ctx(ctx, ray_inf, &draw_ctx);
+	setup_draw_ctx(ctx, ray_inf, column_inf->fisheye_angle, &draw_ctx);
 	text_coord.x = (text_inf->width - 1) * ray_inf->position;
 	darker = clamp(ray_inf->length / FOG_DIST, 0, 1);
 	y_index = 0;
@@ -77,9 +52,40 @@ void					draw_texture(t_ctx *ctx, t_column_inf *column_inf
 		text_coord.y = (text_inf->height - 1)
 			* ((y_index + draw_ctx.wall_top) / (double)draw_ctx.wall_height);
 		color = text_inf->pixels[text_coord.y * text_inf->width + text_coord.x];
-		column_inf->current_z = plot_pixel_z(ctx, text_inf, color);
-		plot_pixel(ctx, column_inf, y_index + draw_ctx.wall_screen_top
-			, darker_color(color, darker));
+		if (color == 0xff000000
+			&& (text_inf == &ctx->textures[TEXTURE_PORTAL_ENTRY]
+				|| text_inf == &ctx->textures[TEXTURE_PORTAL_EXIT]))
+			column_inf->pixels[y_index + draw_ctx.wall_screen_top] = 0x0;
+		else if ((color & ALPHA_CHANNEL) == ALPHA_CHANNEL)
+			column_inf->pixels[y_index + draw_ctx.wall_screen_top] =
+				darker_color(color, darker);
+		y_index++;
+	}
+}
+
+static void				draw_portal(t_ctx *ctx, t_column_inf *column_inf
+	, t_ray_inf *hit_inf)
+{
+	t_texture_inf	*text_inf;
+
+	if (hit_inf->tile->data.portal.type == ENTRY_PORTAL)
+		text_inf = &ctx->textures[TEXTURE_PORTAL_ENTRY];
+	else
+		text_inf = &ctx->textures[TEXTURE_PORTAL_EXIT];
+	draw_texture(ctx, column_inf, hit_inf, text_inf);
+}
+
+static void				column_to_window(t_ctx *ctx, t_column_inf *column_inf)
+{
+	int	y_index;
+
+	y_index = 0;
+	while (y_index < ctx->window.size.height)
+	{
+		if ((column_inf->pixels[y_index] & ALPHA_CHANNEL) == ALPHA_CHANNEL)
+			ctx->window.pixels[y_index
+				* ctx->window.size.width + column_inf->x] =
+				column_inf->pixels[y_index];
 		y_index++;
 	}
 }
@@ -91,17 +97,20 @@ void					draw_column(t_ctx *ctx, t_column_inf *column_inf
 	int		y_index;
 	double	darker;
 
+	ft_memset(column_inf->pixels, 0, sizeof(column_inf->pixels));
 	half_height = ctx->window.size.height / 2;
 	y_index = 0;
-	column_inf->current_z = 5;
 	while (y_index < half_height)
 	{
 		darker = y_index / (double)half_height;
-		plot_pixel(ctx, column_inf, y_index
-			, darker_color(CEIL_COLOR, darker));
-		plot_pixel(ctx, column_inf, ctx->window.size.height - y_index - 1
-			, darker_color(FLOOR_COLOR, darker));
+		column_inf->pixels[y_index] = darker_color(CEIL_COLOR, darker);
+		column_inf->pixels[ctx->window.size.height - y_index - 1] =
+			darker_color(FLOOR_COLOR, darker);
 		y_index++;
 	}
 	draw_texture(ctx, column_inf, ray_inf, &ctx->textures[ray_inf->direction]);
+	if (ray_inf->tile->type == PORTAL_DATA
+		&& ray_inf->tile->data.portal.dir == ray_inf->direction)
+		draw_portal(ctx, column_inf, ray_inf);
+	column_to_window(ctx, column_inf);
 }

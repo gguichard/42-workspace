@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:55:51 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/16 08:44:38 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/17 18:33:04 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,17 +99,19 @@ void			wolf3d_play_quit(t_ctx *ctx);
 int				wolf3d_play_events(t_ctx *ctx, SDL_Event event);
 
 void			setup_draw_ctx(t_ctx *ctx, t_ray_inf *ray_inf
-	, t_draw_ctx *draw_ctx);
-void			draw_texture(t_ctx *ctx, t_column_inf *column_inf
-	, t_ray_inf *ray_inf, t_texture_inf *text_inf);
+	, double fisheye_angle, t_draw_ctx *draw_ctx);
 void			draw_column(t_ctx *ctx, t_column_inf *column_inf
 	, t_ray_inf *ray_inf);
 
-void			player_view_thread(t_thread_inf *thread_inf);
 void			player_view_raycast(t_ctx *ctx);
 void			player_movement(t_ctx *ctx);
 
-t_ray_inf		launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf);
+void			init_ray_inf(t_ray_inf *ray_inf, t_vec2d origin, double angle);
+int				is_ray_final_hit(t_ray_inf *ray_inf);
+void			free_ray_list(t_ray_list *ray_list);
+t_ray_list		*launch_ray(t_vec2d origin, double angle, t_map_inf *map_inf
+	, int max_depth);
+
 int				is_colliding(t_vec2d player_pos, t_map_inf *map_inf
 	, t_direction dir);
 void			check_collision_after_move(t_ctx *ctx, t_vec2d old_pos);
@@ -121,7 +123,10 @@ void			minimap_background(t_ctx *ctx);
 void			minimap_ray(t_ctx *ctx, double length, double angle);
 void			draw_minimap_view(t_ctx *ctx);
 
-t_ray_inf		launch_portal_ray(t_ray_inf *hit_inf, t_map_inf *map_inf);
+double			get_portal_angle_diff(t_portal_inf *portal
+	, t_portal_inf *target);
+t_vec2d			get_portal_launch_origin(t_direction hit_dir
+	, double hit_position, t_tile_meta *target);
 void			teleport_through_portal(t_ctx *ctx, t_tile_meta *tile);
 
 #endif
