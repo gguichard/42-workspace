@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 19:09:16 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/02 19:30:44 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/19 12:56:45 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,15 @@ int			interactive_mode(const char *prefix)
 		line = NULL;
 		ret = get_next_line(STDIN_FILENO, &line);
 		if (ret == 1)
+		{
 			valid = interactive_cmd(prefix, line, &ret);
+			free(line);
+		}
 		else if (ret == -1)
 		{
 			ft_dprintf(STDERR_FILENO, "unable to read from standard input\n");
 			return (0);
 		}
-		free(line);
 	}
 	if (ret == 0)
 		write(STDOUT_FILENO, "exit\n", 5);
