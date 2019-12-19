@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/20 22:49:22 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/17 17:46:20 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/19 11:35:42 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void		setup_draw_ctx(t_ctx *ctx, t_ray_inf *ray_inf, double fisheye_angle
 		draw_ctx->wall_height = ctx->player.dist_to_proj
 			/ (ray_inf->length * fisheye_angle);
 	}
-	draw_ctx->wall_height = round(draw_ctx->wall_height * 4) / 2;
+	draw_ctx->wall_height = round(draw_ctx->wall_height * 1.5 * 2) / 2;
 	draw_ctx->wall_screen_height = ft_min(draw_ctx->wall_height
 		, ctx->window.size.height);
 	draw_ctx->wall_top = draw_ctx->wall_height / 2
