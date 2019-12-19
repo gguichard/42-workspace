@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/12/17 13:11:48 by gguichar         ###   ########.fr        #
+#    Updated: 2019/12/19 12:27:01 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,27 +29,20 @@ interactive.c			\
 main.c					\
 md5/md5_digest.c		\
 md5/md5_hash.c			\
-md5/md5_hash_fn.c		\
 md5/md5_stream.c		\
 sha/sha1_digest.c		\
 sha/sha1_hash.c			\
-sha/sha1_hash_fn.c		\
 sha/sha1_stream.c		\
 sha/sha256_digest.c		\
 sha/sha256_hash.c		\
-sha/sha256_hash_fn.c	\
-sha/sha256_hash_fn_2.c	\
 sha/sha256_stream.c		\
 sha/sha512_digest.c		\
 sha/sha512_hash.c		\
-sha/sha512_hash_fn.c	\
-sha/sha512_hash_fn_2.c	\
 sha/sha512_stream.c		\
 options.c				\
 stream.c				\
 stream_hash.c			\
-utils.c					\
-utils_fn.c
+utils.c
 
 OBJ_DIR		=	.obj
 OBJ			=	$(SRC:.c=.o)

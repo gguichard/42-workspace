@@ -6,14 +6,18 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 11:05:50 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/17 12:30:06 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/19 12:39:58 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
+#include "ft_ssl.h"
 #include "ft_ssl_sha.h"
 #include "utils.h"
+
+#include UTILS_ROTATE_LEFT32
+#include SHA1_HASH_FN
 
 static const uint32_t	g_sha1_hash[80] = {
 	0x5a827999, 0x5a827999, 0x5a827999, 0x5a827999,

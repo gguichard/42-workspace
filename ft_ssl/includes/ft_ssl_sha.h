@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/27 13:30:40 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/17 12:24:10 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/19 12:22:22 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@
 # define SHA256_DIGEST_SIZE 32
 # define SHA384_DIGEST_SIZE 48
 # define SHA512_DIGEST_SIZE 64
+
+# define SHA1_HASH_FN "sha1_hash_fn.c"
+
+# define SHA256_HASH_FN_1 "sha256_hash_fn.c"
+# define SHA256_HASH_FN_2 "sha256_hash_fn_2.c"
+
+# define SHA512_HASH_FN_1 "sha512_hash_fn.c"
+# define SHA512_HASH_FN_2 "sha512_hash_fn_2.c"
 
 union			u_sha1_hash
 {
@@ -79,13 +87,6 @@ uint32_t		sha256_hash_bsig0(uint32_t x);
 uint32_t		sha256_hash_bsig1(uint32_t x);
 uint32_t		sha256_hash_ssig0(uint32_t x);
 uint32_t		sha256_hash_ssig1(uint32_t x);
-
-uint64_t		sha512_hash_ch(uint64_t x, uint64_t y, uint64_t z);
-uint64_t		sha512_hash_maj(uint64_t x, uint64_t y, uint64_t z);
-uint64_t		sha512_hash_bsig0(uint64_t x);
-uint64_t		sha512_hash_bsig1(uint64_t x);
-uint64_t		sha512_hash_ssig0(uint64_t x);
-uint64_t		sha512_hash_ssig1(uint64_t x);
 
 void			sha1_stream_init(t_hash_stream *stream);
 void			sha224_stream_init(t_hash_stream *stream);

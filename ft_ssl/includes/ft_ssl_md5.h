@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/02 23:21:35 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/17 12:08:46 by gguichar         ###   ########.fr       */
+/*   Updated: 2019/12/19 12:23:27 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <stdint.h>
 # include "hash_stream.h"
+
+# define MD5_HASH_FN "md5_hash_fn.c"
 
 union			u_md5_hash
 {
