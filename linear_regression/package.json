@@ -2,7 +2,7 @@
   "name": "ft_linear_regression",
   "version": "1.0.0",
   "description": "",
-  "main": "csv.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "predict": "node predict.js",
@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "nodeplotlib": "^0.6.4"
+    "nodeplotlib": "^0.6.4",
+    "yargs": "^15.0.2"
   }
 }

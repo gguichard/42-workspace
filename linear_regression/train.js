@@ -1,5 +1,11 @@
 const csv = require('./csv')
 const nodeplotlib = require('nodeplotlib')
+const yargs = require('yargs')
+
+const argv = yargs.option('plot', {
+    description: 'Plot linear regression on a chart',
+    type: 'boolean'
+}).help().locale('en').parse()
 
 function computePartialDerivative(theta, n, mileage, price) {
     let derivative = [0, 0]
@@ -41,11 +47,9 @@ csv.readCsvFile('data.csv').then(async data => {
     const mileage = dataset.map(value => Number(value[0]))
     const price = dataset.map(value => Number(value[1]))
 
-    const mileageMin = Math.min(...mileage),
-            mileageMax = Math.max(...mileage)
-    const priceMin = Math.min(...price),
-            priceMax = Math.max(...price)
-    
+    const mileageMin = Math.min(...mileage), mileageMax = Math.max(...mileage)
+    const priceMin = Math.min(...price), priceMax = Math.max(...price)
+
     for (let i = 0; i < dataset.length; i++) {
         mileage[i] = (mileage[i] - mileageMin) / (mileageMax - mileageMin)
         price[i] = (price[i] - priceMin) / (priceMax - priceMin)
@@ -64,7 +68,8 @@ csv.readCsvFile('data.csv').then(async data => {
     theta[1] = (theta[1] * (priceMax - priceMin)) / (mileageMax - mileageMin)
     theta[0] = (theta[0] * (priceMax - priceMin) + priceMin) - theta[1] * mileageMin
 
-    plotTraining(dataset, theta)
+    if (argv.plot)
+        plotTraining(dataset, theta)
 
     csv.writeCsvFile('train.csv', [theta]).then(() => {
         console.log('Training done, results have been saved in train.csv')
