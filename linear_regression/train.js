@@ -7,6 +7,16 @@ const argv = yargs.option('plot', {
     type: 'boolean'
 }).help().locale('en').parse()
 
+function costFunction(theta, n, mileage, price) {
+    let square_sum = 0
+
+    for (let i = 0; i < n; i++) {
+        square_sum += Math.pow(price[i] - (theta[0] + theta[1] * mileage[i]), 2)
+    }
+
+    return square_sum / n
+}
+
 function computePartialDerivative(theta, n, mileage, price) {
     let derivative = [0, 0]
     let estimated_price
@@ -25,14 +35,23 @@ function computePartialDerivative(theta, n, mileage, price) {
     return derivative
 }
 
-function plotTraining(dataset, theta) {
+function plotTraining(dataset, theta, costHistory) {
     const mileageZeroPrice = -theta[0] / theta[1];
 
     nodeplotlib.plot([{
+        name: 'cost function',
+        x: costHistory.map((value, index) => index),
+        y: costHistory,
+        mode: 'scatter'
+    }])
+
+    nodeplotlib.plot([{
+        name: 'training data',
         x: dataset.map(value => Number(value[0])),
         y: dataset.map(value => Number(value[1])),
         mode: 'markers'
     }, {
+        name: 'linear regression',
         x: [0, mileageZeroPrice],
         y: [theta[0], theta[0] + theta[1] * mileageZeroPrice],
         type: 'scatter'
@@ -56,10 +75,12 @@ csv.readCsvFile('data.csv').then(async data => {
     }
 
     let theta = [0, 0]
+    let costHistory = []
     let derivative
 
     for (let i = 0; i < iterations; i++) {
         derivative = computePartialDerivative(theta, dataset.length, mileage, price)
+        costHistory.push(costFunction(theta, dataset.length, mileage, price))
 
         theta[0] -= learningRate * derivative[0]
         theta[1] -= learningRate * derivative[1]
@@ -69,7 +90,7 @@ csv.readCsvFile('data.csv').then(async data => {
     theta[0] = (theta[0] * (priceMax - priceMin) + priceMin) - theta[1] * mileageMin
 
     if (argv.plot)
-        plotTraining(dataset, theta)
+        plotTraining(dataset, theta, costHistory)
 
     csv.writeCsvFile('train.csv', [theta]).then(() => {
         console.log('Training done, results have been saved in train.csv')
