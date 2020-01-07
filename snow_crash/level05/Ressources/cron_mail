@@ -1,0 +1,3 @@
+/var/mail/level05 contains cron command which runs /usr/sbin/openarenaserver every two minutes
+
+/usr/sbin/openarenaserver executes each script in /opt/openarenaserver folder with user flag05 so we just have to ccreate a script that store the result of getflag command (see example_script in resources)

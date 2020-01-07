@@ -1,0 +1,4 @@
+cat $(find / -user flag00 2>&-)
+which gives "cdiiddwpgswtgt"
+
+Use dcode.fr to decode Caesar (+15) => "nottoohardhere"

