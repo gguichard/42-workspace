@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+
+void p(char *buffer, char *str)
+{
+	char read_buffer[4096];
+	puts(str);
+	read(0, read_buffer, sizeof(read_buffer));
+	*strchr(read_buffer, '\n') = '\0';
+	strncpy(buffer, read_buffer, 20);
+}
+
+void pp(char *buffer)
+{
+	char buff2[20]; //ebp-0x1c
+	char buff1[20]; //ebp-0x30
+	p(buff1, " - ");
+	p(buff2, " - ");
+	strcpy(buffer, buff1);
+	strcpy(buffer + strlen(buffer), " ");
+	strcat(buffer, buff2);
+}
+
+int main(int argc, char **argv)
+{
+	char buffer[42];
+	pp(buffer);
+	puts(buffer);
+	return (0);
+}

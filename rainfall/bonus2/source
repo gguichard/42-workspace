@@ -1,0 +1,49 @@
+#include <string.h>
+#include <stdlib.h>
+
+int g_lang;
+
+void greetuser(char *tmp)
+{
+	char buffer[72];
+
+	switch (g_lang)
+	{
+	case 0:
+		strcpy(buffer, "Hello ");
+		break;
+	case 1:
+		strcpy(buffer, "Hyvää päivää ");
+		break;
+	case 2:
+		strcpy(buffer, "Goedemiddag! ");
+		break;
+	default:
+		break;
+	}
+	strcat(buffer, tmp);
+	puts(buffer);
+}
+
+int main(int argc, char **argv)
+{
+	char *lang; // esp+0x9c
+	char buffer[72]; // esp+0x50
+	char tmp[72]; // esp
+	if (argc != 3)
+		return (1);
+	memset(buffer, 0, 0x13 * 4);
+	strncpy(buffer, argv[1], 0x28);
+	strncpy(buffer + 0x28, argv[2], 0x20);
+	lang = getenv("LANG");
+	if (lang != NULL)
+	{
+		if (memcmp(lang, "fi", 0x2) == 0)
+			g_lang = 0x1;
+		else if (memcmp(lang, "nl", 0x2) == 0)
+			g_lang = 0x2;
+	}
+	memcpy(tmp, buffer, 0x13 * 8);
+	greetuser(tmp);
+	return (0);
+}

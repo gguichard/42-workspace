@@ -1,0 +1,6 @@
+Nous allons utiliser le strcat de la fonction greeuser afin de modifier son adresse de retour.
+Il va donc falloir modifier l'adresse située 4 octets après buffer.
+On veut donc overflow buffer de 8 octets, utiliser la langue 0 n'est donc pas possible, comme elle ne fait que 6 caractères.
+On va donc utiliser une des deux autres.
+L'idée est de mettre notre shellcode dans argv[1], et mettre le padding nécessaire dans argv[2], suivi de l'adresse de notre shellcode.
+Il nous siffira de cat le .pass de bonus3, et le tour est joué :D

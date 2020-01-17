@@ -1,0 +1,6 @@
+Le main appelle la fonction v, qui commence par un fgets.
+Cette fois-ci, impossible de faire un buffer overflow, car fgets lit un nombre fixe
+d'octets (512), qui s'avère être la taille du buffer en paramètres.
+Voir dossier Ressources pour la suite des explications (image),
+et voir le script bash pour savoir ce qui est envoyé en argument pour passer
+l'addresse à une valeur de 0x40 (64 en base 10).

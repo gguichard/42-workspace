@@ -1,0 +1,27 @@
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int main(int argc, char **argv)
+{
+	gid_t egid;	// esp+0x1c
+	uid_t euid;	// esp+0x18
+	char *av[2];
+	if (atoi(argv[1]) == 0x1a7)
+	{
+		av[0] = strdup("/bin/sh");
+		av[1] = NULL;
+		egid = getegid();
+		euid = geteuid();
+		setresgid(egid, egid, egid);
+		setresuid(euid, euid, euid);
+		execv("/bin/sh", av);
+	}
+	else
+	{
+		fwrite("No !\n", 0x1, 0x5, stdout);
+	}
+	return (0);
+}

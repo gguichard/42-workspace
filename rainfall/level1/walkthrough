@@ -1,0 +1,16 @@
+On désassemble le main avec gdb (disass main), et on se rend compte qu'on a
+0x40 de disponible sur la stack (64 octets) qui sont envoyés à la fonction gets
+Si on fait un objdump du binaire, on peut voir aussi une fonction run lançant un shell,
+jamais utilisée.
+On va donc faire une buffer overflow attack, c'est à dire modifier indirectement l'eip,
+en changeant l'adresse de retour de la fonction gets, afin qu'elle utilise run.
+On va donc envoyer dans gets 64 caractères au choix, puis l'adresse de la fonction run,
+plusieurs fois, afin d'éviter les soucis au niveau du padding / des variables locales.
+On se rendra compte après qu'on a 12 octets "inutiles".
+La fonction run va executer /bin/sh, il faut donc que l'entrée standard soit disponible.
+Pour cela, on va préparer le code à injecter dans un fichier au choix (dans /tmp de préférence),
+et on va l'envoyer au programme, en utilisant un cat avec un - à la fin, le tiret rouvrant
+l'entrée standard (cat attendant un input sur stdin).
+Stdin étant ouvert, et pipé dans notre programme, on peut discuter avec le shell ouvert
+par la fonction run.
+On va gentiment lui demander de cat /home/user/level2/.pass et le tour est joué!

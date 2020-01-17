@@ -1,0 +1,5 @@
+On va tout d'abbord envoyer "auth 1" pour malloc 4 octets à 0x8049aac.
+On va ensuite envoyer "service" suivi de beaucoup de caractères (minimum 121),
+afin de définir les 31 * 4 + 1 octets à 0x8049ab0, soit 4 octets après l'adresse du auth.
+On peut ensuite lancer un login qui va s'éxécuter car le 33e octet de 0x8049aac sera défini.
+Si l'on fait service puis auth, cela ne marchera pas, car le début du service sera écrasé.

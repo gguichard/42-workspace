@@ -1,0 +1,4 @@
+On veut éxécuter le /bin/sh du strcmp.
+Pour cela, on doit avoir buffer == argv[1].
+La technique est d'envoyer une string vide. Le atoi retournera 0, et on aura buffer[0] = 0, et argv[1][0] sera aussi égal a 0.
+On a notre shell, plus qu'a cat le .pass de end

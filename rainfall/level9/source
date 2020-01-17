@@ -1,0 +1,34 @@
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+
+typedef void (*fn_t)(void *, void *);
+
+void _ZN1N13setAnnotationEPc(void *ptr, char *str)
+{
+	memcpy(ptr + 4, str, strlen(str));
+}
+
+void _ZN1NC2Ei(int *ptr, int i)
+{
+	*ptr = 0x8048848; // probably vtable
+	*(int *)((char *)ptr + 0x68) = i;
+}
+
+int main(int argc, char **argv)
+{
+	void *ptr; // 0x1c+esp
+	void *ptr2; // 0x18+esp
+	void *ptr3; // 0x14+esp
+	void *ptr4; // 0x10+esp
+
+	if (argc <= 1)
+		exit(1);
+	_ZN1NC2Ei(ptr = malloc(0x6c), 0x5); // new operator (_Znwj)
+	_ZN1NC2Ei(ptr2 = malloc(0x6c), 0x6); // new operator (_Znwj)
+	ptr3 = ptr;
+	ptr4 = ptr2;
+	_ZN1N13setAnnotationEPc(ptr3, argv[1]);
+	((fn_t)((*(void ***)ptr4)[0]))(ptr4, ptr3);
+	return (0);
+}

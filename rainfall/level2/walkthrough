@@ -1,0 +1,10 @@
+On a, comme au niveau d'avant un gets, cette fois-ci avec un buffer de
+80 octets. On pense directement à une injection de shellcode.
+Le problème est qu'un check est fait pour vérifier que l'adresse de retour
+n'a pas été changée par gets, et vérifie qu'elle ne commence pas par
+0xb.
+On remarque un strdup inutile à la fin de la fonction.
+On va donc regarder avec gdb l'adresse mémoire du retour du strdup, et
+mettre celle-ci dans l'adresse de retour de notre fonction p.
+Le shellcode sera donc executé à la fin de notre fonction p,
+et on pourra cat /home/user/level3/.pass

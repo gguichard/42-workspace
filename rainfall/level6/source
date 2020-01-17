@@ -1,0 +1,23 @@
+#include <stdlib.h>
+#include <string.h>
+
+typedef void (*fn_t)(void);
+
+void n()
+{
+	system("/bin/cat /home/user/level7/.pass");
+}
+
+void m()
+{
+	puts("Nope");
+}
+
+int main(int argc, char **argv)
+{
+	void *ptr = malloc(64);
+	fn_t *ptr2 = malloc(4);
+	*ptr2 = &m;
+	strcpy(ptr, argv[1]);
+	(*ptr2)();
+}

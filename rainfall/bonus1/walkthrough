@@ -1,0 +1,6 @@
+Afin d'ouvrir le shell, on veut que les 4 premires octets de notre stack soient égaux a 0x574f4c46.
+Pour pouvoir réécrire ces octet, on va exploiter le memcpy, afin d'overflow le buffer et de réécrire nos 4 octets.
+Cependant, on ne peut pas réécrire plus de 9 * 4 octets dans buffer, alors qu'on voudrait en réécrire 44.
+On va utiliser le fait que atoi retourne un int, et que memcpy prend un size_t (non signé).
+En passant en argv[1] INT_MIN + 11, on aura bien atoi(argv[1]) < 9, mais lorsqu'il sera multiplié par 4 et envoyé dans le memcpy, il sera bien égal a 44.
+On peut donc mettre dans argv[2] 40 caracteres puis la valeur voulue en hexa, et on a notre shell.

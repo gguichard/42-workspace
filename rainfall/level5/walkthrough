@@ -1,0 +1,8 @@
+Toujours un exploit printf, après observation de l'asm on peut voir
+que 512 octets du fgets de stdin sont envoyés dans le buffer de printf.
+On a une fonction o, jamais appelée, faisant un /bin/sh, il va donc
+falloir trouver un moyen de l'appeler.
+Un exit est appelé directement après le printf, on doit donc changer
+l'adresse de retour directement de printf, afin qu'il execute o au lieu du exit.
+S'en suit un jeu de info frame pour avoir son adresse de retour, et on
+la modifie avec le %n du printf, afin de mettre celle de o (la valeur en hexa).

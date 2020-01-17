@@ -1,0 +1,8 @@
+Le programme fait deux mallocs, un de 64 octets et un de 4 octets.
+Il copie argv[1] dans le malloc de 64 octets, et met l'addresse
+d'une fonction appelée à la fin de celui-ci dans le malloc de 4 octets.
+Pour mettre argv[1] dans le malloc, il fait un strcpy.
+On va donc overflow les 64 en mettant un output plus grand, afin de
+mettre l'addresse de la fonction n au lieu de celle de la fonction
+m dans le malloc de 4 octets, et lui faire afficher le contenu
+du .pass du level7.

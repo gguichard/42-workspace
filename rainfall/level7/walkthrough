@@ -1,0 +1,3 @@
+On va overflow avec le 1er strcpy dans le 3e malloc l'adresse de son 2e élément (le 4e malloc).
+On va y mettre l'adresse de puts dans la PLT, afin que le 2nd strcpy y copie l'addresse de m.
+On aura donc un printf du .pass et du time.

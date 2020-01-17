@@ -1,0 +1,11 @@
+Désassemblage du programme:
+gdb -q ./level0
+disassemble main
+
+On a donc toutes les lignes du main, ce qui nous intéresse étant
+la première comparaison (cmp), qu'on trouve à main+25, entre un retour d'atoi
+et 0x1a7 (423 en base 10). Après execution du programme, on se rend compte que
+ce qui est envoyé dans atoi est argv[1] (segfault si pas d'arguments, et pas
+d'autre comparaison), donc on peut faire ./level0 423, qui ouvre /bin/sh,
+avec les permissions de level1 (euid & egid into setresuid).
+Puis on fait un cat /home/user/level1/.pass
