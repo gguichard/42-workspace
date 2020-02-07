@@ -1,0 +1,19 @@
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char **argv)
+{
+	int i;				// esp+0x8c
+	char buffer[0x64];	// esp+0x28
+
+	i = 0;
+	fgets(buffer, sizeof(buffer), stdin);
+	for (i = 0; i < strlen(buffer); i++)
+	{
+		if (buffer[i] > 0x40 && buffer[i] <= 0x5a)
+			buffer[i] ^= 0x20;
+	}
+	printf(buffer);
+	exit(0);
+}

@@ -1,0 +1,44 @@
+#include <string.h>
+#include <stdio.h>
+
+char g_buff[0x100];
+
+int verify_user_name()
+{
+	puts("verifying username....\n");
+	return (strcmp("dat_wil", g_buff));
+}
+
+int verify_user_pass(char *buffer)
+{
+	return (strcmp("admin", buffer));
+}
+
+int main(int argc, char **argv)
+{
+	int result;			// esp+0x5c
+	char buffer[64];	// esp+0x1c
+	memset(buffer, 0, sizeof(buffer));
+	result = 0;
+	puts("********* ADMIN LOGIN PROMPT *********");
+	printf("Enter Username:");
+	fgets(g_buff, sizeof(g_buff), stdin);
+	result = verify_user_name();
+	if (result != 0)
+	{
+		puts("nope, incorrect username...\n");
+		return (1);
+	}
+	else
+	{
+		puts("Enter Password: ");
+		fgets(buffer, 0x64, stdin);
+		result = verify_user_pass(buffer);
+		if (result == 0)
+			;
+		else if (result == 0)
+			return (0);
+		puts("nope, incorrect password...\n");
+		return (1);
+	}
+}

@@ -1,0 +1,114 @@
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stdint.h>
+
+void clear_stdin()
+{
+	char c;						// ebp-0x9
+
+	c = '\0';
+	while ((c = getchar()) != '\n' && c != EOF)
+		continue;
+}
+
+unsigned int get_unum()
+{
+	unsigned int value;			// ebp-0xc
+
+	value = 0;
+	fflush(stdout);
+	scanf("%u", &value);
+	clear_stdin();
+	return (value);
+}
+
+int read_number(unsigned int *storage)
+{
+	unsigned int index;			// ebp-0xc
+
+	index = 0;
+	printf(" Index: ");
+	index = get_unum();
+	printf(" Number at data[%u] is %u\n", index, storage[index]);
+	return (0);
+}
+
+int store_number(unsigned int *storage)
+{
+	unsigned int index;			// ebp-0xc
+	unsigned int number;		// ebp-0x10
+
+	number = 0;
+	index = 0;
+	printf(" Number: ");
+	number = get_unum();
+	printf(" Index: ");
+	index = get_unum();
+	if (index % 3 == 0 || (number >> 24) == 0xb7)
+	{
+		puts(" *** ERROR! ***");
+		puts("   This index is reserved for wil!");
+		puts(" *** ERROR! ***");
+		return (1);
+	}
+	storage[index] = number;
+	return (0);
+}
+
+int main(int argc, char **argv, char **envp)
+{
+	// canary at esp+0x1cc
+	char command[0x14];			// esp+0x1b8
+	int result;					// esp+0x1b4
+	unsigned int storage[0x64];	// esp+0x24
+	char **arg;					// esp+0x1c
+	char **env;					// esp+0x18
+
+	arg = argv;
+	env = envp;
+	result = 0;
+	memset(command, 0, sizeof(command));
+	memset(storage, 0, sizeof(storage));
+	while (*arg != NULL)
+	{
+		memset(*arg, 0, strlen(*arg));
+		arg++;
+	}
+	while (*env != NULL)
+	{
+		memset(*env, 0, strlen(*env));
+		env++;
+	}
+	puts("----------------------------------------------------");
+	puts("  Welcome to wil's crappy number storage service!   ");
+	puts("----------------------------------------------------");
+	puts(" Commands:                               ");
+	puts("    store - store a number into the data storage");
+	puts("    read  - read a number from the data storage");
+	puts("    quit  - exit the program");
+	puts("----------------------------------------------------");
+	puts("   wil has reserved some storage :>");
+	puts("----------------------------------------------------\n");
+	while (1)
+	{
+		printf("Input command: ");
+		result = 1;
+		fgets(command, sizeof(command), stdin);
+		command[strlen(command) - 1] = '\0';
+		if (strncmp("store", command, 0x5) == 0)
+			result = store_number(storage);
+		else if (strncmp("read", command, 0x4) == 0)
+			result = read_number(storage);
+		else if (strncmp("quit", command, 0x4) == 0)
+			break;
+		if (result != 0)
+			printf(" Failed to do %s command\n", command);
+		else
+		{
+			printf(" Completed %s command successfully\n", command);
+			memset(command, 0, sizeof(command));
+		}
+	}
+	return (0);
+}

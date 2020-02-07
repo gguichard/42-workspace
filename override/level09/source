@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+typedef struct message
+{
+	char content[0x8c];
+	char username[0x28];
+	int size;
+} message_t;
+
+int secret_backdoor()
+{
+	char buffer[0x80];	// rbp-0x80
+
+	fgets(buffer, sizeof(buffer), stdin);
+	return (system(buffer));
+}
+
+void set_username(message_t *msg)
+{
+	int i;				// rbp-0x4
+	char buffer[0x80];	// rbp-0x90
+
+	memset(buffer, 0, sizeof(buffer));
+	puts(">: Enter your username");
+	printf(">>: ");
+	fgets(buffer, sizeof(buffer), stdin);
+	for (i = 0; i <= 40 && buffer[i] != '\0'; i++)
+	{
+		msg->username[i] = buffer[i];
+	}
+	printf(">: Welcome, %s", msg->username);
+}
+
+void set_msg(message_t *msg)
+{
+	char buffer[0x400];	// rbp-0x400
+
+	memset(buffer, 0, sizeof(buffer));
+	puts(">: Msg @Unix-Dude");
+	printf(">>: ");
+	fgets(buffer, sizeof(buffer), stdin);
+	strncpy(msg->content, buffer, msg->size);
+}
+
+void handle_msg()
+{
+	message_t msg;		// rbp-0xc0
+
+	memset(msg.username, 0, sizeof(msg.username));
+	msg.size = 0x8c;
+	set_username(&msg);
+	set_msg(&msg);
+	puts(">: Msg sent!");
+}
+
+int main(int argc, char **argv)
+{
+	puts("--------------------------------------------");
+	puts("|   ~Welcome to l33t-m$n ~    v1337        |");
+	puts("--------------------------------------------");
+	handle_msg();
+	return (0);
+}

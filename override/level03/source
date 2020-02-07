@@ -1,0 +1,45 @@
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
+
+void decrypt(unsigned int value)
+{
+	// canary at ebp-0xc
+	char msg[] = "Q}|u`sfg~sf{}|a3";	// ebp-0x1d
+	int	a;								// ebp-0x24
+	int	b;								// ebp-0x28
+
+	a = strlen(msg);
+	b = 0;
+	while (b < a)
+	{
+		msg[b] ^= value;
+		b++;
+	}
+	if (strcmp("Congratulations!", msg) != 0)
+		puts("\nInvalid Password");
+	else
+		system("/bin/sh");
+}
+
+void test(unsigned int input, unsigned int value)
+{
+	unsigned int result;				// ebp-0xc
+
+	result = value - input;
+	decrypt(result <= 0x15 ? result : rand());
+}
+
+int main(int argc, char **argv)
+{
+	int password;						// esp+0x1c
+	srand(time(NULL));
+	puts("***********************************");
+	puts("*\t\tlevel03\t\t**");
+	puts("***********************************");
+	printf("Password:");
+	scanf("%d", &password);
+	test(password, 0x1337d00d);
+	return (0);
+}

@@ -1,0 +1,49 @@
+#include <unistd.h>
+#include <string.h>
+#include <signal.h>
+#include <sys/prctl.h>
+#include <sys/types.h>
+#include <sys/ptrace.h>
+#include <sys/user.h>
+#include <sys/reg.h>
+#include <sys/wait.h>
+#include <sys/syscall.h>
+
+int main(int argc, char **argv)
+{
+	pid_t pid;			// esp+0xac
+	int	result;			// esp+0xa8
+	char buffer[128];	// esp+0x20
+	int	stat;			// esp+0x1c
+
+	pid = fork();
+	memset(buffer, 0, sizeof(buffer));
+	result = 0;
+	stat = 0;
+	if (pid == 0)
+	{
+		prctl(PR_SET_PDEATHSIG, 1);
+		ptrace(PT_TRACE_ME, 0, 0, 0);
+		puts("Give me some shellcode, k");
+		gets(buffer);
+	}
+	else
+	{
+		while (1)
+		{
+			wait(&stat);
+			if (WIFEXITED(stat) || WIFSIGNALED(stat))
+			{
+				puts("child is exiting...");
+				break;
+			}
+			result = ptrace(PT_READ_U, pid, sizeof(long int) * ORIG_EAX, 0);
+			if (result != __NR_execve)
+				continue;
+			puts("no exec() for you");
+			kill(pid, SIGKILL);
+			break;
+		}
+	}
+	return (0);
+}
