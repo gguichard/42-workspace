@@ -6,7 +6,7 @@
 #    By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/16 22:54:05 by gguichar          #+#    #+#              #
-#    Updated: 2019/12/19 12:27:01 by gguichar         ###   ########.fr        #
+#    Updated: 2020/02/28 11:06:44 by gguichar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,25 +23,25 @@ CFLAGS 		=	-Wall -Werror -Wextra
 LDFLAGS		=	-Llibft -lft
 
 SRC_DIR		=	src
-SRC 		=			\
-digest_print.c			\
-interactive.c			\
-main.c					\
-md5/md5_digest.c		\
-md5/md5_hash.c			\
-md5/md5_stream.c		\
-sha/sha1_digest.c		\
-sha/sha1_hash.c			\
-sha/sha1_stream.c		\
-sha/sha256_digest.c		\
-sha/sha256_hash.c		\
-sha/sha256_stream.c		\
-sha/sha512_digest.c		\
-sha/sha512_hash.c		\
-sha/sha512_stream.c		\
-options.c				\
-stream.c				\
-stream_hash.c			\
+SRC 		=				\
+hash/digest_print.c			\
+hash/md5/md5_digest.c		\
+hash/md5/md5_hash.c			\
+hash/md5/md5_stream.c		\
+hash/sha/sha1_digest.c		\
+hash/sha/sha1_hash.c		\
+hash/sha/sha1_stream.c		\
+hash/sha/sha256_digest.c	\
+hash/sha/sha256_hash.c		\
+hash/sha/sha256_stream.c	\
+hash/sha/sha512_digest.c	\
+hash/sha/sha512_hash.c		\
+hash/sha/sha512_stream.c	\
+hash/stream.c				\
+hash/stream_hash.c			\
+interactive.c				\
+main.c						\
+options/hash_options.c		\
 utils.c
 
 OBJ_DIR		=	.obj
@@ -62,8 +62,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 	@mkdir $@ 2> /dev/null || true
-	@mkdir $@/md5 2> /dev/null || true
-	@mkdir $@/sha 2> /dev/null || true
+	@mkdir -p $@/hash/md5 2> /dev/null || true
+	@mkdir -p $@/hash/sha 2> /dev/null || true
+	@mkdir $@/options 2> /dev/null || true
 
 clean:
 	$(MAKE) -C libft clean

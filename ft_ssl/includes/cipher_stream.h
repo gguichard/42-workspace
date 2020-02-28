@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   md5_digest.c                                       :+:      :+:    :+:   */
+/*   cipher_stream.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/26 22:40:47 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:45:42 by gguichar         ###   ########.fr       */
+/*   Created: 2020/02/28 09:14:00 by gguichar          #+#    #+#             */
+/*   Updated: 2020/02/28 09:41:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include "ft_ssl_md5.h"
-#include "utils.h"
+#ifndef CIPHER_STREAM_H
+# define CIPHER_STREAM_H
 
-void	md5_digest(t_md5_ctx *ctx)
+typedef struct	s_cipher_stream
 {
-	size_t	idx;
+	void		*still_dumb;
+}				t_cipher_stream;
 
-	idx = 0;
-	while (idx < sizeof(ctx->hash))
-	{
-		digest_hex(ctx->digest + idx * 2, ctx->hash.bytes[idx]);
-		idx++;
-	}
-	ctx->digest[idx * 2] = '\0';
-}
+#endif

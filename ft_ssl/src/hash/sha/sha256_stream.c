@@ -6,14 +6,14 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/28 01:17:01 by gguichar          #+#    #+#             */
-/*   Updated: 2019/11/15 17:25:22 by gguichar         ###   ########.fr       */
+/*   Updated: 2020/02/28 10:43:00 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
 #include "libft.h"
-#include "ft_ssl_sha.h"
+#include "hash_sha.h"
 #include "hash_stream.h"
 #include "utils.h"
 

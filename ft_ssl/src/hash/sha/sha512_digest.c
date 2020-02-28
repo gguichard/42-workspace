@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sha256_digest.c                                    :+:      :+:    :+:   */
+/*   sha512_digest.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/27 14:03:34 by gguichar          #+#    #+#             */
-/*   Updated: 2019/10/24 09:45:11 by gguichar         ###   ########.fr       */
+/*   Created: 2019/10/24 09:57:06 by gguichar          #+#    #+#             */
+/*   Updated: 2020/02/28 10:43:13 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdint.h>
 #include <string.h>
-#include "ft_ssl_sha.h"
+#include "hash_sha.h"
 #include "utils.h"
 
-void	sha256_digest(t_sha256_ctx *ctx)
+void	sha512_digest(t_sha512_ctx *ctx)
 {
 	size_t	idx;
 
 	idx = 0;
-	while (idx < (ctx->digest_size / sizeof(uint32_t)))
+	while (idx < (ctx->digest_size / sizeof(uint64_t)))
 	{
-		ctx->hash.words[idx] = byte_swap32(ctx->hash.words[idx]);
+		ctx->hash.words[idx] = byte_swap64(ctx->hash.words[idx]);
 		idx++;
 	}
 	idx = 0;

@@ -6,7 +6,7 @@
 /*   By: gguichar <gguichar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 19:09:16 by gguichar          #+#    #+#             */
-/*   Updated: 2019/12/19 12:56:45 by gguichar         ###   ########.fr       */
+/*   Updated: 2020/02/28 09:52:12 by gguichar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	interactive_cmd(const char *prefix, const char *input
 {
 	char	**argv;
 	int		argc;
-	int		valid;
+	int		ret;
 
 	if (input[0] == '\0')
 		return (1);
@@ -37,38 +37,38 @@ static int	interactive_cmd(const char *prefix, const char *input
 		return (0);
 	}
 	argc = ft_strtab_count(argv);
-	valid = 1;
+	ret = 1;
 	if (argc > 0)
-		valid = run_command(prefix, argc, argv);
+		ret = exec_command(prefix, argc, argv);
 	ft_strtab_free(argv);
-	return (valid);
+	return (ret);
 }
 
 int			interactive_mode(const char *prefix)
 {
 	char	*line;
+	int		alive;
 	int		ret;
-	int		valid;
 
+	alive = 1;
 	ret = 1;
-	valid = 1;
-	while (ret)
+	while (alive)
 	{
 		write(STDOUT_FILENO, "FT_SSL> ", 8);
 		line = NULL;
-		ret = get_next_line(STDIN_FILENO, &line);
-		if (ret == 1)
+		alive = get_next_line(STDIN_FILENO, &line);
+		if (alive == 1)
 		{
-			valid = interactive_cmd(prefix, line, &ret);
+			ret = interactive_cmd(prefix, line, &ret);
 			free(line);
 		}
-		else if (ret == -1)
+		else if (alive == -1)
 		{
 			ft_dprintf(STDERR_FILENO, "unable to read from standard input\n");
 			return (0);
 		}
 	}
-	if (ret == 0)
+	if (alive == 0)
 		write(STDOUT_FILENO, "exit\n", 5);
-	return (valid);
+	return (ret);
 }
