@@ -8,25 +8,25 @@ const argv = yargs.option('plot', {
 }).help().locale('en').parse()
 
 function costFunction(theta, n, mileage, price) {
-    let square_sum = 0
+    let squareSum = 0
 
     for (let i = 0; i < n; i++) {
-        square_sum += Math.pow(price[i] - (theta[0] + theta[1] * mileage[i]), 2)
+        squareSum += Math.pow(price[i] - (theta[0] + theta[1] * mileage[i]), 2)
     }
 
-    return square_sum / n
+    return squareSum / n
 }
 
 function computePartialDerivative(theta, n, mileage, price) {
     let derivative = [0, 0]
-    let estimated_price
-    let price_error
+    let estimatedPrice
+    let priceError
 
     for (let i = 0; i < n; i++) {
-        estimated_price = theta[0] + theta[1] * mileage[i]
-        price_error = estimated_price - price[i]
-        derivative[0] += price_error
-        derivative[1] += price_error * mileage[i]
+        estimatedPrice = theta[0] + theta[1] * mileage[i]
+        priceError = estimatedPrice - price[i]
+        derivative[0] += priceError
+        derivative[1] += priceError * mileage[i]
     }
 
     derivative[0] /= n
@@ -47,8 +47,8 @@ function plotTraining(dataset, theta, costHistory) {
 
     nodeplotlib.plot([{
         name: 'training data',
-        x: dataset.map(value => Number(value[0])),
-        y: dataset.map(value => Number(value[1])),
+        x: dataset.map(value => +value[0]),
+        y: dataset.map(value => +value[1]),
         mode: 'markers'
     }, {
         name: 'linear regression',
@@ -58,13 +58,13 @@ function plotTraining(dataset, theta, costHistory) {
     }])
 }
 
-csv.readCsvFile('data.csv').then(async data => {
-    const iterations = 1000
-    const learningRate = 1
+const iterations = 1000
+const learningRate = 1
 
-    const dataset = data.filter(value => !isNaN(value[0]) && !isNaN(value[1]))
-    const mileage = dataset.map(value => Number(value[0]))
-    const price = dataset.map(value => Number(value[1]))
+csv.readCsvFile('data.csv').then(data => {
+    const dataset = data.filter(([mileage, price]) => !isNaN(mileage) && isFinite(mileage) && !isNaN(price) && isFinite(price))
+    const mileage = dataset.map(value => +value[0])
+    const price = dataset.map(value => +value[1])
 
     const mileageMin = Math.min(...mileage), mileageMax = Math.max(...mileage)
     const priceMin = Math.min(...price), priceMax = Math.max(...price)
@@ -74,12 +74,11 @@ csv.readCsvFile('data.csv').then(async data => {
         price[i] = (price[i] - priceMin) / (priceMax - priceMin)
     }
 
-    let theta = [0, 0]
-    let costHistory = []
-    let derivative
+    const theta = [0, 0]
+    const costHistory = []
 
     for (let i = 0; i < iterations; i++) {
-        derivative = computePartialDerivative(theta, dataset.length, mileage, price)
+        const derivative = computePartialDerivative(theta, dataset.length, mileage, price)
         costHistory.push(costFunction(theta, dataset.length, mileage, price))
 
         theta[0] -= learningRate * derivative[0]
@@ -92,14 +91,10 @@ csv.readCsvFile('data.csv').then(async data => {
     if (argv.plot)
         plotTraining(dataset, theta, costHistory)
 
-    csv.writeCsvFile('train.csv', [theta]).then(() => {
-        console.log('Training done, results have been saved in train.csv')
+    return csv.writeCsvFile('train.csv', [theta])
+}).then(() => {
+    console.log('Training done, results have been saved in train.csv')
 
-    }).catch(err => {
-        console.error('Unable to save training result:', err)
-
-        process.exit(1)
-    })
 }).catch(err => {
     console.error(err)
 
