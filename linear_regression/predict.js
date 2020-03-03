@@ -1,6 +1,5 @@
 const readline = require('readline')
 const csv = require('./csv')
-const util = require('util')
 
 const inputInterface = readline.createInterface({
     input: process.stdin,
