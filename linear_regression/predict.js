@@ -15,7 +15,7 @@ function estimatePrice(theta, mileage) {
         if (price < 0)
             console.error('Price is under $0')
         else
-            console.log('Price for mileage ' + mileage + ' is $' + price)
+            console.log('Price for mileage ' + mileage + ' is $' + price.toFixed(2))
     }
 }
 
