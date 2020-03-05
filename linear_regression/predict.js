@@ -8,7 +8,7 @@ const inputInterface = readline.createInterface({
 
 function estimatePrice(theta, mileage) {
     if (mileage < 0) {
-        console.error('Mileage should be positive')
+        console.error('Mileage must be positive')
     } else {
         const price = theta[0] + theta[1] * mileage
 
