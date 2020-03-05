@@ -66,6 +66,10 @@ csv.readCsvFile('data.csv').then(data => {
     const mileage = dataset.map(value => +value[0])
     const price = dataset.map(value => +value[1])
 
+    if (price.length == 0) {
+        throw new Error('no valid row in csv file')
+    }
+
     const mileageMin = Math.min(...mileage), mileageMax = Math.max(...mileage)
     const priceMin = Math.min(...price), priceMax = Math.max(...price)
 
