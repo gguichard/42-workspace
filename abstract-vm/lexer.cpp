@@ -26,6 +26,7 @@ static Symbol symbols[] = {
 Lexer::Lexer(std::string input)
 	: m_input(std::move(input))
 	, m_position(0)
+	, m_hitEndInput(false)
 {
 
 }
@@ -43,11 +44,23 @@ std::string::size_type Lexer::getPosition() const
 void Lexer::skipWhitespaces()
 {
 	while (m_position < m_input.size()) {
-		if (!std::isspace(m_input.at(m_position))) {
+		if (std::strchr(" \t\v\f\r", m_input.at(m_position)) == nullptr) { // whitespaces without \n
 			break;
 		}
 		m_position += 1;
 	}
+}
+
+Token Lexer::skipComment()
+{
+	while (m_position < m_input.size()) {
+		if (m_input.at(m_position) == '\n') {
+			return atom(Token::Type::NEWLINE_SYMBOL);
+		}
+		m_position += 1;
+	}
+	m_hitEndInput = true;
+	return Token(Token::Type::END_OF_INPUT, "");
 }
 
 Token Lexer::atom(Token::Type tokenType)
@@ -119,10 +132,15 @@ Token Lexer::nextToken()
 {
 	skipWhitespaces();
 
-	if (m_position >= m_input.size()) {
+	if (m_hitEndInput) {
 		throw LexerException("end of input");
+	} else if (m_position >= m_input.size()) {
+		m_hitEndInput = true;
+		return Token(Token::Type::END_OF_INPUT, "");
 	}
 	switch (m_input.at(m_position)) {
+	case '\n':
+		return atom(Token::Type::NEWLINE_SYMBOL);
 	case '(':
 		return atom(Token::Type::OPEN_BRACKET);
 	case ')':
@@ -132,9 +150,10 @@ Token Lexer::nextToken()
 			std::string lexeme = m_input.substr(m_position, 2);
 
 			m_position += 2;
-			return Token(Token::Type::END_SYMBOL, lexeme);
+			m_hitEndInput = true;
+			return Token(Token::Type::END_OF_INPUT, lexeme);
 		}
-		return atom(Token::Type::COMMENT_SYMBOL);
+		return skipComment();
 	case '0':
 	case '1':
 	case '2':

@@ -8,6 +8,7 @@ class Token
 public:
 	enum Type
 	{
+		END_OF_INPUT = 0,
 		OP_PUSH,
 		OP_POP,
 		OP_DUMP,
@@ -28,9 +29,7 @@ public:
 		CLOSE_BRACKET,
 		NUMBER_INTEGER,
 		NUMBER_DOUBLE,
-		COMMENT_SYMBOL,
-		END_SYMBOL,
-		INVALID
+		NEWLINE_SYMBOL
 	};
 
 	explicit Token(Token::Type type, std::string lexeme);

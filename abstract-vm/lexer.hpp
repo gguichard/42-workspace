@@ -31,6 +31,8 @@ public:
 private:
 	void skipWhitespaces();
 
+	Token skipComment();
+
 	Token atom(Token::Type tokenType);
 
 	Token number();
@@ -40,6 +42,7 @@ private:
 private:
 	std::string m_input;
 	std::string::size_type m_position;
+	bool m_hitEndInput;
 };
 
 #endif // LEXER_HPP
