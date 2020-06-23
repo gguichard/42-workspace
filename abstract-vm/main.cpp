@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 		while ((token = lexer.nextToken()).getType() != Token::Type::INVALID) {
 			std::cout << "Token type: " << token.getType() << " \"" << token.getLexeme() << "\"" << std::endl;
 		}
-	} catch (std::runtime_error &e) {
+	} catch (LexerException &e) {
 		std::cerr << "Parser error: " << e.what() << std::endl;
 	}
 

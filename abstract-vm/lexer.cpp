@@ -82,7 +82,7 @@ Token Lexer::number() // should match [-]?[0..9]+ (NUMBER_INTEGER) and [-]?[0..9
 	}
 	lexeme = m_input.substr(m_position, length);
 	if (digits == 0 || decimalPoints > 1) {
-		throw std::runtime_error("invalid number: " + lexeme);
+		throw LexerException("invalid number: " + lexeme);
 	} else {
 		m_position += length;
 		if (decimalPoints != 0) {
@@ -112,7 +112,7 @@ Token Lexer::symbol()
 			return Token(symbols[idx].type, lexeme);
 		}
 	}
-	throw std::runtime_error("invalid symbol: " + lexeme);
+	throw LexerException("invalid symbol: " + lexeme);
 }
 
 Token Lexer::nextToken()
@@ -120,7 +120,7 @@ Token Lexer::nextToken()
 	skipWhitespaces();
 
 	if (m_position >= m_input.size()) {
-		throw std::runtime_error("end of input");
+		throw LexerException("end of input");
 	}
 	switch (m_input.at(m_position)) {
 	case '(':

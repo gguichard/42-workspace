@@ -3,12 +3,18 @@
 
 #include "token.hpp"
 
+#include <stdexcept>
 #include <string>
 
 struct Symbol
 {
 	std::string identifier;
 	Token::Type type;
+};
+
+class LexerException : public std::runtime_error
+{
+	using std::runtime_error::runtime_error;
 };
 
 class Lexer
