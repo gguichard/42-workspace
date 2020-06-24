@@ -100,7 +100,7 @@ const IOperand *Operand<T>::operator/(const IOperand &rhs) const
 	eOperandType type = getHighestPriority(rhs);
 
 	if (type < eOperandType::FLOAT && std::stoll(rhs.toString()) == 0) {
-		throw std::runtime_error("division by zero");
+		throw VMException("division by zero");
 	}
 	result = std::stod(toString()) / std::stod(rhs.toString());
 	return m_factory->createOperand(type, std::to_string(result));
@@ -113,7 +113,7 @@ const IOperand *Operand<T>::operator%(const IOperand &rhs) const
 	eOperandType type = getHighestPriority(rhs);
 
 	if (type < eOperandType::FLOAT && std::stoll(rhs.toString()) == 0) {
-		throw std::runtime_error("modulo by zero");
+		throw VMException("modulo by zero");
 	}
 	result = std::fmod(std::stod(toString()), std::stod(rhs.toString()));
 	return m_factory->createOperand(type, std::to_string(result));

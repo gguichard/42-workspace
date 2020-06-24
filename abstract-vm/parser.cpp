@@ -3,6 +3,8 @@
 #include "token.hpp"
 
 #include <cstring>
+#include <queue>
+#include <memory>
 
 InstrSymbol instrSymbols[] = {
 	{Token::Type::OP_PUSH, true},
@@ -28,9 +30,9 @@ ValueSymbol valueSymbols[] = {
 
 Parser::Parser(Lexer &lexer)
 	: m_lexer(lexer)
-	, m_currentToken(lexer.nextToken()) // init first token
+	, m_currentToken(Token::Type::END_OF_INPUT, "")
 {
-
+	eatToken(); // init first token
 }
 
 void Parser::eatToken()
@@ -59,7 +61,7 @@ void Parser::parseNumber(Token::Type numberTokenType)
 	if (!acceptToken(Token::Type::OPEN_BRACKET)) {
 		throw ParserException("expected left parenthesis");
 	}
-	if (!acceptToken(numberTokenType)) {
+	if (m_currentToken.getType() != numberTokenType) {
 		switch (numberTokenType) {
 		case Token::Type::NUMBER_DOUBLE:
 			throw ParserException("expected real number");
@@ -70,6 +72,8 @@ void Parser::parseNumber(Token::Type numberTokenType)
 			throw ParserException("expected number"); // should never happen
 		}
 	}
+	m_tokens.push(m_currentToken);
+	eatToken();
 	if (!acceptToken(Token::Type::CLOSE_BRACKET)) {
 		throw ParserException("expected right parenthesis");
 	}
@@ -80,7 +84,9 @@ void Parser::parseValue()
 	size_t idx;
 
 	for (idx = 0; idx < sizeof(valueSymbols) / sizeof(valueSymbols[0]); idx++) {
-		if (acceptToken(valueSymbols[idx].tokenType)) {
+		if (m_currentToken.getType() == valueSymbols[idx].tokenType) {
+			m_tokens.push(m_currentToken);
+			eatToken();
 			parseNumber(valueSymbols[idx].numberTokenType);
 			return;
 		}
@@ -93,7 +99,9 @@ bool Parser::parseInstr()
 	size_t idx;
 
 	for (idx = 0; idx < sizeof(instrSymbols) / sizeof(instrSymbols[0]); idx++) {
-		if (acceptToken(instrSymbols[idx].tokenType)) {
+		if (m_currentToken.getType() == instrSymbols[idx].tokenType) {
+			m_tokens.push(m_currentToken);
+			eatToken();
 			if (instrSymbols[idx].value) {
 				parseValue();
 			}
@@ -103,9 +111,11 @@ bool Parser::parseInstr()
 	return false;
 }
 
-void Parser::parseInput()
+std::queue<Token> Parser::parseInput()
 {
-	if (!parseInstr()) {
+	if (!m_tokens.empty()) {
+		throw ParserException("parseInput() must be called once");
+	} else if (!parseInstr()) {
 		throw ParserException("expected instr symbol (eg: push, pop...)");
 	}
 	while (m_currentToken.getType() != Token::Type::END_OF_INPUT) {
@@ -115,4 +125,5 @@ void Parser::parseInput()
 		skipNewlines(); // skip additional newlines
 		parseInstr();
 	}
+	return m_tokens;
 }

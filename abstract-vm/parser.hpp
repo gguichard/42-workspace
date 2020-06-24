@@ -4,6 +4,7 @@
 #include "lexer.hpp"
 
 #include <stdexcept>
+#include <queue>
 
 struct InstrSymbol
 {
@@ -27,7 +28,7 @@ class Parser
 public:
 	explicit Parser(Lexer &lexer);
 
-	void parseInput();
+	std::queue<Token> parseInput();
 
 private:
 	void eatToken();
@@ -45,6 +46,7 @@ private:
 private:
 	Lexer &m_lexer;
 	Token m_currentToken;
+	std::queue<Token> m_tokens;
 };
 
 #endif // PARSER_HPP
