@@ -29,7 +29,6 @@ static Symbol symbols[] = {
 Lexer::Lexer(std::string input)
 	: m_input(std::move(input))
 	, m_position(0)
-	, m_hitEndInput(false)
 {
 
 }
@@ -56,7 +55,7 @@ void Lexer::skipWhitespaces()
 
 void Lexer::skipComments()
 {
-	while (m_input.at(m_position) == ';') {
+	while (m_position < m_input.size() && m_input.at(m_position) == ';') {
 		while (m_position < m_input.size()) {
 			m_position += 1;
 			if (m_input.at(m_position - 1) == '\n') {
@@ -125,15 +124,19 @@ Token Lexer::symbol()
 
 Token Lexer::nextToken()
 {
-	skipWhitespaces();
+	std::string::size_type oldPosition = std::string::npos;
 
-	if (m_hitEndInput) {
+	while (oldPosition != m_position) {
+		oldPosition = m_position;
+		skipWhitespaces();
+		skipComments();
+	}
+	if (m_position == std::string::npos) {
 		throw LexerException("end of input");
 	} else if (m_position >= m_input.size()) {
-		m_hitEndInput = true;
+		m_position = std::string::npos;
 		return Token(Token::Type::END_OF_INPUT, "");
 	}
-	skipComments();
 	switch (m_input.at(m_position)) {
 	case '\n':
 		return atom(Token::Type::NEWLINE_SYMBOL);
