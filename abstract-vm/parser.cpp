@@ -98,6 +98,7 @@ bool Parser::parseInstr()
 {
 	size_t idx;
 
+	skipNewlines(); // skip additional newlines
 	for (idx = 0; idx < sizeof(instrSymbols) / sizeof(instrSymbols[0]); idx++) {
 		if (m_currentToken.getType() == instrSymbols[idx].tokenType) {
 			m_tokens.push(m_currentToken);
@@ -122,7 +123,6 @@ std::queue<Token> Parser::parseInput()
 		if (!acceptToken(Token::Type::NEWLINE_SYMBOL)) {
 			throw ParserException("expected newline");
 		}
-		skipNewlines(); // skip additional newlines
 		parseInstr();
 	}
 	return m_tokens;
