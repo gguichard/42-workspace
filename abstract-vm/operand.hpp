@@ -30,7 +30,7 @@ public:
 	virtual const std::string &toString() const override;
 
 private:
-	eOperandType getHighestPriority(const IOperand &rhs) const;
+	eOperandType getHighestPrecision(const IOperand &rhs) const;
 
 private:
 	const AbstractVM *m_factory;
@@ -54,7 +54,7 @@ Operand<T>::Operand(const AbstractVM *factory, std::string value)
 template <eOperandType T>
 int Operand<T>::getPrecision() const
 {
-	return 0;
+	return T;
 }
 
 template <eOperandType T>
@@ -64,9 +64,13 @@ eOperandType Operand<T>::getType() const
 }
 
 template <eOperandType T>
-eOperandType Operand<T>::getHighestPriority(const IOperand &rhs) const
+eOperandType Operand<T>::getHighestPrecision(const IOperand &rhs) const
 {
-	return std::max(getType(), rhs.getType());
+	if (getPrecision() > rhs.getPrecision()) {
+		return getType();
+	} else {
+		return rhs.getType();
+	}
 }
 
 template <eOperandType T>
@@ -74,7 +78,7 @@ const IOperand *Operand<T>::operator+(const IOperand &rhs) const
 {
 	double result = std::stod(toString()) + std::stod(rhs.toString());
 
-	return m_factory->createOperand(getHighestPriority(rhs), std::to_string(result));
+	return m_factory->createOperand(getHighestPrecision(rhs), std::to_string(result));
 }
 
 template <eOperandType T>
@@ -82,7 +86,7 @@ const IOperand *Operand<T>::operator-(const IOperand &rhs) const
 {
 	double result = std::stod(toString()) - std::stod(rhs.toString());
 
-	return m_factory->createOperand(getHighestPriority(rhs), std::to_string(result));
+	return m_factory->createOperand(getHighestPrecision(rhs), std::to_string(result));
 }
 
 template <eOperandType T>
@@ -90,14 +94,14 @@ const IOperand *Operand<T>::operator*(const IOperand &rhs) const
 {
 	double result = std::stod(toString()) * std::stod(rhs.toString());
 
-	return m_factory->createOperand(getHighestPriority(rhs), std::to_string(result));
+	return m_factory->createOperand(getHighestPrecision(rhs), std::to_string(result));
 }
 
 template <eOperandType T>
 const IOperand *Operand<T>::operator/(const IOperand &rhs) const
 {
 	double result;
-	eOperandType type = getHighestPriority(rhs);
+	eOperandType type = getHighestPrecision(rhs);
 
 	if (type < eOperandType::FLOAT && std::stoll(rhs.toString()) == 0) {
 		throw VMException("division by zero");
@@ -110,7 +114,7 @@ template <eOperandType T>
 const IOperand *Operand<T>::operator%(const IOperand &rhs) const
 {
 	double result;
-	eOperandType type = getHighestPriority(rhs);
+	eOperandType type = getHighestPrecision(rhs);
 
 	if (type < eOperandType::FLOAT && std::stoll(rhs.toString()) == 0) {
 		throw VMException("modulo by zero");

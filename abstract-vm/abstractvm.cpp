@@ -84,14 +84,14 @@ void AbstractVM::run(std::queue<Token> &tokens)
 
 const std::unique_ptr<const IOperand> AbstractVM::popStack()
 {
-	const IOperand *operand;
-
 	if (m_stack.empty()) {
 		throw StackException("pop on empty stack");
+	} else {
+		const IOperand *operand = m_stack.top();
+
+		m_stack.pop();
+		return std::unique_ptr<const IOperand>(operand);
 	}
-	operand = m_stack.top();
-	m_stack.pop();
-	return std::unique_ptr<const IOperand>(operand);
 }
 
 const IOperand *AbstractVM::popOperand(std::queue<Token> &tokens)
