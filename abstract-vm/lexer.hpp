@@ -33,6 +33,8 @@ private:
 
 	void skipComments();
 
+	std::string extractIdentifier(const char *specialChars = "") const;
+
 	Token atom(Token::Type tokenType);
 
 	Token number();

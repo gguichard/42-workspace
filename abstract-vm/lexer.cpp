@@ -1,6 +1,7 @@
 #include "lexer.hpp"
 
 #include <string>
+#include <regex>
 #include <cstring>
 #include <cctype>
 
@@ -63,6 +64,22 @@ void Lexer::skipComments()
 	}
 }
 
+std::string Lexer::extractIdentifier(const char *specialChars) const
+{
+	std::string::size_type length = 0;
+	std::string identifier;
+
+	while ((m_position + length) < m_input.size()) {
+		if (!std::isalnum(m_input.at(m_position + length)) // our identifiers only contains alpha numeric characters
+			&& std::strchr(specialChars, m_input.at(m_position + length)) == nullptr) {
+			break;
+		}
+		length += 1;
+	}
+	identifier = m_input.substr(m_position, length);
+	return identifier;
+}
+
 Token Lexer::atom(Token::Type tokenType)
 {
 	std::string lexeme = m_input.substr(m_position, 1);
@@ -71,34 +88,17 @@ Token Lexer::atom(Token::Type tokenType)
 	return Token(tokenType, lexeme);
 }
 
-Token Lexer::number() // should match [-]?[0..9]+ (NUMBER_INTEGER) and [-]?[0..9]+.[0..9]+ (NUMBER_DOUBLE)
+Token Lexer::number()
 {
-	int digits = 0;
-	int decimalPoints = 0;
-	std::string::size_type length = 0;
-	std::string lexeme;
+	std::regex intRegex("[-]?[0-9]+");
+	std::regex doubleRegex("[-]?[0-9]+.[0-9]+");
+	std::string lexeme = extractIdentifier("-.");
 
-	if (m_input.at(m_position) == '-') {
-		length += 1;
-	}
-	while ((m_position + length) < m_input.size()) {
-		if (std::isdigit(m_input.at(m_position + length))) {
-			digits++;
-			length += 1;
-		} else if (m_input.at(m_position + length) == '.') {
-			digits = 0;
-			decimalPoints++;
-			length += 1;
-		} else {
-			break;
-		}
-	}
-	lexeme = m_input.substr(m_position, length);
-	if (digits == 0 || decimalPoints > 1) {
+	if (!std::regex_match(lexeme, intRegex) && !std::regex_match(lexeme, doubleRegex)) {
 		throw LexerException("invalid number: " + lexeme);
 	} else {
-		m_position += length;
-		if (decimalPoints != 0) {
+		m_position += lexeme.size();
+		if (lexeme.find_first_of(".") != std::string::npos) {
 			return Token(Token::Type::NUMBER_DOUBLE, lexeme);
 		} else {
 			return Token(Token::Type::NUMBER_INTEGER, lexeme);
@@ -108,20 +108,13 @@ Token Lexer::number() // should match [-]?[0..9]+ (NUMBER_INTEGER) and [-]?[0..9
 
 Token Lexer::symbol()
 {
-	std::string::size_type length = 0;
 	std::string lexeme;
 	size_t idx;
 
-	while ((m_position + length) < m_input.size()) {
-		if (!std::isalnum(m_input.at(m_position + length))) { // our symbols only contains alpha numeric characters
-			break;
-		}
-		length += 1;
-	}
-	lexeme = m_input.substr(m_position, length);
+	lexeme = extractIdentifier();
 	for (idx = 0; idx < sizeof(symbols) / sizeof(symbols[0]); idx++) {
 		if (lexeme == symbols[idx].identifier) {
-			m_position += length;
+			m_position += lexeme.size();
 			return Token(symbols[idx].type, lexeme);
 		}
 	}
