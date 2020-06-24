@@ -13,6 +13,8 @@ public:
 		OP_POP,
 		OP_DUMP,
 		OP_ASSERT,
+		OP_INCR,
+		OP_DECR,
 		OP_ADD,
 		OP_SUB,
 		OP_MUL,

@@ -15,6 +15,8 @@ static Symbol symbols[] = {
 	{"pop", Token::Type::OP_POP},
 	{"dump", Token::Type::OP_DUMP},
 	{"assert", Token::Type::OP_ASSERT},
+	{"incr", Token::Type::OP_INCR},
+	{"decr", Token::Type::OP_DECR},
 	{"add", Token::Type::OP_ADD},
 	{"sub", Token::Type::OP_SUB},
 	{"mul", Token::Type::OP_MUL},

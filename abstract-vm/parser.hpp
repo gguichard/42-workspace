@@ -6,10 +6,17 @@
 #include <stdexcept>
 #include <queue>
 
+enum TokenValueOption
+{
+	NEEDED,
+	OPTIONAL,
+	NOT_NEEDED
+};
+
 struct InstrSymbol
 {
 	Token::Type tokenType;
-	bool value;
+	TokenValueOption valueOption;
 };
 
 struct ValueSymbol
@@ -39,7 +46,7 @@ private:
 
 	void parseNumber(Token::Type numberTokenType);
 
-	void parseValue();
+	void parseValue(TokenValueOption valueOption);
 
 	bool parseInstr();
 

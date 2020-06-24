@@ -23,6 +23,8 @@ TokenDispatcher tokenDispatcher[] = {
 	{Token::Type::OP_POP, &AbstractVM::popOperation},
 	{Token::Type::OP_DUMP, &AbstractVM::dumpOperation},
 	{Token::Type::OP_ASSERT, &AbstractVM::assertOperation},
+	{Token::Type::OP_INCR, &AbstractVM::incrOperation},
+	{Token::Type::OP_DECR, &AbstractVM::decrOperation},
 	{Token::Type::OP_ADD, &AbstractVM::addOperation},
 	{Token::Type::OP_SUB, &AbstractVM::subOperation},
 	{Token::Type::OP_MUL, &AbstractVM::mulOperation},
@@ -94,21 +96,24 @@ const std::unique_ptr<const IOperand> AbstractVM::popStack()
 	}
 }
 
-const IOperand *AbstractVM::popOperand(std::queue<Token> &tokens)
+const IOperand *AbstractVM::popOperand(std::queue<Token> &tokens, bool optional)
 {
 	size_t idx;
 	Token::Type tokenType = tokens.front().getType();
 
-	tokens.pop();
 	for (idx = 0; idx < sizeof(tokenOperand) / sizeof(tokenOperand[0]); idx++) {
 		if (tokenType == tokenOperand[idx].tokenType) {
+			tokens.pop();
 			std::string number = tokens.front().getLexeme();
 
 			tokens.pop();
 			return createOperand(tokenOperand[idx].operandType, number);
 		}
 	}
-	throw VMException("expected var type token");
+	if (!optional) {
+		throw VMException("expected var type token");
+	}
+	return nullptr;
 }
 
 void AbstractVM::pushOperation(std::queue<Token> &tokens)
@@ -150,6 +155,38 @@ void AbstractVM::assertOperation(std::queue<Token> &tokens)
 		if (top->getType() != operand->getType() || top->toString() != operand->toString()) {
 			throw StackException("top stack assert failed");
 		}
+	}
+}
+
+void AbstractVM::incrOperation(std::queue<Token> &tokens)
+{
+	(void)tokens;
+
+	if (m_stack.empty()) {
+		throw StackException("incr operation on empty stack");
+	} else {
+		std::unique_ptr<const IOperand> operand(popOperand(tokens, true));
+
+		if (!operand) {
+			operand = std::unique_ptr<const IOperand>(createOperand(eOperandType::INT8, std::to_string(1)));
+		}
+		m_stack.push(*popStack() + *operand);
+	}
+}
+
+void AbstractVM::decrOperation(std::queue<Token> &tokens)
+{
+	(void)tokens;
+
+	if (m_stack.empty()) {
+		throw StackException("decr operation on empty stack");
+	} else {
+		std::unique_ptr<const IOperand> operand(popOperand(tokens, true));
+
+		if (!operand) {
+			operand = std::unique_ptr<const IOperand>(createOperand(eOperandType::INT8, std::to_string(1)));
+		}
+		m_stack.push(*popStack() - *operand);
 	}
 }
 

@@ -7,17 +7,19 @@
 #include <memory>
 
 InstrSymbol instrSymbols[] = {
-	{Token::Type::OP_PUSH, true},
-	{Token::Type::OP_POP, false},
-	{Token::Type::OP_DUMP, false},
-	{Token::Type::OP_ASSERT, true},
-	{Token::Type::OP_ADD, false},
-	{Token::Type::OP_SUB, false},
-	{Token::Type::OP_MUL, false},
-	{Token::Type::OP_DIV, false},
-	{Token::Type::OP_MOD, false},
-	{Token::Type::OP_PRINT, false},
-	{Token::Type::OP_EXIT, false}
+	{Token::Type::OP_PUSH, TokenValueOption::NEEDED},
+	{Token::Type::OP_POP, TokenValueOption::NOT_NEEDED},
+	{Token::Type::OP_DUMP, TokenValueOption::NOT_NEEDED},
+	{Token::Type::OP_ASSERT, TokenValueOption::NEEDED},
+	{Token::Type::OP_INCR, TokenValueOption::OPTIONAL},
+	{Token::Type::OP_DECR, TokenValueOption::OPTIONAL},
+	{Token::Type::OP_ADD, TokenValueOption::NOT_NEEDED},
+	{Token::Type::OP_SUB, TokenValueOption::NOT_NEEDED},
+	{Token::Type::OP_MUL, TokenValueOption::NOT_NEEDED},
+	{Token::Type::OP_DIV, TokenValueOption::NOT_NEEDED},
+	{Token::Type::OP_MOD, TokenValueOption::NOT_NEEDED},
+	{Token::Type::OP_PRINT, TokenValueOption::NOT_NEEDED},
+	{Token::Type::OP_EXIT, TokenValueOption::NOT_NEEDED}
 };
 
 ValueSymbol valueSymbols[] = {
@@ -79,7 +81,7 @@ void Parser::parseNumber(Token::Type numberTokenType)
 	}
 }
 
-void Parser::parseValue()
+void Parser::parseValue(TokenValueOption valueOption)
 {
 	size_t idx;
 
@@ -91,7 +93,9 @@ void Parser::parseValue()
 			return;
 		}
 	}
-	throw ParserException("expected value type (eg: int8, int16...)");
+	if (valueOption != TokenValueOption::OPTIONAL) {
+		throw ParserException("expected value type (eg: int8, int16...)");
+	}
 }
 
 bool Parser::parseInstr()
@@ -103,8 +107,9 @@ bool Parser::parseInstr()
 		if (m_currentToken.getType() == instrSymbols[idx].tokenType) {
 			m_tokens.push(m_currentToken);
 			eatToken();
-			if (instrSymbols[idx].value) {
-				parseValue();
+			if (instrSymbols[idx].valueOption == TokenValueOption::NEEDED
+				|| instrSymbols[idx].valueOption == TokenValueOption::OPTIONAL) {
+				parseValue(instrSymbols[idx].valueOption);
 			}
 			return true;
 		}

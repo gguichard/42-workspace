@@ -35,6 +35,8 @@ public:
 	void popOperation(std::queue<Token> &tokens);
 	void dumpOperation(std::queue<Token> &tokens);
 	void assertOperation(std::queue<Token> &tokens);
+	void incrOperation(std::queue<Token> &tokens);
+	void decrOperation(std::queue<Token> &tokens);
 	void addOperation(std::queue<Token> &tokens);
 	void subOperation(std::queue<Token> &tokens);
 	void mulOperation(std::queue<Token> &tokens);
@@ -45,7 +47,7 @@ public:
 
 private:
 	const std::unique_ptr<const IOperand> popStack();
-	const IOperand *popOperand(std::queue<Token> &tokens);
+	const IOperand *popOperand(std::queue<Token> &tokens, bool optional = false);
 
 	// operands
 	const IOperand *createInt8(const std::string &value) const;
