@@ -31,7 +31,8 @@ public:
 		CLOSE_BRACKET,
 		NUMBER_INTEGER,
 		NUMBER_DOUBLE,
-		NEWLINE_SYMBOL
+		NEWLINE_SYMBOL,
+		INVALID_SYMBOL
 	};
 
 	explicit Token(Token::Type type, std::string lexeme);

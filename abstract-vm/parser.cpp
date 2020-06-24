@@ -32,7 +32,7 @@ ValueSymbol valueSymbols[] = {
 
 Parser::Parser(Lexer &lexer)
 	: m_lexer(lexer)
-	, m_currentToken(Token::Type::END_OF_INPUT, "")
+	, m_currentToken(Token::Type::INVALID_SYMBOL, "")
 {
 	eatToken(); // init first token
 }
