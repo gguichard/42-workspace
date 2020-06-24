@@ -31,7 +31,7 @@ public:
 private:
 	void skipWhitespaces();
 
-	Token skipComment();
+	void skipComments();
 
 	Token atom(Token::Type tokenType);
 

@@ -51,16 +51,16 @@ void Lexer::skipWhitespaces()
 	}
 }
 
-Token Lexer::skipComment()
+void Lexer::skipComments()
 {
-	while (m_position < m_input.size()) {
-		if (m_input.at(m_position) == '\n') {
-			return atom(Token::Type::NEWLINE_SYMBOL);
+	while (m_input.at(m_position) == ';') {
+		while (m_position < m_input.size()) {
+			m_position += 1;
+			if (m_input.at(m_position - 1) == '\n') {
+				break;
+			}
 		}
-		m_position += 1;
 	}
-	m_hitEndInput = true;
-	return Token(Token::Type::END_OF_INPUT, "");
 }
 
 Token Lexer::atom(Token::Type tokenType)
@@ -138,6 +138,7 @@ Token Lexer::nextToken()
 		m_hitEndInput = true;
 		return Token(Token::Type::END_OF_INPUT, "");
 	}
+	skipComments();
 	switch (m_input.at(m_position)) {
 	case '\n':
 		return atom(Token::Type::NEWLINE_SYMBOL);
@@ -145,15 +146,6 @@ Token Lexer::nextToken()
 		return atom(Token::Type::OPEN_BRACKET);
 	case ')':
 		return atom(Token::Type::CLOSE_BRACKET);
-	case ';':
-		if ((m_position + 1) < m_input.size() && m_input.at(m_position + 1) == ';') {
-			std::string lexeme = m_input.substr(m_position, 2);
-
-			m_position += 2;
-			m_hitEndInput = true;
-			return Token(Token::Type::END_OF_INPUT, lexeme);
-		}
-		return skipComment();
 	case '0':
 	case '1':
 	case '2':
